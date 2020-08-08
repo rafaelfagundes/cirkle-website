@@ -4,7 +4,7 @@ import React from "react";
 import styled from "styled-components";
 
 const SellButton = styled.div`
-  width: 120px;
+  width: 140px;
   display: flex;
   flex-direction: row;
   flex: 1;
@@ -18,9 +18,11 @@ const SellButton = styled.div`
 `;
 
 const SellText = styled.p`
-  font-family: "Lato";
-  font-weight: 700;
+  font-family: "FuturaPT";
   color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: uppercase;
 `;
 
 function SellLink({ children }: { children: string }): JSX.Element {

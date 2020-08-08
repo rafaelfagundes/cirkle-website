@@ -6,7 +6,8 @@ import React from "react";
 // import { ThemeProvider } from "@material-ui/core/styles";
 import { ThemeProvider } from "styled-components";
 import Layout from "../src/components/Layout/index";
-import theme from "../src/theme";
+import theme from "../src/theme/theme";
+import "../styles/global.css";
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -28,7 +29,7 @@ export default function MyApp(props) {
           content="minimum-scale=1, initial-scale=1, width=device-width, maximum-scale=1"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Raleway:wght@400;700;900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700;900&display=swap"
           rel="stylesheet"
         />
       </Head>

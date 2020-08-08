@@ -19,11 +19,11 @@ const Profile = styled.div`
 `;
 
 const UserName = styled.p`
-  font-family: "Lato";
-  font-weight: 700;
+  font-family: "FuturaPT";
+  font-weight: 500;
+  font-size: 18px;
   margin-left: 8px;
   color: #13547a;
-  font-size: 16px;
 `;
 
 const UserImage = styled.img`
@@ -34,6 +34,15 @@ const UserImage = styled.img`
 
 const UserButton = styled.span`
   cursor: pointer;
+`;
+
+const StyledMenuItem = styled(MenuItem)`
+  height: 44px;
+`;
+
+const MenuItemText = styled.p`
+  font-family: FuturaPT;
+  margin-left: 5px;
 `;
 
 function UserProfileMenuItem({
@@ -73,10 +82,27 @@ function UserProfileMenuItem({
           open={userMenu}
           onClose={() => setUserMenu(false)}
         >
-          <MenuItem>Minha Conta</MenuItem>
-          <MenuItem>Lista de Desejos</MenuItem>
+          <StyledMenuItem>
+            <Icon type="profile"></Icon>
+            <MenuItemText>Minha Conta</MenuItemText>
+          </StyledMenuItem>
+          <StyledMenuItem>
+            <Icon type="heart"></Icon>
+            <MenuItemText>Lista de Desejos</MenuItemText>
+          </StyledMenuItem>
+          <StyledMenuItem>
+            <Icon type="box"></Icon>
+            <MenuItemText>Meus Pedidos</MenuItemText>
+          </StyledMenuItem>
+          <StyledMenuItem>
+            <Icon type="products"></Icon>
+            <MenuItemText>Meus Produtos à Venda</MenuItemText>
+          </StyledMenuItem>
           <br />
-          <MenuItem>Sair</MenuItem>
+          <StyledMenuItem>
+            <Icon type="exit"></Icon>
+            <MenuItemText>Sair</MenuItemText>
+          </StyledMenuItem>
         </Menu>
       </div>
     );

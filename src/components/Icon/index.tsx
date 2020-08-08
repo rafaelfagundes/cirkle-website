@@ -25,9 +25,18 @@ function getIcon(typed: string) {
       return "./icons/search.svg";
     case "profile":
       return "./icons/profile.svg";
-
+    case "heart":
+      return "./icons/heart.svg";
+    case "exit":
+      return "./icons/exit.svg";
+    case "close":
+      return "./icons/close.svg";
+    case "box":
+      return "./icons/box.svg";
+    case "products":
+      return "./icons/products.svg";
     default:
-      break;
+      return "./icons/heart.svg";
   }
 }
 
@@ -40,7 +49,17 @@ function Icon({ type }: { type: string }): JSX.Element {
 }
 
 Icon.propTypes = {
-  type: PropTypes.oneOf(["menu", "bag", "search"]),
+  type: PropTypes.oneOf([
+    "bag",
+    "box",
+    "close",
+    "exit",
+    "heart",
+    "menu",
+    "products",
+    "profile",
+    "search",
+  ]),
 };
 
 export default Icon;

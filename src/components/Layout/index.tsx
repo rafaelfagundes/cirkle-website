@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Icon from "../../components/Icon";
 import SellLink from "../SellLink";
+import SideMenu from "../SideMenu/index";
 import SizedBox from "../SizedBox";
 import TopTextBanner from "../TopTextBanner";
 import UserProfileMenuItem from "../UserProfileMenuItem/index";
@@ -52,7 +53,9 @@ const NavBarPadding = styled.div`
 const StyledInputBase = styled(InputBase)`
   width: 100%;
   margin-left: 10px;
-  font-family: Lato;
+  font-family: FuturaPT;
+  font-size: 16px;
+  margin-top: 3px;
 `;
 
 const StyledSearchBar = styled.div`
@@ -73,7 +76,7 @@ const SearchAndBag = styled.div`
 `;
 
 function Layout({ children }: { children: JSX.Element }): JSX.Element {
-  const [drawer, setDrawer] = useState(false);
+  const [drawer, setDrawer] = useState(true);
 
   return (
     <div>
@@ -149,7 +152,7 @@ function Layout({ children }: { children: JSX.Element }): JSX.Element {
         onClose={() => setDrawer(false)}
         onOpen={() => setDrawer(true)}
       >
-        <p>Teste</p>
+        <SideMenu></SideMenu>
       </SwipeableDrawer>
     </div>
   );

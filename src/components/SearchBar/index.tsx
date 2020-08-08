@@ -16,7 +16,9 @@ const StyledSearchBar = styled.div`
 const StyledInputBase = styled(InputBase)`
   width: 100%;
   margin-left: 10px;
-  font-family: Lato;
+  font-family: FuturaPT;
+  font-size: 16px;
+  margin-top: 3px;
 `;
 
 const TextBackground = styled.div`

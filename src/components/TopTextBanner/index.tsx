@@ -13,9 +13,9 @@ const StyledBanner = styled.div`
 
 const BannerText = styled.p`
   color: ${(props) => props.color};
-  font-family: "Lato";
-  font-weight: 900;
-  font-size: 12px;
+  font-family: "FuturaPT";
+  font-weight: 600;
+  font-size: 14px;
 `;
 
 function TopTextBanner({

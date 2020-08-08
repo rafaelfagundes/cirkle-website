@@ -146,9 +146,9 @@ const theme = createMuiTheme({
         '"Segoe UI Symbol"',
       ],
     },
-
+    fontSize: 16,
     fontFamily: [
-      "Lato",
+      "FuturaPT",
       "-apple-system",
       "BlinkMacSystemFont",
       '"Segoe UI"',

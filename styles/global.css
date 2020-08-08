@@ -1,11 +1,48 @@
+@font-face {
+  font-family: FuturaPT;
+  font-weight: 100;
+  src: url("/static/fonts/FuturaPTLight.otf") format("opentype");
+}
+@font-face {
+  font-family: FuturaPT;
+  font-weight: 400;
+  src: url("/static/fonts/FuturaPTBook.otf") format("opentype");
+}
+@font-face {
+  font-family: FuturaPT;
+  font-weight: 400;
+  src: url("/static/fonts/FuturaPTMedium.otf") format("opentype");
+}
+@font-face {
+  font-family: FuturaPT;
+  font-weight: 500;
+  src: url("/static/fonts/FuturaPTDemi.otf") format("opentype");
+}
+@font-face {
+  font-family: FuturaPT;
+  font-weight: 600;
+  src: url("/static/fonts/FuturaPTHeavy.otf") format("opentype");
+}
+@font-face {
+  font-family: FuturaPT;
+  font-weight: 700;
+  src: url("/static/fonts/FuturaPTBold.otf") format("opentype");
+}
+@font-face {
+  font-family: FuturaPT;
+  font-weight: 900;
+  src: url("/static/fonts/FuturaPTExtraBold.otf") format("opentype");
+}
+
+/*
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  line-height: 1.6;
-  font-size: 18px;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+   line-height: 2; 
+  font-size: 16px;
 }
 
 * {
@@ -18,10 +55,11 @@ a {
 }
 
 a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
-img {
+ img {
   max-width: 100%;
   display: block;
-}
+} 
+*/
