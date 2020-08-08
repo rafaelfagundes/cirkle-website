@@ -1,0 +1,45 @@
+import PropTypes from "prop-types";
+import React from "react";
+import styled from "styled-components";
+
+const StyledBanner = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  background-color: ${(props) => props.color};
+`;
+
+const BannerText = styled.p`
+  color: ${(props) => props.color};
+  font-family: "Lato";
+  font-weight: 900;
+  font-size: 12px;
+`;
+
+function TopTextBanner({
+  color,
+  textColor,
+  children,
+}: {
+  color: string;
+  textColor: string;
+  children: string;
+}): JSX.Element {
+  return (
+    <StyledBanner color={color}>
+      <BannerText color={textColor}>
+        {String(children).toUpperCase()}
+      </BannerText>
+    </StyledBanner>
+  );
+}
+
+TopTextBanner.propTypes = {
+  color: PropTypes.string,
+  textColor: PropTypes.string,
+  children: PropTypes.string,
+};
+
+export default TopTextBanner;
