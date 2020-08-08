@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { ThemeProvider } from "@material-ui/core/styles";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import React from "react";
+// import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from "styled-components";
 import Layout from "../src/components/Layout/index";
 import theme from "../src/theme";
 
