@@ -66,7 +66,7 @@ const Tabs = styled.div`
   align-items: flex-end;
 `;
 
-const StyledTab = styled.div`
+const StyledTab = styled.div<{ active: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -75,7 +75,7 @@ const StyledTab = styled.div`
   background-color: ${(props) => (props.active ? "#2D2D2D" : "#F0F0F0")};
 `;
 
-const TabText = styled.span`
+const TabText = styled.span<{ active: boolean }>`
   font-family: "Raleway";
   font-size: 16px;
   color: ${(props) => (props.active ? "#c94277" : "#F05D5E")};
