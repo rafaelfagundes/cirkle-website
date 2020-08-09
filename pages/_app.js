@@ -28,10 +28,6 @@ export default function MyApp(props) {
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, maximum-scale=1"
         />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700;900&display=swap"
-          rel="stylesheet"
-        />
       </Head>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}

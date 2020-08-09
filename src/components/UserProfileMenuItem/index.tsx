@@ -2,7 +2,9 @@ import { Link, Menu, MenuItem } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import { Colors } from "../../theme/theme";
 import Icon from "../Icon";
+import SizedBox from "../SizedBox/index";
 
 const Profile = styled.div`
   display: flex;
@@ -23,7 +25,7 @@ const UserName = styled.p`
   font-weight: 500;
   font-size: 18px;
   margin-left: 8px;
-  color: #13547a;
+  color: ${Colors.PRIMARY};
 `;
 
 const UserImage = styled.img`
@@ -100,8 +102,10 @@ function UserProfileMenuItem({
           </StyledMenuItem>
           <br />
           <StyledMenuItem>
-            <Icon type="exit"></Icon>
-            <MenuItemText>Sair</MenuItemText>
+            <SizedBox width={3}></SizedBox>
+            <Icon size={20} type="logout"></Icon>
+            <SizedBox width={2}></SizedBox>
+            <MenuItemText>Desconectar</MenuItemText>
           </StyledMenuItem>
         </Menu>
       </div>

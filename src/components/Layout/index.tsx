@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import Icon from "../../components/Icon";
+import { Colors } from "../../theme/theme";
 import SellLink from "../SellLink";
 import SideMenu from "../SideMenu/index";
 import SizedBox from "../SizedBox";
@@ -76,7 +77,7 @@ const SearchAndBag = styled.div`
 `;
 
 function Layout({ children }: { children: JSX.Element }): JSX.Element {
-  const [drawer, setDrawer] = useState(true);
+  const [drawer, setDrawer] = useState(false);
 
   return (
     <div>
@@ -135,7 +136,7 @@ function Layout({ children }: { children: JSX.Element }): JSX.Element {
           </NavBarBackground>
         </AppBar>
       </Hidden>
-      <TopTextBanner color="#13547A" textColor="#FFF">
+      <TopTextBanner color={Colors.PALATINE_PURPLE} textColor={Colors.WHITE}>
         Frete grátis para pedidos acima de R$ 200,00
       </TopTextBanner>
       <Hidden only={["xs"]}>
