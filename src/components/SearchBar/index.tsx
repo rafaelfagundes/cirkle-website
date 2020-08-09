@@ -21,7 +21,7 @@ const StyledInputBase = styled(InputBase)`
   margin-top: 3px;
 `;
 
-const TextBackground = styled.div`
+const SearchBackground = styled.div`
   display: flex;
   width: 100%;
   flex-direction: row;
@@ -35,13 +35,13 @@ function SearchBar({ placeHolder }: { placeHolder: string }): JSX.Element {
   return (
     <StyledSearchBar>
       <Container maxWidth="md">
-        <TextBackground>
+        <SearchBackground>
           <Icon type="search"></Icon>
           <StyledInputBase
             placeholder={placeHolder}
             inputProps={{ "aria-label": "search" }}
           />
-        </TextBackground>
+        </SearchBackground>
       </Container>
     </StyledSearchBar>
   );
