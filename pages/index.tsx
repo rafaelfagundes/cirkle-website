@@ -123,4 +123,29 @@ function Home(): JSX.Element {
   );
 }
 
+// Home
+// .getInitialProps = async (ctx) => {
+//   const res = await fetch("http://localhost:3001/menu");
+//   const data = await res.json();
+
+//   console.log("data", data);
+
+//   return {
+//     menuData: data,
+//   };
+// };
+
+// export async function getStaticProps(context) {
+//   const res = await fetch("http://localhost:3001/menu");
+//   const data = await res.json();
+
+//   console.log("data", data);
+
+//   return {
+//     props: {
+//       menuData: data,
+//     },
+//   };
+// }
+
 export default Home;

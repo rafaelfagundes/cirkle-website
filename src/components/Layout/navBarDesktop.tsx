@@ -12,12 +12,12 @@ const NavBarSpacer = styled.div`
   width: 100%;
 `;
 
-function NavBarDesktop(): JSX.Element {
+function NavBarDesktop({ menuData }: { menuData: any }): JSX.Element {
   return (
     <>
       <NavBarSpacer> </NavBarSpacer>
       <AppBar position="fixed" color="transparent">
-        <TopMenu></TopMenu>
+        <TopMenu data={menuData}></TopMenu>
       </AppBar>
     </>
   );

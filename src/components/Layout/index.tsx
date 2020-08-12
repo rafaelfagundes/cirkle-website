@@ -7,14 +7,20 @@ import TopTextBanner from "../TopTextBanner";
 import NavBarDesktop from "./navBarDesktop";
 import NavBarMobile from "./navBarMobile";
 
-function Layout({ children }: { children: JSX.Element }): JSX.Element {
+function Layout({
+  children,
+  menuData,
+}: {
+  children: JSX.Element;
+  menuData: any;
+}): JSX.Element {
   const [drawer, setDrawer] = useState(false);
 
   return (
     <div>
       {/* Desktop */}
       <Hidden only={["xs"]}>
-        <NavBarDesktop></NavBarDesktop>
+        <NavBarDesktop menuData={menuData}></NavBarDesktop>
       </Hidden>
       {/* Mobile */}
       <Hidden only={["sm", "md", "lg", "xl"]}>
@@ -36,7 +42,7 @@ function Layout({ children }: { children: JSX.Element }): JSX.Element {
           onClose={() => setDrawer(false)}
           onOpen={() => setDrawer(true)}
         >
-          <SideMenu></SideMenu>
+          <SideMenu data={menuData}></SideMenu>
         </SwipeableDrawer>
       </Hidden>
     </div>
