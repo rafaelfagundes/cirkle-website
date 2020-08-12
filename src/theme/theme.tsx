@@ -61,6 +61,7 @@ export enum Colors {
   WINTER_SKY = "#FF006E",
   XIKETIC = "#1C0F13",
   YELLOW_ORANGE = "#F79824",
+  ORANGE_KIDS = "#FFA400",
 }
 
 // Cria a instância do tema.

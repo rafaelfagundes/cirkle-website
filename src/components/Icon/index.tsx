@@ -28,7 +28,7 @@ function Icon({
     <StyledIcon size={size}>
       <Image
         size={size}
-        src={light ? `./icons/${type}-light.svg` : `./icons/${type}.svg`}
+        src={light ? `/icons/${type}-light.svg` : `/icons/${type}.svg`}
       />
     </StyledIcon>
   );

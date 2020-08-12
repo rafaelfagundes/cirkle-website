@@ -1,80 +1,11 @@
-import {
-  AppBar,
-  Container,
-  Hidden,
-  InputBase,
-  Link,
-  SwipeableDrawer,
-} from "@material-ui/core";
+import { Container, Hidden, SwipeableDrawer } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import styled from "styled-components";
-import Icon from "../../components/Icon";
 import { Colors } from "../../theme/theme";
-import SellLink from "../SellLink";
 import SideMenu from "../SideMenu/index";
-import SizedBox from "../SizedBox";
 import TopTextBanner from "../TopTextBanner";
-import UserProfileMenuItem from "../UserProfileMenuItem/index";
-
-const Logo = styled.img`
-  width: 90px;
-  margin-top: 5px;
-`;
-
-const NavBarSpacer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  height: 64px;
-  width: 100%;
-`;
-
-const NavBarContent = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
-`;
-
-const NavBarBackground = styled.div`
-  background-color: #fff;
-`;
-
-const NavBarPadding = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const StyledInputBase = styled(InputBase)`
-  width: 100%;
-  margin-left: 10px;
-  font-family: FuturaPT;
-  font-size: 16px;
-  margin-top: 3px;
-`;
-
-const StyledSearchBar = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  background-color: #f0f0f0;
-  height: 45px;
-  padding: 8px 10px;
-  margin: 0 32px;
-  /* border-radius: 8px; */
-`;
-
-const SearchAndBag = styled.div`
-  display: flex;
-  align-items: center;
-`;
+import NavBarDesktop from "./navBarDesktop";
+import NavBarMobile from "./navBarMobile";
 
 function Layout({ children }: { children: JSX.Element }): JSX.Element {
   const [drawer, setDrawer] = useState(false);
@@ -83,58 +14,11 @@ function Layout({ children }: { children: JSX.Element }): JSX.Element {
     <div>
       {/* Desktop */}
       <Hidden only={["xs"]}>
-        <NavBarSpacer>&nbsp;</NavBarSpacer>
-        <AppBar position="fixed" color="transparent">
-          <NavBarBackground>
-            <Container maxWidth="md">
-              <NavBarContent>
-                <NavBarPadding>
-                  <Link href="/">
-                    <Logo src="./images/logo.svg"></Logo>
-                  </Link>
-                  <StyledSearchBar>
-                    <Icon type="search"></Icon>
-                    <StyledInputBase
-                      placeholder="Procure por marcas, tipos, modelos"
-                      inputProps={{ "aria-label": "search" }}
-                    />
-                  </StyledSearchBar>
-                  <SearchAndBag>
-                    <SellLink>Quero Vender</SellLink>
-                    <UserProfileMenuItem
-                      isLogged={true}
-                      userName="Rafael"
-                      userPicture="https://avatars2.githubusercontent.com/u/29810355?s=460&v=4"
-                    ></UserProfileMenuItem>
-                    <SizedBox width={16}></SizedBox>
-                    <Icon type="bag"></Icon>
-                  </SearchAndBag>
-                </NavBarPadding>
-              </NavBarContent>
-            </Container>
-          </NavBarBackground>
-        </AppBar>
+        <NavBarDesktop></NavBarDesktop>
       </Hidden>
       {/* Mobile */}
       <Hidden only={["sm", "md", "lg", "xl"]}>
-        <NavBarSpacer>&nbsp;</NavBarSpacer>
-        <AppBar position="fixed" color="transparent">
-          <NavBarBackground>
-            <Container maxWidth="md">
-              <NavBarContent>
-                <NavBarPadding>
-                  <span onClick={() => setDrawer(true)}>
-                    <Icon type="menu"></Icon>
-                  </span>
-                  <Link href="/">
-                    <Logo src="./images/logo.svg"></Logo>
-                  </Link>
-                  <Icon type="bag"></Icon>
-                </NavBarPadding>
-              </NavBarContent>
-            </Container>
-          </NavBarBackground>
-        </AppBar>
+        <NavBarMobile setDrawer={setDrawer}></NavBarMobile>
       </Hidden>
       <TopTextBanner color={Colors.PALATINE_PURPLE} textColor={Colors.WHITE}>
         Frete grátis para pedidos acima de R$ 200,00
@@ -146,15 +30,15 @@ function Layout({ children }: { children: JSX.Element }): JSX.Element {
         <Container maxWidth="md" disableGutters={true}>
           {children}
         </Container>
+        <SwipeableDrawer
+          anchor="left"
+          open={drawer}
+          onClose={() => setDrawer(false)}
+          onOpen={() => setDrawer(true)}
+        >
+          <SideMenu></SideMenu>
+        </SwipeableDrawer>
       </Hidden>
-      <SwipeableDrawer
-        anchor="left"
-        open={drawer}
-        onClose={() => setDrawer(false)}
-        onOpen={() => setDrawer(true)}
-      >
-        <SideMenu></SideMenu>
-      </SwipeableDrawer>
     </div>
   );
 }
