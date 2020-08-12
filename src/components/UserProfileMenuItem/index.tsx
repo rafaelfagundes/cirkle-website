@@ -66,6 +66,7 @@ function UserProfileMenuItem({
           aria-controls="user-menu"
           aria-haspopup="true"
           onClick={() => setUserMenu(true)}
+          onMouseOver={() => setUserMenu(true)}
           ref={userButtonMenu}
         >
           <Profile>
@@ -83,6 +84,7 @@ function UserProfileMenuItem({
           keepMounted
           open={userMenu}
           onClose={() => setUserMenu(false)}
+          MenuListProps={{ onMouseLeave: () => setUserMenu(false) }}
         >
           <StyledMenuItem>
             <Icon type="profile"></Icon>
