@@ -35,7 +35,7 @@ const Newsletter = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px 0;
+  padding: 16px 0 10px 0;
 `;
 
 const NewsletterDescription = styled.p`
@@ -114,8 +114,7 @@ function Home(): JSX.Element {
             />
           </NewsletterInput>
           <NewsletterDescription>
-            Assine a newsletter para receber todas as nossas novidades e
-            promoções
+            Receba todas as nossas novidades e promoções
           </NewsletterDescription>
         </Container>
       </Newsletter>

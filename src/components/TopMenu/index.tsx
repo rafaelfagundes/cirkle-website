@@ -8,7 +8,9 @@ import Icon from "../Icon";
 import SizedBox from "../SizedBox";
 import UserProfileMenuItem from "../UserProfileMenuItem/index";
 
-const MenuContainer = styled.div``;
+const MenuContainer = styled.div`
+background-color: ${Colors.WHITE};
+`;
 
 const Logo = styled.img`
   width: 90px;
@@ -19,8 +21,8 @@ const Logo = styled.img`
 const Top = styled.div`
   display: flex;
   flex-direction: row;
-  /* align-items: flex-end; */
   justify-content: space-between;
+background-color: ${Colors.WHITE};
   height: 64px;
 `;
 
@@ -73,7 +75,7 @@ const MenuItem = styled.div<{ active: boolean }>`
   flex-direction: row;
   justify-content: space-between;
   cursor: pointer;
-  height: 50px;
+  height: 51px;
   background-color: ${(props) =>
     props.active ? "rgba(0,0,0,0.1)" : "transparent"};
 `;

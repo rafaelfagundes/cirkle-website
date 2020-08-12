@@ -30,7 +30,9 @@ function Layout({
         Frete grátis para pedidos acima de R$ 200,00
       </TopTextBanner>
       <Hidden only={["xs"]}>
-        <Container maxWidth="md">{children}</Container>
+        <Container maxWidth="md" disableGutters={true}>
+          {children}
+        </Container>
       </Hidden>
       <Hidden only={["sm", "md", "lg", "xl"]}>
         <Container maxWidth="md" disableGutters={true}>
