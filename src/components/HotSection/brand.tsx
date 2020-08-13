@@ -14,6 +14,7 @@ const StyledBrand = styled.div<{ width: number }>`
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
+  cursor: pointer;
 `;
 
 const BrandImage = styled.div<{ image: string; width: number }>`

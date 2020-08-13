@@ -1,11 +1,19 @@
-import { Container, InputBase } from "@material-ui/core";
+import { Container, InputBase, useMediaQuery } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
 import Icon from "../Icon";
 
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
 const Newsletter = styled.div`
-  background-color: ${Colors.RED_PINK};
+  background-color: ${Colors.PALATINE_PURPLE};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,7 +21,7 @@ const Newsletter = styled.div`
 `;
 
 const NewsletterDescription = styled.p`
-  font-family: "FuturaPT";
+  font-family: FuturaPT;
   color: ${Colors.WHITE};
   font-size: 16px;
   text-align: center;
@@ -33,23 +41,48 @@ const NewsletterInput = styled.div`
   width: 100%;
   flex-direction: row;
   align-items: center;
-  background-color: #fff;
+  background-color: ${Colors.WHITE};
   height: 45px;
   padding: 8px 12px;
-  margin-bottom: 10px;
 `;
 
-function NewsletterSignUp(props): JSX.Element {
+const NLButton = styled.div`
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${Colors.PLUM};
+  padding: 0 16px;
+  cursor: pointer;
+`;
+
+const NLButtonText = styled.span`
+  color: ${Colors.WHITE};
+  font-family: "FuturaPT";
+  font-size: 16px;
+`;
+
+function NewsletterSignUp(): JSX.Element {
+  const theme = useTheme();
+  const showButton = useMediaQuery(theme.breakpoints.up("sm"));
+
   return (
     <Newsletter>
       <Container maxWidth="xs">
-        <NewsletterInput>
-          <Icon type="email"></Icon>
-          <StyledInputBase
-            placeholder="Informe seu email"
-            inputProps={{ "aria-label": "search" }}
-          />
-        </NewsletterInput>
+        <Row>
+          <NewsletterInput>
+            <Icon type="email"></Icon>
+            <StyledInputBase
+              placeholder="Informe seu email"
+              inputProps={{ "aria-label": "search" }}
+            />
+          </NewsletterInput>
+          {showButton && (
+            <NLButton>
+              <NLButtonText>Enviar</NLButtonText>
+            </NLButton>
+          )}
+        </Row>
         <NewsletterDescription>
           Receba todas as nossas novidades e promoções
         </NewsletterDescription>

@@ -11,6 +11,7 @@ const StyledBanner = styled.div<{ bgImage: string; height: number }>`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  cursor: pointer;
 `;
 
 const InnerContent = styled.div`
