@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
@@ -14,6 +15,7 @@ const Item = styled.div`
   background-color: ${Colors.WHITE};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
   margin-right: 16px;
+  cursor: pointer;
 `;
 
 const Image = styled.div<{ image: string }>`
@@ -125,36 +127,38 @@ function HotItem({
   };
 }): JSX.Element {
   return (
-    <Item>
-      <Image image={data.image}></Image>
-      <BrandName>
-        <BrandNameText>{data.brandName}</BrandNameText>
-      </BrandName>
-      <Description>
-        <Title>{data.title}</Title>
-        <Price>
-          <Row>
-            <PriceText>
-              {new Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              }).format(data.price)}
-            </PriceText>
-            <OldPrice>
-              {new Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              }).format(data.oldPrice)}
-            </OldPrice>
-          </Row>
-          <Discount>
-            <DiscountText>
-              -{Math.round((1 - data.price / data.oldPrice) * 100)}%
-            </DiscountText>
-          </Discount>
-        </Price>
-      </Description>
-    </Item>
+    <Link href={data.link}>
+      <Item>
+        <Image image={data.image}></Image>
+        <BrandName>
+          <BrandNameText>{data.brandName}</BrandNameText>
+        </BrandName>
+        <Description>
+          <Title>{data.title}</Title>
+          <Price>
+            <Row>
+              <PriceText>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(data.price)}
+              </PriceText>
+              <OldPrice>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(data.oldPrice)}
+              </OldPrice>
+            </Row>
+            <Discount>
+              <DiscountText>
+                -{Math.round((1 - data.price / data.oldPrice) * 100)}%
+              </DiscountText>
+            </Discount>
+          </Price>
+        </Description>
+      </Item>
+    </Link>
   );
 }
 
