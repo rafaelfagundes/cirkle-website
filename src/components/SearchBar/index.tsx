@@ -2,11 +2,12 @@ import { Container, InputBase } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import { Colors } from "../../theme/theme";
 import Icon from "../Icon/index";
 
 const StyledSearchBar = styled.div`
   display: flex;
-  background-color: #80d0c7;
+  background-color: ${Colors.POOL_GREEN};
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -26,7 +27,7 @@ const SearchBackground = styled.div`
   width: 100%;
   flex-direction: row;
   align-items: center;
-  background-color: #fff;
+  background-color: ${Colors.WHITE};
   height: 45px;
   padding: 8px;
 `;
