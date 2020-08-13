@@ -6,7 +6,7 @@
       "plugins": [
         [
           "styled-components",
-          { "ssr": true, "displayName": false, "minify": true }
+          { "ssr": true, "displayName": true, "minify": true }
         ]
       ],
       "presets": ["next/babel"]

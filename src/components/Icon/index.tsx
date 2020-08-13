@@ -53,6 +53,7 @@ Icon.propTypes = {
     "products",
     "profile",
     "search",
+    "thermometer",
     "whatsapp",
   ]),
 };

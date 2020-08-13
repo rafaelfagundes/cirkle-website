@@ -1,71 +1,85 @@
-import { Container, Grid, Hidden, InputBase } from "@material-ui/core";
+import { Hidden } from "@material-ui/core";
 import React from "react";
-import styled from "styled-components";
-import Icon from "../src/components/Icon";
+import HighlightsSection from "../src/components/HighlightsSection";
+import HomeCategories from "../src/components/HomeCategories";
+import HotSection from "../src/components/HotSection/index";
 import MainBanner from "../src/components/MainBanner/index";
+import NewsletterSignUp from "../src/components/NewsletterSignUp/index";
 import SearchBar from "../src/components/SearchBar/index";
+import SizedBox from "../src/components/SizedBox/index";
 import { Colors } from "../src/theme/theme";
 
-const CategoryItem = styled.div`
-  background-color: ${Colors.PRIMARY};
-  height: 45px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CategoryItemText = styled.div`
-  color: #fff;
-  font-family: "Raleway";
-  font-weight: 900;
-  text-transform: uppercase;
-  font-size: 12px;
-  letter-spacing: 1px;
-`;
-
-const CategoriesContainer = styled.div`
-  padding-top: 11px;
-  padding-bottom: 11px;
-  display: flex;
-  align-items: center;
-`;
-
-const Newsletter = styled.div`
-  background-color: ${Colors.RED_PINK};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16px 0 10px 0;
-`;
-
-const NewsletterDescription = styled.p`
-  font-family: "FuturaPT";
-  color: ${Colors.WHITE};
-  font-size: 16px;
-  text-align: center;
-  margin: 0;
-`;
-
-const StyledInputBase = styled(InputBase)`
-  width: 100%;
-  margin-left: 5px;
-  font-family: FuturaPT;
-  font-size: 16px;
-  margin-top: 3px;
-`;
-
-const NewsletterInput = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  background-color: #fff;
-  height: 45px;
-  padding: 8px 12px;
-  margin-bottom: 10px;
-`;
-
 function Home(): JSX.Element {
+  const highlights = [
+    {
+      id: "9c2c5e99-4395-4634-a7a3-43ca8e4026c0",
+      title: "Calçados para o Verão",
+      subtitle: "Confira as Novidades",
+      image: "/images/highlights/shoes.jpg",
+      link: "/highlights/65445b8a-c0a3-4cc9-a2aa-d95ef5539d47",
+    },
+    {
+      id: "3d3c7436-74e3-4e89-b1c8-3cc1ef24bd32",
+      title: "Vestidos para festa",
+      subtitle: "Mostre-me mais",
+      image: "/images/highlights/dresses.jpg",
+      link: "/highlights/ab2504be-6282-4299-b3fd-676f58fbe47d",
+    },
+    {
+      id: "0c74c9c5-b359-48c1-bf75-9549cfc25db8",
+      title: "Fantasias infantis",
+      subtitle: "Veja as mais divertidas",
+      image: "/images/highlights/kids.jpg",
+      link: "/highlights/a5616bd8-7af4-4ec0-b7df-973a0b548142",
+    },
+    {
+      id: "e95a99a5-2ef1-4156-a0bf-74a5f4440029",
+      title: "Bolsas com até 70% OFF",
+      subtitle: "Quero ver mais",
+      image: "/images/highlights/purses.jpg",
+      link: "/highlights/51da52ab-d307-4144-947f-8bf310fe78aa",
+    },
+  ];
+
+  const hotItems = [
+    {
+      image:
+        "https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+      brandName: "Prada",
+      title: "Vestido de Bolinhas Brancas - Vários Tamanhos",
+      price: 2879.99,
+      oldPrice: 3599.99,
+      link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      brandName: "Chanel",
+      title: "Sapato Chanel No. 37",
+      price: 499.99,
+      oldPrice: 799.99,
+      link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80",
+      brandName: "Louis Vuitton",
+      title: "Bolsa LV Paris",
+      price: 1599.99,
+      oldPrice: 2099.99,
+      link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1590736969955-71cc94801759?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=564&q=80",
+      brandName: "Michael Kors",
+      title: "Relógio Mod. MK450",
+      price: 799.99,
+      oldPrice: 1799.99,
+      link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
+    },
+  ];
+
   return (
     <>
       <Hidden smUp={true}>
@@ -76,75 +90,21 @@ function Home(): JSX.Element {
         primaryText="até 70% off"
         secondaryText="bolsas e acessórios"
         position="bottom-right"
-        // primaryTextColor={Colors.BLACK}
-        // primaryBackgroundColor={Colors.AMARANTH_PINK}
-        // secondaryTextColor={Colors.BLACK}
-        // secondaryBackgroundColor={Colors.MIDDLE_YELLOW}
+        primaryTextColor={Colors.WHITE}
+        primaryBackgroundColor={Colors.PARADISE_PINK}
+        secondaryTextColor={Colors.BLACK}
+        secondaryBackgroundColor={Colors.MIDDLE_YELLOW}
       ></MainBanner>
       <Hidden smUp={true}>
-        <CategoriesContainer>
-          <Container>
-            <Grid container spacing={1}>
-              <Grid item xs={4}>
-                <CategoryItem>
-                  <CategoryItemText>roupas</CategoryItemText>
-                </CategoryItem>
-              </Grid>
-              <Grid item xs={4}>
-                <CategoryItem>
-                  <CategoryItemText>bolsas</CategoryItemText>
-                </CategoryItem>
-              </Grid>
-              <Grid item xs={4}>
-                <CategoryItem>
-                  <CategoryItemText>calçados</CategoryItemText>
-                </CategoryItem>
-              </Grid>
-            </Grid>
-          </Container>
-        </CategoriesContainer>
+        <SizedBox height={16}></SizedBox>
+        <HomeCategories></HomeCategories>
       </Hidden>
-      <Newsletter>
-        <Container maxWidth="xs">
-          <NewsletterInput>
-            <Icon type="email"></Icon>
-            <StyledInputBase
-              placeholder="Informe seu email"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </NewsletterInput>
-          <NewsletterDescription>
-            Receba todas as nossas novidades e promoções
-          </NewsletterDescription>
-        </Container>
-      </Newsletter>
+      <SizedBox height={16}></SizedBox>
+      <HighlightsSection data={highlights}></HighlightsSection>
+      <HotSection data={hotItems}></HotSection>
+      <NewsletterSignUp></NewsletterSignUp>
     </>
   );
 }
-
-// Home
-// .getInitialProps = async (ctx) => {
-//   const res = await fetch("http://localhost:3001/menu");
-//   const data = await res.json();
-
-//   console.log("data", data);
-
-//   return {
-//     menuData: data,
-//   };
-// };
-
-// export async function getStaticProps(context) {
-//   const res = await fetch("http://localhost:3001/menu");
-//   const data = await res.json();
-
-//   console.log("data", data);
-
-//   return {
-//     props: {
-//       menuData: data,
-//     },
-//   };
-// }
 
 export default Home;

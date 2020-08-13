@@ -9,20 +9,21 @@ import SizedBox from "../SizedBox";
 import UserProfileMenuItem from "../UserProfileMenuItem/index";
 
 const MenuContainer = styled.div`
-background-color: ${Colors.WHITE};
+  background-color: ${Colors.WHITE};
 `;
 
 const Logo = styled.img`
   width: 90px;
   margin-right: 48px;
   margin-bottom: 16px;
+  cursor: pointer;
 `;
 
 const Top = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-background-color: ${Colors.WHITE};
+  background-color: ${Colors.WHITE};
   height: 64px;
 `;
 
