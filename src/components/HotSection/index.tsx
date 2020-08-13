@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Colors } from "../../theme/theme";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox/index";
+import Brand from "./brand";
 import HotItem from "./item";
 
 const Section = styled.div`
@@ -37,7 +38,14 @@ const ItemsHolder = styled.div<{ disableScroll?: boolean }>`
   padding-bottom: 16px;
 `;
 
-const BrandsHolder = styled.div``;
+const BrandsHolder = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 16px;
+  flex-wrap: wrap;
+`;
 
 const Spacer = styled.div`
   content: "-";
@@ -47,14 +55,22 @@ const Spacer = styled.div`
 `;
 
 function HotSection({
-  data,
+  products,
+  brands,
 }: {
-  data: {
+  products: {
+    id: string;
     image: string;
     brandName: string;
     title: string;
     price: number;
     oldPrice: number;
+    link: string;
+  }[];
+  brands: {
+    id: string;
+    name: string;
+    image: string;
     link: string;
   }[];
 }): JSX.Element {
@@ -69,12 +85,17 @@ function HotSection({
       </SectionTitle>
       <SizedBox height={24}></SizedBox>
       <ItemsHolder disableScroll={!matches}>
-        {data.map((item) => (
+        {products.map((item) => (
           <HotItem data={item} key={item.image}></HotItem>
         ))}
         <Spacer>-</Spacer>
       </ItemsHolder>
-      <BrandsHolder></BrandsHolder>
+      <SizedBox height={16}></SizedBox>
+      <BrandsHolder>
+        {brands.map((item) => (
+          <Brand key={item.id} data={item}></Brand>
+        ))}
+      </BrandsHolder>
     </Section>
   );
 }

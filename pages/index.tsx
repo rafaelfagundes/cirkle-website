@@ -41,8 +41,9 @@ function Home(): JSX.Element {
     },
   ];
 
-  const hotItems = [
+  const hotProducts = [
     {
+      id: "323d1e6f-1999-4e6e-ad47-e75a675c470a",
       image:
         "https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
       brandName: "Prada",
@@ -52,6 +53,7 @@ function Home(): JSX.Element {
       link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
     },
     {
+      id: "520b83d9-dac9-47ce-9456-990fb4bf703c",
       image:
         "https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
       brandName: "Chanel",
@@ -61,6 +63,7 @@ function Home(): JSX.Element {
       link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
     },
     {
+      id: "db71af90-20b2-48f7-b4b9-be4128367952",
       image:
         "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80",
       brandName: "Louis Vuitton",
@@ -70,6 +73,7 @@ function Home(): JSX.Element {
       link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
     },
     {
+      id: "1fe7fed8-702d-483a-8b58-1e94a22f701d",
       image:
         "https://images.unsplash.com/photo-1590736969955-71cc94801759?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=564&q=80",
       brandName: "Michael Kors",
@@ -77,6 +81,45 @@ function Home(): JSX.Element {
       price: 799.99,
       oldPrice: 1799.99,
       link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
+    },
+  ];
+
+  const brands = [
+    {
+      id: "39dbf21f-e9d9-4c52-99d1-730ffba49a24",
+      name: "Armani",
+      image: "/images/brands/armani.png",
+      link: "/brands/armani",
+    },
+    {
+      id: "9ca7318e-6fcd-4eed-bb5e-2623c7d7b2f1",
+      name: "Chanel",
+      image: "/images/brands/chanel.png",
+      link: "/brands/chanel",
+    },
+    {
+      id: "f442a582-7803-47ff-af17-c05497926f84",
+      name: "Dolce & Gabbanna",
+      image: "/images/brands/deg.png",
+      link: "/brands/deg",
+    },
+    {
+      id: "207f004d-5190-4a3e-9a79-0ba424c2c32c",
+      name: "Dior",
+      image: "/images/brands/dior.png",
+      link: "/brands/dior",
+    },
+    {
+      id: "7b934def-5c05-495d-9d61-b6f30631dec2",
+      name: "Prada",
+      image: "/images/brands/prada.png",
+      link: "/brands/prada",
+    },
+    {
+      id: "6e64ae7a-9c9f-4cd9-ab02-07ccd9adcd19",
+      name: "Versace",
+      image: "/images/brands/versace.png",
+      link: "/brands/versace",
     },
   ];
 
@@ -101,7 +144,7 @@ function Home(): JSX.Element {
       </Hidden>
       <SizedBox height={16}></SizedBox>
       <HighlightsSection data={highlights}></HighlightsSection>
-      <HotSection data={hotItems}></HotSection>
+      <HotSection products={hotProducts} brands={brands}></HotSection>
       <NewsletterSignUp></NewsletterSignUp>
     </>
   );
