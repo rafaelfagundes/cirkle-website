@@ -13,7 +13,7 @@ const Row = styled.div`
 `;
 
 const Newsletter = styled.div`
-  background-color: ${Colors.PALATINE_PURPLE};
+  background-color: ${Colors.TYRIAN_PURPLE};
   display: flex;
   flex-direction: column;
   align-items: center;

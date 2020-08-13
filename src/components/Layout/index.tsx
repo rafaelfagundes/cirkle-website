@@ -2,6 +2,7 @@ import { Container, Hidden, SwipeableDrawer } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Colors } from "../../theme/theme";
+import Footer from "../Footer";
 import SideMenu from "../SideMenu/index";
 import TopTextBanner from "../TopTextBanner";
 import NavBarDesktop from "./navBarDesktop";
@@ -47,6 +48,7 @@ function Layout({
           <SideMenu data={menuData}></SideMenu>
         </SwipeableDrawer>
       </Hidden>
+      <Footer></Footer>
     </div>
   );
 }

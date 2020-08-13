@@ -4,7 +4,6 @@ import HighlightsSection from "../src/components/HighlightsSection";
 import HomeCategories from "../src/components/HomeCategories";
 import HotSection from "../src/components/HotSection/index";
 import MainBanner from "../src/components/MainBanner/index";
-import NewsletterSignUp from "../src/components/NewsletterSignUp/index";
 import SearchBar from "../src/components/SearchBar/index";
 import SizedBox from "../src/components/SizedBox/index";
 import { Colors } from "../src/theme/theme";
@@ -145,7 +144,6 @@ function Home(): JSX.Element {
       <SizedBox height={16}></SizedBox>
       <HighlightsSection data={highlights}></HighlightsSection>
       <HotSection products={hotProducts} brands={brands}></HotSection>
-      <NewsletterSignUp></NewsletterSignUp>
     </>
   );
 }

@@ -23,9 +23,9 @@ const SectionTitle = styled.div`
 const Title = styled.div`
   text-transform: uppercase;
   color: ${Colors.PRIMARY};
-  font-family: "FuturaPT";
+  font-family: Raleway;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 900;
   margin-right: 5px;
 `;
 
