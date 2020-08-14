@@ -4,19 +4,13 @@ import Link from "next/link";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
+import HorizontalLogo from "../HorizontalLogo";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox";
 import UserProfileMenuItem from "../UserProfileMenuItem/index";
 
 const MenuContainer = styled.div`
   background-color: ${Colors.WHITE};
-`;
-
-const Logo = styled.img`
-  width: 90px;
-  margin-right: 48px;
-  margin-bottom: 16px;
-  cursor: pointer;
 `;
 
 const Top = styled.div`
@@ -149,6 +143,14 @@ const SearchAndBag = styled.div`
   align-items: center;
 `;
 
+const LogoHolder = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 160px;
+  height: 65px;
+`;
+
 function TopMenu({ data }: { data: any }): JSX.Element {
   const [menuData, setMenuData] = useState(data);
   const [selectedTab, setSelectedTab] = useState("women");
@@ -190,7 +192,9 @@ function TopMenu({ data }: { data: any }): JSX.Element {
         <Top>
           <LogoAndTabs>
             <Link href="/">
-              <Logo src="/images/logo.svg"></Logo>
+              <LogoHolder>
+                <HorizontalLogo></HorizontalLogo>
+              </LogoHolder>
             </Link>
             <Tabs>
               {Object.keys(menuData).map((element) => (

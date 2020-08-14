@@ -1,4 +1,4 @@
-import { Container } from "@material-ui/core";
+import { Container, Hidden } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
@@ -10,7 +10,7 @@ const Legal = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background-color: ${Colors.PALATINE_PURPLE};
+  background-color: ${Colors.TYRIAN_PURPLE};
 `;
 
 const LegalText = styled.span`
@@ -75,13 +75,15 @@ function Footer(): JSX.Element {
               <FooterLink>Devolução</FooterLink>
               <FooterLink>Termos de Uso</FooterLink>
             </LinksSection>
-            <LinksSection>
-              <HeaderSection>Categorias</HeaderSection>
-              <FooterLink>Roupas</FooterLink>
-              <FooterLink>Bolsas</FooterLink>
-              <FooterLink>Calçados</FooterLink>
-              <FooterLink>Acessórios</FooterLink>
-            </LinksSection>
+            <Hidden only="xs">
+              <LinksSection>
+                <HeaderSection>Categorias</HeaderSection>
+                <FooterLink>Roupas</FooterLink>
+                <FooterLink>Bolsas</FooterLink>
+                <FooterLink>Calçados</FooterLink>
+                <FooterLink>Acessórios</FooterLink>
+              </LinksSection>
+            </Hidden>
             <LinksSection>
               <HeaderSection>Pagamento</HeaderSection>
               <FooterLink>Cartão de Crédito</FooterLink>

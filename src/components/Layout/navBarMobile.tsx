@@ -1,6 +1,7 @@
 import { AppBar, Container, Link } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
+import HorizontalLogo from "../HorizontalLogo/index";
 import Icon from "../Icon";
 
 const Logo = styled.img`
@@ -37,6 +38,10 @@ const NavBarPadding = styled.div`
   align-items: center;
 `;
 
+const LogoHolder = styled.div`
+  padding-top: 5px;
+`;
+
 function NavBarMobile({
   setDrawer,
 }: {
@@ -54,7 +59,9 @@ function NavBarMobile({
                   <Icon type="menu"></Icon>
                 </span>
                 <Link href="/">
-                  <Logo src="/images/logo.svg"></Logo>
+                  <LogoHolder>
+                    <HorizontalLogo></HorizontalLogo>
+                  </LogoHolder>
                 </Link>
                 <Icon type="bag"></Icon>
               </NavBarPadding>
