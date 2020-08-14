@@ -54,7 +54,7 @@ const Title = styled.span`
   font-family: FuturaPT;
   font-weight: 600;
   font-size: 16px;
-  line-height: 120%;
+  line-height: 110%;
   display: flex;
   align-items: flex-end;
   color: ${Colors.PRIMARY};

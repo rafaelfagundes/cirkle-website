@@ -13,11 +13,7 @@ const Profile = styled.div`
   align-items: center;
   justify-content: center;
   margin-right: 10px;
-  /* background-color: #f5f5f5; */
   height: 45px;
-  /* border-radius: 8px; */
-  /* min-width: 120px; */
-  /* padding: 0px 16px; */
 `;
 
 const UserName = styled.p`

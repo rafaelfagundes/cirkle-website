@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
+import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../HorizontalLogo";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox";
@@ -224,7 +225,7 @@ function TopMenu({ data }: { data: any }): JSX.Element {
               userPicture="https://avatars2.githubusercontent.com/u/29810355?s=460&v=4"
             ></UserProfileMenuItem>
             <SizedBox width={16}></SizedBox>
-            <Icon type="bag"></Icon>
+            <DropdownCart></DropdownCart>
           </SearchAndBag>
         </Top>
       </Container>

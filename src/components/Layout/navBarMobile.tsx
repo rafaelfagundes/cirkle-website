@@ -1,13 +1,9 @@
 import { AppBar, Container, Link } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
+import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../HorizontalLogo/index";
 import Icon from "../Icon";
-
-const Logo = styled.img`
-  width: 90px;
-  margin-top: 5px;
-`;
 
 const NavBarSpacer = styled.div`
   display: flex;
@@ -63,7 +59,7 @@ function NavBarMobile({
                     <HorizontalLogo></HorizontalLogo>
                   </LogoHolder>
                 </Link>
-                <Icon type="bag"></Icon>
+                <DropdownCart></DropdownCart>
               </NavBarPadding>
             </NavBarContent>
           </Container>
