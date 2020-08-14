@@ -81,6 +81,46 @@ function Home(): JSX.Element {
       oldPrice: 1799.99,
       link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
     },
+    {
+      id: "323d1e6f-1999-4e6e-ad47-e75a675c470a",
+      image:
+        "https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+      brandName: "Prada",
+      title: "Vestido de Bolinhas Brancas - Vários Tamanhos",
+      price: 2879.99,
+      oldPrice: 3599.99,
+      link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
+    },
+    {
+      id: "520b83d9-dac9-47ce-9456-990fb4bf703c",
+      image:
+        "https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      brandName: "Chanel",
+      title: "Sapato Chanel No. 37",
+      price: 499.99,
+      oldPrice: 799.99,
+      link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
+    },
+    {
+      id: "db71af90-20b2-48f7-b4b9-be4128367952",
+      image:
+        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80",
+      brandName: "Louis Vuitton",
+      title: "Bolsa LV Paris",
+      price: 1599.99,
+      oldPrice: 2099.99,
+      link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
+    },
+    {
+      id: "1fe7fed8-702d-483a-8b58-1e94a22f701d",
+      image:
+        "https://images.unsplash.com/photo-1590736969955-71cc94801759?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=564&q=80",
+      brandName: "Michael Kors",
+      title: "Relógio Mod. MK450",
+      price: 799.99,
+      oldPrice: 1799.99,
+      link: "/product/a909cb6c-630d-4dfa-a26d-5c85122de4a2",
+    },
   ];
 
   const brands = [

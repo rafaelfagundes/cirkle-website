@@ -1,12 +1,17 @@
 import { Container, Hidden, SwipeableDrawer } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
+import styled from "styled-components";
 import { Colors } from "../../theme/theme";
 import Footer from "../Footer";
 import SideMenu from "../SideMenu/index";
 import TopTextBanner from "../TopTextBanner";
 import NavBarDesktop from "./navBarDesktop";
 import NavBarMobile from "./navBarMobile";
+
+const Background = styled.div`
+  background: linear-gradient(180deg, #fafafa, ${Colors.ULTRA_LIGHT_GRAY});
+`;
 
 function Layout({
   children,
@@ -27,13 +32,15 @@ function Layout({
       <Hidden only={["sm", "md", "lg", "xl"]}>
         <NavBarMobile setDrawer={setDrawer}></NavBarMobile>
       </Hidden>
-      <TopTextBanner color={Colors.PALATINE_PURPLE} textColor={Colors.WHITE}>
+      <TopTextBanner color={Colors.TYRIAN_PURPLE} textColor={Colors.WHITE}>
         Frete grátis para pedidos acima de R$ 200,00
       </TopTextBanner>
       <Hidden only={["xs"]}>
-        <Container maxWidth="md" disableGutters={true}>
-          {children}
-        </Container>
+        <Background>
+          <Container maxWidth="md" disableGutters={true}>
+            {children}
+          </Container>
+        </Background>
       </Hidden>
       <Hidden only={["sm", "md", "lg", "xl"]}>
         <Container maxWidth="md" disableGutters={true}>

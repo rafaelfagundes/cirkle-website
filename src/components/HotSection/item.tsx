@@ -1,3 +1,5 @@
+import { useMediaQuery } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
@@ -9,13 +11,14 @@ const Row = styled.div`
   align-items: center;
 `;
 
-const Item = styled.div`
+const Item = styled.div<{ isSmartphone: boolean }>`
   width: 220px;
   height: 312px;
   background-color: ${Colors.WHITE};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
-  margin-right: 16px;
+  margin-right: ${(props) => (props.isSmartphone ? "16px" : 0)};
   cursor: pointer;
+  margin-bottom: 28px;
 `;
 
 const Image = styled.div<{ image: string }>`
@@ -126,9 +129,12 @@ function HotItem({
     link: string;
   };
 }): JSX.Element {
+  const theme = useTheme();
+  const smartphone = useMediaQuery(theme.breakpoints.down("xs"));
+
   return (
     <Link href={data.link}>
-      <Item>
+      <Item isSmartphone={smartphone}>
         <Image image={data.image}></Image>
         <BrandName>
           <BrandNameText>{data.brandName}</BrandNameText>

@@ -8,15 +8,14 @@ import SizedBox from "../SizedBox/index";
 import Brand from "./brand";
 import HotItem from "./item";
 
-const Section = styled.div`
-  background-color: #f0f0f0;
-  padding: 32px 0 16px 16px;
+const Section = styled.div<{ isSmartphone: boolean }>`
+  padding: ${(props) => (props.isSmartphone ? "32px 0 32px 16px" : "32px 0")};
 `;
 
 const SectionTitle = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 `;
 
@@ -24,26 +23,27 @@ const Title = styled.div`
   text-transform: uppercase;
   color: ${Colors.PRIMARY};
   font-family: Raleway;
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 900;
   margin-right: 5px;
 `;
 
 const ItemsHolder = styled.div<{ disableScroll?: boolean }>`
   display: flex;
+
+  flex-wrap: ${(props) => (props.disableScroll ? "wrap" : "nowrap")};
   flex-direction: row;
   align-items: center;
   overflow: ${(props) => (props.disableScroll ? "hidden" : "scroll")};
   justify-content: space-between;
-  padding-bottom: 16px;
 `;
 
-const BrandsHolder = styled.div`
+const BrandsHolder = styled.div<{ isSmartphone: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-right: 16px;
+  padding-right: ${(props) => (props.isSmartphone ? "16px" : 0)};
   flex-wrap: wrap;
 `;
 
@@ -75,23 +75,23 @@ function HotSection({
   }[];
 }): JSX.Element {
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("xs"));
+  const isSmartphone = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
-    <Section>
+    <Section isSmartphone={isSmartphone}>
       <SectionTitle>
         <Title>EM ALTA</Title>
         <Icon type="thermometer"></Icon>
       </SectionTitle>
       <SizedBox height={24}></SizedBox>
-      <ItemsHolder disableScroll={!matches}>
+      <ItemsHolder disableScroll={!isSmartphone}>
         {products.map((item) => (
           <HotItem data={item} key={item.image}></HotItem>
         ))}
-        <Spacer>-</Spacer>
+        {isSmartphone ? <Spacer>-</Spacer> : null}
       </ItemsHolder>
       <SizedBox height={16}></SizedBox>
-      <BrandsHolder>
+      <BrandsHolder isSmartphone={isSmartphone}>
         {brands.map((item) => (
           <Brand key={item.id} data={item}></Brand>
         ))}

@@ -59,6 +59,10 @@ const Columns = styled.div`
   padding: 24px 0;
 `;
 
+const SecurityBadge = styled.img`
+  width: 96px;
+`;
+
 function Footer(): JSX.Element {
   return (
     <div>
@@ -90,6 +94,7 @@ function Footer(): JSX.Element {
               <FooterLink>Cartão de Débito</FooterLink>
               <FooterLink>Transferência</FooterLink>
               <FooterLink>Ao Receber*</FooterLink>
+              <SecurityBadge src="/images/security_badge.svg"></SecurityBadge>
             </LinksSection>
           </Columns>
         </Container>

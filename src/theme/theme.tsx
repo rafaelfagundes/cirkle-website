@@ -25,6 +25,7 @@ export enum Colors {
   LAVENDER = "#DAE0F2",
   LIGHT_CORAL = "#EC8583",
   LIGHT_GRAY = "#CFCFCF",
+  ULTRA_LIGHT_GRAY = "#EEE",
   MADDER_LAKE_RED = "#CC2936",
   MAGENTA = "#8F2D56",
   MANGO = "#FFBE0B",

@@ -7,7 +7,7 @@ import Icon from "../Icon/index";
 
 const StyledSearchBar = styled.div`
   display: flex;
-  background-color: ${Colors.POOL_GREEN};
+  background-color: ${Colors.PLUM};
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -30,6 +30,7 @@ const SearchBackground = styled.div`
   background-color: ${Colors.WHITE};
   height: 45px;
   padding: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
 `;
 
 function SearchBar({ placeHolder }: { placeHolder: string }): JSX.Element {
