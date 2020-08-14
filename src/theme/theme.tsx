@@ -1,7 +1,7 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
 export enum Colors {
-  PRIMARY = "#13547A",
+  PRIMARY = "#561643",
   SECONDARY = "#C94277",
   WHITE = "#FFF",
   BLACK = "#121212",

@@ -43,9 +43,11 @@ function Layout({
         </Background>
       </Hidden>
       <Hidden only={["sm", "md", "lg", "xl"]}>
-        <Container maxWidth="md" disableGutters={true}>
-          {children}
-        </Container>
+        <Background>
+          <Container maxWidth="md" disableGutters={true}>
+            {children}
+          </Container>
+        </Background>
         <SwipeableDrawer
           anchor="left"
           open={drawer}

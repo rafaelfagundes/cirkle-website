@@ -165,7 +165,7 @@ function Home(): JSX.Element {
   return (
     <>
       <Hidden smUp={true}>
-        <SearchBar placeHolder="Procure por marcas, tipos, modelos"></SearchBar>
+        <SearchBar placeHolder="Procure por marcas, categorias, modelos"></SearchBar>
       </Hidden>
       <MainBanner
         url="https://images.unsplash.com/photo-1506152983158-b4a74a01c721?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80"
@@ -178,7 +178,6 @@ function Home(): JSX.Element {
         secondaryBackgroundColor={Colors.MIDDLE_YELLOW}
       ></MainBanner>
       <Hidden smUp={true}>
-        <SizedBox height={16}></SizedBox>
         <HomeCategories></HomeCategories>
       </Hidden>
       <SizedBox height={16}></SizedBox>

@@ -9,7 +9,8 @@ import Brand from "./brand";
 import HotItem from "./item";
 
 const Section = styled.div<{ isSmartphone: boolean }>`
-  padding: ${(props) => (props.isSmartphone ? "32px 0 32px 16px" : "32px 0")};
+  padding: ${(props) =>
+    props.isSmartphone ? "16px 0 32px 16px" : "16px 0 32px 0"};
 `;
 
 const SectionTitle = styled.div`

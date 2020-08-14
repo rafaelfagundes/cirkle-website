@@ -17,7 +17,6 @@ const HighlightItem = styled.div<{ width: number }>`
   flex-direction: column;
   width: ${(props) => props.width}px;
   cursor: pointer;
-  /* align-items: center; */
 `;
 
 const Image = styled.div<{ image: string; width: number }>`
@@ -37,7 +36,6 @@ const Title = styled.span<{ fontSize: number }>`
   font-size: ${(props) => props.fontSize}px;
   font-weight: bold;
   padding-top: 5px;
-  /* text-align: center; */
 `;
 
 const Subtitle = styled.span<{ fontSize: number }>`
