@@ -4,9 +4,9 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
 import Icon from "../Icon";
+import ProductItem from "../ProductItem/item";
 import SizedBox from "../SizedBox/index";
 import Brand from "./brand";
-import HotItem from "./item";
 
 const Section = styled.div<{ isSmartphone: boolean }>`
   padding: ${(props) =>
@@ -87,7 +87,7 @@ function HotSection({
       <SizedBox height={24}></SizedBox>
       <ItemsHolder disableScroll={!isSmartphone}>
         {products.map((item) => (
-          <HotItem data={item} key={item.image}></HotItem>
+          <ProductItem data={item} key={item.id}></ProductItem>
         ))}
         {isSmartphone ? <Spacer>-</Spacer> : null}
       </ItemsHolder>

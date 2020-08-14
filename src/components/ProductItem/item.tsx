@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
+import FavoriteIcon from "../FavoriteIcon";
 
 const Row = styled.div`
   display: flex;
@@ -117,7 +118,16 @@ const DiscountText = styled.span`
   display: flex;
 `;
 
-function HotItem({
+const FavoriteIconHolder = styled.div`
+  width: 220px;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 05px 05px 0 0;
+`;
+
+function ProductItem({
   data,
 }: {
   data: {
@@ -133,39 +143,44 @@ function HotItem({
   const smartphone = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
-    <Link href={data.link}>
-      <Item isSmartphone={smartphone}>
-        <Image image={data.image}></Image>
-        <BrandName>
-          <BrandNameText>{data.brandName}</BrandNameText>
-        </BrandName>
-        <Description>
-          <Title>{data.title}</Title>
-          <Price>
-            <Row>
-              <PriceText>
-                {new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(data.price)}
-              </PriceText>
-              <OldPrice>
-                {new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(data.oldPrice)}
-              </OldPrice>
-            </Row>
-            <Discount>
-              <DiscountText>
-                -{Math.round((1 - data.price / data.oldPrice) * 100)}%
-              </DiscountText>
-            </Discount>
-          </Price>
-        </Description>
-      </Item>
-    </Link>
+    <div style={{ position: "relative" }}>
+      <FavoriteIconHolder>
+        <FavoriteIcon></FavoriteIcon>
+      </FavoriteIconHolder>
+      <Link href={data.link}>
+        <Item isSmartphone={smartphone}>
+          <Image image={data.image}></Image>
+          <BrandName>
+            <BrandNameText>{data.brandName}</BrandNameText>
+          </BrandName>
+          <Description>
+            <Title>{data.title}</Title>
+            <Price>
+              <Row>
+                <PriceText>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(data.price)}
+                </PriceText>
+                <OldPrice>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(data.oldPrice)}
+                </OldPrice>
+              </Row>
+              <Discount>
+                <DiscountText>
+                  -{Math.round((1 - data.price / data.oldPrice) * 100)}%
+                </DiscountText>
+              </Discount>
+            </Price>
+          </Description>
+        </Item>
+      </Link>
+    </div>
   );
 }
 
-export default HotItem;
+export default ProductItem;
