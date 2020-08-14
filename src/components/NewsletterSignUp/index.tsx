@@ -17,7 +17,7 @@ const Newsletter = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px 0 10px 0;
+  padding: 24px 0 16px 0;
 `;
 
 const NewsletterDescription = styled.p`
