@@ -6,12 +6,12 @@ const CategoriesContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 16px;
-  background-color: ${Colors.WHITE};
+  background-color: ${Colors.ULTRA_RED};
 `;
 
 const CategoryItem = styled.div<{ last?: boolean }>`
   flex: 1;
-  border-color: ${Colors.ULTRA_RED};
+  border-color: ${Colors.WHITE};
   border-width: 2px;
   border-style: solid;
   height: 45px;
@@ -22,7 +22,7 @@ const CategoryItem = styled.div<{ last?: boolean }>`
 `;
 
 const CategoryItemText = styled.div`
-  color: ${Colors.ULTRA_RED};
+  color: ${Colors.WHITE};
   font-family: "Raleway";
   font-weight: 900;
   text-transform: uppercase;

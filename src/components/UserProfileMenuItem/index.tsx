@@ -6,12 +6,12 @@ import { Colors } from "../../theme/theme";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox/index";
 
-const Profile = styled.div`
+const Profile = styled.div<{ center?: boolean }>`
   display: flex;
   flex-direction: row;
   flex: 1;
   align-items: center;
-  justify-content: center;
+  justify-content: ${(props) => (props.center ? "center" : "flex-start")};
   margin-right: 10px;
   height: 45px;
 `;
@@ -65,7 +65,7 @@ function UserProfileMenuItem({
           onMouseOver={() => setUserMenu(true)}
           ref={userButtonMenu}
         >
-          <Profile>
+          <Profile center={true}>
             {userPicture ? (
               <UserImage src={userPicture}></UserImage>
             ) : (
@@ -84,6 +84,17 @@ function UserProfileMenuItem({
             onMouseLeave: () => setTimeout(() => setUserMenu(false), 250),
           }}
         >
+          <StyledMenuItem>
+            <Profile>
+              {userPicture ? (
+                <UserImage src={userPicture}></UserImage>
+              ) : (
+                <Icon type="profile"></Icon>
+              )}
+              <UserName>{userName}</UserName>
+            </Profile>
+          </StyledMenuItem>
+          <br />
           <StyledMenuItem>
             <Icon type="profile"></Icon>
             <MenuItemText>Minha Conta</MenuItemText>

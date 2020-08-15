@@ -18,12 +18,12 @@ const IconHolder = styled.div`
 const StyledCart = styled(Popover)``;
 
 const CartHeader = styled.div`
-  background-color: ${Colors.RED_PINK};
+  background-color: ${Colors.TYRIAN_PURPLE};
   flex-direction: row;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
+  padding: 8px 8px 8px 16px;
 `;
 
 const CartHeaderText = styled.span`
@@ -33,6 +33,24 @@ const CartHeaderText = styled.span`
   font-size: 16px;
   color: ${Colors.WHITE};
   font-weight: 700;
+`;
+
+const CartHeaderNumber = styled.span`
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: FuturaPT;
+  text-transform: uppercase;
+  letter-spacing: -0.25px;
+  font-size: 14px;
+  color: ${Colors.TYRIAN_PURPLE};
+  font-weight: 700;
+  background-color: ${Colors.WHITE};
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
 `;
 
 const Label = styled.span`
@@ -49,7 +67,7 @@ const Value = styled.span`
   text-transform: uppercase;
   letter-spacing: -0.25px;
   font-size: 16px;
-  color: ${Colors.FOREST_GREEN_CRAYOLA};
+  color: ${Colors.BLUE_JEANS};
   font-weight: 700;
 `;
 
@@ -71,12 +89,126 @@ const Row = styled.div<{ padding?: boolean; spaceBetween?: boolean }>`
   padding: ${(props) => (props.padding ? "0 16px" : 0)};
 `;
 
+const CartItems = styled.div<{ height: number }>`
+  padding: 0px 16px 16px 16px;
+  max-height: ${(props) => props.height - 250}px;
+  overflow: scroll;
+`;
+
+const CartItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 16px;
+`;
+
+const CartItemImage = styled.div<{ image: string; size: number }>`
+  background-image: ${(props) => `url("${props.image}");`};
+  background-color: #cccccc;
+  height: ${(props) => props.size}px;
+  width: ${(props) => props.size * 0.75}px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-right: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+`;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Title = styled.span`
+  font-family: FuturaPT;
+  color: ${Colors.TYRIAN_PURPLE};
+  font-size: 18px;
+`;
+
+const Description = styled.span`
+  font-family: FuturaPT;
+  color: ${Colors.TYRIAN_PURPLE};
+  /* background-color: ${Colors.TYRIAN_PURPLE}; */
+  font-size: 16px;
+  max-width: 300px;
+`;
+
+const MoreInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+`;
+
+const PriceAndButton = styled(MoreInfo)``;
+
+const Price = styled.span`
+  font-family: FuturaPT;
+  color: ${Colors.DARK_SEA_GREEN};
+  font-weight: 700;
+`;
+
+const Color = styled.span`
+  font-family: FuturaPT;
+  color: ${Colors.TYRIAN_PURPLE};
+`;
+
+const Size = styled.span`
+  font-family: FuturaPT;
+  color: ${Colors.TYRIAN_PURPLE};
+`;
+
+const Qty = styled.span`
+  font-family: FuturaPT;
+  color: ${Colors.TYRIAN_PURPLE};
+`;
+
 function DropdownCart(): JSX.Element {
   const theme = useTheme();
   const isSmartphone = useMediaQuery(theme.breakpoints.down("xs"));
 
   const cartButton = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const cartItems = [
+    {
+      id: "d5b321a3-6ed3-41f3-aa2a-f970435f63d6",
+      sku: "10bfbaeb-daad-4f8a-ab4b-7d76f208283c",
+      image:
+        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+      price: 499.99,
+      title: "Nike Free",
+      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+      qty: 1,
+      color: "Laranja",
+      size: "38",
+    },
+    {
+      id: "8e896ae1-7b24-4bb2-b7dd-af1d7f29d112",
+      sku: "9b5e7ae7-9c20-4d05-9afd-bb652ddf55d0",
+      image:
+        "https://images.unsplash.com/photo-1545289414-1c3cb1c06238?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+      price: 399.99,
+      title: "Puma One",
+      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+      qty: 1,
+      color: "Azul Escuro",
+      size: "38",
+    },
+    {
+      id: "87eb4a73-1522-48ca-8204-cba367769038",
+      sku: "ecbfbcf7-c426-487d-a508-ce83332dcad5",
+      image:
+        "https://images.unsplash.com/photo-1581067675198-463d66478d0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1239&q=80",
+      price: 359.99,
+      title: "Nike Air Force 1",
+      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+      qty: 1,
+      color: "Bege",
+      size: "38",
+    },
+  ];
 
   return (
     <>
@@ -105,9 +237,39 @@ function DropdownCart(): JSX.Element {
         }}
       >
         <CartHeader>
-          <CartHeaderText>Sua Sacola de Compras</CartHeaderText>
+          <CartHeaderText>Minha Sacola</CartHeaderText>
+          <CartHeaderNumber>{cartItems.length}</CartHeaderNumber>
         </CartHeader>
+        <CartItems height={window.innerHeight}>
+          {cartItems.map((item) => (
+            <CartItem key={item.id}>
+              <CartItemImage image={item.image} size={120}></CartItemImage>
+              <Column>
+                <Title>{item.title}</Title>
+                <SizedBox height={2}></SizedBox>
+                <Description>{item.description}</Description>
+                <SizedBox height={4}></SizedBox>
+                <MoreInfo>
+                  <Color>Cor: {item.color}</Color>
+                  <Size>Tam.: {item.size}</Size>
+                  <Qty>Qtd.: {item.qty}</Qty>
+                </MoreInfo>
+                <SizedBox height={4}></SizedBox>
+                <PriceAndButton>
+                  <Price>
+                    {new Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(item.price)}
+                  </Price>
+                  <Icon type="trash"></Icon>
+                </PriceAndButton>
+              </Column>
+            </CartItem>
+          ))}
+        </CartItems>
         <SizedBox height={16}></SizedBox>
+
         <Row spaceBetween padding>
           <Label>Subtotal</Label>
           <Value>R$ 400,00</Value>
@@ -124,7 +286,7 @@ function DropdownCart(): JSX.Element {
         </Row>
         <SizedBox height={8}></SizedBox>
         <Row>
-          <CartText>Frete Grátis para Compras Acima de R$ 200</CartText>
+          <CartText>Frete Grátis para Compras Acima de R$200</CartText>
         </Row>
       </StyledCart>
     </>

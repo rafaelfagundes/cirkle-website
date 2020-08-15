@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { Colors } from "../../theme/theme";
 import Footer from "../Footer";
 import SideMenu from "../SideMenu/index";
-import TopTextBanner from "../TopTextBanner";
 import NavBarDesktop from "./navBarDesktop";
 import NavBarMobile from "./navBarMobile";
 
@@ -32,9 +31,8 @@ function Layout({
       <Hidden only={["sm", "md", "lg", "xl"]}>
         <NavBarMobile setDrawer={setDrawer}></NavBarMobile>
       </Hidden>
-      <TopTextBanner color={Colors.TYRIAN_PURPLE} textColor={Colors.WHITE}>
-        Frete grátis para pedidos acima de R$ 200,00
-      </TopTextBanner>
+
+      {/* <SizedBox height={32}></SizedBox> */}
       <Hidden only={["xs", "sm"]}>
         <Background>
           <Container maxWidth="md" disableGutters={true}>

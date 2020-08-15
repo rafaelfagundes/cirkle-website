@@ -41,14 +41,6 @@ function Brand({
   function calcHighlightItemWidth(isXs: boolean, isSm: boolean): number {
     const width = window.innerWidth;
 
-    // const sixTiles = (960 - 7 * 16) / 6;
-
-    // if (sixTiles > width / 3) {
-    //   return (width - 4 * 16) / 3;
-    // } else {
-    //   return sixTiles;
-    // }
-
     let itemSize: number;
     if (isXs) {
       itemSize = (width - 4 * 16) / 3;

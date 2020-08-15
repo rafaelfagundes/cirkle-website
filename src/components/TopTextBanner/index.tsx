@@ -13,9 +13,10 @@ const StyledBanner = styled.div`
 
 const BannerText = styled.p`
   color: ${(props) => props.color};
-  font-family: "FuturaPT";
+  font-family: FuturaPT;
   font-weight: 600;
   font-size: 14px;
+  letter-spacing: 0.5px;
 `;
 
 function TopTextBanner({

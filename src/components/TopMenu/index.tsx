@@ -1,9 +1,10 @@
-import { Container, InputBase } from "@material-ui/core";
+import { Container, Hidden, InputBase } from "@material-ui/core";
 import _ from "lodash";
 import Link from "next/link";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
+import CustomButton from "../CustomButton";
 import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../HorizontalLogo";
 import Icon from "../Icon";
@@ -42,8 +43,9 @@ const Tab = styled.div<{ active: boolean; color: string }>`
 
 const TabText = styled.span<{ active: boolean }>`
   font-family: "Raleway";
-  font-size: 16px;
+  font-size: 14px;
   color: ${(props) => (props.active ? Colors.WHITE : Colors.GRAY)};
+  text-transform: uppercase;
   font-weight: 700;
 `;
 
@@ -51,6 +53,7 @@ const Row = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const LogoAndTabs = styled.div`
@@ -62,26 +65,30 @@ const LogoAndTabs = styled.div`
 const Categories = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
 `;
 
-const MenuItem = styled.div<{ active: boolean }>`
+const MenuItem = styled.div<{ active?: boolean; first?: boolean }>`
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: space-between;
   cursor: pointer;
   height: 51px;
   background-color: ${(props) =>
     props.active ? "rgba(0,0,0,0.1)" : "transparent"};
 `;
 
-const MenuItemText = styled.span<{ active: boolean }>`
+const MenuItemText = styled.span<{
+  active?: boolean;
+  color: string;
+  first?: boolean;
+}>`
   font-family: "FuturaPT";
   /* opacity: ${(props) => (props.active ? 1 : 0.95)}; */
-  font-size: 18px;
+  font-size: 14px;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
-  padding: 0 16px;
+  padding: ${(props) => (props.first ? "16px 16px 16px 0" : "0 16px")} ;
+  text-transform: uppercase;
+  font-weight: 500;
 `;
 
 const SubcategoriesHolder = styled.div`
@@ -131,7 +138,7 @@ const StyledInputBase = styled(InputBase)`
 
 const StyledSearchBar = styled.div`
   display: flex;
-  width: 540px;
+  width: 320px;
   flex-direction: row;
   align-items: center;
   background-color: ${Colors.WHITE};
@@ -189,7 +196,7 @@ function TopMenu({ data }: { data: any }): JSX.Element {
 
   return (
     <MenuContainer>
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         <Top>
           <LogoAndTabs>
             <Link href="/">
@@ -218,7 +225,10 @@ function TopMenu({ data }: { data: any }): JSX.Element {
             </Tabs>
           </LogoAndTabs>
           <SearchAndBag>
-            {/* <SellLink>Quero Vender</SellLink> */}
+            <CustomButton type="success" variant="text">
+              Quero Vender
+            </CustomButton>
+            <SizedBox width={16}></SizedBox>
             <UserProfileMenuItem
               isLogged={true}
               userName="Rafael"
@@ -236,9 +246,14 @@ function TopMenu({ data }: { data: any }): JSX.Element {
           cleanActives(selectedTab, selectedCategory);
         }}
       >
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
           <Row>
             <Categories>
+              <MenuItem>
+                <MenuItemText first color={Colors.WHITE}>
+                  Novidades
+                </MenuItemText>
+              </MenuItem>
               {Object.keys(menuData[selectedTab].categories).map((item) => (
                 <Link
                   href={menuData[selectedTab].categories[item].link}
@@ -257,20 +272,27 @@ function TopMenu({ data }: { data: any }): JSX.Element {
                   </MenuItem>
                 </Link>
               ))}
+              <MenuItem>
+                <MenuItemText color={Colors.TYRIAN_PURPLE}>
+                  Promoções
+                </MenuItemText>
+              </MenuItem>
             </Categories>
-            <StyledSearchBar>
-              <StyledInputBase
-                placeholder="Procure por marcas, categorias, modelos"
-                inputProps={{ "aria-label": "search" }}
-              />
-              <Icon type="search"></Icon>
-            </StyledSearchBar>
+            <Hidden only="sm">
+              <StyledSearchBar>
+                <StyledInputBase
+                  placeholder="Procure marcas, categorias, modelos"
+                  inputProps={{ "aria-label": "search" }}
+                />
+                <Icon type="search"></Icon>
+              </StyledSearchBar>
+            </Hidden>
           </Row>
         </Container>
         {selectedCategory &&
           menuData[selectedTab].categories[selectedCategory].active && (
             <SubcategoriesHolder>
-              <Container maxWidth="md">
+              <Container maxWidth="lg">
                 <Subcategories>
                   {menuData[selectedTab].categories[selectedCategory].items.map(
                     (item: { title: string; link: string }) => (
