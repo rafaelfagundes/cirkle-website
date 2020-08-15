@@ -1,5 +1,6 @@
 // import { useMediaQuery } from "@material-ui/core";
 // import { useTheme } from "@material-ui/core/styles";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
@@ -37,19 +38,34 @@ function Brand({
     link: string;
   };
 }): JSX.Element {
-  function calcHighlightItemWidth(): number {
+  function calcHighlightItemWidth(isXs: boolean, isSm: boolean): number {
     const width = window.innerWidth;
 
-    const sixTiles = (960 - 7 * 16) / 6;
+    // const sixTiles = (960 - 7 * 16) / 6;
 
-    if (sixTiles > width / 3) {
-      return (width - 4 * 16) / 3;
+    // if (sixTiles > width / 3) {
+    //   return (width - 4 * 16) / 3;
+    // } else {
+    //   return sixTiles;
+    // }
+
+    let itemSize: number;
+    if (isXs) {
+      itemSize = (width - 4 * 16) / 3;
+    } else if (isSm) {
+      itemSize = (768 - 7 * 16) / 6;
     } else {
-      return sixTiles;
+      itemSize = (960 - 7 * 16) / 6;
     }
+
+    return itemSize;
   }
 
-  const widthHighlightItem = calcHighlightItemWidth();
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down("xs"));
+  const isSm = useMediaQuery(theme.breakpoints.between("sm", "sm"));
+
+  const widthHighlightItem = calcHighlightItemWidth(isXs, isSm);
 
   return (
     <Link href={data.link}>

@@ -35,14 +35,14 @@ function Layout({
       <TopTextBanner color={Colors.TYRIAN_PURPLE} textColor={Colors.WHITE}>
         Frete grátis para pedidos acima de R$ 200,00
       </TopTextBanner>
-      <Hidden only={["xs"]}>
+      <Hidden only={["xs", "sm"]}>
         <Background>
           <Container maxWidth="md" disableGutters={true}>
             {children}
           </Container>
         </Background>
       </Hidden>
-      <Hidden only={["sm", "md", "lg", "xl"]}>
+      <Hidden only={["md", "lg", "xl"]}>
         <Background>
           <Container maxWidth="md" disableGutters={true}>
             {children}

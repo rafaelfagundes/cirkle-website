@@ -10,14 +10,14 @@ import Brand from "./brand";
 
 const Section = styled.div<{ isSmartphone: boolean }>`
   padding: ${(props) =>
-    props.isSmartphone ? "16px 0 32px 16px" : "16px 0 32px 0"};
+    props.isSmartphone ? "18px 0 32px 16px" : "18px 0 32px 0"};
 `;
 
 const SectionTitle = styled.div`
   display: flex;
   flex-direction: row;
-  /* justify-content: center; */
   align-items: center;
+  width: 220px;
 `;
 
 const Title = styled.div`
@@ -26,12 +26,11 @@ const Title = styled.div`
   font-family: Raleway;
   font-size: 24px;
   font-weight: 900;
-  margin-right: 5px;
+  margin-left: 5px;
 `;
 
 const ItemsHolder = styled.div<{ disableScroll?: boolean }>`
   display: flex;
-
   flex-wrap: ${(props) => (props.disableScroll ? "wrap" : "nowrap")};
   flex-direction: row;
   align-items: center;
@@ -76,22 +75,22 @@ function HotSection({
   }[];
 }): JSX.Element {
   const theme = useTheme();
-  const isSmartphone = useMediaQuery(theme.breakpoints.down("xs"));
+  const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Section isSmartphone={isSmartphone}>
       <SectionTitle>
-        <Title>EM ALTA</Title>
         <Icon type="thermometer"></Icon>
+        <Title>EM ALTA</Title>
       </SectionTitle>
-      <SizedBox height={24}></SizedBox>
+      <SizedBox height={6}></SizedBox>
       <ItemsHolder disableScroll={!isSmartphone}>
         {products.map((item) => (
           <ProductItem data={item} key={item.id}></ProductItem>
         ))}
         {isSmartphone ? <Spacer>-</Spacer> : null}
       </ItemsHolder>
-      <SizedBox height={16}></SizedBox>
+      <SizedBox height={20}></SizedBox>
       <BrandsHolder isSmartphone={isSmartphone}>
         {brands.map((item) => (
           <Brand key={item.id} data={item}></Brand>

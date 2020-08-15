@@ -10,9 +10,17 @@ const ButtonBase = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  &:hover {
+    filter: saturate(200%);
+  }
+  &:active {
+    filter: contrast(150%);
+  }
 `;
 
 const ButtonContained = styled(ButtonBase)<{ color?: string }>`
+  position: relative;
   background-color: ${(props) => props.color};
   padding: 8px 16px;
   box-sizing: border-box;
@@ -20,14 +28,17 @@ const ButtonContained = styled(ButtonBase)<{ color?: string }>`
 `;
 
 const ButtonText = styled.span<{ color?: string }>`
+  position: relative;
   color: ${(props) => props.color};
   font-family: FuturaPT;
   font-weight: 500;
   text-transform: uppercase;
   font-size: 14px;
+  user-select: none;
 `;
 
 const ButtonOutlined = styled(ButtonBase)<{ color?: string }>`
+  position: relative;
   padding: 8px 16px;
   border: 2px solid ${(props) => props.color};
   box-sizing: border-box;
@@ -62,6 +73,11 @@ function CustomButton({
       case "success":
         return {
           background: Colors.DARK_SEA_GREEN,
+          text: Colors.WHITE,
+        };
+      case "delete":
+        return {
+          background: Colors.RED_CRAYOLA,
           text: Colors.WHITE,
         };
       default:
@@ -104,7 +120,7 @@ function CustomButton({
 }
 
 CustomButton.propTypes = {
-  type: PropTypes.oneOf(["primary", "secondary", "success"]),
+  type: PropTypes.oneOf(["primary", "secondary", "success", "delete"]),
   variant: PropTypes.oneOf(["outlined", "contained", "text"]),
   children: PropTypes.string,
 };

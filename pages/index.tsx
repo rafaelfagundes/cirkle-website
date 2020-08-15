@@ -181,6 +181,9 @@ function Home(): JSX.Element {
         <HomeCategories></HomeCategories>
       </Hidden>
       <SizedBox height={16}></SizedBox>
+      <Hidden only={["xs", "sm"]}>
+        <SizedBox height={32}></SizedBox>
+      </Hidden>
       <HighlightsSection data={highlights}></HighlightsSection>
       <HotSection products={hotProducts} brands={brands}></HotSection>
     </>

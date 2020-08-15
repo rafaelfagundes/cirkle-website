@@ -17,7 +17,6 @@ const StyledInputBase = styled(InputBase)`
   margin-left: 5px;
   font-family: FuturaPT;
   font-size: 18px;
-  margin-top: 3px;
   color: ${Colors.TYRIAN_PURPLE};
 `;
 

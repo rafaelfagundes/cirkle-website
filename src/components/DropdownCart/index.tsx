@@ -100,7 +100,9 @@ function DropdownCart(): JSX.Element {
           vertical: "top",
           horizontal: "center",
         }}
-        PaperProps={{ onMouseLeave: () => setIsOpen(false) }}
+        PaperProps={{
+          onMouseLeave: () => setTimeout(() => setIsOpen(false), 250),
+        }}
       >
         <CartHeader>
           <CartHeaderText>Sua Sacola de Compras</CartHeaderText>

@@ -13,7 +13,7 @@ const Row = styled.div`
 `;
 
 const Item = styled.div<{ isSmartphone: boolean }>`
-  width: 220px;
+  width: 228px;
   height: 312px;
   background-color: ${Colors.WHITE};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
@@ -26,7 +26,7 @@ const Image = styled.div<{ image: string }>`
   background-image: ${(props) => `url("${props.image}");`};
   background-color: #cccccc;
   height: 220px;
-  width: 220px;
+  width: 228px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -119,12 +119,12 @@ const DiscountText = styled.span`
 `;
 
 const FavoriteIconHolder = styled.div`
-  width: 220px;
+  width: 228px;
   position: absolute;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  padding: 05px 05px 0 0;
+  padding: 5px 5px 0 0;
 `;
 
 function ProductItem({
@@ -140,7 +140,7 @@ function ProductItem({
   };
 }): JSX.Element {
   const theme = useTheme();
-  const smartphone = useMediaQuery(theme.breakpoints.down("xs"));
+  const smartphone = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <div style={{ position: "relative" }}>

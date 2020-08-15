@@ -80,7 +80,9 @@ function UserProfileMenuItem({
           keepMounted
           open={userMenu}
           onClose={() => setUserMenu(false)}
-          MenuListProps={{ onMouseLeave: () => setUserMenu(false) }}
+          MenuListProps={{
+            onMouseLeave: () => setTimeout(() => setUserMenu(false), 250),
+          }}
         >
           <StyledMenuItem>
             <Icon type="profile"></Icon>

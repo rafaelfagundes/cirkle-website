@@ -5,11 +5,12 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
 
-const Highlights = styled.div`
+const Highlights = styled.div<{ padding: boolean }>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+  padding: ${(props) => (props.padding ? "16px" : 0)};
 `;
 
 const HighlightItem = styled.div<{ width: number }>`
@@ -58,28 +59,30 @@ function HighlightsSection({
     link: string;
   }[];
 }): JSX.Element {
-  // const widthHighlightItem = width / (width / 164);
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down("xs"));
+  const isSm = useMediaQuery(theme.breakpoints.between("sm", "sm"));
 
-  function calcHighlightItemWidth(): number {
+  function calcHighlightItemWidth(isXs: boolean, isSm: boolean): number {
     const width = window.innerWidth;
 
-    const fourTiles = (960 - 3 * 16) / 4;
-
-    if (fourTiles > width / 2) {
-      return (width - 3 * 16) / 2;
+    let itemSize: number;
+    if (isXs) {
+      itemSize = (width - 3 * 16) / 2;
+    } else if (isSm) {
+      itemSize = (768 - 5 * 16) / 4;
     } else {
-      return fourTiles;
+      itemSize = (960 - 3 * 16) / 4;
     }
+
+    return itemSize;
   }
 
-  const widthHighlightItem = calcHighlightItemWidth();
-
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("xs"));
+  const widthHighlightItem = calcHighlightItemWidth(isXs, isSm);
 
   return (
-    <Container maxWidth="md" disableGutters={!matches}>
-      <Highlights>
+    <Container maxWidth="md" disableGutters={!isXs}>
+      <Highlights padding={isSm}>
         {data.map((item) => (
           <Link href={item.link} key={item.link}>
             <HighlightItem width={widthHighlightItem}>
