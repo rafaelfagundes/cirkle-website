@@ -74,7 +74,7 @@ const MenuItem = styled.div<{ active?: boolean; first?: boolean }>`
   cursor: pointer;
   height: 51px;
   background-color: ${(props) =>
-    props.active ? "rgba(0,0,0,0.1)" : "transparent"};
+    props.active ? "rgba(0,0,0,0.075)" : "transparent"};
 `;
 
 const MenuItemText = styled.span<{
@@ -92,7 +92,7 @@ const MenuItemText = styled.span<{
 `;
 
 const SubcategoriesHolder = styled.div`
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.075);
 `;
 
 const Subcategories = styled.div`
@@ -213,8 +213,8 @@ function TopMenu({ data }: { data: any }): JSX.Element {
                   onMouseOver={() => toggleTab(element)}
                   color={
                     selectedTab === "women"
-                      ? Colors.RED_PINK
-                      : Colors.ORANGE_KIDS
+                      ? Colors.MAGENTA
+                      : Colors.ORANGE_PANTONE
                   }
                 >
                   <TabText active={menuData[element].active}>
@@ -241,7 +241,7 @@ function TopMenu({ data }: { data: any }): JSX.Element {
       </Container>
 
       <UnderTabsContent
-        color={selectedTab === "women" ? Colors.RED_PINK : Colors.ORANGE_KIDS}
+        color={selectedTab === "women" ? Colors.MAGENTA : Colors.ORANGE_PANTONE}
         onMouseLeave={() => {
           cleanActives(selectedTab, selectedCategory);
         }}
@@ -273,7 +273,7 @@ function TopMenu({ data }: { data: any }): JSX.Element {
                 </Link>
               ))}
               <MenuItem>
-                <MenuItemText color={Colors.TYRIAN_PURPLE}>
+                <MenuItemText color={Colors.MIDDLE_YELLOW}>
                   Promoções
                 </MenuItemText>
               </MenuItem>
