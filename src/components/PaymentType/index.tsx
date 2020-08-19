@@ -19,7 +19,7 @@ const ImageHolder = styled.div<{ bgColor: string; size: number }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: ${(props) => props.size * 0.167}px;
+  /* border-radius: ${(props) => props.size * 0.167}px; */
   background-color: ${(props) => props.bgColor};
 `;
 

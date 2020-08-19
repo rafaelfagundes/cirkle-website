@@ -40,7 +40,6 @@ const CartHeaderNumber = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-
   font-family: FuturaPT;
   text-transform: uppercase;
   letter-spacing: -0.25px;
@@ -74,9 +73,9 @@ const Value = styled.span`
 const CartText = styled.p`
   font-family: FuturaPT;
   text-transform: uppercase;
-  letter-spacing: -0.25px;
-  font-size: 11px;
-  color: ${Colors.TYRIAN_PURPLE};
+  letter-spacing: 0px;
+  font-size: 14px;
+  color: ${Colors.RED_PINK};
   font-weight: 700;
 `;
 
@@ -90,16 +89,17 @@ const Row = styled.div<{ padding?: boolean; spaceBetween?: boolean }>`
 `;
 
 const CartItems = styled.div<{ height: number }>`
-  padding: 0px 16px 16px 16px;
   max-height: ${(props) => props.height - 250}px;
   overflow: scroll;
 `;
 
-const CartItem = styled.div`
+const CartItem = styled.div<{ showBackground: boolean }>`
+  padding: 16px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 16px;
+  background-color: ${(props) =>
+    props.showBackground ? "rgba(0, 0, 0, 0.025)" : "transparent"};
 `;
 
 const CartItemImage = styled.div<{ image: string; size: number }>`
@@ -241,8 +241,8 @@ function DropdownCart(): JSX.Element {
           <CartHeaderNumber>{cartItems.length}</CartHeaderNumber>
         </CartHeader>
         <CartItems height={window.innerHeight}>
-          {cartItems.map((item) => (
-            <CartItem key={item.id}>
+          {cartItems.map((item, index) => (
+            <CartItem key={item.id} showBackground={index % 2 !== 0}>
               <CartItemImage image={item.image} size={120}></CartItemImage>
               <Column>
                 <Title>{item.title}</Title>
@@ -262,7 +262,7 @@ function DropdownCart(): JSX.Element {
                       currency: "BRL",
                     }).format(item.price)}
                   </Price>
-                  <Icon type="trash"></Icon>
+                  <Icon size={16} type="trash"></Icon>
                 </PriceAndButton>
               </Column>
             </CartItem>
@@ -276,11 +276,11 @@ function DropdownCart(): JSX.Element {
         </Row>
         <SizedBox height={16}></SizedBox>
         <Row padding>
-          <CustomButton variant="outlined" type="secondary">
+          <CustomButton width={200} variant="outlined" type="primary">
             Ver Sacola
           </CustomButton>
           <SizedBox width={16}></SizedBox>
-          <CustomButton variant="contained" type="success">
+          <CustomButton width={200} variant="contained" type="success">
             Comprar
           </CustomButton>
         </Row>

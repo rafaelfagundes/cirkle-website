@@ -3,8 +3,8 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
 
-const ButtonBase = styled.div`
-  min-width: 120px;
+const ButtonBase = styled.div<{ width: number }>`
+  width: ${(props) => props.width}px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -53,10 +53,12 @@ function CustomButton({
   children,
   type,
   variant,
+  width = 120,
 }: {
   children: string;
   type: string;
   variant: string;
+  width?: number;
 }): JSX.Element {
   function getColors(type: string): { background: string; text: string } {
     switch (type) {
@@ -72,7 +74,7 @@ function CustomButton({
         };
       case "success":
         return {
-          background: Colors.DARK_SEA_GREEN,
+          background: Colors.FOREST_GREEN_CRAYOLA,
           text: Colors.WHITE,
         };
       case "delete":
@@ -93,26 +95,26 @@ function CustomButton({
   switch (variant) {
     case "outlined":
       return (
-        <ButtonOutlined color={colors.background}>
+        <ButtonOutlined width={width} color={colors.background}>
           <ButtonText color={colors.background}>{children}</ButtonText>
         </ButtonOutlined>
       );
     case "contained":
       return (
-        <ButtonContained color={colors.background}>
+        <ButtonContained width={width} color={colors.background}>
           <ButtonText color={colors.text}>{children}</ButtonText>
         </ButtonContained>
       );
     case "text":
       return (
-        <ButtonTypeText>
+        <ButtonTypeText width={width}>
           <ButtonText color={colors.background}>{children}</ButtonText>
         </ButtonTypeText>
       );
 
     default:
       return (
-        <ButtonOutlined color={colors.background}>
+        <ButtonOutlined width={width} color={colors.background}>
           <ButtonText color={colors.text}>{children}</ButtonText>
         </ButtonOutlined>
       );
