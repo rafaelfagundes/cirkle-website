@@ -1,8 +1,10 @@
-import { Container, Hidden } from "@material-ui/core";
+import { Hidden } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
 import NewsletterSignUp from "../NewsletterSignUp";
+import DesktopFooter from "./desktop";
+import MobileFooter from "./mobile";
 
 const Legal = styled.div`
   display: flex;
@@ -21,84 +23,16 @@ const LegalText = styled.span`
   color: ${Colors.WHITE};
 `;
 
-const FooterLinks = styled.div`
-  background-color: ${Colors.MAGENTA};
-`;
-
-const LinksSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  /* flex: 1; */
-`;
-
-const HeaderSection = styled.span`
-  text-align: center;
-  font-family: FuturaPT;
-  font-weight: 700;
-  font-size: 14px;
-  color: ${Colors.WHITE};
-  text-transform: uppercase;
-  height: 32px;
-`;
-
-const FooterLink = styled.span`
-  text-align: center;
-  font-family: FuturaPT;
-  font-weight: 400;
-  font-size: 14px;
-  color: ${Colors.WHITE};
-  height: 32px;
-  cursor: pointer;
-`;
-
-const Columns = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  padding: 24px 0;
-`;
-
-const SecurityBadge = styled.img`
-  width: 96px;
-`;
-
 function Footer(): JSX.Element {
   return (
     <div>
       <NewsletterSignUp></NewsletterSignUp>
-      <FooterLinks>
-        <Container maxWidth="md">
-          <Columns>
-            <LinksSection>
-              <HeaderSection>Cirkle</HeaderSection>
-              <FooterLink>Como Funciona</FooterLink>
-              <FooterLink>Quero Vender</FooterLink>
-              <FooterLink>Quero Comprar</FooterLink>
-              <FooterLink>Contato</FooterLink>
-              <FooterLink>Devolução</FooterLink>
-              <FooterLink>Termos de Uso</FooterLink>
-            </LinksSection>
-            <Hidden only="xs">
-              <LinksSection>
-                <HeaderSection>Categorias</HeaderSection>
-                <FooterLink>Roupas</FooterLink>
-                <FooterLink>Bolsas</FooterLink>
-                <FooterLink>Calçados</FooterLink>
-                <FooterLink>Acessórios</FooterLink>
-              </LinksSection>
-            </Hidden>
-            <LinksSection>
-              <HeaderSection>Pagamento</HeaderSection>
-              <FooterLink>Cartão de Crédito</FooterLink>
-              <FooterLink>Cartão de Débito</FooterLink>
-              <FooterLink>Transferência</FooterLink>
-              <FooterLink>Ao Receber*</FooterLink>
-              <SecurityBadge src="/images/security_badge.svg"></SecurityBadge>
-            </LinksSection>
-          </Columns>
-        </Container>
-      </FooterLinks>
+      <Hidden only={["xs", "sm"]}>
+        <DesktopFooter></DesktopFooter>
+      </Hidden>
+      <Hidden only={["md", "lg", "xl"]}>
+        <MobileFooter></MobileFooter>
+      </Hidden>
       <Legal>
         <LegalText>CIRKLE TECNOLOGIA E COMERCIO LTDA - MG</LegalText>
         <LegalText>
