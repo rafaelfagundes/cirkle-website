@@ -66,7 +66,7 @@ const Value = styled.span`
   text-transform: uppercase;
   letter-spacing: -0.25px;
   font-size: 16px;
-  color: ${Colors.BLUE_JEANS};
+  color: ${Colors.FOREST_GREEN_CRAYOLA};
   font-weight: 700;
 `;
 

@@ -8,7 +8,7 @@ const Logo = styled.img<{ width: number }>`
 
 function HorizontalLogo({
   light,
-  width = 90,
+  width = 96,
 }: {
   light?: boolean;
   width?: number;

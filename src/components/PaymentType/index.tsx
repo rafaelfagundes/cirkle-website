@@ -149,6 +149,7 @@ PaymentType.propTypes = {
     "jcb",
     "mastercard",
     "visa",
+    "bank_transfer",
   ]),
 };
 

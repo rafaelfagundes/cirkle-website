@@ -3,13 +3,14 @@ import _ from "lodash";
 import Link from "next/link";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useAuth } from "../../hooks/use-auth";
 import { Colors } from "../../theme/theme";
 import CustomButton from "../CustomButton";
 import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../HorizontalLogo";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox";
-import UserProfileMenuItem from "../UserProfileMenuItem/index";
+import UserProfileMenuItem from "../UserProfileMenuItem";
 
 const MenuContainer = styled.div`
   background-color: ${Colors.WHITE};
@@ -163,6 +164,7 @@ function TopMenu({ data }: { data: any }): JSX.Element {
   const [menuData, setMenuData] = useState(data);
   const [selectedTab, setSelectedTab] = useState("women");
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const auth = useAuth();
 
   function toggleTab(tab: string) {
     setSelectedCategory(null);
@@ -201,7 +203,7 @@ function TopMenu({ data }: { data: any }): JSX.Element {
           <LogoAndTabs>
             <Link href="/">
               <LogoHolder>
-                <HorizontalLogo></HorizontalLogo>
+                <HorizontalLogo width={102}></HorizontalLogo>
               </LogoHolder>
             </Link>
             <Tabs>
@@ -225,12 +227,12 @@ function TopMenu({ data }: { data: any }): JSX.Element {
             </Tabs>
           </LogoAndTabs>
           <SearchAndBag>
-            <CustomButton type="success" variant="text">
+            <CustomButton type="success" variant="text" width={140}>
               Quero Vender
             </CustomButton>
             <SizedBox width={16}></SizedBox>
             <UserProfileMenuItem
-              isLogged={true}
+              isLogged={auth.user}
               userName="Rafael"
               userPicture="https://avatars2.githubusercontent.com/u/29810355?s=460&v=4"
             ></UserProfileMenuItem>

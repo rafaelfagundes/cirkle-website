@@ -127,7 +127,7 @@ function UserProfileMenuItem({
         <Link href="/login">
           <Profile>
             <Icon type="profile"></Icon>
-            <UserName>Entrar</UserName>
+            <UserName>Entrar ou Cadastrar</UserName>
           </Profile>
         </Link>
       </div>
