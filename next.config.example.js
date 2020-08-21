@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    NEXT_PUBLIC_NEXT_PUBLIC_API_ENDPOINT: "http://localhost:3001",
+    NEXT_PUBLIC_API_ENDPOINT: "http://localhost:3001",
     FIREBASE_ADMIN_TYPE: "",
     FIREBASE_ADMIN_PROJECT_ID: "",
     FIREBASE_ADMIN_PRIVATE_KEY_ID: "",
