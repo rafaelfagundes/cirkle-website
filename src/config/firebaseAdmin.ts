@@ -1,6 +1,8 @@
 import * as firebaseAdmin from "firebase-admin";
 
 if (!firebaseAdmin.apps.length) {
+  // set variables in next.config.js or on enviroment variables
+  // when app is in production mode
   const firebaseServiceAccountKey = {
     type: process.env.FIREBASE_ADMIN_TYPE,
     project_id: process.env.FIREBASE_ADMIN_PROJECT_ID,
