@@ -32,7 +32,7 @@ const SearchBackground = styled.div`
   background-color: ${Colors.WHITE};
   height: 56px;
   padding: 16px;
-  box-shadow: inset 4px 4px 8px 2px rgba(0, 0, 0, 0.1);
+  /* box-shadow: inset 4px 4px 8px 2px rgba(0, 0, 0, 0.1); */
 `;
 
 function SearchBar({ placeHolder }: { placeHolder: string }): JSX.Element {

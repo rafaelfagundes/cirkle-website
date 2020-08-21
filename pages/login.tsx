@@ -108,7 +108,6 @@ function Login(): JSX.Element {
       {auth.user && (
         <LoginContainer>
           <SizedBox height={72}></SizedBox>
-
           <Center>
             <Title>{`Olá ${
               auth?.user?.displayName || auth?.user?.email
@@ -135,11 +134,14 @@ function Login(): JSX.Element {
       )}
       {!auth.user && (
         <LoginContainer>
+          <SizedBox height={72}></SizedBox>
+
           <FormTabs
             tabs={tabs}
             activeTab={page}
             setActiveTab={setPage}
           ></FormTabs>
+          <SizedBox height={16}></SizedBox>
           {page === "/login" && (
             <>
               <SizedBox height={32}></SizedBox>
@@ -227,6 +229,8 @@ function Login(): JSX.Element {
               </Center>
             </>
           )}
+
+          <SizedBox height={72}></SizedBox>
         </LoginContainer>
       )}
     </Container>

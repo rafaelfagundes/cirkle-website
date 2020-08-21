@@ -2,7 +2,6 @@ import { Hidden } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
-import NewsletterSignUp from "../NewsletterSignUp";
 import DesktopFooter from "./desktop";
 import MobileFooter from "./mobile";
 
@@ -26,7 +25,6 @@ const LegalText = styled.span`
 function Footer(): JSX.Element {
   return (
     <div>
-      <NewsletterSignUp></NewsletterSignUp>
       <Hidden only={["xs", "sm"]}>
         <DesktopFooter></DesktopFooter>
       </Hidden>

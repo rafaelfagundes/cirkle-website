@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
 
-const StyledTitle = styled.span`
+const StyledTitle = styled.span<{ color: string }>`
   font-family: Raleway;
   font-weight: bold;
   font-size: 14px;
@@ -10,11 +10,17 @@ const StyledTitle = styled.span`
   letter-spacing: 0.055em;
   text-transform: uppercase;
 
-  color: ${Colors.PRIMARY};
+  color: ${(props) => props.color};
 `;
 
-function Title({ children }: { children: string }): JSX.Element {
-  return <StyledTitle>{children}</StyledTitle>;
+function Title({
+  children,
+  color = Colors.PRIMARY,
+}: {
+  children: string;
+  color?: string;
+}): JSX.Element {
+  return <StyledTitle color={color}>{children}</StyledTitle>;
 }
 
 export default Title;

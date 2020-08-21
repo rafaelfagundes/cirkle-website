@@ -4,6 +4,7 @@ import HighlightsSection from "../src/components/HighlightsSection";
 import HomeCategories from "../src/components/HomeCategories";
 import HotSection from "../src/components/HotSection/index";
 import MainBanner from "../src/components/MainBanner/index";
+import NewsletterSignUp from "../src/components/NewsletterSignUp";
 import SearchBar from "../src/components/SearchBar/index";
 import SizedBox from "../src/components/SizedBox/index";
 import TopTextBanner from "../src/components/TopTextBanner";
@@ -169,6 +170,12 @@ function Home(): JSX.Element {
         <SearchBar placeHolder="Procure marcas, categorias, modelos"></SearchBar>
       </Hidden>
 
+      <TopTextBanner
+        color={Colors.AMARANTH_PINK}
+        textColor={Colors.TYRIAN_PURPLE}
+      >
+        Frete grátis para pedidos acima de R$200
+      </TopTextBanner>
       <MainBanner
         url="https://images.unsplash.com/photo-1506152983158-b4a74a01c721?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80"
         primaryText="até 70% off"
@@ -181,20 +188,16 @@ function Home(): JSX.Element {
       ></MainBanner>
 
       <Hidden smUp={true}>
+        <SizedBox height={16}></SizedBox>
         <HomeCategories></HomeCategories>
       </Hidden>
-      <TopTextBanner
-        color={Colors.TYRIAN_PURPLE}
-        textColor={Colors.AMARANTH_PINK}
-      >
-        Frete grátis para pedidos acima de R$200
-      </TopTextBanner>
       <SizedBox height={16}></SizedBox>
       <Hidden only={["xs", "sm"]}>
         <SizedBox height={32}></SizedBox>
       </Hidden>
       <HighlightsSection data={highlights}></HighlightsSection>
       <HotSection products={hotProducts} brands={brands}></HotSection>
+      <NewsletterSignUp></NewsletterSignUp>
     </>
   );
 }

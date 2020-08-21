@@ -1,11 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
+import Padding from "../Padding";
+import Title from "../Title";
 
 const CategoriesContainer = styled.div`
+  background-color: ${Colors.ULTRA_RED};
+`;
+const CategoriesHolder = styled.div`
   display: flex;
   align-items: center;
-  padding: 16px;
+  padding: 0px 16px 16px 16px;
   background-color: ${Colors.ULTRA_RED};
 `;
 
@@ -33,15 +38,20 @@ const CategoryItemText = styled.div`
 function HomeCategories(): JSX.Element {
   return (
     <CategoriesContainer>
-      <CategoryItem>
-        <CategoryItemText>roupas</CategoryItemText>
-      </CategoryItem>
-      <CategoryItem>
-        <CategoryItemText>bolsas</CategoryItemText>
-      </CategoryItem>
-      <CategoryItem last={true}>
-        <CategoryItemText>calçados</CategoryItemText>
-      </CategoryItem>
+      <Padding vertical={10} horizontal={16}>
+        <Title color={Colors.WHITE}>Confira as novidades </Title>
+      </Padding>
+      <CategoriesHolder>
+        <CategoryItem>
+          <CategoryItemText>roupas</CategoryItemText>
+        </CategoryItem>
+        <CategoryItem>
+          <CategoryItemText>bolsas</CategoryItemText>
+        </CategoryItem>
+        <CategoryItem last={true}>
+          <CategoryItemText>calçados</CategoryItemText>
+        </CategoryItem>
+      </CategoriesHolder>
     </CategoriesContainer>
   );
 }

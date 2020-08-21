@@ -3,6 +3,7 @@ import _ from "lodash";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useAuth } from "../../hooks/use-auth";
 import { Colors } from "../../theme/theme";
 import Icon from "../Icon";
 import SellLink from "../SellLink";
@@ -169,8 +170,12 @@ const SocialDataInfo = styled.span`
 
 function SideMenu({ data }: { data: any }): JSX.Element {
   const [menuData, setMenuData] = useState(data);
-
   const [selectedTab, setSelectedTab] = useState("women");
+
+  const auth = useAuth();
+
+  const AVATAR_PLACEHOLDER =
+    "https://res.cloudinary.com/cirklebr/image/upload/v1598000887/avatar.jpg";
 
   function toggleTab(tab: string) {
     const _menuData = _.cloneDeep(menuData);
@@ -196,10 +201,24 @@ function SideMenu({ data }: { data: any }): JSX.Element {
         <Padding>
           <UserProfile>
             <Row>
-              <Avatar src="https://avatars2.githubusercontent.com/u/29810355?s=460&v=4"></Avatar>
+              <Avatar
+                src={
+                  auth?.user?.photoURL
+                    ? auth?.user?.photoURL
+                    : AVATAR_PLACEHOLDER
+                }
+              ></Avatar>
               <Column>
-                <UserName>Olá, Rafael Fagundes</UserName>
-                <AccountLink href="/account">Minha Conta</AccountLink>
+                <UserName>
+                  {auth?.user?.displayName
+                    ? `Olá, ${auth.user.displayName}`
+                    : "Olá, visitante!"}
+                </UserName>
+                {auth.user ? (
+                  <AccountLink href="/account">Minha Conta</AccountLink>
+                ) : (
+                  <AccountLink href="/login">Entrar ou Cadastrar</AccountLink>
+                )}
               </Column>
             </Row>
           </UserProfile>
@@ -213,7 +232,9 @@ function SideMenu({ data }: { data: any }): JSX.Element {
                 active={menuData[element].active}
                 onClick={() => toggleTab(element)}
                 color={
-                  selectedTab === "women" ? Colors.MAGENTA : Colors.ORANGE_PANTONE
+                  selectedTab === "women"
+                    ? Colors.MAGENTA
+                    : Colors.ORANGE_PANTONE
                 }
               >
                 <TabText active={menuData[element].active}>
@@ -224,7 +245,9 @@ function SideMenu({ data }: { data: any }): JSX.Element {
           </Tabs>
         </HorizontalPadding>
         <MenuContainer
-          color={selectedTab === "women" ? Colors.MAGENTA : Colors.ORANGE_PANTONE}
+          color={
+            selectedTab === "women" ? Colors.MAGENTA : Colors.ORANGE_PANTONE
+          }
         >
           <Link href="/products/newin">
             <StyledMenuItem>
@@ -260,7 +283,9 @@ function SideMenu({ data }: { data: any }): JSX.Element {
           ))}
           <Link href="/products/offers">
             <StyledMenuItem lastOne>
-              <MenuItemText color={Colors.MIDDLE_YELLOW}>Promoções</MenuItemText>
+              <MenuItemText color={Colors.MIDDLE_YELLOW}>
+                Promoções
+              </MenuItemText>
             </StyledMenuItem>
           </Link>
         </MenuContainer>
@@ -268,29 +293,31 @@ function SideMenu({ data }: { data: any }): JSX.Element {
         <HorizontalPadding>
           <SellLink width={300 - 32}>Quero Vender</SellLink>
         </HorizontalPadding>
-        <SecondaryMenu>
-          <Padding>
-            <SecondaryItem>
-              <Icon type="heart"></Icon>
-              <SecondaryText>Lista de Desejos</SecondaryText>
-            </SecondaryItem>
-            <SecondaryItem>
-              <Icon type="box"></Icon>
-              <SecondaryText>Meus Pedidos</SecondaryText>
-            </SecondaryItem>
-            <SecondaryItem>
-              <Icon type="products"></Icon>
-              <SecondaryText>Meus Produtos à Venda</SecondaryText>
-            </SecondaryItem>
-            <br />
-            <SecondaryItem>
-              <SizedBox width={3}></SizedBox>
-              <Icon size={20} type="logout"></Icon>
-              <SizedBox width={2}></SizedBox>
-              <SecondaryText>Desconectar</SecondaryText>
-            </SecondaryItem>
-          </Padding>
-        </SecondaryMenu>
+        {auth.user && (
+          <SecondaryMenu>
+            <Padding>
+              <SecondaryItem>
+                <Icon type="heart"></Icon>
+                <SecondaryText>Lista de Desejos</SecondaryText>
+              </SecondaryItem>
+              <SecondaryItem>
+                <Icon type="box"></Icon>
+                <SecondaryText>Meus Pedidos</SecondaryText>
+              </SecondaryItem>
+              <SecondaryItem>
+                <Icon type="products"></Icon>
+                <SecondaryText>Meus Produtos à Venda</SecondaryText>
+              </SecondaryItem>
+              <br />
+              <SecondaryItem onClick={async () => await auth.signout()}>
+                <SizedBox width={3}></SizedBox>
+                <Icon size={20} type="logout"></Icon>
+                <SizedBox width={2}></SizedBox>
+                <SecondaryText>Desconectar</SecondaryText>
+              </SecondaryItem>
+            </Padding>
+          </SecondaryMenu>
+        )}
       </div>
       <div>
         <SocialFooter>
