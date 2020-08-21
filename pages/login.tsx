@@ -78,7 +78,7 @@ function Login(): JSX.Element {
     const result = await auth.signin(_email, _password);
     setLoading(false);
     if (result) {
-      router.push("/");
+      router.push("/home");
     }
   };
 
@@ -93,7 +93,7 @@ function Login(): JSX.Element {
     const result = await auth.signup(_displayName, _email, _password);
     setLoading(false);
     if (result) {
-      router.push("/");
+      router.push("/home");
     }
   };
 
