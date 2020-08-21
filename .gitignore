@@ -76,7 +76,7 @@ typings/
 .env.test
 
 # environment vars
-next.config.js
+.env.local
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
