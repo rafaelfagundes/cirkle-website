@@ -227,12 +227,17 @@ function TopMenu({ data }: { data: any }): JSX.Element {
             </Tabs>
           </LogoAndTabs>
           <SearchAndBag>
-            <CustomButton type="success" variant="text" width={140}>
+            <CustomButton
+              type="success"
+              variant="text"
+              width={140}
+              onClick={null}
+            >
               Quero Vender
             </CustomButton>
             <SizedBox width={16}></SizedBox>
             <UserProfileMenuItem
-              isLogged={auth.user}
+              isLogged={auth.user !== null}
               userName="Rafael"
               userPicture="https://avatars2.githubusercontent.com/u/29810355?s=460&v=4"
             ></UserProfileMenuItem>

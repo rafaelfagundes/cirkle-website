@@ -2,6 +2,7 @@ import { Link, Menu, MenuItem } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import { useAuth } from "../../hooks/use-auth";
 import { Colors } from "../../theme/theme";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox/index";
@@ -43,17 +44,16 @@ const MenuItemText = styled.p`
   margin-left: 5px;
 `;
 
-function UserProfileMenuItem({
-  isLogged,
-  userName,
-  userPicture,
-}: {
-  isLogged: boolean;
-  userName: string;
-  userPicture: string;
-}): JSX.Element {
+function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
   const [userMenu, setUserMenu] = useState(false);
   const userButtonMenu = useRef(null);
+
+  const auth = useAuth();
+
+  async function _logOut() {
+    console.log("Desconectando...");
+    await auth.signout();
+  }
 
   if (isLogged) {
     return (
@@ -66,12 +66,12 @@ function UserProfileMenuItem({
           ref={userButtonMenu}
         >
           <Profile center={true}>
-            {userPicture ? (
-              <UserImage src={userPicture}></UserImage>
+            {auth.user.photoURL ? (
+              <UserImage src={auth.user.photoURL}></UserImage>
             ) : (
               <Icon type="profile"></Icon>
             )}
-            <UserName>{userName}</UserName>
+            <UserName>{auth.user.displayName.split(" ")[0]}</UserName>
           </Profile>
         </UserButton>
         <Menu
@@ -86,12 +86,12 @@ function UserProfileMenuItem({
         >
           <StyledMenuItem>
             <Profile>
-              {userPicture ? (
-                <UserImage src={userPicture}></UserImage>
+              {auth.user.photoURL ? (
+                <UserImage src={auth.user.photoURL}></UserImage>
               ) : (
                 <Icon type="profile"></Icon>
               )}
-              <UserName>{userName}</UserName>
+              <UserName>{auth.user.displayName.split(" ")[0]}</UserName>
             </Profile>
           </StyledMenuItem>
           <br />
@@ -112,7 +112,7 @@ function UserProfileMenuItem({
             <MenuItemText>Meus Produtos à Venda</MenuItemText>
           </StyledMenuItem>
           <br />
-          <StyledMenuItem>
+          <StyledMenuItem onClick={_logOut}>
             <SizedBox width={3}></SizedBox>
             <Icon size={20} type="logout"></Icon>
             <SizedBox width={2}></SizedBox>

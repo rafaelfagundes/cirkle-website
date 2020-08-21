@@ -14,37 +14,57 @@ const StyledInput = styled.div`
   padding: 0 10px;
 `;
 
-const useStyles = makeStyles((theme) => ({
+const StyledInputBase = styled(InputBase)`
+  flex: 1;
+`;
+
+const useStyles = makeStyles(() => ({
   input: {
     fontFamily: "FuturaPT",
     fontSize: 18,
   },
 }));
 
-function CustomTextField({
-  children,
-  iconType = "",
-  value = null,
-}: {
+type Props = {
   children: string;
-  iconType?: string;
-  value?: string;
-}): JSX.Element {
+  type?: string;
+};
+
+function getConfig(type: string): { icon: string; inputType: string } {
+  switch (type) {
+    case "password":
+      return { icon: "key", inputType: "password" };
+    case "email":
+      return { icon: "email", inputType: "email" };
+    case "user":
+      return { icon: "person", inputType: "text" };
+
+    default:
+      return { icon: null, inputType: "text" };
+  }
+}
+
+const CustomTextField = React.forwardRef((props: Props, ref) => {
+  const config = getConfig(props.type);
+
   return (
     <StyledInput>
-      {iconType !== "" && (
+      {config.icon && (
         <>
-          <Icon type={iconType}></Icon>
+          <Icon type={config.icon}></Icon>
           <SizedBox width={5}></SizedBox>
         </>
       )}
-      <InputBase
-        value={value}
+      <StyledInputBase
+        ref={ref}
         className={useStyles().input}
-        placeholder={children}
+        placeholder={props.children}
+        type={config.inputType}
       />
     </StyledInput>
   );
-}
+});
+
+CustomTextField.displayName = "CustomTextField";
 
 export default CustomTextField;

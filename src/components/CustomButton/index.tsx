@@ -1,7 +1,8 @@
-import PropTypes from "prop-types";
+import { CircularProgress } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
+import LoadingAnimation from "../LoadingAnimation";
 
 const ButtonBase = styled.div<{ width: number }>`
   width: ${(props) => props.width}px;
@@ -54,11 +55,15 @@ function CustomButton({
   type,
   variant,
   width = 120,
+  loading = false,
+  onClick,
 }: {
   children: string;
   type: string;
   variant: string;
   width?: number;
+  loading?: boolean;
+  onClick: () => void;
 }): JSX.Element {
   function getColors(type: string): { background: string; text: string } {
     switch (type) {
@@ -95,36 +100,50 @@ function CustomButton({
   switch (variant) {
     case "outlined":
       return (
-        <ButtonOutlined width={width} color={colors.background}>
-          <ButtonText color={colors.background}>{children}</ButtonText>
+        <ButtonOutlined
+          width={width}
+          color={colors.background}
+          onClick={onClick}
+        >
+          {!loading && (
+            <ButtonText color={colors.background}>{children}</ButtonText>
+          )}
+          {loading && <LoadingAnimation size={20} color></LoadingAnimation>}
         </ButtonOutlined>
       );
     case "contained":
       return (
-        <ButtonContained width={width} color={colors.background}>
-          <ButtonText color={colors.text}>{children}</ButtonText>
+        <ButtonContained
+          width={width}
+          color={colors.background}
+          onClick={onClick}
+        >
+          {!loading && <ButtonText color={colors.text}>{children}</ButtonText>}
+          {loading && <LoadingAnimation size={20}></LoadingAnimation>}
         </ButtonContained>
       );
     case "text":
       return (
-        <ButtonTypeText width={width}>
-          <ButtonText color={colors.background}>{children}</ButtonText>
+        <ButtonTypeText width={width} onClick={onClick}>
+          {!loading && (
+            <ButtonText color={colors.background}>{children}</ButtonText>
+          )}
+          {loading && <LoadingAnimation size={20} color></LoadingAnimation>}
         </ButtonTypeText>
       );
 
     default:
       return (
-        <ButtonOutlined width={width} color={colors.background}>
-          <ButtonText color={colors.text}>{children}</ButtonText>
+        <ButtonOutlined
+          width={width}
+          color={colors.background}
+          onClick={onClick}
+        >
+          {!loading && <ButtonText color={colors.text}>{children}</ButtonText>}
+          {loading && <CircularProgress size={20} color="secondary" />}
         </ButtonOutlined>
       );
   }
 }
-
-CustomButton.propTypes = {
-  type: PropTypes.oneOf(["primary", "secondary", "success", "delete"]),
-  variant: PropTypes.oneOf(["outlined", "contained", "text"]),
-  children: PropTypes.string,
-};
 
 export default CustomButton;

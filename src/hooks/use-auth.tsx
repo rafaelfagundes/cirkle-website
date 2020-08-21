@@ -4,7 +4,11 @@ import firebase from "../config/firebase";
 interface IAuthContextProps {
   user: firebase.User;
   signin: (email: string, password: string) => Promise<firebase.User>;
-  signup: (email: string, password: string) => Promise<firebase.User>;
+  signup: (
+    displayName: string,
+    email: string,
+    password: string
+  ) => Promise<firebase.User>;
   signout: () => Promise<void>;
   sendPasswordResetEmail: (email: string) => Promise<void>;
   confirmPasswordReset: (code: string, password: string) => Promise<void>;
@@ -21,7 +25,7 @@ export function AuthProvider({
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 
-export const useAuth = (): any => {
+export const useAuth = (): IAuthContextProps => {
   return useContext(AuthContext);
 };
 
@@ -40,11 +44,21 @@ function useProviderAuth() {
     }
   };
 
-  const signup = async (email: string, password: string) => {
+  const signup = async (
+    displayName: string,
+    email: string,
+    password: string
+  ) => {
     try {
       const response = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password);
+
+      await response.user.updateProfile({
+        displayName,
+        photoURL:
+          "https://res.cloudinary.com/cirklebr/image/upload/v1598000887/avatar.jpg",
+      });
 
       return response.user;
     } catch (error) {
@@ -89,7 +103,7 @@ function useProviderAuth() {
       if (user) {
         setUser(user);
       } else {
-        setUser(false);
+        setUser(null);
       }
     });
 
