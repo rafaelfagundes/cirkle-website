@@ -201,7 +201,7 @@ function TopMenu({ data }: { data: any }): JSX.Element {
       <Container maxWidth="lg">
         <Top>
           <LogoAndTabs>
-            <Link href="/home">
+            <Link href="/">
               <LogoHolder>
                 <HorizontalLogo width={102}></HorizontalLogo>
               </LogoHolder>

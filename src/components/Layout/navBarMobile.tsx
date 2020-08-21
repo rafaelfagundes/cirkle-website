@@ -54,7 +54,7 @@ function NavBarMobile({
                 <span onClick={() => setDrawer(true)}>
                   <Icon type="menu"></Icon>
                 </span>
-                <Link href="/home">
+                <Link href="/">
                   <LogoHolder>
                     <HorizontalLogo></HorizontalLogo>
                   </LogoHolder>
