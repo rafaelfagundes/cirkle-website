@@ -276,11 +276,21 @@ function DropdownCart(): JSX.Element {
         </Row>
         <SizedBox height={16}></SizedBox>
         <Row padding>
-          <CustomButton width={200} variant="outlined" type="primary">
+          <CustomButton
+            width={200}
+            variant="outlined"
+            type="primary"
+            onClick={null}
+          >
             Ver Sacola
           </CustomButton>
           <SizedBox width={16}></SizedBox>
-          <CustomButton width={200} variant="contained" type="success">
+          <CustomButton
+            width={200}
+            variant="contained"
+            type="success"
+            onClick={null}
+          >
             Comprar
           </CustomButton>
         </Row>
