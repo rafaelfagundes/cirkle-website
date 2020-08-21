@@ -4,6 +4,7 @@ import { Colors } from "../../theme/theme";
 import Icon from "../Icon";
 
 const StyledSocialLoginButton = styled.div`
+  cursor: pointer;
   border: 2px solid #cacaca;
   box-sizing: border-box;
   height: 44px;
