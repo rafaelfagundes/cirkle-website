@@ -1,4 +1,4 @@
-import { Container } from "@material-ui/core";
+import { Container, Hidden } from "@material-ui/core";
 import _ from "lodash";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
@@ -194,7 +194,9 @@ function Login(): JSX.Element {
     <Container maxWidth="sm" disableGutters>
       {auth.user && (
         <LoginContainer>
-          <SizedBox height={72}></SizedBox>
+          <Hidden only={["xs", "sm"]}>
+            <SizedBox height={72}></SizedBox>
+          </Hidden>
           <Center>
             <Title>{`Olá ${
               auth?.user?.displayName || auth?.user?.email
@@ -216,12 +218,16 @@ function Login(): JSX.Element {
               Desconectar
             </CustomButton>
           </Center>
-          <SizedBox height={72}></SizedBox>
+          <Hidden only={["xs", "sm"]}>
+            <SizedBox height={72}></SizedBox>
+          </Hidden>
         </LoginContainer>
       )}
       {!auth.user && (
         <LoginContainer>
-          <SizedBox height={72}></SizedBox>
+          <Hidden only={["xs", "sm"]}>
+            <SizedBox height={72}></SizedBox>
+          </Hidden>
           <FormTabs
             tabs={tabs}
             activeTab={page}
@@ -328,7 +334,12 @@ function Login(): JSX.Element {
             </>
           )}
 
-          <SizedBox height={72}></SizedBox>
+          <Hidden only={["xs", "sm"]}>
+            <SizedBox height={72}></SizedBox>
+          </Hidden>
+          <Hidden only={["md", "lg", "xl"]}>
+            <SizedBox height={24}></SizedBox>
+          </Hidden>
         </LoginContainer>
       )}
     </Container>
