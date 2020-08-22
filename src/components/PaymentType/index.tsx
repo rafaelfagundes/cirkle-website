@@ -9,7 +9,6 @@ const StyledPaymentType = styled.div<{ size: number }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: ${(props) => props.size * 0.167}px;
 `;
 
 const ImageHolder = styled.div<{ bgColor: string; size: number }>`
@@ -19,7 +18,7 @@ const ImageHolder = styled.div<{ bgColor: string; size: number }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* border-radius: ${(props) => props.size * 0.167}px; */
+  border-radius: ${(props) => props.size * 0.084}px;
   background-color: ${(props) => props.bgColor};
 `;
 
@@ -28,7 +27,6 @@ const Title = styled.span`
   color: ${Colors.WHITE};
   font-family: "FuturaPT";
   font-size: 14px;
-  /* font-weight: bold; */
   text-align: center;
   line-height: 100%;
 `;

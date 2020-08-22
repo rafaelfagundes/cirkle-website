@@ -1,4 +1,5 @@
 import { Container } from "@material-ui/core";
+import _ from "lodash";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
@@ -15,6 +16,7 @@ import TextSeparator from "../src/components/TextSeparator";
 import Title from "../src/components/Title";
 import { useAuth } from "../src/hooks/use-auth";
 import { Colors } from "../src/theme/theme";
+import { capitalizeFirstLetter, validateEmail } from "../src/utils/string";
 
 const LoginContainer = styled.div`
   padding: 32px 16px;
@@ -50,11 +52,17 @@ function SocialLogin(): JSX.Element {
 }
 
 function Login(): JSX.Element {
+  const auth = useAuth();
   const router = useRouter();
   const [page, setPage] = useState(router.asPath);
   const [loading, setLoading] = useState(false);
 
-  const auth = useAuth();
+  const errorsTemplate = {
+    displayName: null,
+    email: null,
+    password: null,
+  };
+  const [errors, setErrors] = useState(_.cloneDeep(errorsTemplate));
 
   const email = useRef(null);
   const password = useRef(null);
@@ -71,7 +79,16 @@ function Login(): JSX.Element {
     },
   ];
 
+  const _setActiveTab = (tab: string) => {
+    setPage(tab);
+    setErrors(_.cloneDeep(errorsTemplate));
+  };
+
   const _login = async () => {
+    if (!_validate("login")) {
+      return;
+    }
+
     setLoading(true);
     const _email = email.current.children[0].value;
     const _password = password.current.children[0].value;
@@ -83,13 +100,14 @@ function Login(): JSX.Element {
   };
 
   const _signUp = async () => {
+    if (!_validate("signup")) {
+      return;
+    }
+
     setLoading(true);
     const _email = email.current.children[0].value;
-    console.log("_signUp -> _email", _email);
     const _password = password.current.children[0].value;
-    console.log("_signUp -> _password", _password);
     const _displayName = displayName.current.children[0].value;
-    console.log("_signUp -> _displayName", _displayName);
     const result = await auth.signup(_displayName, _email, _password);
     setLoading(false);
     if (result) {
@@ -101,6 +119,75 @@ function Login(): JSX.Element {
     setLoading(true);
     await auth.signout();
     setLoading(false);
+  };
+
+  const _validate = (action: string) => {
+    const _email = email.current?.children[0].value;
+    const _password = password.current?.children[0].value;
+    const _displayName = displayName.current?.children[0].value;
+
+    const _errors = _.cloneDeep(errorsTemplate);
+    let _errorsCount = 0;
+
+    // Email
+    if (_email === "" || _email === null || _email === undefined) {
+      _errorsCount++;
+      _errors.email = "Por favor, preencha o email";
+    } else if (!validateEmail(_email)) {
+      _errorsCount++;
+      _errors.email =
+        "Por favor, preencha um email válido. Ex.: maria@gmail.com";
+    }
+
+    // Password
+    if (
+      _password !== "" &&
+      _password !== null &&
+      _password !== undefined &&
+      _password.length < 6
+    ) {
+      _errorsCount++;
+      _errors.password = "A senha deve possuir no mínimo 6 caracteres";
+    } else if (
+      _password === "" ||
+      _password === null ||
+      _password === undefined
+    ) {
+      _errorsCount++;
+      _errors.password = "Por favor, preencha a senha";
+    }
+    if (action === "signup") {
+      // First and Lastname
+      const splitedFullName: Array<string> = _displayName.split(" ");
+      if (splitedFullName.length < 2) {
+        _errorsCount++;
+        _errors.displayName =
+          "Nome e sobrenome são obrigatórios. Ex.: Maria Silva";
+      } else if (splitedFullName.length > 2) {
+        _errorsCount++;
+        _errors.displayName =
+          "Por favor, preencha seu nome e somente 1 (um) sobrenome. Ex.: Maria Silva";
+      } else if (
+        _displayName === "" ||
+        _displayName === null ||
+        _displayName === undefined
+      ) {
+        _errorsCount++;
+        _errors.displayName = "Por favor, preencha o seu nome e sobrenome";
+      } else {
+        const _fullName =
+          capitalizeFirstLetter(splitedFullName[0]) +
+          " " +
+          capitalizeFirstLetter(splitedFullName[1]);
+        displayName.current.children[0].value = _fullName;
+      }
+    }
+    if (_errorsCount) {
+      setErrors(_errors);
+      return false;
+    } else {
+      return true;
+    }
   };
 
   return (
@@ -135,11 +222,10 @@ function Login(): JSX.Element {
       {!auth.user && (
         <LoginContainer>
           <SizedBox height={72}></SizedBox>
-
           <FormTabs
             tabs={tabs}
             activeTab={page}
-            setActiveTab={setPage}
+            setActiveTab={_setActiveTab}
           ></FormTabs>
           <SizedBox height={16}></SizedBox>
           {page === "/login" && (
@@ -150,11 +236,15 @@ function Login(): JSX.Element {
               </Center>
               <Container maxWidth="xs">
                 <SizedBox height={24}></SizedBox>
-                <CustomTextField type="email" ref={email}>
+                <CustomTextField type="email" ref={email} error={errors.email}>
                   Email
                 </CustomTextField>
                 <SizedBox height={16}></SizedBox>
-                <CustomTextField type="password" ref={password}>
+                <CustomTextField
+                  type="password"
+                  ref={password}
+                  error={errors.password}
+                >
                   Senha
                 </CustomTextField>
                 <SizedBox height={24}></SizedBox>
@@ -194,15 +284,23 @@ function Login(): JSX.Element {
               </Center>
               <Container maxWidth="xs">
                 <SizedBox height={24}></SizedBox>
-                <CustomTextField type="user" ref={displayName}>
+                <CustomTextField
+                  type="user"
+                  ref={displayName}
+                  error={errors.displayName}
+                >
                   Nome e Sobrenome
                 </CustomTextField>
                 <SizedBox height={16}></SizedBox>
-                <CustomTextField type="email" ref={email}>
+                <CustomTextField type="email" ref={email} error={errors.email}>
                   Email
                 </CustomTextField>
                 <SizedBox height={16}></SizedBox>
-                <CustomTextField type="password" ref={password}>
+                <CustomTextField
+                  type="password"
+                  ref={password}
+                  error={errors.password}
+                >
                   Senha
                 </CustomTextField>
                 <SizedBox height={24}></SizedBox>

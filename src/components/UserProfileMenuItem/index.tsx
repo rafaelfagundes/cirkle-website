@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/use-auth";
 import { Colors } from "../../theme/theme";
+import { firstNameOnly } from "../../utils/string";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox/index";
 
@@ -71,7 +72,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
             ) : (
               <Icon type="profile"></Icon>
             )}
-            <UserName>{auth.user.displayName.split(" ")[0]}</UserName>
+            <UserName>{firstNameOnly(auth.user.displayName)}</UserName>
           </Profile>
         </UserButton>
         <Menu
@@ -91,7 +92,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
               ) : (
                 <Icon type="profile"></Icon>
               )}
-              <UserName>{auth.user.displayName.split(" ")[0]}</UserName>
+              <UserName>{firstNameOnly(auth.user.displayName)}</UserName>
             </Profile>
           </StyledMenuItem>
           <br />

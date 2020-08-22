@@ -6,8 +6,9 @@ import { Colors } from "../../theme/theme";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox";
 
-const StyledInput = styled.div`
-  border: 2px solid ${Colors.PRIMARY};
+const StyledInput = styled.div<{ error: boolean }>`
+  border: ${(props) => (props.error ? "3px" : "2px")} solid
+    ${(props) => (props.error ? Colors.RADICAL_RED : Colors.PRIMARY)};
   height: 44px;
   display: flex;
   align-items: center;
@@ -16,6 +17,12 @@ const StyledInput = styled.div`
 
 const StyledInputBase = styled(InputBase)`
   flex: 1;
+`;
+
+const ErrorText = styled.span`
+  font-family: FuturaPT;
+  font-size: 16px;
+  color: ${Colors.RADICAL_RED};
 `;
 
 const useStyles = makeStyles(() => ({
@@ -27,6 +34,7 @@ const useStyles = makeStyles(() => ({
 
 type Props = {
   children: string;
+  error?: string;
   type?: string;
 };
 
@@ -48,20 +56,35 @@ const CustomTextField = React.forwardRef((props: Props, ref) => {
   const config = getConfig(props.type);
 
   return (
-    <StyledInput>
-      {config.icon && (
+    <>
+      <StyledInput
+        error={
+          props.error !== undefined &&
+          props.error !== null &&
+          props.error !== ""
+        }
+      >
+        {config.icon && (
+          <>
+            <Icon type={config.icon}></Icon>
+            <SizedBox width={5}></SizedBox>
+          </>
+        )}
+        <StyledInputBase
+          ref={ref}
+          className={useStyles().input}
+          placeholder={props.children}
+          type={config.inputType}
+        />
+      </StyledInput>
+      {props.error && (
         <>
-          <Icon type={config.icon}></Icon>
-          <SizedBox width={5}></SizedBox>
+          <SizedBox height={8}></SizedBox>
+          <ErrorText>{props.error}</ErrorText>
+          <SizedBox height={8}></SizedBox>
         </>
       )}
-      <StyledInputBase
-        ref={ref}
-        className={useStyles().input}
-        placeholder={props.children}
-        type={config.inputType}
-      />
-    </StyledInput>
+    </>
   );
 });
 

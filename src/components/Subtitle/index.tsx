@@ -3,11 +3,12 @@ import styled from "styled-components";
 import { Colors } from "../../theme/theme";
 
 const StyledSubtitle = styled.span`
-  font-family: Raleway;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 14px;
-  letter-spacing: 0.055em;
+  font-family: FuturaPT;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+  letter-spacing: -0.0055em;
+  text-align: center;
 
   color: ${Colors.PRIMARY};
 `;
