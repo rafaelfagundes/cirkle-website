@@ -42,9 +42,11 @@ Icon.propTypes = {
     "email",
     "exit",
     "facebook",
+    "facebook-white",
     "google",
     "heart",
     "instagram",
+    "instagram-white",
     "key",
     "logout",
     "menu",
@@ -59,6 +61,7 @@ Icon.propTypes = {
     "thermometer",
     "trash",
     "whatsapp",
+    "whatsapp-white",
   ]),
 };
 

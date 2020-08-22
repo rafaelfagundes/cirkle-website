@@ -126,8 +126,9 @@ const SecondaryItem = styled.div`
 const SecondaryText = styled.span`
   color: ${Colors.PRIMARY};
   font-size: 16px;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   margin-left: 5px;
 `;
 

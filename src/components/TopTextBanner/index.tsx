@@ -13,8 +13,9 @@ const StyledBanner = styled.div`
 
 const BannerText = styled.p`
   color: ${(props) => props.color};
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.5px;

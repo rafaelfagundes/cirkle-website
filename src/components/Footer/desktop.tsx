@@ -2,6 +2,7 @@ import { Container, Grid, Hidden } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
+import Icon from "../Icon";
 import PaymentType from "../PaymentType";
 import SizedBox from "../SizedBox";
 
@@ -18,8 +19,9 @@ const LinksSection = styled.div`
 
 const HeaderSection = styled.span`
   text-align: center;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   font-weight: 700;
   font-size: 14px;
   color: ${Colors.WHITE};
@@ -29,8 +31,9 @@ const HeaderSection = styled.span`
 
 const FooterLink = styled.span`
   text-align: center;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   font-weight: 400;
   font-size: 16px;
   color: ${Colors.WHITE};
@@ -59,6 +62,42 @@ const Badge = styled.img<{ size: number }>`
   height: ${(props) => props.size}px;
 `;
 
+const SocialFooter = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const Social = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 16px;
+  border-radius: 8px;
+`;
+
+const SocialData = styled.div`
+  margin-left: 5px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SocialDataTitle = styled.span`
+  font-family: "FuturaPT";
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  color: ${Colors.MIDDLE_YELLOW};
+`;
+
+const SocialDataInfo = styled.span`
+  font-family: "FuturaPT";
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 14px;
+  color: ${Colors.WHITE};
+`;
+
 function DesktopFooter(): JSX.Element {
   return (
     <FooterLinks>
@@ -72,6 +111,23 @@ function DesktopFooter(): JSX.Element {
             <FooterLink>Contato</FooterLink>
             <FooterLink>Devolução</FooterLink>
             <FooterLink>Termos de Uso</FooterLink>
+            <SizedBox height={16}></SizedBox>
+            <HeaderSection>Manda um oi pra gente</HeaderSection>
+            <SocialFooter>
+              <Social>
+                <Icon size={36} type="facebook-white"></Icon>
+              </Social>
+              <Social>
+                <Icon size={36} type="instagram-white"></Icon>
+              </Social>
+              <Social>
+                <Icon size={36} type="whatsapp-white"></Icon>
+                <SocialData>
+                  <SocialDataTitle>adicione no zap</SocialDataTitle>
+                  <SocialDataInfo>(32) 99123-4567</SocialDataInfo>
+                </SocialData>
+              </Social>
+            </SocialFooter>
           </LinksSection>
           <Hidden only="xs">
             <LinksSection>

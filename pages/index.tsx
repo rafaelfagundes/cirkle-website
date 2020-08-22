@@ -198,6 +198,7 @@ function Home(): JSX.Element {
       <HighlightsSection data={highlights}></HighlightsSection>
       <HotSection products={hotProducts} brands={brands}></HotSection>
       <NewsletterSignUp></NewsletterSignUp>
+      <SizedBox height={32}></SizedBox>
     </>
   );
 }

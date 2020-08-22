@@ -63,8 +63,10 @@ function useProviderAuth() {
   const signinWithFacebook = async () => {
     try {
       const result = await firebase.auth().signInWithPopup(facebookProvider);
+      console.log("result.user", result.user);
       return result.user;
     } catch (error) {
+      console.log("signinWithFacebook -> error", error.code);
       throw new Error(
         "Não foi possível logar com o Facebook. Tente novamente mais tarde."
       );

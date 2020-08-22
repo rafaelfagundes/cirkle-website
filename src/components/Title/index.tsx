@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { Colors } from "../../theme/theme";
 
 const StyledTitle = styled.span<{ color: string }>`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   font-weight: bold;
   font-size: 14px;
   line-height: 16px;
