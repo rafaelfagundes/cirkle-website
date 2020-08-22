@@ -21,7 +21,8 @@ const Newsletter = styled.div`
 `;
 
 const NewsletterDescription = styled.p`
-  font-family: FuturaPT;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   color: ${Colors.WHITE};
   font-size: 16px;
   text-align: center;
@@ -31,7 +32,8 @@ const NewsletterDescription = styled.p`
 const StyledInputBase = styled(InputBase)`
   width: 100%;
   margin-left: 5px;
-  font-family: FuturaPT;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 16px;
   margin-top: 3px;
 `;

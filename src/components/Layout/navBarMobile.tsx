@@ -1,9 +1,11 @@
 import { AppBar, Container, Link } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
+import { useAuth } from "../../hooks/use-auth";
 import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../HorizontalLogo/index";
 import Icon from "../Icon";
+import Row from "../Row";
 
 const NavBarSpacer = styled.div`
   display: flex;
@@ -35,7 +37,26 @@ const NavBarPadding = styled.div`
 `;
 
 const LogoHolder = styled.div`
-  padding-top: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  margin-left: 10px;
+`;
+
+const AvatarMenu = styled.div<{ image: string }>`
+  background-image: ${(props) => `url("${props.image}");`};
+  background-color: #cccccc;
+  height: 24px;
+  width: 24px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-left: 10px;
+  margin-right: -22px;
+  border-radius: 12px;
+  overflow: hidden;
 `;
 
 function NavBarMobile({
@@ -43,6 +64,8 @@ function NavBarMobile({
 }: {
   setDrawer: (val: boolean) => void;
 }): JSX.Element {
+  const auth = useAuth();
+
   return (
     <>
       <NavBarSpacer> </NavBarSpacer>
@@ -51,9 +74,19 @@ function NavBarMobile({
           <Container maxWidth="md">
             <NavBarContent>
               <NavBarPadding>
-                <span onClick={() => setDrawer(true)}>
-                  <Icon type="menu"></Icon>
-                </span>
+                {auth.user && (
+                  <span onClick={() => setDrawer(true)}>
+                    <Row>
+                      <Icon type="menu"></Icon>
+                      <AvatarMenu image={auth.user.photoURL}></AvatarMenu>
+                    </Row>
+                  </span>
+                )}
+                {!auth.user && (
+                  <span onClick={() => setDrawer(true)}>
+                    <Icon type="menu"></Icon>
+                  </span>
+                )}
                 <Link href="/">
                   <LogoHolder>
                     <HorizontalLogo></HorizontalLogo>

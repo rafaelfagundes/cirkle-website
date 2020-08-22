@@ -41,7 +41,8 @@ const StyledMenuItem = styled(MenuItem)`
 `;
 
 const MenuItemText = styled.p`
-  font-family: FuturaPT;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   margin-left: 5px;
 `;
 

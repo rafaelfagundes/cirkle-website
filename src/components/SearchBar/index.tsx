@@ -17,7 +17,8 @@ const StyledSearchBar = styled.div`
 const StyledInputBase = styled(InputBase)`
   width: 100%;
   margin-left: 5px;
-  font-family: FuturaPT;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 18px;
   color: ${Colors.TYRIAN_PURPLE};
 `;

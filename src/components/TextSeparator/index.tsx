@@ -24,7 +24,8 @@ const OrHolder = styled.div`
 `;
 
 const OrText = styled.div`
-  font-family: Raleway;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   color: ${Colors.PRIMARY};
   font-size: 14px;
   font-weight: bold;

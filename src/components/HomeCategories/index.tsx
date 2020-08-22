@@ -28,7 +28,7 @@ const CategoryItem = styled.div<{ last?: boolean }>`
 
 const CategoryItemText = styled.div`
   color: ${Colors.WHITE};
-  font-family: "Raleway";
+  font-family: "FuturaPT";
   font-weight: 900;
   text-transform: uppercase;
   font-size: 12px;

@@ -94,28 +94,28 @@ const theme = createMuiTheme({
   },
   typography: {
     h1: {
-      fontFamily: "Raleway",
+      fontFamily: "FuturaPT",
     },
     h2: {
-      fontFamily: "Raleway",
+      fontFamily: "FuturaPT",
     },
     h3: {
-      fontFamily: "Raleway",
+      fontFamily: "FuturaPT",
     },
     h4: {
-      fontFamily: "Raleway",
+      fontFamily: "FuturaPT",
     },
     h5: {
-      fontFamily: "Raleway",
+      fontFamily: "FuturaPT",
     },
     h6: {
-      fontFamily: "Raleway",
+      fontFamily: "FuturaPT",
     },
     subtitle1: {
-      fontFamily: "Raleway",
+      fontFamily: "FuturaPT",
     },
     subtitle2: {
-      fontFamily: "Raleway",
+      fontFamily: "FuturaPT",
     },
     fontSize: 16,
     fontFamily: [

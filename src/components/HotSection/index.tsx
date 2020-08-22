@@ -23,7 +23,8 @@ const SectionTitle = styled.div`
 const Title = styled.div`
   text-transform: uppercase;
   color: ${Colors.PRIMARY};
-  font-family: Raleway;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 24px;
   font-weight: 900;
   margin-left: 5px;

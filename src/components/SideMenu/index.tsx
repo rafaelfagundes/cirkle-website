@@ -49,7 +49,7 @@ const Avatar = styled.img`
 `;
 
 const UserName = styled.div`
-  font-family: "Raleway";
+  font-family: "FuturaPT";
   font-weight: 700;
   font-size: 18px;
   letter-spacing: -0.5px;
@@ -82,7 +82,7 @@ const StyledTab = styled.div<{ active: boolean; color: string }>`
 `;
 
 const TabText = styled.span<{ active: boolean }>`
-  font-family: "Raleway";
+  font-family: "FuturaPT";
   font-size: 16px;
   color: ${(props) => (props.active ? Colors.WHITE : Colors.GRAY)};
   font-weight: 700;
@@ -126,7 +126,8 @@ const SecondaryItem = styled.div`
 const SecondaryText = styled.span`
   color: ${Colors.PRIMARY};
   font-size: 16px;
-  font-family: FuturaPT;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   margin-left: 5px;
 `;
 
@@ -153,7 +154,7 @@ const SocialData = styled.div`
 `;
 
 const SocialDataTitle = styled.span`
-  font-family: "Raleway";
+  font-family: "FuturaPT";
   text-transform: uppercase;
   font-weight: 700;
   font-size: 12px;

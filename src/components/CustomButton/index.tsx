@@ -31,7 +31,8 @@ const ButtonContained = styled(ButtonBase)<{ color?: string }>`
 const ButtonText = styled.span<{ color?: string }>`
   position: relative;
   color: ${(props) => props.color};
-  font-family: FuturaPT;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-weight: 500;
   text-transform: uppercase;
   font-size: 14px;

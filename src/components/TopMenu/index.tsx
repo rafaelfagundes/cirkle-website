@@ -43,7 +43,7 @@ const Tab = styled.div<{ active: boolean; color: string }>`
 `;
 
 const TabText = styled.span<{ active: boolean }>`
-  font-family: "Raleway";
+  font-family: "FuturaPT";
   font-size: 14px;
   color: ${(props) => (props.active ? Colors.WHITE : Colors.GRAY)};
   text-transform: uppercase;
@@ -132,7 +132,8 @@ const UnderTabsContent = styled.div<{ color: string }>`
 
 const StyledInputBase = styled(InputBase)`
   width: 100%;
-  font-family: FuturaPT;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 16px;
   margin-top: 3px;
 `;
