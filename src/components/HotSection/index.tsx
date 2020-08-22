@@ -2,10 +2,12 @@ import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Column from "../Column";
 import Icon from "../Icon";
 import ProductItem from "../ProductItem/item";
 import SizedBox from "../SizedBox/index";
+import Subtitle from "../Subtitle";
+import Title from "../Title";
 import Brand from "./brand";
 
 const Section = styled.div<{ isSmartphone: boolean }>`
@@ -17,18 +19,8 @@ const SectionTitle = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 220px;
-`;
-
-const Title = styled.div`
-  text-transform: uppercase;
-  color: ${Colors.PRIMARY};
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  font-size: 24px;
-  font-weight: 900;
-  margin-left: 5px;
+  width: 320px;
+  margin-left: -10px;
 `;
 
 const ItemsHolder = styled.div<{ disableScroll?: boolean }>`
@@ -82,10 +74,14 @@ function HotSection({
   return (
     <Section isSmartphone={isSmartphone}>
       <SectionTitle>
-        <Icon type="thermometer"></Icon>
-        <Title>EM ALTA</Title>
+        <Icon type="thermometer" size={48}></Icon>
+        <Column>
+          <Title size={18}>EM ALTA</Title>
+          <SizedBox height={6}></SizedBox>
+          <Subtitle size={18}>Produtos que todo mundo está de olho</Subtitle>
+        </Column>
       </SectionTitle>
-      <SizedBox height={6}></SizedBox>
+      <SizedBox height={16}></SizedBox>
       <ItemsHolder disableScroll={!isSmartphone}>
         {products.map((item) => (
           <ProductItem data={item} key={item.id}></ProductItem>

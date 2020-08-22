@@ -2,21 +2,33 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
 
-const StyledSubtitle = styled.span`
+const StyledSubtitle = styled.span<{ color: string; size: number }>`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   font-weight: 400;
-  font-size: 16px;
+  font-size: ${(props) => props.size}px;
   line-height: 18px;
   letter-spacing: -0.0055em;
   text-align: center;
 
-  color: ${Colors.PRIMARY};
+  color: ${(props) => props.color};
 `;
 
-function Subtitle({ children }: { children: string }): JSX.Element {
-  return <StyledSubtitle>{children}</StyledSubtitle>;
+function Subtitle({
+  children,
+  color = Colors.PRIMARY,
+  size = 16,
+}: {
+  children: string;
+  color?: string;
+  size?: number;
+}): JSX.Element {
+  return (
+    <StyledSubtitle color={color} size={size}>
+      {children}
+    </StyledSubtitle>
+  );
 }
 
 export default Subtitle;

@@ -332,7 +332,7 @@ function SideMenu({ data }: { data: any }): JSX.Element {
           <Social>
             <Icon size={36} type="whatsapp"></Icon>
             <SocialData>
-              <SocialDataTitle>fale com a gente</SocialDataTitle>
+              <SocialDataTitle>converse conosco</SocialDataTitle>
               <SocialDataInfo>(32) 99123-4567</SocialDataInfo>
             </SocialData>
           </Social>
