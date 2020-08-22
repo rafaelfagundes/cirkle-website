@@ -26,11 +26,17 @@ const SocialLoginButtonText = styled.span`
   text-transform: uppercase;
 `;
 
-function SocialLoginButton({ children }: { children: string }): JSX.Element {
+function SocialLoginButton({
+  children,
+  onClick,
+}: {
+  children: string;
+  onClick?: () => Promise<firebase.User>;
+}): JSX.Element {
   const type: string = children.toLowerCase();
 
   return (
-    <StyledSocialLoginButton>
+    <StyledSocialLoginButton onClick={onClick}>
       <Icon type={type} size={16}></Icon>
       <SocialLoginButtonText>{children}</SocialLoginButtonText>
     </StyledSocialLoginButton>

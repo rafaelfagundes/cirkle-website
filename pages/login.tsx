@@ -14,7 +14,7 @@ import Subtitle from "../src/components/Subtitle";
 import TextLink from "../src/components/TextLink";
 import TextSeparator from "../src/components/TextSeparator";
 import Title from "../src/components/Title";
-import { useAuth } from "../src/hooks/use-auth";
+import { IAuthContextProps, useAuth } from "../src/hooks/use-auth";
 import { Colors } from "../src/theme/theme";
 import { capitalizeFirstLetter, validateEmail } from "../src/utils/string";
 
@@ -34,7 +34,7 @@ const Text = styled.span`
   text-align: center;
 `;
 
-function SocialLogin(): JSX.Element {
+function SocialLogin({ auth }: { auth: IAuthContextProps }): JSX.Element {
   return (
     <>
       <Center>
@@ -43,7 +43,11 @@ function SocialLogin(): JSX.Element {
       <SizedBox height={16}></SizedBox>
       <Container maxWidth="xs">
         <Row>
-          <SocialLoginButton>Google</SocialLoginButton>
+          <SocialLoginButton
+            onClick={async () => await auth.signinWithGoogle()}
+          >
+            Google
+          </SocialLoginButton>
           <SizedBox width={16}></SizedBox>
           <SocialLoginButton>Facebook</SocialLoginButton>
         </Row>
@@ -53,7 +57,7 @@ function SocialLogin(): JSX.Element {
 }
 
 function Login(): JSX.Element {
-  const auth = useAuth();
+  const auth: IAuthContextProps = useAuth();
   const router = useRouter();
   const [page, setPage] = useState(router.asPath);
   const [loading, setLoading] = useState(false);
@@ -276,13 +280,13 @@ function Login(): JSX.Element {
               <SizedBox height={16}></SizedBox>
               <TextSeparator>OU</TextSeparator>
               <SizedBox height={24}></SizedBox>
-              <SocialLogin></SocialLogin>
+              <SocialLogin auth={auth}></SocialLogin>
             </>
           )}
           {page === "/signup" && (
             <>
               <SizedBox height={32}></SizedBox>
-              <SocialLogin></SocialLogin>
+              <SocialLogin auth={auth}></SocialLogin>
               <SizedBox height={16}></SizedBox>
               <TextSeparator>OU</TextSeparator>
               <SizedBox height={24}></SizedBox>
