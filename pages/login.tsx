@@ -49,7 +49,11 @@ function SocialLogin({ auth }: { auth: IAuthContextProps }): JSX.Element {
             Google
           </SocialLoginButton>
           <SizedBox width={16}></SizedBox>
-          <SocialLoginButton>Facebook</SocialLoginButton>
+          <SocialLoginButton
+            onClick={async () => await auth.signinWithFacebook()}
+          >
+            Facebook
+          </SocialLoginButton>
         </Row>
       </Container>
     </>

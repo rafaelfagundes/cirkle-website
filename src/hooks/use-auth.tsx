@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import firebase from "../config/firebase";
-const provider = new firebase.auth.GoogleAuthProvider();
+const facebookProvider = new firebase.auth.FacebookAuthProvider();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 firebase.auth().languageCode = "pt";
 
 export interface IAuthContextProps {
   user: firebase.User;
   signin: (email: string, password: string) => Promise<firebase.User>;
   signinWithGoogle: () => Promise<firebase.User>;
+  signinWithFacebook: () => Promise<firebase.User>;
   signup: (
     displayName: string,
     email: string,
@@ -49,11 +51,22 @@ function useProviderAuth() {
 
   const signinWithGoogle = async () => {
     try {
-      const result = await firebase.auth().signInWithPopup(provider);
+      const result = await firebase.auth().signInWithPopup(googleProvider);
       return result.user;
     } catch (error) {
       throw new Error(
         "Não foi possível logar com o Google. Tente novamente mais tarde."
+      );
+    }
+  };
+
+  const signinWithFacebook = async () => {
+    try {
+      const result = await firebase.auth().signInWithPopup(facebookProvider);
+      return result.user;
+    } catch (error) {
+      throw new Error(
+        "Não foi possível logar com o Facebook. Tente novamente mais tarde."
       );
     }
   };
@@ -129,6 +142,7 @@ function useProviderAuth() {
   return {
     user,
     signin,
+    signinWithFacebook,
     signinWithGoogle,
     signup,
     signout,
