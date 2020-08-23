@@ -2,8 +2,8 @@ import { Hidden } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
-import DesktopFooter from "./desktop";
-import MobileFooter from "./mobile";
+import DesktopFooter from "./DesktopFooter";
+import MobileFooter from "./MobileFooter";
 
 const Legal = styled.div`
   display: flex;

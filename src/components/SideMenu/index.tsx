@@ -275,9 +275,9 @@ function SideMenu({ data }: { data: any }): JSX.Element {
               </StyledMenuItem>
               {menuData[selectedTab].categories[item].active &&
                 menuData[selectedTab].categories[item].items.map(
-                  (item: { title: string; link: string }) => (
-                    <StyledMenuItem key={item.link} subcategory={true}>
-                      <MenuItemText>{item.title}</MenuItemText>
+                  (subcategory: { title: string; link: string }) => (
+                    <StyledMenuItem key={subcategory.link} subcategory={true}>
+                      <MenuItemText>{subcategory.title}</MenuItemText>
                     </StyledMenuItem>
                   )
                 )}

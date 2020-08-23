@@ -38,9 +38,7 @@ function PaymentType({
   type: string;
   size?: number;
 }): JSX.Element {
-  function getPaymentType(
-    type: string
-  ): { image: string; bgColor: string; title: string } {
+  function getPaymentType(): { image: string; bgColor: string; title: string } {
     switch (type) {
       case "amex":
         return {
@@ -59,12 +57,6 @@ function PaymentType({
           image: "/images/payment_types/bank_transfer.png",
           bgColor: "#FFF",
           title: "Transferência Bancária",
-        };
-      case "boleto":
-        return {
-          image: "/images/payment_types/boleto.png",
-          bgColor: "#FFF",
-          title: "Boleto Bancário",
         };
       case "dinersclub":
         return {
@@ -108,7 +100,7 @@ function PaymentType({
           bgColor: "#FFF",
           title: "Visa",
         };
-
+      case "boleto":
       default:
         return {
           image: "/images/payment_types/boleto.png",
@@ -118,7 +110,7 @@ function PaymentType({
     }
   }
 
-  const paymentType = getPaymentType(type);
+  const paymentType = getPaymentType();
 
   return (
     <StyledPaymentType size={size}>

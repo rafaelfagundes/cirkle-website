@@ -6,7 +6,7 @@ import React from "react";
 import { ThemeProvider } from "styled-components";
 import Layout from "../src/components/Layout/index";
 import AuthProvider from "../src/hooks/use-auth";
-import MenuController from "../src/modules/menu/menu.controller";
+import MenuController from "../src/modules/menu/MenuController";
 import theme from "../src/theme/theme";
 import "../styles/global.css";
 

@@ -1,6 +1,10 @@
 # Mac
 .DS_Store
 
+# Sonar Scanner
+.scannerwork
+sonarscanner.sh
+
 # Logs
 logs
 *.log

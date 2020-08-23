@@ -67,13 +67,8 @@ function CustomButton({
   loading?: boolean;
   onClick: () => void;
 }): JSX.Element {
-  function getColors(type: string): { background: string; text: string } {
+  function getColors(): { background: string; text: string } {
     switch (type) {
-      case "primary":
-        return {
-          background: Colors.PRIMARY,
-          text: Colors.WHITE,
-        };
       case "secondary":
         return {
           background: Colors.GRAY,
@@ -97,7 +92,7 @@ function CustomButton({
     }
   }
 
-  const colors = getColors(type);
+  const colors = getColors();
 
   switch (variant) {
     case "outlined":
@@ -133,7 +128,7 @@ function CustomButton({
           {loading && <LoadingAnimation size={20} color></LoadingAnimation>}
         </ButtonTypeText>
       );
-
+    case "primary":
     default:
       return (
         <ButtonOutlined

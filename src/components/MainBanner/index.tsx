@@ -68,9 +68,7 @@ function MainBanner({
   const fontSize = window.innerHeight * 0.03;
   const bannerSize = window.innerHeight * 0.4;
 
-  function getPositions(
-    position: string
-  ): {
+  function getPositions(): {
     justifyContent: string;
     alignItems: string;
   } {
@@ -98,7 +96,7 @@ function MainBanner({
     }
   }
 
-  const positions = getPositions(position);
+  const positions = getPositions();
 
   return (
     <StyledBanner bgImage={url} height={bannerSize}>

@@ -63,7 +63,7 @@ function HighlightsSection({
   const isXs = useMediaQuery(theme.breakpoints.down("xs"));
   const isSm = useMediaQuery(theme.breakpoints.between("sm", "sm"));
 
-  function calcHighlightItemWidth(isXs: boolean, isSm: boolean): number {
+  function calcHighlightItemWidth(): number {
     const width = window.innerWidth;
 
     let itemSize: number;
@@ -78,7 +78,7 @@ function HighlightsSection({
     return itemSize;
   }
 
-  const widthHighlightItem = calcHighlightItemWidth(isXs, isSm);
+  const widthHighlightItem = calcHighlightItemWidth();
 
   return (
     <Container maxWidth="md" disableGutters={!isXs}>

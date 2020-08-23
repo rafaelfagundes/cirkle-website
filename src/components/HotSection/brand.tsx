@@ -38,7 +38,7 @@ function Brand({
     link: string;
   };
 }): JSX.Element {
-  function calcHighlightItemWidth(isXs: boolean, isSm: boolean): number {
+  function calcHighlightItemWidth(): number {
     const width = window.innerWidth;
 
     let itemSize: number;
@@ -57,7 +57,7 @@ function Brand({
   const isXs = useMediaQuery(theme.breakpoints.down("xs"));
   const isSm = useMediaQuery(theme.breakpoints.between("sm", "sm"));
 
-  const widthHighlightItem = calcHighlightItemWidth(isXs, isSm);
+  const widthHighlightItem = calcHighlightItemWidth();
 
   return (
     <Link href={data.link}>
