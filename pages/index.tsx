@@ -170,10 +170,7 @@ function Home(): JSX.Element {
         <SearchBar placeHolder="Procure marcas, categorias, modelos"></SearchBar>
       </Hidden>
 
-      <TopTextBanner
-        color={Colors.AMARANTH_PINK}
-        textColor={Colors.TYRIAN_PURPLE}
-      >
+      <TopTextBanner color={Colors.TRANSPARENT} textColor={Colors.ULTRA_RED}>
         Frete grátis para pedidos acima de R$200
       </TopTextBanner>
       <MainBanner

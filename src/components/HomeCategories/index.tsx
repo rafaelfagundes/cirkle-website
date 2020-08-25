@@ -5,18 +5,18 @@ import Padding from "../Padding";
 import Title from "../Title";
 
 const CategoriesContainer = styled.div`
-  background-color: ${Colors.ULTRA_RED};
+  /* background-color: ${Colors.ULTRA_RED}; */
 `;
 const CategoriesHolder = styled.div`
   display: flex;
   align-items: center;
   padding: 0px 16px 16px 16px;
-  background-color: ${Colors.ULTRA_RED};
+  /* background-color: ${Colors.ULTRA_RED}; */
 `;
 
 const CategoryItem = styled.div<{ last?: boolean }>`
   flex: 1;
-  border-color: ${Colors.WHITE};
+  border-color: ${Colors.ULTRA_RED};
   border-width: 2px;
   border-style: solid;
   height: 45px;
@@ -27,7 +27,7 @@ const CategoryItem = styled.div<{ last?: boolean }>`
 `;
 
 const CategoryItemText = styled.div`
-  color: ${Colors.WHITE};
+  color: ${Colors.ULTRA_RED};
   font-family: "FuturaPT";
   font-weight: 900;
   text-transform: uppercase;
@@ -39,7 +39,7 @@ function HomeCategories(): JSX.Element {
   return (
     <CategoriesContainer>
       <Padding vertical={10} horizontal={16}>
-        <Title color={Colors.WHITE}>Confira as novidades </Title>
+        <Title color={Colors.ULTRA_RED}>Confira as novidades </Title>
       </Padding>
       <CategoriesHolder>
         <CategoryItem>

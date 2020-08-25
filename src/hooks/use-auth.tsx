@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import firebase from "../config/firebase";
-import { useError } from "./use-error";
+import { useDialog } from "./use-dialog";
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 firebase.auth().languageCode = "pt";
@@ -79,7 +79,7 @@ export const useAuth = (): IAuthContextProps => {
 
 function useProviderAuth() {
   const [user, setUser] = useState(null);
-  const errorContext = useError();
+  const dialogContext = useDialog();
 
   const signin = async (email: string, password: string) => {
     try {
@@ -89,7 +89,7 @@ function useProviderAuth() {
 
       return response.user;
     } catch (error) {
-      errorContext.newErrorDialog(
+      dialogContext.newDialog(
         true,
         "Erro ao Tentar Entrar",
         ErrorMessages[error.code]
@@ -102,7 +102,7 @@ function useProviderAuth() {
       const result = await firebase.auth().signInWithPopup(googleProvider);
       return result.user;
     } catch (error) {
-      errorContext.newErrorDialog(
+      dialogContext.newDialog(
         true,
         "Erro ao Tentar Entrar",
         ErrorMessages[error.code]
@@ -116,7 +116,7 @@ function useProviderAuth() {
       console.log("result.user", result.user);
       return result.user;
     } catch (error) {
-      errorContext.newErrorDialog(
+      dialogContext.newDialog(
         true,
         "Erro ao Tentar Entrar",
         ErrorMessages[error.code]
@@ -142,7 +142,7 @@ function useProviderAuth() {
 
       return response.user;
     } catch (error) {
-      errorContext.newErrorDialog(
+      dialogContext.newDialog(
         true,
         "Erro ao Tentar Entrar",
         ErrorMessages[error.code]
@@ -154,7 +154,7 @@ function useProviderAuth() {
     try {
       await firebase.auth().signOut();
     } catch (error) {
-      errorContext.newErrorDialog(
+      dialogContext.newDialog(
         true,
         "Erro ao Tentar Desconectar",
         "Um erro desconhecido ocorreu ao tentar desconectar."
@@ -166,7 +166,7 @@ function useProviderAuth() {
     try {
       await firebase.auth().sendPasswordResetEmail(email);
     } catch (error) {
-      errorContext.newErrorDialog(
+      dialogContext.newDialog(
         true,
         "Erro ao Tentar Entrar",
         ErrorMessages[error.code]
@@ -178,7 +178,7 @@ function useProviderAuth() {
     try {
       await firebase.auth().confirmPasswordReset(code, password);
     } catch (error) {
-      errorContext.newErrorDialog(
+      dialogContext.newDialog(
         true,
         "Erro ao Tentar Entrar",
         ErrorMessages[error.code]

@@ -110,7 +110,6 @@ const NewsletterDescription = styled.p`
 `;
 
 const StyledInputBase = styled(InputBase)`
-  width: 100%;
   margin-left: 5px;
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -124,16 +123,17 @@ const Newsletter = styled.div`
   flex-direction: row;
   align-items: center;
   margin-bottom: 10px;
+  width: 100%;
 `;
 
 const NewsletterInput = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: row;
   align-items: center;
   background-color: ${Colors.WHITE};
   height: 45px;
   padding: 8px 12px;
+  width: 100%;
 `;
 
 const NLButton = styled.div`
@@ -141,7 +141,7 @@ const NLButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${Colors.PLUM};
+  background-color: ${Colors.PRIMARY};
   padding: 0 16px;
   cursor: pointer;
 `;

@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ErrorDialog({
+function CustomDialog({
   open,
   title,
   buttonText,
@@ -66,4 +66,4 @@ function ErrorDialog({
   );
 }
 
-export default ErrorDialog;
+export default CustomDialog;

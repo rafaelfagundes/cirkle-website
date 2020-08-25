@@ -7,6 +7,7 @@ export enum Colors {
   BLACK = "#121212",
   BLACK2 = "#232323",
   BLACK3 = "#333",
+  TRANSPARENT = "rgba(0,0,0,0)",
   SIDE_MENU_BG = "##F9F9F9",
   AMARANTH_PINK = "#E79CB4",
   BLUE_JEANS = "#33A1FD",
