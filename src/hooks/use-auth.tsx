@@ -79,10 +79,7 @@ export const useAuth = (): IAuthContextProps => {
 
 function useProviderAuth() {
   const [user, setUser] = useState(null);
-
   const errorContext = useError();
-
-  console.dir(errorContext);
 
   const signin = async (email: string, password: string) => {
     try {

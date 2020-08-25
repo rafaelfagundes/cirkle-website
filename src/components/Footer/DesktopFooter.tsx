@@ -1,4 +1,4 @@
-import { Container, Grid, Hidden } from "@material-ui/core";
+import { Container, Grid, Hidden, InputBase } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
@@ -6,7 +6,8 @@ import Icon from "../Icon";
 import PaymentType from "../PaymentType";
 import SizedBox from "../SizedBox";
 
-const FooterLinks = styled.div`
+const Footer = styled.div`
+  padding-top: 16px;
   background-color: ${Colors.MAGENTA};
 `;
 
@@ -98,9 +99,62 @@ const SocialDataInfo = styled.span`
   color: ${Colors.WHITE};
 `;
 
+const NewsletterDescription = styled.p`
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  color: ${Colors.WHITE};
+  font-size: 16px;
+  text-align: center;
+  margin: 0;
+`;
+
+const StyledInputBase = styled(InputBase)`
+  width: 100%;
+  margin-left: 5px;
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-size: 16px;
+  margin-top: 3px;
+`;
+
+const Newsletter = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const NewsletterInput = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  background-color: ${Colors.WHITE};
+  height: 45px;
+  padding: 8px 12px;
+`;
+
+const NLButton = styled.div`
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${Colors.PLUM};
+  padding: 0 16px;
+  cursor: pointer;
+`;
+
+const NLButtonText = styled.span`
+  color: ${Colors.WHITE};
+  font-family: "FuturaPT";
+  font-size: 16px;
+`;
+
 function DesktopFooter(): JSX.Element {
   return (
-    <FooterLinks>
+    <Footer>
       <Container maxWidth="md" disableGutters>
         <Columns>
           <LinksSection>
@@ -139,9 +193,25 @@ function DesktopFooter(): JSX.Element {
             </LinksSection>
           </Hidden>
           <LinksSection>
+            <HeaderSection>Newsletter</HeaderSection>
+            <Newsletter>
+              <NewsletterInput>
+                <Icon type="email"></Icon>
+                <StyledInputBase
+                  placeholder="Informe seu email"
+                  inputProps={{ "aria-label": "search" }}
+                />
+              </NewsletterInput>
+              <NLButton>
+                <NLButtonText>Enviar</NLButtonText>
+              </NLButton>
+            </Newsletter>
+            <NewsletterDescription>
+              Receba todas as nossas novidades e promoções
+            </NewsletterDescription>
+            <SizedBox height={24}></SizedBox>
             <HeaderSection>Formas de Pagamento</HeaderSection>
-
-            <Grid container spacing={10}>
+            <Grid container spacing={2}>
               <Grid item md={3}>
                 <PaymentType type="mastercard" size={48}></PaymentType>
               </Grid>
@@ -156,7 +226,7 @@ function DesktopFooter(): JSX.Element {
               </Grid>
             </Grid>
             <SizedBox height={16}></SizedBox>
-            <Grid container spacing={10}>
+            <Grid container spacing={2}>
               <Grid item md={3}>
                 <PaymentType type="dinersclub" size={48}></PaymentType>
               </Grid>
@@ -171,7 +241,7 @@ function DesktopFooter(): JSX.Element {
               </Grid>
             </Grid>
             <SizedBox height={16}></SizedBox>
-            <Grid container spacing={10}>
+            <Grid container spacing={2}>
               <Grid item md={3}>
                 <PaymentType type="jcb" size={48}></PaymentType>
               </Grid>
@@ -191,7 +261,7 @@ function DesktopFooter(): JSX.Element {
         <SizedBox width={36}></SizedBox>
         <Badge size={48} src="/images/nature_badge.svg"></Badge>
       </Row>
-    </FooterLinks>
+    </Footer>
   );
 }
 

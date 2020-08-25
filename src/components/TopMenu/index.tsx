@@ -33,9 +33,9 @@ const Tabs = styled.div`
 const Tab = styled.div<{ active: boolean; color: string }>`
   cursor: pointer;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* width: 80px; */
   padding: 0 24px;
   height: ${(props) => (props.active ? "40px" : "30px")};
   background-color: ${(props) =>
@@ -69,13 +69,21 @@ const Categories = styled.div`
 `;
 
 const MenuItem = styled.div<{ active?: boolean; first?: boolean }>`
+  position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: row;
   cursor: pointer;
   height: 51px;
   background-color: ${(props) =>
     props.active ? "rgba(0,0,0,0.075)" : "transparent"};
+`;
+
+const MenuItemArrow = styled.div`
+  bottom: 6px;
+  margin-left: 6px;
+  margin-right: 16px;
 `;
 
 const MenuItemText = styled.span<{
@@ -87,9 +95,9 @@ const MenuItemText = styled.span<{
   /* opacity: ${(props) => (props.active ? 1 : 0.95)}; */
   font-size: 14px;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
-  padding: ${(props) => (props.first ? "16px 16px 16px 0" : "0 16px")} ;
+  padding: ${(props) => (props.first ? "16px 16px 16px 0" : "0 0 0 16px")} ;
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 500;  
 `;
 
 const SubcategoriesHolder = styled.div`
@@ -278,6 +286,9 @@ function TopMenu({ data }: { data: any }): JSX.Element {
                     >
                       {menuData[selectedTab].categories[item].title}
                     </MenuItemText>
+                    <MenuItemArrow>
+                      <Icon size={8} type="triangle-down"></Icon>
+                    </MenuItemArrow>
                   </MenuItem>
                 </Link>
               ))}

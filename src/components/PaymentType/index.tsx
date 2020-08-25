@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
 
 const StyledPaymentType = styled.div<{ size: number }>`
   width: ${(props) => props.size * 1.4}px;
@@ -22,14 +21,14 @@ const ImageHolder = styled.div<{ bgColor: string; size: number }>`
   background-color: ${(props) => props.bgColor};
 `;
 
-const Title = styled.span`
-  margin-top: 5px;
-  color: ${Colors.WHITE};
-  font-family: "FuturaPT";
-  font-size: 14px;
-  text-align: center;
-  line-height: 100%;
-`;
+// const Title = styled.span`
+//   margin-top: 5px;
+//   color: ${Colors.WHITE};
+//   font-family: "FuturaPT";
+//   font-size: 14px;
+//   text-align: center;
+//   line-height: 100%;
+// `;
 
 function PaymentType({
   type,
@@ -117,12 +116,12 @@ function PaymentType({
       <ImageHolder bgColor={paymentType.bgColor} size={size}>
         <img
           src={paymentType.image}
-          alt={type.toUpperCase()}
+          alt={paymentType.title}
+          title={paymentType.title}
           width={size}
           height={size}
         />
       </ImageHolder>
-      <Title>{paymentType.title}</Title>
     </StyledPaymentType>
   );
 }

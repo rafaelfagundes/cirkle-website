@@ -197,9 +197,11 @@ function Home(): JSX.Element {
       </Hidden>
       <HighlightsSection data={highlights}></HighlightsSection>
       <HotSection products={hotProducts} brands={brands}></HotSection>
-      <NewsletterSignUp></NewsletterSignUp>
+      <Hidden only={["md", "lg", "xl"]}>
+        <NewsletterSignUp></NewsletterSignUp>
+      </Hidden>
       <Hidden only={["xs", "sm"]}>
-        <SizedBox height={48}></SizedBox>
+        <SizedBox height={16}></SizedBox>
       </Hidden>
     </>
   );
