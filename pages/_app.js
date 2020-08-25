@@ -6,6 +6,7 @@ import React from "react";
 import { ThemeProvider } from "styled-components";
 import Layout from "../src/components/Layout/index";
 import AuthProvider from "../src/hooks/use-auth";
+import ErrorProvider from "../src/hooks/use-error";
 import MenuController from "../src/modules/menu/MenuController";
 import theme from "../src/theme/theme";
 import "../styles/global.css";
@@ -103,15 +104,17 @@ export default function MyApp(props) {
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
         <meta name="theme-color" content="#80D0C7"></meta>
       </Head>
-      <AuthProvider>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Layout menuData={menuData}>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
-      </AuthProvider>
+      <ErrorProvider>
+        <AuthProvider>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <Layout menuData={menuData}>
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </AuthProvider>
+      </ErrorProvider>
     </>
   );
 }

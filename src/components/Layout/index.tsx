@@ -2,7 +2,9 @@ import { Container, Hidden, SwipeableDrawer } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useError } from "../../hooks/use-error";
 import { Colors } from "../../theme/theme";
+import ErrorDialog from "../ErrorDialog";
 import Footer from "../Footer";
 import SideMenu from "../SideMenu/index";
 import NavBarDesktop from "./navBarDesktop";
@@ -20,10 +22,21 @@ function Layout({
   menuData: any;
 }): JSX.Element {
   const [drawer, setDrawer] = useState(false);
+  const errorContext = useError();
 
   return (
     <div>
       {/* Desktop */}
+
+      <ErrorDialog
+        open={errorContext.error.isOpen}
+        title={errorContext.error.title}
+        buttonText={errorContext.error.buttonText}
+        onClose={errorContext.closeErrorDialog}
+      >
+        {errorContext.error.description}
+      </ErrorDialog>
+
       <Hidden only={["xs"]}>
         <NavBarDesktop menuData={menuData}></NavBarDesktop>
       </Hidden>

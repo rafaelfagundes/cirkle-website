@@ -1,8 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import firebase from "../config/firebase";
+import { useError } from "./use-error";
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 firebase.auth().languageCode = "pt";
+
+const ErrorMessages = {
+  "auth/email-already-in-use":
+    "O endereço de e-mail já está sendo usado por outra conta.\nTalvez você já tenha se cadastrado via Google ou Facebook.",
+};
 
 export interface IAuthContextProps {
   user: firebase.User;
@@ -37,6 +43,10 @@ export const useAuth = (): IAuthContextProps => {
 function useProviderAuth() {
   const [user, setUser] = useState(null);
 
+  const errorContext = useError();
+
+  console.dir(errorContext);
+
   const signin = async (email: string, password: string) => {
     try {
       const response = await firebase
@@ -45,7 +55,11 @@ function useProviderAuth() {
 
       return response.user;
     } catch (error) {
-      throw new Error("Não foi possível logar. Verifique suas credenciais.");
+      errorContext.newErrorDialog(
+        true,
+        "Erro ao Tentar Entrar",
+        "Não foi possível logar. Verifique se seu email e/ou senha estão corretos."
+      );
     }
   };
 
@@ -54,7 +68,9 @@ function useProviderAuth() {
       const result = await firebase.auth().signInWithPopup(googleProvider);
       return result.user;
     } catch (error) {
-      throw new Error(
+      errorContext.newErrorDialog(
+        true,
+        "Erro ao Tentar Entrar",
         "Não foi possível logar com o Google. Tente novamente mais tarde."
       );
     }
@@ -66,8 +82,9 @@ function useProviderAuth() {
       console.log("result.user", result.user);
       return result.user;
     } catch (error) {
-      console.log("signinWithFacebook -> error", error.code);
-      throw new Error(
+      errorContext.newErrorDialog(
+        true,
+        "Erro ao Tentar Entrar",
         "Não foi possível logar com o Facebook. Tente novamente mais tarde."
       );
     }
@@ -91,8 +108,10 @@ function useProviderAuth() {
 
       return response.user;
     } catch (error) {
-      throw new Error(
-        "Não foi possível efetuar o cadastro. Tente novamente mais tarde."
+      errorContext.newErrorDialog(
+        true,
+        "Erro ao Tentar Entrar",
+        ErrorMessages[error.code]
       );
     }
   };
