@@ -7,7 +7,44 @@ firebase.auth().languageCode = "pt";
 
 const ErrorMessages = {
   "auth/email-already-in-use":
-    "O endereço de e-mail já está sendo usado por outra conta.\nTalvez você já tenha se cadastrado via Google ou Facebook.",
+    "O endereço de e-mail já está sendo usado. Talvez você já tenha se cadastrado via Google ou Facebook.",
+  "auth/account-exists-with-different-credential":
+    "O endereço de e-mail já está sendo usado. Talvez você já tenha se cadastrado via Google ou Facebook.",
+  "auth/invalid-email": "O endereço de e-mail é inválido",
+  "auth/weak-password":
+    "A senha é muito fraca. Use números, caracteres especiais (!@#$%&*) e letras maiúsculas e minúsculas",
+  "auth/user-not-found":
+    "Usuário não encontrado. Caso não possua conta, cadastre-se. É bem simples.",
+  "auth/wrong-password":
+    "Não foi possível logar. Verifique se seu email e/ou senha estão corretos.",
+  "auth/user-disabled":
+    "Esta conta foi desativada. Crie outra conta ou entre com o Google ou Facebook.",
+  "auth/popup-blocked":
+    "Não foi possível entrar. O navegador bloqueou o popup de acesso à conta. Por favor, habilite a exibição de popups para este site.",
+  "auth/popup-closed-by-user":
+    "Você fechou o popup de acesso. Caso realmente queira entrar, tente novamente.",
+  "auth/cancelled-popup-request":
+    "Não foi possível entrar. Ocorreu um erro desconhecido.",
+  "auth-domain-config-required":
+    "Não foi possível entrar. Ocorreu um erro desconhecido.",
+  "auth/operation-not-allowed":
+    "Não foi possível entrar. Operação não permitida.",
+  "auth/operation-not-supported-in-this-environment":
+    "Não foi possível entrar. Operação não permitida.",
+  "auth/unauthorized-domain":
+    "Não foi possível entrar. Operação não permitida.",
+  "auth/missing-android-pkg-name":
+    "Não foi possível entrar. Ocorreu um erro desconhecido.",
+  "auth/missing-continue-uri":
+    "Não foi possível entrar. Ocorreu um erro desconhecido.",
+  "auth/missing-ios-bundle-id":
+    "Não foi possível entrar. Ocorreu um erro desconhecido.",
+  "auth/invalid-continue-uri":
+    "Não foi possível entrar. Ocorreu um erro desconhecido.",
+  "auth/unauthorized-continue-uri":
+    "Não foi possível entrar. Ocorreu um erro desconhecido.",
+  "auth/expired-action-code": "O código de recuperação do email expirou.",
+  "auth/invalid-action-code": "O código de recuperação do email é inválido.",
 };
 
 export interface IAuthContextProps {
@@ -58,7 +95,7 @@ function useProviderAuth() {
       errorContext.newErrorDialog(
         true,
         "Erro ao Tentar Entrar",
-        "Não foi possível logar. Verifique se seu email e/ou senha estão corretos."
+        ErrorMessages[error.code]
       );
     }
   };
@@ -71,7 +108,7 @@ function useProviderAuth() {
       errorContext.newErrorDialog(
         true,
         "Erro ao Tentar Entrar",
-        "Não foi possível logar com o Google. Tente novamente mais tarde."
+        ErrorMessages[error.code]
       );
     }
   };
@@ -85,7 +122,7 @@ function useProviderAuth() {
       errorContext.newErrorDialog(
         true,
         "Erro ao Tentar Entrar",
-        "Não foi possível logar com o Facebook. Tente novamente mais tarde."
+        ErrorMessages[error.code]
       );
     }
   };
@@ -120,7 +157,11 @@ function useProviderAuth() {
     try {
       await firebase.auth().signOut();
     } catch (error) {
-      throw new Error("Não foi possível deslogar do sistema.");
+      errorContext.newErrorDialog(
+        true,
+        "Erro ao Tentar Desconectar",
+        "Um erro desconhecido ocorreu ao tentar desconectar."
+      );
     }
   };
 
@@ -128,8 +169,10 @@ function useProviderAuth() {
     try {
       await firebase.auth().sendPasswordResetEmail(email);
     } catch (error) {
-      throw new Error(
-        "Não foi possível resetar a senha. Tente novamente mais tarde."
+      errorContext.newErrorDialog(
+        true,
+        "Erro ao Tentar Entrar",
+        ErrorMessages[error.code]
       );
     }
   };
@@ -138,7 +181,11 @@ function useProviderAuth() {
     try {
       await firebase.auth().confirmPasswordReset(code, password);
     } catch (error) {
-      throw new Error("");
+      errorContext.newErrorDialog(
+        true,
+        "Erro ao Tentar Entrar",
+        ErrorMessages[error.code]
+      );
     }
   };
 
