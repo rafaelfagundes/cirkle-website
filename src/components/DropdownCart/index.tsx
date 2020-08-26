@@ -3,7 +3,9 @@ import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useCart } from "../../hooks/use-cart";
 import CustomButton from "../CustomButton";
+import EmptyBag from "../EmptyBag";
 import Icon from "../Icon";
+import Padding from "../Padding";
 import SizedBox from "../SizedBox";
 import {
   CartHeader,
@@ -41,6 +43,7 @@ function DropdownCart(): JSX.Element {
 
   const goToCart = () => {
     router.push("/cart");
+    setIsOpen(false);
   };
 
   return (
@@ -74,77 +77,96 @@ function DropdownCart(): JSX.Element {
           onMouseLeave: () => setTimeout(() => setIsOpen(false), 250),
         }}
       >
-        <CartHeader>
-          <CartHeaderText>Minha Sacola</CartHeaderText>
-          <CartHeaderNumber>{cartContext.cart.items.length}</CartHeaderNumber>
-        </CartHeader>
-        <CartItems height={window.innerHeight}>
-          {cartContext.cart.items.map((item, index) => (
-            <CartItem key={item.id} showBackground={index % 2 !== 0}>
-              <CartItemImage image={item.image} size={120}></CartItemImage>
-              <Column>
-                <Title>{item.title}</Title>
-                <SizedBox height={2}></SizedBox>
-                <Description>{item.description}</Description>
-                <SizedBox height={4}></SizedBox>
-                <MoreInfo>
-                  <Color>Cor: {item.color}</Color>
-                  <Size>Tam.: {item.size}</Size>
-                  <Qty>Qtd.: {item.qty}</Qty>
-                </MoreInfo>
-                <SizedBox height={4}></SizedBox>
-                <PriceAndButton>
-                  <Price>
-                    {new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(item.price)}
-                  </Price>
-                  <Icon
-                    size={16}
-                    type="trash"
-                    onClick={() => cartContext.removeFromCart(item.id)}
-                  ></Icon>
-                </PriceAndButton>
-              </Column>
-            </CartItem>
-          ))}
-        </CartItems>
-        <SizedBox height={16}></SizedBox>
+        {cartContext.cart.items.length > 0 && (
+          <>
+            <CartHeader>
+              <CartHeaderText>Minha Sacola</CartHeaderText>
+              <CartHeaderNumber>
+                {cartContext.cart.items.length}
+              </CartHeaderNumber>
+            </CartHeader>
+            <CartItems height={window.innerHeight}>
+              {cartContext.cart.items.map((item, index) => (
+                <CartItem key={item.id} showBackground={index % 2 !== 0}>
+                  <CartItemImage image={item.image} size={120}></CartItemImage>
+                  <Column>
+                    <Title>{item.title}</Title>
+                    <SizedBox height={2}></SizedBox>
+                    <Description>{item.description}</Description>
+                    <SizedBox height={4}></SizedBox>
+                    <MoreInfo>
+                      <Color>Cor: {item.color}</Color>
+                      <Size>Tam.: {item.size}</Size>
+                      <Qty>Qtd.: {item.qty}</Qty>
+                    </MoreInfo>
+                    <SizedBox height={4}></SizedBox>
+                    <PriceAndButton>
+                      <Price>
+                        {new Intl.NumberFormat("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        }).format(item.price)}
+                      </Price>
+                      <Icon
+                        size={16}
+                        type="trash"
+                        onClick={() => cartContext.removeFromCart(item.id)}
+                      ></Icon>
+                    </PriceAndButton>
+                  </Column>
+                </CartItem>
+              ))}
+            </CartItems>
+            <SizedBox height={16}></SizedBox>
 
-        <Row spaceBetween padding>
-          <Label>Subtotal</Label>
-          <Value>
-            {new Intl.NumberFormat("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            }).format(cartContext.cart.subtotal)}
-          </Value>
-        </Row>
-        <SizedBox height={16}></SizedBox>
-        <Row padding>
-          <CustomButton
-            width={200}
-            variant="outlined"
-            type="primary"
-            onClick={() => goToCart()}
-          >
-            Ver Sacola
-          </CustomButton>
-          <SizedBox width={16}></SizedBox>
-          <CustomButton
-            width={200}
-            variant="contained"
-            type="success"
-            onClick={null}
-          >
-            Comprar
-          </CustomButton>
-        </Row>
-        <SizedBox height={8}></SizedBox>
-        <Row>
-          <CartText>Frete Grátis para Compras Acima de R$200</CartText>
-        </Row>
+            <Row spaceBetween padding>
+              <Label>Subtotal</Label>
+              <Value>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(cartContext.cart.subtotal)}
+              </Value>
+            </Row>
+            <SizedBox height={16}></SizedBox>
+            <Row padding>
+              <CustomButton
+                width={200}
+                variant="outlined"
+                type="primary"
+                onClick={() => goToCart()}
+              >
+                Ver Sacola
+              </CustomButton>
+              <SizedBox width={16}></SizedBox>
+              <CustomButton
+                width={200}
+                variant="contained"
+                type="success"
+                onClick={null}
+              >
+                Comprar
+              </CustomButton>
+            </Row>
+            <SizedBox height={8}></SizedBox>
+            <Row>
+              <CartText>Frete Grátis para Compras Acima de R$200</CartText>
+            </Row>
+          </>
+        )}
+        {cartContext.cart.items.length === 0 && (
+          <>
+            <Column>
+              <Padding horizontal={36}>
+                <>
+                  <SizedBox height={56}></SizedBox>
+                  <EmptyBag></EmptyBag>
+                  <SizedBox height={56}></SizedBox>
+                </>
+              </Padding>
+            </Column>
+          </>
+        )}
       </StyledCart>
     </>
   );
