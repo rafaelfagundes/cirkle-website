@@ -46,13 +46,13 @@ function useDialogProvider() {
   });
 
   const newDialog = (
-    showDialog: boolean,
+    isOpen: boolean,
     title: string,
     description: string,
     buttonText = "OK"
   ) => {
     const _newError: IDialog = {
-      isOpen: showDialog,
+      isOpen,
       title,
       description,
       buttonText,

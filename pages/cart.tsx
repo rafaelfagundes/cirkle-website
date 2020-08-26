@@ -1,62 +1,20 @@
-import { Popover, useMediaQuery } from "@material-ui/core";
-import React from "react";
+import { useMediaQuery } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
+import CustomSelect from "../src/components/CustomSelect";
 import Icon from "../src/components/Icon";
 import Padding from "../src/components/Padding";
 import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
-import { CartItem as NewItem, useCart } from "../src/hooks/use-cart";
+import { Shipping, useCart } from "../src/hooks/use-cart";
 import theme, { Colors } from "../src/theme/theme";
 
-const IconHolder = styled.div`
-  width: 36px;
-  height: 36px;
-  cursor: pointer;
+const StyledCartContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
-`;
-
-const StyledCart = styled(Popover)``;
-
-const CartHeader = styled.div`
-  background-color: ${Colors.TYRIAN_PURPLE};
   flex-direction: row;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 8px 8px 16px;
-`;
-
-const CartHeaderText = styled.span`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  text-transform: uppercase;
-  letter-spacing: -0.25px;
-  font-size: 16px;
-  color: ${Colors.WHITE};
-  font-weight: 700;
-`;
-
-const CartHeaderNumber = styled.span`
-  flex-direction: row;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  text-transform: uppercase;
-  letter-spacing: -0.25px;
-  font-size: 14px;
-  color: ${Colors.TYRIAN_PURPLE};
-  font-weight: 700;
-  background-color: ${Colors.WHITE};
-  width: 22px;
-  height: 22px;
-  border-radius: 11px;
+  flex-wrap: wrap;
 `;
 
 const Label = styled.span`
@@ -81,15 +39,14 @@ const Value = styled.span`
   font-weight: 700;
 `;
 
-const CartText = styled.p`
+const Subvalue = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0px;
-  font-size: 14px;
-  color: ${Colors.RED_PINK};
-  font-weight: 700;
+  letter-spacing: -0.25px;
+  font-size: 13px;
+  color: ${Colors.PRIMARY};
+  font-weight: 500;
 `;
 
 const Row = styled.div<{ padding?: boolean; spaceBetween?: boolean }>`
@@ -101,16 +58,13 @@ const Row = styled.div<{ padding?: boolean; spaceBetween?: boolean }>`
   padding: ${(props) => (props.padding ? "0 16px" : 0)};
 `;
 
-const CartItems = styled.div<{ height: number }>`
-  max-height: ${(props) => props.height - 250}px;
-  overflow: scroll;
-`;
+const CartItems = styled.div``;
 
 const CartItem = styled.div<{ showBackground: boolean }>`
   padding: 16px;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   background-color: ${(props) =>
     props.showBackground ? "rgba(0, 0, 0, 0.025)" : "transparent"};
 `;
@@ -118,38 +72,31 @@ const CartItem = styled.div<{ showBackground: boolean }>`
 const CartItemImage = styled.div<{ image: string; size: number }>`
   background-image: ${(props) => `url("${props.image}");`};
   background-color: #cccccc;
-  height: ${(props) => props.size}px;
-  width: ${(props) => props.size * 0.75}px;
+  height: ${(props) => props.size * 1.25}px;
+  width: ${(props) => props.size}px;
+  min-width: 90px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  margin-right: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
-`;
 
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
 `;
 
 const Description = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   color: ${Colors.TYRIAN_PURPLE};
-  /* background-color: ${Colors.TYRIAN_PURPLE}; */
   font-size: 16px;
-  max-width: 300px;
+  margin-left: 6px;
 `;
 
 const MoreInfo = styled.div`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
   font-size: 14px;
 `;
-
-const PriceAndButton = styled(MoreInfo)``;
 
 const Price = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -180,131 +127,312 @@ const Qty = styled.span`
   color: ${Colors.TYRIAN_PURPLE};
 `;
 
+const TitleAndRemove = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-left: 6px;
+`;
+
+const ImagePrice = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+`;
+
+const CartFooter = styled.div<{ isSmartPhone: boolean }>`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  ${(props) => (props.isSmartPhone ? `width: 100%;` : "")};
+  margin-bottom: ${(props) => (props.isSmartPhone ? "32px" : 0)};
+`;
+
 function Cart(): JSX.Element {
-  const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const cartContext = useCart();
+  const [showEdit, setShowEdit] = useState(false);
+  const [deliveryType, setDeliveryType] = useState("normal");
+  const [postalCode, setPostalCode] = useState(36309012);
 
-  const newItem: NewItem = {
-    id: "27b5f262-85a1-483d-a86a-b17cbaf0d697",
-    sku: "TABAUATFRADEL8575",
-    color: "Branca/Amarela",
-    image:
-      "https://images.unsplash.com/photo-1504659913281-61817e6e2e9b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80",
-    description: "Meia para simular a vida de besta do Didi Mocó",
-    price: 30,
-    qty: 2,
-    size: "M",
-    title: "Meia Didi Mocó",
+  // const newItem: NewItem = {
+  //   id: "27b5f262-85a1-483d-a86a-b17cbaf0d697",
+  //   sku: "TABAUATFRADEL8575",
+  //   color: "Branca/Amarela",
+  //   image:
+  //     "https://images.unsplash.com/photo-1504659913281-61817e6e2e9b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80",
+  //   description: "Meia para simular a vida de besta do Didi Mocó",
+  //   price: 30,
+  //   qty: 2,
+  //   size: "M",
+  //   title: "Meia Didi Mocó",
+  // };
+
+  // const updateItem: NewItem = {
+  //   id: "27b5f262-85a1-483d-a86a-b17cbaf0d697",
+  //   sku: "TABAUATFRADEL8575",
+  //   color: "Branca/Amarela",
+  //   image:
+  //     "https://images.unsplash.com/photo-1504659913281-61817e6e2e9b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80",
+  //   description: "Meia para simular a vida de besta do Didi Mocó",
+  //   price: 30,
+  //   qty: 4,
+  //   size: "M",
+  //   title: "Meia Didi Mocó",
+  // };
+
+  const _getItemMaxQty = (id: string) => {
+    console.log("id", id);
+    return [
+      { title: "1", value: 1 },
+      { title: "2", value: 2 },
+    ];
   };
 
-  const updateItem: NewItem = {
-    id: "27b5f262-85a1-483d-a86a-b17cbaf0d697",
-    sku: "TABAUATFRADEL8575",
-    color: "Branca/Amarela",
-    image:
-      "https://images.unsplash.com/photo-1504659913281-61817e6e2e9b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80",
-    description: "Meia para simular a vida de besta do Didi Mocó",
-    price: 30,
-    qty: 4,
-    size: "M",
-    title: "Meia Didi Mocó",
+  const _getItemSizes = (id: string) => {
+    console.log("id", id);
+    return [
+      { title: "36", value: "36" },
+      { title: "37", value: "37" },
+      { title: "38", value: "38" },
+      { title: "39", value: "39" },
+      { title: "40", value: "40" },
+      { title: "41", value: "41" },
+      { title: "42", value: "42" },
+      { title: "43", value: "43" },
+      { title: "44", value: "44" },
+      { title: "45", value: "45" },
+    ];
   };
+
+  const _getItemColors = (id: string) => {
+    console.log("id", id);
+    return [
+      { title: "Preta", value: "Preta" },
+      { title: "Vermelha", value: "Vermelha" },
+      { title: "Azul Escuro", value: "Azul Escuro" },
+      { title: "Rosa", value: "Rosa" },
+      { title: "Laranja", value: "Laranja" },
+      { title: "Bege", value: "Bege" },
+    ];
+  };
+
+  const _getDeliveryTypes = () => {
+    return [
+      { title: "Normal (R$ 40)", value: "normal" },
+      { title: "Expresso (R$ 50)", value: "express" },
+    ];
+  };
+
+  const _updateDeliveryFee = () => {
+    let _shipping: Shipping = null;
+
+    switch (deliveryType) {
+      case "express":
+        _shipping = {
+          postalCode,
+          type: "express",
+          value: 50,
+        };
+        break;
+      case "normal":
+      default:
+        _shipping = {
+          postalCode,
+          type: "normal",
+          value: 40,
+        };
+        break;
+    }
+    cartContext.setShipping(_shipping);
+  };
+
+  useEffect(() => {
+    _updateDeliveryFee();
+  }, [deliveryType]);
 
   return (
-    <Padding horizontal={isSmartphone ? 16 : 0} vertical={32}>
-      <>
-        <Title>Sacola de Compras</Title>
-        <CartHeader>
-          <CartHeaderText>Minha Sacola</CartHeaderText>
-          <CartHeaderNumber>{cartContext.cart.items.length}</CartHeaderNumber>
-        </CartHeader>
-        <CartItems height={window.innerHeight}>
-          {cartContext.cart.items.map((item, index) => (
-            <CartItem key={item.id} showBackground={index % 2 !== 0}>
-              <CartItemImage image={item.image} size={120}></CartItemImage>
-              <Column>
-                <Title>{item.title}</Title>
-                <SizedBox height={2}></SizedBox>
-                <Description>{item.description}</Description>
-                <SizedBox height={4}></SizedBox>
-                <MoreInfo>
-                  <Color>Cor: {item.color}</Color>
-                  <Size>Tam.: {item.size}</Size>
-                  <Qty>Qtd.: {item.qty}</Qty>
-                </MoreInfo>
-                <SizedBox height={4}></SizedBox>
-                <PriceAndButton>
+    <StyledCartContainer>
+      <Padding horizontal={0} vertical={32}>
+        <>
+          <Padding horizontal={16} vertical={0}>
+            <Title size={18}>Sacola de Compras</Title>
+          </Padding>
+          <SizedBox height={8}></SizedBox>
+          <CartItems>
+            {cartContext.cart.items.map((item, index) => (
+              <CartItem key={item.id} showBackground={index % 2 === 0}>
+                <ImagePrice>
+                  <CartItemImage image={item.image} size={90}></CartItemImage>
+                  <SizedBox height={8}></SizedBox>
                   <Price>
                     {new Intl.NumberFormat("pt-BR", {
                       style: "currency",
                       currency: "BRL",
                     }).format(item.price)}
                   </Price>
-                  <Icon
-                    size={16}
-                    type="trash"
-                    onClick={() => cartContext.removeFromCart(item.id)}
-                  ></Icon>
-                </PriceAndButton>
-              </Column>
-            </CartItem>
-          ))}
-        </CartItems>
-        <SizedBox height={16}></SizedBox>
+                </ImagePrice>
+                <Column>
+                  <TitleAndRemove>
+                    <Title>{item.title}</Title>
+                    <Icon
+                      size={16}
+                      type="trash"
+                      onClick={() => cartContext.removeFromCart(item.id)}
+                    ></Icon>
+                  </TitleAndRemove>
+                  <SizedBox height={8}></SizedBox>
+                  <Description>{item.description}</Description>
+                  <SizedBox height={8}></SizedBox>
+                  <MoreInfo>
+                    {isSmartPhone && !showEdit && (
+                      <Padding horizontal={6}>
+                        <>
+                          <Row spaceBetween>
+                            <Color>Cor: {item.color}</Color>
+                            <SizedBox width={8}></SizedBox>
+                            <Size>Tam.: {item.size}</Size>
+                            <SizedBox width={8}></SizedBox>
+                            <Qty>Qtd.: {item.qty}</Qty>
+                          </Row>
+                          <SizedBox height={8}></SizedBox>
+                          <Row spaceBetween>
+                            <CustomButton
+                              type="primary"
+                              variant="outlined"
+                              onClick={() => setShowEdit(true)}
+                              width={200}
+                              small
+                            >
+                              Editar Cor/Tam/Qtd
+                            </CustomButton>
+                          </Row>
+                        </>
+                      </Padding>
+                    )}
+                    {(!isSmartPhone || showEdit) && (
+                      <>
+                        <SizedBox width={8}></SizedBox>
+                        <CustomSelect
+                          items={_getItemColors(item.id)}
+                          label="Cor"
+                          value={item.color}
+                          setValue={(value) =>
+                            cartContext.updateColor(item.id, value)
+                          }
+                        ></CustomSelect>
+                        <SizedBox width={8}></SizedBox>
+                        <CustomSelect
+                          items={_getItemSizes(item.id)}
+                          label="Tamanho"
+                          value={item.size}
+                          setValue={(value) =>
+                            cartContext.updateSize(item.id, value)
+                          }
+                        ></CustomSelect>
+                        <SizedBox width={8}></SizedBox>
+                        <CustomSelect
+                          items={_getItemMaxQty(item.id)}
+                          label="Quantidade"
+                          value={item.qty}
+                          setValue={(value) =>
+                            cartContext.updateQuantity(item.id, value)
+                          }
+                        ></CustomSelect>
+                      </>
+                    )}
+                  </MoreInfo>
+                  {isSmartPhone && showEdit && (
+                    <>
+                      <SizedBox height={16}></SizedBox>
+                      <CustomButton
+                        type="primary"
+                        variant="contained"
+                        onClick={() => setShowEdit(false)}
+                        small
+                      >
+                        Pronto
+                      </CustomButton>
+                    </>
+                  )}
+                  <SizedBox height={4}></SizedBox>
+                </Column>
+              </CartItem>
+            ))}
+          </CartItems>
+        </>
+      </Padding>
+      <SizedBox width={isSmartPhone ? 0 : 32}></SizedBox>
 
-        <Row spaceBetween padding>
-          <Label>Subtotal</Label>
-          <Value>
-            {new Intl.NumberFormat("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            }).format(cartContext.cart.subtotal)}
-          </Value>
-        </Row>
-        <SizedBox height={16}></SizedBox>
-        <Row padding>
-          <CustomButton
-            width={200}
-            variant="outlined"
-            type="primary"
-            onClick={() => cartContext.addToCart(newItem)}
-          >
-            Adicionar Item
-          </CustomButton>
-          <SizedBox width={16}></SizedBox>
-          <CustomButton
-            width={200}
-            variant="outlined"
-            type="primary"
-            onClick={() => cartContext.updateItem(updateItem)}
-          >
-            Atualizar Item
-          </CustomButton>
-          <SizedBox width={16}></SizedBox>
-          <CustomButton
-            width={200}
-            variant="outlined"
-            type="primary"
-            onClick={null}
-          >
-            Ver Sacola
-          </CustomButton>
-          <SizedBox width={16}></SizedBox>
-          <CustomButton
-            width={200}
-            variant="contained"
-            type="success"
-            onClick={null}
-          >
-            Comprar
-          </CustomButton>
-        </Row>
-        <SizedBox height={8}></SizedBox>
-        <Row>
-          <CartText>Frete Grátis para Compras Acima de R$200</CartText>
-        </Row>
-      </>
-    </Padding>
+      <CartFooter isSmartPhone={isSmartPhone}>
+        <Padding vertical={isSmartPhone ? 0 : 32} horizontal={0}>
+          <>
+            <Row spaceBetween>
+              <Label>Subtotal</Label>
+              <Value>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(cartContext.cart.subtotal)}
+              </Value>
+            </Row>
+            <SizedBox height={16}></SizedBox>
+            <Row spaceBetween>
+              <Label>Frete</Label>
+              <Value>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(cartContext.cart.shipping.value)}
+              </Value>
+            </Row>
+            <CustomSelect
+              value={cartContext.cart.shipping.type}
+              setValue={setDeliveryType}
+              items={_getDeliveryTypes()}
+            ></CustomSelect>
+            <SizedBox height={16}></SizedBox>
+            <Row spaceBetween>
+              <Subvalue>Rua Frederico Ozanan, 150</Subvalue>
+              <CustomButton
+                type="primary"
+                variant="outlined"
+                onClick={null}
+                small
+              >
+                Alterar
+              </CustomButton>
+            </Row>
+            <SizedBox height={32}></SizedBox>
+            <Row spaceBetween>
+              <Label>Total</Label>
+              <Value>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(cartContext.cart.total)}
+              </Value>
+            </Row>
+            <SizedBox height={16}></SizedBox>
+            <Row>
+              <CustomButton
+                width={300}
+                variant="contained"
+                type="success"
+                onClick={null}
+              >
+                Comprar
+              </CustomButton>
+            </Row>
+            <SizedBox height={8}></SizedBox>
+          </>
+        </Padding>
+      </CartFooter>
+    </StyledCartContainer>
   );
 }
 

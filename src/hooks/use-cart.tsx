@@ -57,8 +57,11 @@ export interface ICartContextProps {
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: string) => void;
   updateItem: (item: CartItem) => void;
-  setShippingType: (shipping: Shipping) => void;
+  setShipping: (shipping: Shipping) => void;
   setAddress: (address: Address) => void;
+  updateQuantity: (id: string, qty: number) => void;
+  updateColor: (id: string, color: string) => void;
+  updateSize: (id: string, size: string) => void;
 }
 
 const CartContext = createContext({} as ICartContextProps);
@@ -77,7 +80,7 @@ export const useCart = (): ICartContextProps => {
 };
 
 function useCartProvider() {
-  const _cart: Cart = {
+  const initialCart: Cart = {
     items: [
       {
         id: "d5b321a3-6ed3-41f3-aa2a-f970435f63d6",
@@ -120,7 +123,7 @@ function useCartProvider() {
       },
     ],
     shipping: {
-      type: "SEDEX",
+      type: "express",
       value: 50,
       postalCode: 36309012,
     },
@@ -130,15 +133,13 @@ function useCartProvider() {
     total: 1309.97,
   };
 
-  const [cart, setCart] = useState(_cart);
+  const [cart, setCart] = useState(initialCart);
 
-  function calculateValues(
-    items: Array<CartItem>
-  ): { subtotal: number; total: number } {
-    const subtotal = items.reduce((sum, item) => {
+  function calculateValues(newCart: Cart): { subtotal: number; total: number } {
+    const subtotal = newCart.items.reduce((sum, item) => {
       return sum + item.price * item.qty;
     }, 0);
-    const shippingValue = _cart?.shipping ? _cart?.shipping.value : 0;
+    const shippingValue = newCart?.shipping ? newCart?.shipping.value : 0;
     const total = subtotal + shippingValue;
 
     return { subtotal, total };
@@ -150,7 +151,7 @@ function useCartProvider() {
     const _cart = _.cloneDeep(cart);
     _cart.items.push(item);
 
-    const { subtotal, total } = calculateValues(_cart.items);
+    const { subtotal, total } = calculateValues(_cart);
     _cart.total = total;
     _cart.subtotal = subtotal;
 
@@ -162,7 +163,7 @@ function useCartProvider() {
     const _newItems = _cart.items.filter((o) => o.id !== id);
     _cart.items = _newItems;
 
-    const { subtotal, total } = calculateValues(_newItems);
+    const { subtotal, total } = calculateValues(_cart);
     _cart.total = total;
     _cart.subtotal = subtotal;
 
@@ -177,9 +178,9 @@ function useCartProvider() {
       return;
     }
 
-    _cart.items[_index] = item;
+    _cart.items[_index] = _.cloneDeep(item);
 
-    const { subtotal, total } = calculateValues(_cart.items);
+    const { subtotal, total } = calculateValues(_cart);
     _cart.total = total;
     _cart.subtotal = subtotal;
 
@@ -188,10 +189,43 @@ function useCartProvider() {
 
   const setShipping = (shipping: Shipping) => {
     console.log("setShippingType");
+
+    const _cart = _.cloneDeep(cart);
+    _cart.shipping = shipping;
+
+    const { subtotal, total } = calculateValues(_cart);
+    _cart.total = total;
+    _cart.subtotal = subtotal;
+
+    setCart(_cart);
   };
 
   const setAddress = (address: Address) => {
     console.log("setAddress");
+  };
+
+  const updateQuantity = (id: string, qty: number) => {
+    const _item = _.find(cart.items, (o) => o.id === id);
+    if (_item) {
+      _item.qty = qty;
+      updateItem(_item);
+    }
+  };
+
+  const updateColor = (id: string, color: string) => {
+    const _item = _.find(cart.items, (o) => o.id === id);
+    if (_item) {
+      _item.color = color;
+      updateItem(_item);
+    }
+  };
+
+  const updateSize = (id: string, size: string) => {
+    const _item = _.find(cart.items, (o) => o.id === id);
+    if (_item) {
+      _item.size = size;
+      updateItem(_item);
+    }
   };
 
   return {
@@ -199,8 +233,11 @@ function useCartProvider() {
     addToCart,
     removeFromCart,
     updateItem,
-    setShippingType: setShipping,
+    setShipping,
     setAddress,
+    updateQuantity,
+    updateColor,
+    updateSize,
   };
 }
 
