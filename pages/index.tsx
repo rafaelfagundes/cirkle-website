@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import HighlightsSection from "../src/components/HighlightsSection";
 import HomeCategories from "../src/components/HomeCategories";
 import HotSection from "../src/components/HotSection/index";
+import HighlightsLoader from "../src/components/Loaders/Highlights";
 import MainBannerLoader from "../src/components/Loaders/MainBanner";
 import MainBanner from "../src/components/MainBanner/index";
 import NewsletterSignUp from "../src/components/NewsletterSignUp";
@@ -12,47 +13,7 @@ import TopTextBanner from "../src/components/TopTextBanner";
 import firebase from "../src/config/firebase";
 import { Colors } from "../src/theme/theme";
 
-// const remoteConfig = firebase.remoteConfig();
-// remoteConfig.settings = {
-//   minimumFetchIntervalMillis: 3600000,
-// };
-
 function Home(): JSX.Element {
-  const highlights = [
-    {
-      id: "9c2c5e99-4395-4634-a7a3-43ca8e4026c0",
-      title: "Lindos Sapatos",
-      subtitle: "Confira as Novidades",
-      image:
-        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598521475/highlights/Frame_1_ky0vwj.jpg",
-      link: "/highlights/65445b8a-c0a3-4cc9-a2aa-d95ef5539d47",
-    },
-    {
-      id: "3d3c7436-74e3-4e89-b1c8-3cc1ef24bd32",
-      title: "Vestidos Despojados",
-      subtitle: "Mostre-me mais",
-      image:
-        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598521475/highlights/Frame_2_llf1x4.jpg",
-      link: "/highlights/ab2504be-6282-4299-b3fd-676f58fbe47d",
-    },
-    {
-      id: "0c74c9c5-b359-48c1-bf75-9549cfc25db8",
-      title: "Fantasias infantis",
-      subtitle: "Veja as mais divertidas",
-      image:
-        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598521476/highlights/Frame_3_jun1lq.jpg",
-      link: "/highlights/a5616bd8-7af4-4ec0-b7df-973a0b548142",
-    },
-    {
-      id: "e95a99a5-2ef1-4156-a0bf-74a5f4440029",
-      title: "Bolsas com até 70% OFF",
-      subtitle: "Quero ver mais",
-      image:
-        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598521475/highlights/Frame_4_hcnlnp.jpg",
-      link: "/highlights/51da52ab-d307-4144-947f-8bf310fe78aa",
-    },
-  ];
-  //https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_300/v1598522536/products/photo-1590736969955-71cc94801759_aury70.jpg
   const hotProducts = [
     {
       id: "323d1e6f-1999-4e6e-ad47-e75a675c470a",
@@ -180,13 +141,17 @@ function Home(): JSX.Element {
     mainBanner ? JSON.parse(mainBanner) : null
   );
 
+  const initialHighlights = localStorage.getItem("highlights");
+  const [highlights, setHighlights] = useState(
+    initialHighlights ? JSON.parse(initialHighlights) : null
+  );
+
   useEffect(() => {
     const remoteConfig = firebase.remoteConfig();
     remoteConfig.settings = {
       minimumFetchIntervalMillis: 60000,
       fetchTimeoutMillis: 60000,
     };
-    console.log("mainBanner", mainBanner);
     remoteConfig.defaultConfig = {
       mainBanner: mainBanner ? JSON.parse(mainBanner) : null,
     };
@@ -194,10 +159,17 @@ function Home(): JSX.Element {
       .fetchAndActivate()
       .then(() => {
         const banner = remoteConfig.getValue("mainBanner").asString();
+        const highlights = remoteConfig.getValue("highlights").asString();
 
+        // Banner
         if (banner) {
           setBanner(JSON.parse(banner));
           localStorage.setItem("mainBanner", banner);
+        }
+        // Highlights
+        if (highlights) {
+          setHighlights(JSON.parse(highlights));
+          localStorage.setItem("highlights", highlights);
         }
       })
       .catch((error) => console.log(error));
@@ -234,7 +206,8 @@ function Home(): JSX.Element {
       <Hidden only={["xs", "sm"]}>
         <SizedBox height={32}></SizedBox>
       </Hidden>
-      <HighlightsSection data={highlights}></HighlightsSection>
+      {!highlights && <HighlightsLoader></HighlightsLoader>}
+      {highlights && <HighlightsSection data={highlights}></HighlightsSection>}
       <HotSection products={hotProducts} brands={brands}></HotSection>
       <Hidden only={["md", "lg", "xl"]}>
         <NewsletterSignUp></NewsletterSignUp>
