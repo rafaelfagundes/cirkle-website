@@ -30,7 +30,7 @@ import {
   Subvalue,
   TitleAndRemove,
   Value,
-} from "./styles/cart";
+} from "../styles/pages/cart";
 
 function Cart(): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
