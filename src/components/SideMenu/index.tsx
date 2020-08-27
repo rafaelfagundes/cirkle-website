@@ -233,11 +233,7 @@ function SideMenu({ data }: { data: any }): JSX.Element {
                 key={menuData[element].title}
                 active={menuData[element].active}
                 onClick={() => toggleTab(element)}
-                color={
-                  selectedTab === "women"
-                    ? Colors.MAGENTA
-                    : Colors.ORANGE_PANTONE
-                }
+                color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
               >
                 <TabText active={menuData[element].active}>
                   {menuData[element].title}
@@ -247,9 +243,7 @@ function SideMenu({ data }: { data: any }): JSX.Element {
           </Tabs>
         </HorizontalPadding>
         <MenuContainer
-          color={
-            selectedTab === "women" ? Colors.MAGENTA : Colors.ORANGE_PANTONE
-          }
+          color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
         >
           <Link href="/products/newin">
             <StyledMenuItem>

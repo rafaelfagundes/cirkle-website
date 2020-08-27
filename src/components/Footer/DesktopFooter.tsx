@@ -8,7 +8,7 @@ import SizedBox from "../SizedBox";
 
 const Footer = styled.div`
   padding-top: 16px;
-  background-color: ${Colors.MAGENTA};
+  background-color: ${Colors.SECONDARY};
 `;
 
 const LinksSection = styled.div`
@@ -81,14 +81,6 @@ const SocialData = styled.div`
   margin-left: 5px;
   display: flex;
   flex-direction: column;
-`;
-
-const SocialDataTitle = styled.span`
-  font-family: "FuturaPT";
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: 12px;
-  color: ${Colors.MIDDLE_YELLOW};
 `;
 
 const SocialDataInfo = styled.span`
@@ -177,7 +169,6 @@ function DesktopFooter(): JSX.Element {
               <Social>
                 <Icon size={36} type="whatsapp-white"></Icon>
                 <SocialData>
-                  <SocialDataTitle>adicione no zap</SocialDataTitle>
                   <SocialDataInfo>(32) 99123-4567</SocialDataInfo>
                 </SocialData>
               </Social>

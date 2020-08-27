@@ -28,7 +28,7 @@ export const IconCounter = styled.span`
 export const StyledCart = styled(Popover)``;
 
 export const CartHeader = styled.div`
-  background-color: ${Colors.TYRIAN_PURPLE};
+  background-color: ${Colors.PRIMARY};
   flex-direction: row;
   display: flex;
   justify-content: space-between;
@@ -58,7 +58,7 @@ export const CartHeaderNumber = styled.span`
   text-transform: uppercase;
   letter-spacing: -0.25px;
   font-size: 14px;
-  color: ${Colors.TYRIAN_PURPLE};
+  color: ${Colors.PRIMARY};
   font-weight: 700;
   background-color: ${Colors.WHITE};
   width: 22px;
@@ -73,7 +73,7 @@ export const Label = styled.span`
   text-transform: uppercase;
   letter-spacing: -0.25px;
   font-size: 16px;
-  color: ${Colors.TYRIAN_PURPLE};
+  color: ${Colors.PRIMARY};
   font-weight: 700;
 `;
 
@@ -84,7 +84,7 @@ export const Value = styled.span`
   text-transform: uppercase;
   letter-spacing: -0.25px;
   font-size: 16px;
-  color: ${Colors.FOREST_GREEN_CRAYOLA};
+  color: ${Colors.MONEY};
   font-weight: 700;
 `;
 
@@ -143,15 +143,15 @@ export const Title = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  color: ${Colors.TYRIAN_PURPLE};
+  color: ${Colors.PRIMARY};
   font-size: 18px;
 `;
 
 export const Description = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  color: ${Colors.TYRIAN_PURPLE};
-  /* background-color: ${Colors.TYRIAN_PURPLE}; */
+  color: ${Colors.PRIMARY};
+  /* background-color: ${Colors.PRIMARY}; */
   font-size: 16px;
   max-width: 300px;
 `;
@@ -170,7 +170,7 @@ export const Price = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  color: ${Colors.DARK_SEA_GREEN};
+  color: ${Colors.MONEY};
   font-weight: 700;
 `;
 
@@ -178,19 +178,19 @@ export const Color = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  color: ${Colors.TYRIAN_PURPLE};
+  color: ${Colors.PRIMARY};
 `;
 
 export const Size = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  color: ${Colors.TYRIAN_PURPLE};
+  color: ${Colors.PRIMARY};
 `;
 
 export const Qty = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  color: ${Colors.TYRIAN_PURPLE};
+  color: ${Colors.PRIMARY};
 `;

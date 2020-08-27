@@ -6,7 +6,7 @@ import PaymentType from "../PaymentType";
 import SizedBox from "../SizedBox";
 
 const FooterLinks = styled.div`
-  background-color: ${Colors.MAGENTA};
+  background-color: ${Colors.SECONDARY};
 `;
 
 const LinksSection = styled.div`

@@ -11,7 +11,7 @@ const Legal = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background-color: ${Colors.TYRIAN_PURPLE};
+  background-color: ${Colors.PRIMARY};
 `;
 
 const LegalText = styled.span`

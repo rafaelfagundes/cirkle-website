@@ -8,7 +8,7 @@ import SizedBox from "../SizedBox";
 
 const StyledInput = styled.div<{ error: boolean }>`
   border: ${(props) => (props.error ? "3px" : "2px")} solid
-    ${(props) => (props.error ? Colors.RADICAL_RED : Colors.PRIMARY)};
+    ${(props) => (props.error ? Colors.ERROR : Colors.PRIMARY)};
   height: 44px;
   display: flex;
   align-items: center;
@@ -24,7 +24,7 @@ const ErrorText = styled.span`
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   font-size: 16px;
-  color: ${Colors.RADICAL_RED};
+  color: ${Colors.ERROR};
 `;
 
 const useStyles = makeStyles(() => ({

@@ -41,7 +41,7 @@ const Title = styled.span<{ fontSize: number }>`
 
 const Subtitle = styled.span<{ fontSize: number }>`
   text-transform: uppercase;
-  color: ${Colors.RED_PINK};
+  color: ${Colors.SECONDARY};
   font-family: "FuturaPT";
   font-size: ${(props) => props.fontSize}px;
   font-weight: bold;

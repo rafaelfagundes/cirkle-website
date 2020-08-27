@@ -11,7 +11,7 @@ const StyledSearchBar = styled.div`
   align-items: center;
   justify-content: center;
   padding: 16px;
-  background-color: ${Colors.TYRIAN_PURPLE};
+  background-color: ${Colors.PRIMARY};
 `;
 
 const StyledInputBase = styled(InputBase)`
@@ -21,7 +21,7 @@ const StyledInputBase = styled(InputBase)`
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   font-size: 18px;
-  color: ${Colors.TYRIAN_PURPLE};
+  color: ${Colors.PRIMARY};
 `;
 
 const SearchBackground = styled.div`

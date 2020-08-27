@@ -13,7 +13,7 @@ const Row = styled.div`
 `;
 
 const Newsletter = styled.div`
-  background-color: ${Colors.TYRIAN_PURPLE};
+  background-color: ${Colors.PRIMARY};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,7 +55,7 @@ const NLButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${Colors.PLUM};
+  background-color: ${Colors.PRIMARY};
   padding: 0 16px;
   cursor: pointer;
 `;
@@ -64,6 +64,7 @@ const NLButtonText = styled.span`
   color: ${Colors.WHITE};
   font-family: "FuturaPT";
   font-size: 16px;
+  text-transform: uppercase;
 `;
 
 function NewsletterSignUp(): JSX.Element {

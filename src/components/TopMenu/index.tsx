@@ -223,11 +223,7 @@ function TopMenu({ data }: { data: any }): JSX.Element {
                   active={menuData[element].active}
                   onClick={() => toggleTab(element)}
                   onMouseOver={() => toggleTab(element)}
-                  color={
-                    selectedTab === "women"
-                      ? Colors.MAGENTA
-                      : Colors.ORANGE_PANTONE
-                  }
+                  color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
                 >
                   <TabText active={menuData[element].active}>
                     {menuData[element].title}
@@ -258,7 +254,7 @@ function TopMenu({ data }: { data: any }): JSX.Element {
       </Container>
 
       <UnderTabsContent
-        color={selectedTab === "women" ? Colors.MAGENTA : Colors.ORANGE_PANTONE}
+        color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
         onMouseLeave={() => {
           cleanActives(selectedTab, selectedCategory);
         }}

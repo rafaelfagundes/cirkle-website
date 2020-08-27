@@ -12,13 +12,13 @@ const SellButton = styled.div<{ width: number }>`
   align-items: center;
   justify-content: center;
   margin-right: 10px;
-  border: 2px solid ${Colors.EMERALD};
+  border: 2px solid ${Colors.MONEY};
   height: 45px;
 `;
 
 const SellText = styled.p`
   font-family: "FuturaPT";
-  color: ${Colors.EMERALD};
+  color: ${Colors.MONEY};
   font-weight: 500;
   font-size: 14px;
   text-transform: uppercase;

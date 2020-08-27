@@ -170,7 +170,7 @@ function Home(): JSX.Element {
         <SearchBar placeHolder="Procure marcas, categorias, modelos"></SearchBar>
       </Hidden>
 
-      <TopTextBanner color={Colors.TRANSPARENT} textColor={Colors.ULTRA_RED}>
+      <TopTextBanner color={Colors.TRANSPARENT} textColor={Colors.SECONDARY}>
         Frete grátis para pedidos acima de R$200
       </TopTextBanner>
       <MainBanner
@@ -179,9 +179,9 @@ function Home(): JSX.Element {
         secondaryText="bolsas e acessórios"
         position="bottom-right"
         primaryTextColor={Colors.WHITE}
-        primaryBackgroundColor={Colors.PARADISE_PINK}
-        secondaryTextColor={Colors.BLACK}
-        secondaryBackgroundColor={Colors.MIDDLE_YELLOW}
+        primaryBackgroundColor={Colors.PRIMARY}
+        secondaryTextColor={Colors.WHITE}
+        secondaryBackgroundColor={Colors.SECONDARY}
       ></MainBanner>
 
       <Hidden smUp={true}>

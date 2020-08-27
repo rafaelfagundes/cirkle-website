@@ -52,9 +52,9 @@ function MainBanner({
   primaryText,
   secondaryText,
   primaryTextColor = Colors.WHITE,
-  primaryBackgroundColor = Colors.FRENCH_RASPBERRY,
-  secondaryTextColor = Colors.BLACK2,
-  secondaryBackgroundColor = Colors.MIDDLE_YELLOW,
+  primaryBackgroundColor = Colors.PRIMARY,
+  secondaryTextColor = Colors.WHITE,
+  secondaryBackgroundColor = Colors.SECONDARY,
 }: {
   url: string;
   position?: string;

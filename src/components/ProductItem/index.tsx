@@ -34,7 +34,7 @@ const Image = styled.div<{ image: string }>`
 
 const BrandName = styled.div`
   align-items: center;
-  background-color: ${Colors.CHARM_PINK};
+  background-color: ${Colors.SECONDARY};
   display: flex;
   flex-direction: row;
   height: 18px;
@@ -109,7 +109,7 @@ const OldPrice = styled.span`
 `;
 
 const Discount = styled.div`
-  background: ${Colors.EMERALD};
+  background: ${Colors.MONEY};
   border-radius: 12px;
   padding: 3px 6px;
 `;
