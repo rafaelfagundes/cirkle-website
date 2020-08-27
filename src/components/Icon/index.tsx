@@ -67,6 +67,7 @@ Icon.propTypes = {
     "whatsapp",
     "whatsapp-white",
     "triangle-down",
+    "triangle-down-fill",
   ]),
 };
 

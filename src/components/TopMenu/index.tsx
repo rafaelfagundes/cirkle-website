@@ -97,7 +97,7 @@ const MenuItemText = styled.span<{
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
   padding: ${(props) => (props.first ? "16px 16px 16px 0" : "0 0 0 16px")} ;
   text-transform: uppercase;
-  font-weight: 500;  
+  font-weight: 500;
 `;
 
 const SubcategoriesHolder = styled.div`
@@ -283,7 +283,14 @@ function TopMenu({ data }: { data: any }): JSX.Element {
                       {menuData[selectedTab].categories[item].title}
                     </MenuItemText>
                     <MenuItemArrow>
-                      <Icon size={8} type="triangle-down"></Icon>
+                      <Icon
+                        size={8}
+                        type={
+                          menuData[selectedTab].categories[item].active
+                            ? "triangle-down-fill"
+                            : "triangle-down"
+                        }
+                      ></Icon>
                     </MenuItemArrow>
                   </MenuItem>
                 </Link>

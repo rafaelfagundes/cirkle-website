@@ -32,7 +32,7 @@ function SocialLoginButton({
   onClick,
 }: {
   children: string;
-  onClick?: () => Promise<firebase.User>;
+  onClick?: () => Promise<void>;
 }): JSX.Element {
   const type: string = children.toLowerCase();
 

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 export type Cart = {
   items: Array<CartItem>;
@@ -80,60 +80,24 @@ export const useCart = (): ICartContextProps => {
 };
 
 function useCartProvider() {
-  const initialCart: Cart = {
-    items: [
-      {
-        id: "d5b321a3-6ed3-41f3-aa2a-f970435f63d6",
-        sku: "10bfbaeb-daad-4f8a-ab4b-7d76f208283c",
-        image:
-          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
-        price: 499.99,
-        title: "Nike Free",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-        qty: 1,
-        color: "Laranja",
-        size: "38",
-      },
-      {
-        id: "8e896ae1-7b24-4bb2-b7dd-af1d7f29d112",
-        sku: "9b5e7ae7-9c20-4d05-9afd-bb652ddf55d0",
-        image:
-          "https://images.unsplash.com/photo-1545289414-1c3cb1c06238?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
-        price: 399.99,
-        title: "Puma One",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-        qty: 1,
-        color: "Azul Escuro",
-        size: "38",
-      },
-      {
-        id: "87eb4a73-1522-48ca-8204-cba367769038",
-        sku: "ecbfbcf7-c426-487d-a508-ce83332dcad5",
-        image:
-          "https://images.unsplash.com/photo-1581067675198-463d66478d0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1239&q=80",
-        price: 359.99,
-        title: "Nike Air Force 1",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-        qty: 1,
-        color: "Bege",
-        size: "38",
-      },
-    ],
+  const emptyCart: Cart = {
+    items: [],
     shipping: {
       type: "express",
-      value: 50,
+      value: 0,
       postalCode: 36309012,
     },
     address: null,
     payment: null,
-    subtotal: 1259.97,
-    total: 1309.97,
+    subtotal: 0,
+    total: 0,
   };
 
-  const [cart, setCart] = useState(initialCart);
+  let savedCart: Cart;
+  if (process.browser) {
+    savedCart = JSON.parse(localStorage.getItem("cart"));
+  }
+  const [cart, setCart] = useState(savedCart ? savedCart : emptyCart);
 
   function calculateValues(newCart: Cart): { subtotal: number; total: number } {
     const subtotal = newCart.items.reduce((sum, item) => {
@@ -146,8 +110,6 @@ function useCartProvider() {
   }
 
   const addToCart = (item: CartItem) => {
-    console.log("addToCart", item);
-
     const _cart = _.cloneDeep(cart);
     _cart.items.push(item);
 
@@ -188,8 +150,6 @@ function useCartProvider() {
   };
 
   const setShipping = (shipping: Shipping) => {
-    console.log("setShippingType");
-
     const _cart = _.cloneDeep(cart);
     _cart.shipping = shipping;
 
@@ -227,6 +187,11 @@ function useCartProvider() {
       updateItem(_item);
     }
   };
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+    console.log("cart", cart);
+  }, [cart]);
 
   return {
     cart,

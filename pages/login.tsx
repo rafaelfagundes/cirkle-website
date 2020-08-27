@@ -36,6 +36,26 @@ const Text = styled.span`
 `;
 
 function SocialLogin({ auth }: { auth: IAuthContextProps }): JSX.Element {
+  const router = useRouter();
+
+  const signIn = async (type: string): Promise<void> => {
+    let result: firebase.User;
+    switch (type) {
+      case "facebook":
+        result = await auth.signinWithFacebook();
+        break;
+
+      case "google":
+      default:
+        result = await auth.signinWithGoogle();
+        break;
+    }
+
+    if (result) {
+      router.push("/");
+    }
+  };
+
   return (
     <>
       <Center>
@@ -44,15 +64,11 @@ function SocialLogin({ auth }: { auth: IAuthContextProps }): JSX.Element {
       <SizedBox height={16}></SizedBox>
       <Container maxWidth="xs">
         <Row>
-          <SocialLoginButton
-            onClick={async () => await auth.signinWithGoogle()}
-          >
+          <SocialLoginButton onClick={async () => await signIn("google")}>
             Google
           </SocialLoginButton>
           <SizedBox width={16}></SizedBox>
-          <SocialLoginButton
-            onClick={async () => await auth.signinWithFacebook()}
-          >
+          <SocialLoginButton onClick={async () => await signIn("facebook")}>
             Facebook
           </SocialLoginButton>
         </Row>

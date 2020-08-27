@@ -36,7 +36,7 @@ function Cart(): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const cartContext = useCart();
   const [showEdit, setShowEdit] = useState(false);
-  const [deliveryType, setDeliveryType] = useState("normal");
+  const [deliveryType, setDeliveryType] = useState(null);
   const [postalCode, setPostalCode] = useState(36309012);
 
   // const newItem: NewItem = {
@@ -66,7 +66,6 @@ function Cart(): JSX.Element {
   // };
 
   const _getItemMaxQty = (id: string) => {
-    console.log("id", id);
     return [
       { title: "1", value: 1 },
       { title: "2", value: 2 },
@@ -74,7 +73,6 @@ function Cart(): JSX.Element {
   };
 
   const _getItemSizes = (id: string) => {
-    console.log("id", id);
     return [
       { title: "36", value: "36" },
       { title: "37", value: "37" },
@@ -90,7 +88,6 @@ function Cart(): JSX.Element {
   };
 
   const _getItemColors = (id: string) => {
-    console.log("id", id);
     return [
       { title: "Preta", value: "Preta" },
       { title: "Vermelha", value: "Vermelha" },
@@ -109,6 +106,7 @@ function Cart(): JSX.Element {
   };
 
   const _updateDeliveryFee = () => {
+    if (!deliveryType) return;
     let _shipping: Shipping = null;
 
     switch (deliveryType) {
