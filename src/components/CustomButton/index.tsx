@@ -2,31 +2,16 @@ import { CircularProgress } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../theme/theme";
+import Icon from "../Icon";
 import LoadingAnimation from "../LoadingAnimation";
-
-/*
-font-family: futura-pt-n7,futura-pt,"Futura PT","Futura Book",Tahoma,Geneva,Verdana,Arial,sans-serif;
-    font-weight: 700;
-    border: none;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    cursor: pointer;
-    font-size: .875em;
-    letter-spacing: .0857142857em;
-    line-height: 1em;
-    margin: 0 auto;
-    text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;
-    width: 100%;
-*/
+import SizedBox from "../SizedBox";
 
 const ButtonBase = styled.div<{ width: number; small: boolean }>`
   width: ${(props) => props.width}px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
   height: ${(props) => (props.small ? "28px" : "44px")};
 
@@ -41,9 +26,15 @@ const ButtonBase = styled.div<{ width: number; small: boolean }>`
 const ButtonContained = styled(ButtonBase)<{ color?: string }>`
   position: relative;
   background-color: ${(props) => props.color};
-  padding: 0px 16px;
+  padding: 0px 8px;
   box-sizing: border-box;
   border: 2px solid ${(props) => props.color};
+`;
+
+const TextIconHolder = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const ButtonText = styled.span<{ color?: string; small: boolean }>`
@@ -68,7 +59,7 @@ const ButtonText = styled.span<{ color?: string; small: boolean }>`
 
 const ButtonOutlined = styled(ButtonBase)<{ color?: string }>`
   position: relative;
-  padding: 0px 16px;
+  padding: 0px 8px;
   border: 2px solid ${(props) => props.color};
   box-sizing: border-box;
 `;
@@ -86,6 +77,7 @@ function CustomButton({
   loading = false,
   onClick,
   small = false,
+  icon,
 }: {
   children: string;
   type: string;
@@ -93,6 +85,7 @@ function CustomButton({
   width?: number;
   loading?: boolean;
   small?: boolean;
+  icon?: string;
   onClick: () => void;
 }): JSX.Element {
   function getColors(): { background: string; text: string } {
@@ -132,9 +125,17 @@ function CustomButton({
           small={small}
         >
           {!loading && (
-            <ButtonText small={small} color={colors.background}>
-              {children}
-            </ButtonText>
+            <TextIconHolder>
+              {icon && (
+                <>
+                  <Icon type={icon}></Icon>
+                  <SizedBox width={5}></SizedBox>
+                </>
+              )}
+              <ButtonText small={small} color={colors.background}>
+                {children}
+              </ButtonText>
+            </TextIconHolder>
           )}
           {loading && <LoadingAnimation size={20} color></LoadingAnimation>}
         </ButtonOutlined>
@@ -148,9 +149,17 @@ function CustomButton({
           small={small}
         >
           {!loading && (
-            <ButtonText small={small} color={colors.text}>
-              {children}
-            </ButtonText>
+            <TextIconHolder>
+              {icon && (
+                <>
+                  <Icon type={icon}></Icon>
+                  <SizedBox width={5}></SizedBox>
+                </>
+              )}
+              <ButtonText small={small} color={colors.text}>
+                {children}
+              </ButtonText>
+            </TextIconHolder>
           )}
           {loading && <LoadingAnimation size={20}></LoadingAnimation>}
         </ButtonContained>
@@ -159,9 +168,17 @@ function CustomButton({
       return (
         <ButtonTypeText width={width} onClick={onClick} small={small}>
           {!loading && (
-            <ButtonText small={small} color={colors.background}>
-              {children}
-            </ButtonText>
+            <TextIconHolder>
+              {icon && (
+                <>
+                  <Icon type={icon}></Icon>
+                  <SizedBox width={5}></SizedBox>
+                </>
+              )}
+              <ButtonText small={small} color={colors.background}>
+                {children}
+              </ButtonText>
+            </TextIconHolder>
           )}
           {loading && <LoadingAnimation size={20} color></LoadingAnimation>}
         </ButtonTypeText>
@@ -176,9 +193,17 @@ function CustomButton({
           small={small}
         >
           {!loading && (
-            <ButtonText small={small} color={colors.text}>
-              {children}
-            </ButtonText>
+            <TextIconHolder>
+              {icon && (
+                <>
+                  <Icon type={icon}></Icon>
+                  <SizedBox width={5}></SizedBox>
+                </>
+              )}
+              <ButtonText small={small} color={colors.text}>
+                {children}
+              </ButtonText>
+            </TextIconHolder>
           )}
           {loading && <CircularProgress size={20} color="secondary" />}
         </ButtonOutlined>

@@ -308,7 +308,7 @@ function Cart(): JSX.Element {
                 <SizedBox height={16}></SizedBox>
                 <Row>
                   <CustomButton
-                    width={300}
+                    width={340}
                     variant="contained"
                     type="success"
                     onClick={null}
@@ -368,6 +368,30 @@ function Cart(): JSX.Element {
                 <SimpleText>
                   Tem um cupom de desconto? Adicione ao continuar.
                 </SimpleText>
+                <SizedBox height={24}></SizedBox>
+                <Title>Compartilhar Carrinho</Title>
+                <SizedBox height={8}></SizedBox>
+                <Row>
+                  <CustomButton
+                    type="success"
+                    variant="outlined"
+                    icon="whatsapp"
+                    onClick={null}
+                    width={180}
+                  >
+                    Via WhatsApp
+                  </CustomButton>
+                  <SizedBox width={10}></SizedBox>
+                  <CustomButton
+                    type="primary"
+                    variant="outlined"
+                    icon="email"
+                    onClick={null}
+                    width={150}
+                  >
+                    Via E-mail
+                  </CustomButton>
+                </Row>
               </>
             </Padding>
           </CartFooter>
