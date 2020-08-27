@@ -14,39 +14,43 @@ function Home(): JSX.Element {
   const highlights = [
     {
       id: "9c2c5e99-4395-4634-a7a3-43ca8e4026c0",
-      title: "Calçados para o Verão",
+      title: "Lindos Sapatos",
       subtitle: "Confira as Novidades",
-      image: "/images/highlights/shoes.jpg",
+      image:
+        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598521475/highlights/Frame_1_ky0vwj.jpg",
       link: "/highlights/65445b8a-c0a3-4cc9-a2aa-d95ef5539d47",
     },
     {
       id: "3d3c7436-74e3-4e89-b1c8-3cc1ef24bd32",
-      title: "Vestidos para festa",
+      title: "Vestidos Despojados",
       subtitle: "Mostre-me mais",
-      image: "/images/highlights/dresses.jpg",
+      image:
+        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598521475/highlights/Frame_2_llf1x4.jpg",
       link: "/highlights/ab2504be-6282-4299-b3fd-676f58fbe47d",
     },
     {
       id: "0c74c9c5-b359-48c1-bf75-9549cfc25db8",
       title: "Fantasias infantis",
       subtitle: "Veja as mais divertidas",
-      image: "/images/highlights/kids.jpg",
+      image:
+        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598521476/highlights/Frame_3_jun1lq.jpg",
       link: "/highlights/a5616bd8-7af4-4ec0-b7df-973a0b548142",
     },
     {
       id: "e95a99a5-2ef1-4156-a0bf-74a5f4440029",
       title: "Bolsas com até 70% OFF",
       subtitle: "Quero ver mais",
-      image: "/images/highlights/purses.jpg",
+      image:
+        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598521475/highlights/Frame_4_hcnlnp.jpg",
       link: "/highlights/51da52ab-d307-4144-947f-8bf310fe78aa",
     },
   ];
-
+  //https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_300/v1598522536/products/photo-1590736969955-71cc94801759_aury70.jpg
   const hotProducts = [
     {
       id: "323d1e6f-1999-4e6e-ad47-e75a675c470a",
       image:
-        "https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598522500/products/photo-1502716119720-b23a93e5fe1b_gjurjv.jpg",
       brandName: "Prada",
       title: "Vestido de Bolinhas Brancas - Vários Tamanhos",
       price: 2879.99,
@@ -56,7 +60,7 @@ function Home(): JSX.Element {
     {
       id: "520b83d9-dac9-47ce-9456-990fb4bf703c",
       image:
-        "https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598522519/products/photo-1535043934128-cf0b28d52f95_tmxiwy.jpg",
       brandName: "Chanel",
       title: "Sapato Chanel No. 37",
       price: 499.99,
@@ -66,7 +70,7 @@ function Home(): JSX.Element {
     {
       id: "db71af90-20b2-48f7-b4b9-be4128367952",
       image:
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80",
+        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598522529/products/photo-1529025530948-67e8a5c69b58_dgeib0.jpg",
       brandName: "Louis Vuitton",
       title: "Bolsa LV Paris",
       price: 1599.99,
@@ -76,7 +80,7 @@ function Home(): JSX.Element {
     {
       id: "1fe7fed8-702d-483a-8b58-1e94a22f701d",
       image:
-        "https://images.unsplash.com/photo-1590736969955-71cc94801759?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=564&q=80",
+        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598522536/products/photo-1590736969955-71cc94801759_aury70.jpg",
       brandName: "Michael Kors",
       title: "Relógio Mod. MK450",
       price: 799.99,
@@ -86,7 +90,7 @@ function Home(): JSX.Element {
     {
       id: "d94dc774-fe8f-4cfd-90c2-949d16b1fade",
       image:
-        "https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598522500/products/photo-1502716119720-b23a93e5fe1b_gjurjv.jpg",
       brandName: "Prada",
       title: "Vestido de Bolinhas Brancas - Vários Tamanhos",
       price: 2879.99,
@@ -96,7 +100,7 @@ function Home(): JSX.Element {
     {
       id: "46675848-4802-4422-b48e-0bc6ba463a55",
       image:
-        "https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598522519/products/photo-1535043934128-cf0b28d52f95_tmxiwy.jpg",
       brandName: "Chanel",
       title: "Sapato Chanel No. 37",
       price: 499.99,
@@ -106,7 +110,7 @@ function Home(): JSX.Element {
     {
       id: "93f60b67-282c-4cc7-b7dc-7f89e82d1777",
       image:
-        "https://images.unsplash.com/photo-1529025530948-67e8a5c69b58?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80",
+        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598522529/products/photo-1529025530948-67e8a5c69b58_dgeib0.jpg",
       brandName: "Louis Vuitton",
       title: "Bolsa LV Paris",
       price: 1599.99,
@@ -116,7 +120,7 @@ function Home(): JSX.Element {
     {
       id: "304921ea-5672-4d38-a4e5-dbdaeba736a8",
       image:
-        "https://images.unsplash.com/photo-1590736969955-71cc94801759?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=564&q=80",
+        "https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_600/v1598522536/products/photo-1590736969955-71cc94801759_aury70.jpg",
       brandName: "Michael Kors",
       title: "Relógio Mod. MK450",
       price: 799.99,
@@ -174,7 +178,7 @@ function Home(): JSX.Element {
         Frete grátis para pedidos acima de R$200
       </TopTextBanner>
       <MainBanner
-        url="https://images.unsplash.com/photo-1506152983158-b4a74a01c721?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80"
+        url="https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_1000/v1598523056/banners/photo-1506152983158-b4a74a01c721_zwjaoy.jpg"
         primaryText="até 70% off"
         secondaryText="bolsas e acessórios"
         position="bottom-right"
