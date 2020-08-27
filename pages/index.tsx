@@ -1,14 +1,21 @@
 import { Hidden } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HighlightsSection from "../src/components/HighlightsSection";
 import HomeCategories from "../src/components/HomeCategories";
 import HotSection from "../src/components/HotSection/index";
+import MainBannerLoader from "../src/components/Loaders/MainBanner";
 import MainBanner from "../src/components/MainBanner/index";
 import NewsletterSignUp from "../src/components/NewsletterSignUp";
 import SearchBar from "../src/components/SearchBar/index";
 import SizedBox from "../src/components/SizedBox/index";
 import TopTextBanner from "../src/components/TopTextBanner";
+import firebase from "../src/config/firebase";
 import { Colors } from "../src/theme/theme";
+
+// const remoteConfig = firebase.remoteConfig();
+// remoteConfig.settings = {
+//   minimumFetchIntervalMillis: 3600000,
+// };
 
 function Home(): JSX.Element {
   const highlights = [
@@ -168,6 +175,34 @@ function Home(): JSX.Element {
     },
   ];
 
+  const mainBanner = localStorage.getItem("mainBanner");
+  const [banner, setBanner] = useState(
+    mainBanner ? JSON.parse(mainBanner) : null
+  );
+
+  useEffect(() => {
+    const remoteConfig = firebase.remoteConfig();
+    remoteConfig.settings = {
+      minimumFetchIntervalMillis: 60000,
+      fetchTimeoutMillis: 60000,
+    };
+    console.log("mainBanner", mainBanner);
+    remoteConfig.defaultConfig = {
+      mainBanner: mainBanner ? JSON.parse(mainBanner) : null,
+    };
+    remoteConfig
+      .fetchAndActivate()
+      .then(() => {
+        const banner = remoteConfig.getValue("mainBanner").asString();
+
+        if (banner) {
+          setBanner(JSON.parse(banner));
+          localStorage.setItem("mainBanner", banner);
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
     <>
       <Hidden mdUp={true}>
@@ -177,16 +212,19 @@ function Home(): JSX.Element {
       <TopTextBanner color={Colors.TRANSPARENT} textColor={Colors.SECONDARY}>
         Frete grátis para pedidos acima de R$200
       </TopTextBanner>
-      <MainBanner
-        url="https://res.cloudinary.com/cirklebr/image/upload/c_fit,w_1000/v1598523056/banners/photo-1506152983158-b4a74a01c721_zwjaoy.jpg"
-        primaryText="até 70% off"
-        secondaryText="bolsas e acessórios"
-        position="bottom-right"
-        primaryTextColor={Colors.WHITE}
-        primaryBackgroundColor={Colors.PRIMARY}
-        secondaryTextColor={Colors.WHITE}
-        secondaryBackgroundColor={Colors.SECONDARY}
-      ></MainBanner>
+      {!banner && <MainBannerLoader></MainBannerLoader>}
+      {banner && (
+        <MainBanner
+          url={banner.url}
+          primaryText={banner.primaryText}
+          secondaryText={banner.secondaryText}
+          position={banner.position}
+          primaryTextColor={banner.primaryTextColor}
+          primaryBackgroundColor={banner.primaryBackgroundColor}
+          secondaryTextColor={banner.secondaryTextColor}
+          secondaryBackgroundColor={banner.secondaryBackgroundColor}
+        ></MainBanner>
+      )}
 
       <Hidden smUp={true}>
         <SizedBox height={16}></SizedBox>

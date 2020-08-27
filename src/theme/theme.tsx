@@ -6,7 +6,7 @@ export enum Colors {
   MONEY = "#4DA167",
   ERROR = "#FF1654",
   KIDS = "#FB5607",
-  WHITE = "#FFF",
+  WHITE = "#FFFFFF",
   BLACK = "#121212",
   BLACK2 = "#232323",
   BLACK3 = "#333",
