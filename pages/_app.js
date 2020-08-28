@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Head from "next/head";
+import Router from "next/router";
+import NProgress from "nprogress";
 import PropTypes from "prop-types";
 import React from "react";
 import { ThemeProvider } from "styled-components";
@@ -11,6 +13,33 @@ import DialogProvider from "../src/hooks/use-dialog";
 import MenuController from "../src/modules/menu/MenuController";
 import theme from "../src/theme/theme";
 import "../styles/global.css";
+import "../styles/nprogress.css";
+
+NProgress.configure({ showSpinner: false });
+
+Router.events.on("routeChangeStart", (url) => {
+  console.log(`Loading: ${url}`);
+  NProgress.start();
+});
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
+
+Router.onRouteChangeStart = (url) => {
+  // console.log('onRouteChnageStart triggered');
+  console.log(`Loading: ${url}`);
+  NProgress.start();
+};
+
+Router.onRouteChangeComplete = (url) => {
+  // console.log('onRouteChnageComplete triggered');
+  console.log(`${url} load complete!`);
+  NProgress.done();
+};
+
+Router.onRouteChangeError = () => {
+  // console.log('onRouteChnageError triggered');
+  NProgress.done();
+};
 
 export default function MyApp(props) {
   const { Component, pageProps, menuData } = props;
@@ -27,6 +56,7 @@ export default function MyApp(props) {
     <>
       <Head>
         <title>Cirkle</title>
+
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, maximum-scale=1"

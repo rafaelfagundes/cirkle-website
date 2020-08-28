@@ -77,7 +77,7 @@ const MenuItem = styled.div<{ active?: boolean; first?: boolean }>`
   cursor: pointer;
   height: 51px;
   background-color: ${(props) =>
-    props.active ? "rgba(0,0,0,0.075)" : "transparent"};
+    props.active ? "rgba(255, 255, 255, 0.1)" : "transparent"};
 `;
 
 const MenuItemArrow = styled.div`
@@ -101,7 +101,7 @@ const MenuItemText = styled.span<{
 `;
 
 const SubcategoriesHolder = styled.div`
-  background-color: rgba(0, 0, 0, 0.075);
+  background-color: rgba(255, 255, 255, 0.1);
 `;
 
 const Subcategories = styled.div`
