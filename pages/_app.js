@@ -17,22 +17,17 @@ import "../styles/nprogress.css";
 
 NProgress.configure({ showSpinner: false });
 
-Router.events.on("routeChangeStart", (url) => {
-  console.log(`Loading: ${url}`);
+Router.events.on("routeChangeStart", () => {
   NProgress.start();
 });
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
-Router.onRouteChangeStart = (url) => {
-  // console.log('onRouteChnageStart triggered');
-  console.log(`Loading: ${url}`);
+Router.onRouteChangeStart = () => {
   NProgress.start();
 };
 
-Router.onRouteChangeComplete = (url) => {
-  // console.log('onRouteChnageComplete triggered');
-  console.log(`${url} load complete!`);
+Router.onRouteChangeComplete = () => {
   NProgress.done();
 };
 
