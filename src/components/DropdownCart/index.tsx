@@ -148,10 +148,23 @@ function DropdownCart(): JSX.Element {
                 Comprar
               </CustomButton>
             </Row>
-            <SizedBox height={8}></SizedBox>
-            <Row>
-              <CartText>Frete Grátis para Compras Acima de R$200</CartText>
-            </Row>
+            {!cartContext.cart.freeShipping && (
+              <SizedBox height={16}></SizedBox>
+            )}
+            {cartContext.cart.freeShipping && (
+              <>
+                <SizedBox height={8}></SizedBox>
+                <Row>
+                  <CartText>{`Frete grátis para pedidos acima de ${new Intl.NumberFormat(
+                    "pt-BR",
+                    {
+                      style: "currency",
+                      currency: "BRL",
+                    }
+                  ).format(cartContext.cart.freeShippingValue)}`}</CartText>
+                </Row>
+              </>
+            )}
           </>
         )}
         {cartContext.cart.items.length === 0 && (

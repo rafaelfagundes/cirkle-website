@@ -8,6 +8,8 @@ export type Cart = {
   payment: Payment;
   subtotal: number;
   total: number;
+  freeShipping: boolean;
+  freeShippingValue: number;
 };
 
 export type CartItem = {
@@ -62,6 +64,7 @@ export interface ICartContextProps {
   updateQuantity: (id: string, qty: number) => void;
   updateColor: (id: string, color: string) => void;
   updateSize: (id: string, size: string) => void;
+  updateFreeShipping: (active: boolean, value: number) => void;
 }
 
 const CartContext = createContext({} as ICartContextProps);
@@ -91,6 +94,8 @@ function useCartProvider() {
     payment: null,
     subtotal: 0,
     total: 0,
+    freeShipping: false,
+    freeShippingValue: 600,
   };
 
   let savedCart: Cart;
@@ -104,7 +109,17 @@ function useCartProvider() {
       return sum + item.price * item.qty;
     }, 0);
     const shippingValue = newCart?.shipping ? newCart?.shipping.value : 0;
-    const total = subtotal + shippingValue;
+
+    let total = 0;
+    if (newCart.freeShipping) {
+      if (subtotal >= newCart.freeShippingValue) {
+        total = subtotal;
+      } else {
+        total = subtotal + shippingValue;
+      }
+    } else {
+      total = subtotal + shippingValue;
+    }
 
     return { subtotal, total };
   }
@@ -164,6 +179,18 @@ function useCartProvider() {
     console.log("setAddress");
   };
 
+  const updateFreeShipping = (active: boolean, value: number) => {
+    const _cart = _.cloneDeep(cart);
+    _cart.freeShipping = active;
+    _cart.freeShippingValue = value;
+
+    const { subtotal, total } = calculateValues(_cart);
+    _cart.total = total;
+    _cart.subtotal = subtotal;
+
+    setCart(_cart);
+  };
+
   const updateQuantity = (id: string, qty: number) => {
     const _item = _.find(cart.items, (o) => o.id === id);
     if (_item) {
@@ -203,6 +230,7 @@ function useCartProvider() {
     updateQuantity,
     updateColor,
     updateSize,
+    updateFreeShipping,
   };
 }
 

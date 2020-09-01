@@ -4,6 +4,7 @@ import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
 import CustomSelect from "../src/components/CustomSelect";
 import EmptyBag from "../src/components/EmptyBag";
+import FreeDeliveryMeter from "../src/components/FreeDeliveryMeter";
 import Icon from "../src/components/Icon";
 import Padding from "../src/components/Padding";
 import PaymentType from "../src/components/PaymentType";
@@ -69,6 +70,8 @@ function Cart(): JSX.Element {
     return [
       { title: "1", value: 1 },
       { title: "2", value: 2 },
+      { title: "3", value: 3 },
+      { title: "4", value: 4 },
     ];
   };
 
@@ -127,6 +130,47 @@ function Cart(): JSX.Element {
         break;
     }
     cartContext.setShipping(_shipping);
+  };
+
+  const _getShippingValue = () => {
+    // console.log("Frete grátis", cartContext.cart.freeShipping);
+    // console.log("Frete grátis a partir de", cartContext.cart.freeShippingValue);
+    // console.log("Subtotal", cartContext.cart.subtotal);
+
+    if (cartContext.cart.freeShipping) {
+      if (cartContext.cart.subtotal < cartContext.cart.freeShippingValue) {
+        return (
+          <Value>
+            {new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(cartContext.cart.shipping.value)}
+          </Value>
+        );
+      } else {
+        return <Value>GRÁTIS</Value>;
+      }
+    } else {
+      return (
+        <Value>
+          {new Intl.NumberFormat("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          }).format(cartContext.cart.shipping.value)}
+        </Value>
+      );
+    }
+  };
+
+  const _showShippingSelect = () => {
+    if (cartContext.cart.freeShipping) {
+      if (cartContext.cart.subtotal < cartContext.cart.freeShippingValue) {
+        return true;
+      }
+      return false;
+    } else {
+      return true;
+    }
   };
 
   useEffect(() => {
@@ -271,31 +315,37 @@ function Cart(): JSX.Element {
                 <SizedBox height={16}></SizedBox>
                 <Row spaceBetween>
                   <Label>Frete</Label>
-                  <Value>
-                    {new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(cartContext.cart.shipping.value)}
-                  </Value>
+                  {_getShippingValue()}
                 </Row>
-                <CustomSelect
-                  value={cartContext.cart.shipping.type}
-                  setValue={setDeliveryType}
-                  items={_getDeliveryTypes()}
-                ></CustomSelect>
+                {_showShippingSelect() && (
+                  <>
+                    <CustomSelect
+                      value={cartContext.cart.shipping.type}
+                      setValue={setDeliveryType}
+                      items={_getDeliveryTypes()}
+                    ></CustomSelect>
+                    <SizedBox height={16}></SizedBox>
+                    <Row spaceBetween>
+                      <Subvalue>Rua Frederico Ozanan, 150</Subvalue>
+                      <CustomButton
+                        type="primary"
+                        variant="outlined"
+                        onClick={null}
+                        small
+                      >
+                        Alterar
+                      </CustomButton>
+                    </Row>
+                  </>
+                )}
                 <SizedBox height={16}></SizedBox>
-                <Row spaceBetween>
-                  <Subvalue>Rua Frederico Ozanan, 150</Subvalue>
-                  <CustomButton
-                    type="primary"
-                    variant="outlined"
-                    onClick={null}
-                    small
-                  >
-                    Alterar
-                  </CustomButton>
-                </Row>
-                <SizedBox height={32}></SizedBox>
+                {cartContext.cart.freeShipping && (
+                  <FreeDeliveryMeter
+                    current={cartContext.cart.subtotal}
+                    max={cartContext.cart.freeShippingValue}
+                  ></FreeDeliveryMeter>
+                )}
+                <SizedBox height={24}></SizedBox>
                 <Row spaceBetween>
                   <Label>Total</Label>
                   <Value>
@@ -316,6 +366,10 @@ function Cart(): JSX.Element {
                     Comprar
                   </CustomButton>
                 </Row>
+                <SizedBox height={24}></SizedBox>
+                <Title>Cupom de Desconto</Title>
+                <SizedBox height={8}></SizedBox>
+                <SimpleText>Tem cupom? Adicione na próxima tela.</SimpleText>
                 <SizedBox height={24}></SizedBox>
                 <Title>Nós aceitamos:</Title>
                 <SizedBox height={16}></SizedBox>
@@ -362,12 +416,6 @@ function Cart(): JSX.Element {
                     </Grid>
                   </Grid>
                 </>
-                <SizedBox height={24}></SizedBox>
-                <Title>Cupom de Desconto</Title>
-                <SizedBox height={8}></SizedBox>
-                <SimpleText>
-                  Tem um cupom de desconto? Adicione ao continuar.
-                </SimpleText>
                 <SizedBox height={24}></SizedBox>
                 <Title>Compartilhar Carrinho</Title>
                 <SizedBox height={8}></SizedBox>

@@ -43,6 +43,7 @@ Icon.propTypes = {
     "bag-full",
     "box",
     "close",
+    "delivery-truck",
     "email",
     "exit",
     "facebook",

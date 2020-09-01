@@ -1,7 +1,9 @@
 import { Container, Hidden, SwipeableDrawer } from "@material-ui/core";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import firebase from "../../config/firebase";
+import { useCart } from "../../hooks/use-cart";
 import { useDialog } from "../../hooks/use-dialog";
 import { Colors } from "../../theme/theme";
 import CustomDialog from "../CustomDialog";
@@ -23,6 +25,32 @@ function Layout({
 }): JSX.Element {
   const [drawer, setDrawer] = useState(false);
   const dialogContext = useDialog();
+
+  const cartContext = useCart();
+
+  useEffect(() => {
+    const remoteConfig = firebase.remoteConfig();
+    remoteConfig.settings = {
+      minimumFetchIntervalMillis: 60000,
+      fetchTimeoutMillis: 60000,
+    };
+    remoteConfig
+      .fetchAndActivate()
+      .then(() => {
+        const freeDelivery = remoteConfig.getValue("free_shipping").asBoolean();
+        const freeDeliveryValue = remoteConfig
+          .getValue("free_shipping_value")
+          .asNumber();
+
+        // Free Shipping
+        if (freeDelivery && freeDeliveryValue) {
+          cartContext.updateFreeShipping(freeDelivery, freeDeliveryValue);
+        } else {
+          cartContext.updateFreeShipping(false, 0);
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   return (
     <div>
