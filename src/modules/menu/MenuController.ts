@@ -7,7 +7,7 @@ class MenuController {
     this.service = new MenuService();
   }
 
-  async getMenu(): Promise<string> {
+  async getMenu(): Promise<any> {
     return await this.service.getMenu();
   }
 }
