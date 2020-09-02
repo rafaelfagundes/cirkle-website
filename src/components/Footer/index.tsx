@@ -19,9 +19,9 @@ const LegalText = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  font-weight: 600;
-  font-size: 10px;
-  color: ${Colors.WHITE};
+  font-weight: 400;
+  font-size: 11px;
+  color: ${Colors.VERY_LIGHT_GRAY};
 `;
 
 function Footer(): JSX.Element {

@@ -40,7 +40,7 @@ const TextLine = styled.div<{ size: number; bgColor: string }>`
 const Text = styled.span<{ size: number; textColor: string }>`
   font-family: "FuturaPT";
   text-transform: uppercase;
-  font-weight: 900;
+  font-weight: 700;
   font-size: ${(props) => props.size}px;
   color: ${(props) => props.textColor};
   padding: 0 ${(props) => props.size}px;

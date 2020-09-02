@@ -13,6 +13,8 @@ export const IconHolder = styled.div`
 `;
 
 export const IconCounter = styled.span`
+  cursor: pointer;
+
   position: absolute;
   color: ${Colors.WHITE};
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,

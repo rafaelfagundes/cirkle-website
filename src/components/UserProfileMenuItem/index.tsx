@@ -20,7 +20,7 @@ const Profile = styled.div<{ center?: boolean }>`
 
 const UserName = styled.p`
   font-family: "FuturaPT";
-  font-weight: 500;
+  font-weight: 400;
   font-size: 18px;
   margin-left: 8px;
   color: ${Colors.PRIMARY};

@@ -54,7 +54,7 @@ const Title = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 16px;
   line-height: 110%;
   display: flex;
@@ -97,7 +97,7 @@ const OldPrice = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 11px;
   line-height: 10px;
   text-decoration-line: line-through;

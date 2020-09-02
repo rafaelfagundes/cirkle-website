@@ -5,8 +5,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 import { useAuth } from "../../hooks/use-auth";
+import CustomButton from "../CustomButton";
 import Icon from "../Icon";
-import SellLink from "../SellLink";
 import SizedBox from "../SizedBox";
 
 const StyledSideMenu = styled.div`
@@ -58,7 +58,7 @@ const UserName = styled.div`
 
 const AccountLink = styled(Link)`
   font-family: "FuturaPT";
-  font-weight: 500;
+  font-weight: 400;
   font-size: 14px;
   letter-spacing: 0.3px;
   color: ${Colors.SECONDARY};
@@ -287,7 +287,14 @@ function SideMenu({ data }: { data: any }): JSX.Element {
         </MenuContainer>
         <SizedBox height={16}></SizedBox>
         <HorizontalPadding>
-          <SellLink width={300 - 32}>Quero Vender</SellLink>
+          <CustomButton
+            width={300 - 32}
+            type="success"
+            variant="outlined"
+            onClick={null}
+          >
+            Quero Vender
+          </CustomButton>
         </HorizontalPadding>
         {auth.user && (
           <SecondaryMenu>

@@ -50,7 +50,7 @@ export const Subvalue = styled.span`
   letter-spacing: -0.25px;
   font-size: 13px;
   color: ${Colors.PRIMARY};
-  font-weight: 500;
+  font-weight: 400;
 `;
 
 export const Row = styled.div<{ padding?: boolean; spaceBetween?: boolean }>`

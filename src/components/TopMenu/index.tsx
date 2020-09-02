@@ -97,7 +97,7 @@ const MenuItemText = styled.span<{
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
   padding: ${(props) => (props.first ? "16px 16px 16px 0" : "0 0 0 16px")} ;
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 400;
 `;
 
 const SubcategoriesHolder = styled.div`
@@ -244,8 +244,6 @@ function TopMenu({ data }: { data: any }): JSX.Element {
             <SizedBox width={16}></SizedBox>
             <UserProfileMenuItem
               isLogged={auth.user !== null}
-              userName="Rafael"
-              userPicture="https://avatars2.githubusercontent.com/u/29810355?s=460&v=4"
             ></UserProfileMenuItem>
             <SizedBox width={16}></SizedBox>
             <DropdownCart></DropdownCart>
