@@ -1,13 +1,17 @@
 /* FuturaPT Font */
 @font-face {
   font-family: FuturaPT;
+  font-style: normal;
   font-weight: 400;
-  src: url("/fonts/Futura/FuturaPTMedium.otf") format("opentype");
+  src: url(/fonts/Futura/FuturaPTMedium.otf) format("opentype"), local("Arial");
+  font-display: swap;
 }
 @font-face {
   font-family: FuturaPT;
+  font-style: normal;
   font-weight: 700;
-  src: url("/fonts/Futura/FuturaPTBold.otf") format("opentype");
+  src: url(/fonts/Futura/FuturaPTBold.otf) format("opentype"), local("Arial");
+  font-display: swap;
 }
 
 /*
@@ -36,6 +40,10 @@ img {
   display: block;
 } 
 */
+
+* {
+  font-display: swap !important;
+}
 
 a:hover {
   text-decoration: none !important;
