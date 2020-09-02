@@ -475,7 +475,6 @@ function Cart(): JSX.Element {
                 <CustomButton
                   type="primary"
                   variant="outlined"
-                  icon="email"
                   onClick={null}
                   width={150}
                 >
