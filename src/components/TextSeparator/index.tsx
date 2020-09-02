@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 
 const SeparatorHolder = styled.div`
   height: 25px;

@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 
 const useStyles = makeStyles({
   title: {

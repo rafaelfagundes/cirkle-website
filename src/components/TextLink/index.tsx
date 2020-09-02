@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 
 const StyledLink = styled.div`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,

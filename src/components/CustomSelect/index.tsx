@@ -4,7 +4,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 
 export type SelectItem = {
   title: string;

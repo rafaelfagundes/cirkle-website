@@ -1,24 +1,22 @@
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import Link from "next/link";
+import _ from "lodash";
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
+import { useCart } from "../../hooks/use-cart";
+import Product from "../../types/Product";
+import CustomButton from "../CustomButton";
 import FavoriteIcon from "../FavoriteIcon";
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
+import Padding from "../Padding";
+import Row from "../Row";
+import SizedBox from "../SizedBox";
 
 const Item = styled.div<{ isSmartphone: boolean }>`
   width: 228px;
-  height: 312px;
   background-color: ${Colors.WHITE};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
   margin-right: ${(props) => (props.isSmartphone ? "16px" : 0)};
-  cursor: pointer;
   margin-bottom: 28px;
 `;
 
@@ -109,7 +107,7 @@ const OldPrice = styled.span`
 `;
 
 const Discount = styled.div`
-  background: ${Colors.MONEY};
+  background: ${Colors.RED_CRAYOLA};
   border-radius: 12px;
   padding: 3px 6px;
 `;
@@ -137,58 +135,84 @@ const FavoriteIconHolder = styled.div`
   padding: 5px 5px 0 0;
 `;
 
-function ProductItem({
-  data,
-}: {
-  data: {
-    image: string;
-    brandName: string;
-    title: string;
-    price: number;
-    oldPrice: number;
-    link: string;
-  };
-}): JSX.Element {
+function ProductItem({ data }: { data: Product }): JSX.Element {
   const theme = useTheme();
   const smartphone = useMediaQuery(theme.breakpoints.down("sm"));
+  const cartContext = useCart();
+
+  const _goToProduct = (id: string) => {
+    console.log("go to product:", id);
+  };
+
+  const _addToCart = (item: Product) => {
+    console.log("add to cart:", item);
+    cartContext.addToCart(item);
+  };
+
+  const _alreadyInCart = () => {
+    const item = _.find(cartContext.cart.items, (o) => o.id === data.id);
+
+    if (item) return true;
+    else return false;
+  };
+
+  const isAlreadyInCart = _alreadyInCart();
 
   return (
     <div style={{ position: "relative" }}>
       <FavoriteIconHolder>
         <FavoriteIcon></FavoriteIcon>
       </FavoriteIconHolder>
-      <Link href={data.link}>
-        <Item isSmartphone={smartphone}>
-          <Image image={data.image}></Image>
-          <BrandName>
-            <BrandNameText>{data.brandName}</BrandNameText>
-          </BrandName>
-          <Description>
-            <Title>{data.title}</Title>
-            <Price>
-              <Row>
-                <PriceText>
-                  {new Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(data.price)}
-                </PriceText>
-                <OldPrice>
-                  {new Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(data.oldPrice)}
-                </OldPrice>
-              </Row>
-              <Discount>
-                <DiscountText>
-                  -{Math.round((1 - data.price / data.oldPrice) * 100)}%
-                </DiscountText>
-              </Discount>
-            </Price>
-          </Description>
-        </Item>
-      </Link>
+      <Item isSmartphone={smartphone}>
+        <Image image={data.image}></Image>
+        <BrandName>
+          <BrandNameText>{data.brand}</BrandNameText>
+        </BrandName>
+        <Description>
+          <Title>{data.title}</Title>
+          <Price>
+            <Row>
+              <PriceText>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(data.price)}
+              </PriceText>
+              <OldPrice>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(data.priceWhenNew)}
+              </OldPrice>
+            </Row>
+            <Discount>
+              <DiscountText>
+                -{Math.round((1 - data.price / data.priceWhenNew) * 100)}%
+              </DiscountText>
+            </Discount>
+          </Price>
+        </Description>
+        <SizedBox height={8}></SizedBox>
+        <Padding horizontal={8}>
+          <Row>
+            <CustomButton
+              type="secondary"
+              variant="outlined"
+              onClick={() => _goToProduct(data.id)}
+            >
+              Ver
+            </CustomButton>
+            <SizedBox width={8}></SizedBox>
+            <CustomButton
+              type={isAlreadyInCart ? "disabled" : "success"}
+              variant="contained"
+              onClick={() => _addToCart(data)}
+              icon={isAlreadyInCart ? "check" : "bag-plus"}
+            ></CustomButton>
+          </Row>
+        </Padding>
+        <SizedBox height={8}></SizedBox>
+      </Item>
     </div>
   );
 }

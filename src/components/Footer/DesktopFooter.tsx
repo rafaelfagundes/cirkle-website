@@ -1,7 +1,7 @@
 import { Container, Grid, Hidden, InputBase } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 import Icon from "../Icon";
 import PaymentType from "../PaymentType";
 import SizedBox from "../SizedBox";

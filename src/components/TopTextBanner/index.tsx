@@ -7,7 +7,7 @@ const StyledBanner = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 32px;
+  height: 48px;
   background-color: ${(props) => props.color};
 `;
 

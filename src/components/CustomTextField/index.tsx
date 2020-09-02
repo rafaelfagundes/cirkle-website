@@ -2,7 +2,7 @@ import { InputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox";
 
@@ -34,7 +34,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-type Props = {
+type CustomTextFieldProps = {
   children: string;
   error?: string;
   type?: string;
@@ -54,7 +54,7 @@ function getConfig(type: string): { icon: string; inputType: string } {
   }
 }
 
-const CustomTextField = React.forwardRef((props: Props, ref) => {
+const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
   const config = getConfig(props.type);
 
   return (

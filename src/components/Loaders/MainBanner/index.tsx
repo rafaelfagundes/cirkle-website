@@ -1,6 +1,6 @@
 import React from "react";
 import ContentLoader from "react-content-loader";
-import { Colors } from "../../../theme/theme";
+import Colors from "../../../enums/Colors";
 
 const MainBannerLoader = (): JSX.Element => {
   const width = window.innerWidth >= 960 ? 960 : window.innerWidth;

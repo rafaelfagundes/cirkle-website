@@ -4,7 +4,7 @@ import { useMediaQuery, useTheme } from "@material-ui/core";
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 
 const StyledBrand = styled.div<{ width: number }>`
   width: ${(props) => props.width}px;

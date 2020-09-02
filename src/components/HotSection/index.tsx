@@ -2,7 +2,10 @@ import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import React from "react";
 import styled from "styled-components";
+import Product from "../../types/Product";
+import Center from "../Center";
 import Column from "../Column";
+import CustomButton from "../CustomButton";
 import Icon from "../Icon";
 import ProductItem from "../ProductItem";
 import SizedBox from "../SizedBox";
@@ -52,15 +55,7 @@ function HotSection({
   products,
   brands,
 }: {
-  products: {
-    id: string;
-    image: string;
-    brandName: string;
-    title: string;
-    price: number;
-    oldPrice: number;
-    link: string;
-  }[];
+  products: Array<Product>;
   brands: {
     id: string;
     name: string;
@@ -88,12 +83,33 @@ function HotSection({
         ))}
         {isSmartphone ? <Spacer>-</Spacer> : null}
       </ItemsHolder>
-      <SizedBox height={20}></SizedBox>
+      <Center>
+        <CustomButton
+          width={250}
+          type="secondary"
+          variant="outlined"
+          onClick={null}
+        >
+          VER MAIS PRODUTOS
+        </CustomButton>
+      </Center>
+      <SizedBox height={48}></SizedBox>
       <BrandsHolder isSmartphone={isSmartphone}>
         {brands.map((item) => (
           <Brand key={item.id} data={item}></Brand>
         ))}
       </BrandsHolder>
+      <SizedBox height={12}></SizedBox>
+      <Center>
+        <CustomButton
+          width={250}
+          type="secondary"
+          variant="outlined"
+          onClick={null}
+        >
+          VER TODAS MARCAS
+        </CustomButton>
+      </Center>
     </Section>
   );
 }

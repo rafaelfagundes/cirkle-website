@@ -1,58 +1,9 @@
 import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
-
-export type Cart = {
-  items: Array<CartItem>;
-  shipping: Shipping;
-  address: Address;
-  payment: Payment;
-  subtotal: number;
-  total: number;
-  freeShipping: boolean;
-  freeShippingValue: number;
-};
-
-export type CartItem = {
-  id: string;
-  sku: string;
-  image: string;
-  price: number;
-  title: string;
-  description: string;
-  qty: number;
-  color: string;
-  size: string;
-};
-
-export type Shipping = {
-  type: string;
-  value: number;
-  postalCode: number;
-};
-
-export type Address = {
-  street: string;
-  number: number;
-  complement?: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  postalCode: number;
-};
-
-export enum PaymentType {
-  CASH = "cash",
-  CREDIT_CARD = "credit_card",
-  BOLETO = "boleto",
-}
-
-export type Payment = {
-  type: PaymentType;
-  creditCardNumber?: number;
-  cardHolderName?: string;
-  validUntil?: Date;
-  cvv?: number;
-};
+import Address from "../types/Address";
+import Cart from "../types/Cart";
+import CartItem from "../types/Product";
+import Shipping from "../types/Shipping";
 
 export interface ICartContextProps {
   cart: Cart;
@@ -217,7 +168,6 @@ function useCartProvider() {
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
-    console.log("cart", cart);
   }, [cart]);
 
   return {

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 
 const Line = styled.div`
   height: 2px;

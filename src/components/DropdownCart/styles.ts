@@ -1,6 +1,6 @@
 import { Popover } from "@material-ui/core";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 
 export const IconHolder = styled.div`
   cursor: pointer;

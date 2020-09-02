@@ -2,7 +2,7 @@ import { Link } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 
 const SellButton = styled.div<{ width: number }>`
   width: ${(props) => props.width}px;

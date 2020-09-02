@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 import Icon from "../Icon";
 
 const TruckPosition = styled.div``;
@@ -50,14 +50,11 @@ const Text = styled.span<{ color: string }>`
 
 const StyledLinearProgress = styled.div<{ value: number; color: string }>`
   background-color: ${Colors.LIGHT_GRAY};
-  /* border-radius: 4px; */
 
   & > div {
     background-color: ${(props) => props.color};
     width: ${(props) => props.value}%;
-    /* Adjust with JavaScript */
     height: 10px;
-    /* border-radius: 4px; */
   }
 `;
 

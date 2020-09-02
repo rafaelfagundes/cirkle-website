@@ -3,7 +3,7 @@ import { useTheme } from "@material-ui/core/styles";
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 
 const Highlights = styled.div<{ padding: boolean }>`
   display: flex;

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 import SizedBox from "../SizedBox/index";
 
 const StyledBanner = styled.div<{ bgImage: string; height: number }>`

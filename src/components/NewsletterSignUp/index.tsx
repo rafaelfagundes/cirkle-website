@@ -2,7 +2,7 @@ import { Container, InputBase, useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 import Icon from "../Icon";
 
 const Row = styled.div`

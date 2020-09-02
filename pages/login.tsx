@@ -14,8 +14,8 @@ import Subtitle from "../src/components/Subtitle";
 import TextLink from "../src/components/TextLink";
 import TextSeparator from "../src/components/TextSeparator";
 import Title from "../src/components/Title";
+import Colors from "../src/enums/Colors";
 import { IAuthContextProps, useAuth } from "../src/hooks/use-auth";
-import { Colors } from "../src/theme/theme";
 import { capitalizeFirstLetter, validateEmail } from "../src/utils/string";
 
 const LoginContainer = styled.div`

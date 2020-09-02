@@ -11,8 +11,9 @@ import PaymentType from "../src/components/PaymentType";
 import SimpleText from "../src/components/SimpleText";
 import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
-import { Shipping, useCart } from "../src/hooks/use-cart";
+import { useCart } from "../src/hooks/use-cart";
 import theme from "../src/theme/theme";
+import Shipping from "../src/types/Shipping";
 import {
   CartFooter,
   CartItem,

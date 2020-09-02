@@ -1,7 +1,7 @@
 import { CircularProgress } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import { Colors } from "../../theme/theme";
+import Colors from "../../enums/Colors";
 import Icon from "../Icon";
 import LoadingAnimation from "../LoadingAnimation";
 import SizedBox from "../SizedBox";
@@ -79,7 +79,7 @@ function CustomButton({
   small = false,
   icon,
 }: {
-  children: string;
+  children?: string;
   type: string;
   variant: string;
   width?: number;
@@ -92,7 +92,12 @@ function CustomButton({
     switch (type) {
       case "secondary":
         return {
-          background: Colors.GRAY,
+          background: Colors.SECONDARY,
+          text: Colors.WHITE,
+        };
+      case "disabled":
+        return {
+          background: Colors.LIGHT_GRAY,
           text: Colors.WHITE,
         };
       case "success":
@@ -121,7 +126,7 @@ function CustomButton({
         <ButtonOutlined
           width={width}
           color={colors.background}
-          onClick={onClick}
+          onClick={type === "disabled" ? null : onClick}
           small={small}
         >
           {!loading && (
@@ -145,7 +150,7 @@ function CustomButton({
         <ButtonContained
           width={width}
           color={colors.background}
-          onClick={onClick}
+          onClick={type === "disabled" ? null : onClick}
           small={small}
         >
           {!loading && (
@@ -166,7 +171,11 @@ function CustomButton({
       );
     case "text":
       return (
-        <ButtonTypeText width={width} onClick={onClick} small={small}>
+        <ButtonTypeText
+          width={width}
+          onClick={type === "disabled" ? null : onClick}
+          small={small}
+        >
           {!loading && (
             <TextIconHolder>
               {icon && (
@@ -189,7 +198,7 @@ function CustomButton({
         <ButtonOutlined
           width={width}
           color={colors.background}
-          onClick={onClick}
+          onClick={type === "disabled" ? null : onClick}
           small={small}
         >
           {!loading && (

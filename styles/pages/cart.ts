@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Colors } from "../../src/theme/theme";
+import Colors from "../../src/enums/Colors";
 
 export const StyledCartContainer = styled.div`
   display: flex;

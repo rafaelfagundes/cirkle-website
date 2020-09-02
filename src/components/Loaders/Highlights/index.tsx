@@ -3,7 +3,7 @@ import { useTheme } from "@material-ui/core/styles";
 import React from "react";
 import ContentLoader from "react-content-loader";
 import styled from "styled-components";
-import { Colors } from "../../../theme/theme";
+import Colors from "../../../enums/Colors";
 
 const Highlights = styled.div<{ padding: boolean }>`
   display: flex;
@@ -34,11 +34,8 @@ const HighlightsLoader = (): JSX.Element => {
   }
 
   const width = calcHighlightItemWidth();
-  console.log("width", width);
   const imageHeight = width * 1.158536585;
-  console.log("imageHeight", imageHeight);
   const height = imageHeight + 66;
-  console.log("height", height);
 
   const LoaderItem = () => {
     return (
