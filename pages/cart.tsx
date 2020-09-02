@@ -178,272 +178,269 @@ function Cart(): JSX.Element {
     _updateDeliveryFee();
   }, [deliveryType]);
 
-  const CartTitle = () => (
-    <Padding horizontal={16} vertical={0}>
-      <Title size={18}>Sacola de Compras</Title>
-    </Padding>
-  );
-
   return (
     <StyledCartContainer>
       {cartContext.cart.items.length > 0 && (
         <>
-          <Padding horizontal={0} vertical={32}>
-            <>
-              <CartTitle></CartTitle>
-              <SizedBox height={8}></SizedBox>
-              <CartItems>
-                {cartContext.cart.items.map((item, index) => (
-                  <CartItem key={item.id} showBackground={index % 2 === 0}>
-                    <ImagePrice>
-                      <CartItemImage
-                        image={item.image}
-                        size={90}
-                      ></CartItemImage>
-                      <SizedBox height={8}></SizedBox>
-                      <Price>
-                        {new Intl.NumberFormat("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        }).format(item.price)}
-                      </Price>
-                    </ImagePrice>
-                    <Column>
-                      <TitleAndRemove>
-                        <Title>{item.title}</Title>
-                        <Icon
-                          size={16}
-                          type="trash"
-                          onClick={() => cartContext.removeFromCart(item.id)}
-                        ></Icon>
-                      </TitleAndRemove>
-                      <SizedBox height={8}></SizedBox>
-                      <Description>{item.description}</Description>
-                      <SizedBox height={8}></SizedBox>
-                      <MoreInfo>
-                        {isSmartPhone && !showEdit && (
-                          <Padding horizontal={6}>
-                            <>
-                              <Row spaceBetween>
-                                <Color>Cor: {item.color}</Color>
-                                <SizedBox width={8}></SizedBox>
-                                <Size>Tam.: {item.size}</Size>
-                                <SizedBox width={8}></SizedBox>
-                                <Qty>Qtd.: {item.qty}</Qty>
-                              </Row>
-                              <SizedBox height={8}></SizedBox>
-                              <Row spaceBetween>
-                                <CustomButton
-                                  type="primary"
-                                  variant="outlined"
-                                  onClick={() => setShowEdit(true)}
-                                  width={200}
-                                  small
-                                >
-                                  Editar Cor/Tam/Qtd
-                                </CustomButton>
-                              </Row>
-                            </>
-                          </Padding>
-                        )}
-                        {(!isSmartPhone || showEdit) && (
+          <div style={{ display: "flex", flex: 2, flexDirection: "column" }}>
+            <SizedBox height={32}></SizedBox>
+            <Padding horizontal={16}>
+              <Title size={18}>Sacola de Compras</Title>
+            </Padding>
+            <SizedBox height={16}></SizedBox>
+            <CartItems>
+              {cartContext.cart.items.map((item, index) => (
+                <CartItem key={item.id} showBackground={index % 2 === 0}>
+                  <ImagePrice>
+                    <CartItemImage image={item.image} size={90}></CartItemImage>
+                    <SizedBox height={8}></SizedBox>
+                    <Price>
+                      {new Intl.NumberFormat("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      }).format(item.price)}
+                    </Price>
+                  </ImagePrice>
+                  <Column>
+                    <TitleAndRemove>
+                      <Title>{item.title}</Title>
+                      <Icon
+                        size={16}
+                        type="remove-fill"
+                        onClick={() => cartContext.removeFromCart(item.id)}
+                      ></Icon>
+                    </TitleAndRemove>
+                    <SizedBox height={8}></SizedBox>
+                    <Description>{item.description}</Description>
+                    <SizedBox height={8}></SizedBox>
+                    <MoreInfo>
+                      {isSmartPhone && !showEdit && (
+                        <Padding horizontal={6}>
                           <>
-                            <SizedBox width={8}></SizedBox>
-                            <CustomSelect
-                              items={_getItemColors(item.id)}
-                              label="Cor"
-                              value={item.color}
-                              setValue={(value) =>
-                                cartContext.updateColor(item.id, value)
-                              }
-                            ></CustomSelect>
-                            <SizedBox width={8}></SizedBox>
-                            <CustomSelect
-                              items={_getItemSizes(item.id)}
-                              label="Tamanho"
-                              value={item.size}
-                              setValue={(value) =>
-                                cartContext.updateSize(item.id, value)
-                              }
-                            ></CustomSelect>
-                            <SizedBox width={8}></SizedBox>
-                            <CustomSelect
-                              items={_getItemMaxQty(item.id)}
-                              label="Quantidade"
-                              value={item.qty}
-                              setValue={(value) =>
-                                cartContext.updateQuantity(item.id, value)
-                              }
-                            ></CustomSelect>
+                            <Row spaceBetween>
+                              <Color>Cor: {item.color}</Color>
+                              <SizedBox width={8}></SizedBox>
+                              <Size>Tam.: {item.size}</Size>
+                              <SizedBox width={8}></SizedBox>
+                              <Qty>Qtd.: {item.qty}</Qty>
+                            </Row>
+                            <SizedBox height={8}></SizedBox>
+                            <Row spaceBetween>
+                              <CustomButton
+                                type="primary"
+                                variant="outlined"
+                                onClick={() => setShowEdit(true)}
+                                width={200}
+                                small
+                              >
+                                Editar Cor/Tam/Qtd
+                              </CustomButton>
+                            </Row>
                           </>
-                        )}
-                      </MoreInfo>
-                      {isSmartPhone && showEdit && (
+                        </Padding>
+                      )}
+                      {(!isSmartPhone || showEdit) && (
                         <>
-                          <SizedBox height={16}></SizedBox>
-                          <Padding horizontal={8}>
-                            <CustomButton
-                              type="primary"
-                              variant="contained"
-                              onClick={() => setShowEdit(false)}
-                              small
-                            >
-                              Pronto
-                            </CustomButton>
-                          </Padding>
+                          <SizedBox width={8}></SizedBox>
+                          <CustomSelect
+                            items={_getItemColors(item.id)}
+                            label="Cor"
+                            value={item.color}
+                            setValue={(value) =>
+                              cartContext.updateColor(item.id, value)
+                            }
+                          ></CustomSelect>
+                          <SizedBox width={8}></SizedBox>
+                          <CustomSelect
+                            items={_getItemSizes(item.id)}
+                            label="Tamanho"
+                            value={item.size}
+                            setValue={(value) =>
+                              cartContext.updateSize(item.id, value)
+                            }
+                          ></CustomSelect>
+                          <SizedBox width={8}></SizedBox>
+                          <CustomSelect
+                            items={_getItemMaxQty(item.id)}
+                            label="Quantidade"
+                            value={item.qty}
+                            setValue={(value) =>
+                              cartContext.updateQuantity(item.id, value)
+                            }
+                          ></CustomSelect>
                         </>
                       )}
-                      <SizedBox height={4}></SizedBox>
-                    </Column>
-                  </CartItem>
-                ))}
-              </CartItems>
-            </>
-          </Padding>
+                    </MoreInfo>
+                    {isSmartPhone && showEdit && (
+                      <>
+                        <SizedBox height={16}></SizedBox>
+                        <Padding horizontal={8}>
+                          <CustomButton
+                            type="primary"
+                            variant="contained"
+                            onClick={() => setShowEdit(false)}
+                            small
+                          >
+                            Pronto
+                          </CustomButton>
+                        </Padding>
+                      </>
+                    )}
+                    <SizedBox height={4}></SizedBox>
+                  </Column>
+                </CartItem>
+              ))}
+            </CartItems>
+          </div>
           <SizedBox width={isSmartPhone ? 0 : 48}></SizedBox>
-          <CartFooter isSmartPhone={isSmartPhone}>
-            <Padding vertical={isSmartPhone ? 0 : 32} horizontal={0}>
-              <>
-                <Row spaceBetween>
-                  <Label>Subtotal</Label>
-                  <Value>
-                    {new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(cartContext.cart.subtotal)}
-                  </Value>
-                </Row>
-                <SizedBox height={16}></SizedBox>
-                <Row spaceBetween>
-                  <Label>Frete</Label>
-                  {_getShippingValue()}
-                </Row>
-                {_showShippingSelect() && (
-                  <>
-                    <CustomSelect
-                      value={cartContext.cart.shipping.type}
-                      setValue={setDeliveryType}
-                      items={_getDeliveryTypes()}
-                    ></CustomSelect>
-                    <SizedBox height={16}></SizedBox>
-                    <Row spaceBetween>
-                      <Subvalue>Rua Frederico Ozanan, 150</Subvalue>
-                      <CustomButton
-                        type="primary"
-                        variant="outlined"
-                        onClick={null}
-                        small
-                      >
-                        Alterar
-                      </CustomButton>
-                    </Row>
-                  </>
-                )}
-                <SizedBox height={16}></SizedBox>
-                {cartContext.cart.freeShipping && (
-                  <FreeDeliveryMeter
-                    current={cartContext.cart.subtotal}
-                    max={cartContext.cart.freeShippingValue}
-                  ></FreeDeliveryMeter>
-                )}
-                <SizedBox height={24}></SizedBox>
-                <Row spaceBetween>
-                  <Label>Total</Label>
-                  <Value>
-                    {new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(cartContext.cart.total)}
-                  </Value>
-                </Row>
-                <SizedBox height={16}></SizedBox>
-                <Row>
-                  <CustomButton
-                    width={340}
-                    variant="contained"
-                    type="success"
-                    onClick={null}
-                  >
-                    Comprar
-                  </CustomButton>
-                </Row>
-                <SizedBox height={24}></SizedBox>
-                <Title>Cupom de Desconto</Title>
-                <SizedBox height={8}></SizedBox>
-                <SimpleText>Tem cupom? Adicione na próxima tela.</SimpleText>
-                <SizedBox height={24}></SizedBox>
-                <Title>Nós aceitamos:</Title>
-                <SizedBox height={16}></SizedBox>
+          <div style={{ display: "flex", flex: 1 }}>
+            <CartFooter isSmartPhone={isSmartPhone}>
+              <Padding vertical={isSmartPhone ? 0 : 32} horizontal={0}>
                 <>
-                  <Grid container spacing={2}>
-                    <Grid item xs={2}>
-                      <PaymentType type="mastercard" size={32}></PaymentType>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <PaymentType type="visa" size={32}></PaymentType>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <PaymentType type="amex" size={32}></PaymentType>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <PaymentType type="aura" size={32}></PaymentType>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <PaymentType type="dinersclub" size={32}></PaymentType>
-                    </Grid>
-                  </Grid>
+                  <Row spaceBetween>
+                    <Label>Subtotal</Label>
+                    <Value>
+                      {new Intl.NumberFormat("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      }).format(cartContext.cart.subtotal)}
+                    </Value>
+                  </Row>
                   <SizedBox height={16}></SizedBox>
-                  <Grid container spacing={2}>
-                    <Grid item xs={2}>
-                      <PaymentType type="discover" size={32}></PaymentType>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <PaymentType type="elo" size={32}></PaymentType>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <PaymentType type="hipercard" size={32}></PaymentType>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <PaymentType type="jcb" size={32}></PaymentType>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <PaymentType type="boleto" size={32}></PaymentType>
-                    </Grid>
-                  </Grid>
+                  <Row spaceBetween>
+                    <Label>Frete</Label>
+                    {_getShippingValue()}
+                  </Row>
+                  {_showShippingSelect() && (
+                    <>
+                      <CustomSelect
+                        value={cartContext.cart.shipping.type}
+                        setValue={setDeliveryType}
+                        items={_getDeliveryTypes()}
+                      ></CustomSelect>
+                      <SizedBox height={16}></SizedBox>
+                      <Row spaceBetween>
+                        <Subvalue>Rua Frederico Ozanan, 150</Subvalue>
+                        <CustomButton
+                          type="primary"
+                          variant="outlined"
+                          onClick={null}
+                          small
+                        >
+                          Alterar
+                        </CustomButton>
+                      </Row>
+                    </>
+                  )}
                   <SizedBox height={16}></SizedBox>
-                  <Grid container spacing={2}>
-                    <Grid item xs={2}>
-                      <PaymentType type="bank_transfer" size={32}></PaymentType>
+                  {cartContext.cart.freeShipping && (
+                    <FreeDeliveryMeter
+                      current={cartContext.cart.subtotal}
+                      max={cartContext.cart.freeShippingValue}
+                    ></FreeDeliveryMeter>
+                  )}
+                  <SizedBox height={24}></SizedBox>
+                  <Row spaceBetween>
+                    <Label>Total</Label>
+                    <Value>
+                      {new Intl.NumberFormat("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      }).format(cartContext.cart.total)}
+                    </Value>
+                  </Row>
+                  <SizedBox height={16}></SizedBox>
+                  <Row>
+                    <CustomButton
+                      width={340}
+                      variant="contained"
+                      type="success"
+                      onClick={null}
+                    >
+                      Comprar
+                    </CustomButton>
+                  </Row>
+                  <SizedBox height={24}></SizedBox>
+                  <Title>Cupom de Desconto</Title>
+                  <SizedBox height={8}></SizedBox>
+                  <SimpleText>Tem cupom? Adicione na próxima tela.</SimpleText>
+                  <SizedBox height={24}></SizedBox>
+                  <Title>Nós aceitamos:</Title>
+                  <SizedBox height={16}></SizedBox>
+                  <>
+                    <Grid container spacing={2}>
+                      <Grid item xs={2}>
+                        <PaymentType type="mastercard" size={32}></PaymentType>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <PaymentType type="visa" size={32}></PaymentType>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <PaymentType type="amex" size={32}></PaymentType>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <PaymentType type="aura" size={32}></PaymentType>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <PaymentType type="dinersclub" size={32}></PaymentType>
+                      </Grid>
                     </Grid>
-                  </Grid>
+                    <SizedBox height={16}></SizedBox>
+                    <Grid container spacing={2}>
+                      <Grid item xs={2}>
+                        <PaymentType type="discover" size={32}></PaymentType>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <PaymentType type="elo" size={32}></PaymentType>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <PaymentType type="hipercard" size={32}></PaymentType>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <PaymentType type="jcb" size={32}></PaymentType>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <PaymentType type="boleto" size={32}></PaymentType>
+                      </Grid>
+                    </Grid>
+                    <SizedBox height={16}></SizedBox>
+                    <Grid container spacing={2}>
+                      <Grid item xs={2}>
+                        <PaymentType
+                          type="bank_transfer"
+                          size={32}
+                        ></PaymentType>
+                      </Grid>
+                    </Grid>
+                  </>
+                  <SizedBox height={24}></SizedBox>
+                  <Title>Compartilhar Carrinho</Title>
+                  <SizedBox height={8}></SizedBox>
+                  <Row>
+                    <CustomButton
+                      type="success"
+                      variant="outlined"
+                      icon="whatsapp"
+                      onClick={null}
+                      width={180}
+                    >
+                      Via WhatsApp
+                    </CustomButton>
+                    <SizedBox width={10}></SizedBox>
+                    <CustomButton
+                      type="primary"
+                      variant="outlined"
+                      icon="email"
+                      onClick={null}
+                      width={150}
+                    >
+                      Via E-mail
+                    </CustomButton>
+                  </Row>
                 </>
-                <SizedBox height={24}></SizedBox>
-                <Title>Compartilhar Carrinho</Title>
-                <SizedBox height={8}></SizedBox>
-                <Row>
-                  <CustomButton
-                    type="success"
-                    variant="outlined"
-                    icon="whatsapp"
-                    onClick={null}
-                    width={180}
-                  >
-                    Via WhatsApp
-                  </CustomButton>
-                  <SizedBox width={10}></SizedBox>
-                  <CustomButton
-                    type="primary"
-                    variant="outlined"
-                    icon="email"
-                    onClick={null}
-                    width={150}
-                  >
-                    Via E-mail
-                  </CustomButton>
-                </Row>
-              </>
-            </Padding>
-          </CartFooter>
+              </Padding>
+            </CartFooter>
+          </div>
         </>
       )}
 

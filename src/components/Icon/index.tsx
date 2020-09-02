@@ -65,6 +65,8 @@ Icon.propTypes = {
     "plus",
     "products",
     "profile",
+    "remove",
+    "remove-fill",
     "search",
     "thermometer",
     "trash",

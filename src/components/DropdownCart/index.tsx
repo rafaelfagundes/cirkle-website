@@ -2,6 +2,7 @@ import { useMediaQuery, useTheme } from "@material-ui/core";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useCart } from "../../hooks/use-cart";
+import Column from "../Column";
 import CustomButton from "../CustomButton";
 import EmptyBag from "../EmptyBag";
 import Icon from "../Icon";
@@ -16,7 +17,6 @@ import {
   CartItems,
   CartText,
   Color,
-  Column,
   Description,
   IconCounter,
   IconHolder,
@@ -109,7 +109,7 @@ function DropdownCart(): JSX.Element {
                       </Price>
                       <Icon
                         size={16}
-                        type="trash"
+                        type="remove-fill"
                         onClick={() => cartContext.removeFromCart(item.id)}
                       ></Icon>
                     </PriceAndButton>
@@ -170,13 +170,11 @@ function DropdownCart(): JSX.Element {
         {cartContext.cart.items.length === 0 && (
           <>
             <Column>
+              <SizedBox height={56}></SizedBox>
               <Padding horizontal={36}>
-                <>
-                  <SizedBox height={56}></SizedBox>
-                  <EmptyBag></EmptyBag>
-                  <SizedBox height={56}></SizedBox>
-                </>
+                <EmptyBag></EmptyBag>
               </Padding>
+              <SizedBox height={56}></SizedBox>
             </Column>
           </>
         )}
