@@ -42,68 +42,68 @@ function PaymentType({
     switch (type) {
       case "amex":
         return {
-          image: "/images/payment_types/amex.png",
+          image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${size}/v1599082122/payment/amex.webp`,
           bgColor: "#016fd0",
           title: "American Express",
         };
       case "aura":
         return {
-          image: "/images/payment_types/aura.png",
+          image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${size}/v1599082122/payment/aura.webp`,
           bgColor: "#fff202",
           title: "Aura",
         };
       case "bank_transfer":
         return {
-          image: "/images/payment_types/bank_transfer.png",
+          image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${size}/v1599082122/payment/bank_transfer.webp`,
           bgColor: "#FFF",
           title: "Transferência Bancária",
         };
       case "dinersclub":
         return {
-          image: "/images/payment_types/dinersclub.png",
+          image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${size}/v1599082122/payment/dinersclub.webp`,
           bgColor: "#FFF",
           title: "Diners",
         };
       case "discover":
         return {
-          image: "/images/payment_types/discover.png",
+          image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${size}/v1599082122/payment/discover.webp`,
           bgColor: "#FFF",
           title: "Discover",
         };
       case "elo":
         return {
-          image: "/images/payment_types/elo.png",
+          image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${size}/v1599082122/payment/elo.webp`,
           bgColor: "#242020",
           title: "Elo",
         };
       case "hipercard":
         return {
-          image: "/images/payment_types/hipercard.png",
+          image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${size}/v1599082122/payment/hipercard.webp`,
           bgColor: "#FFF",
           title: "Hipercard",
         };
       case "jcb":
         return {
-          image: "/images/payment_types/jcb.png",
+          image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${size}/v1599082122/payment/jcb.webp`,
           bgColor: "#FFF",
           title: "JCB",
         };
       case "mastercard":
         return {
-          image: "/images/payment_types/mastercard.png",
+          image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${size}/v1599082122/payment/mastercard.webp`,
           bgColor: "#FFF",
           title: "Mastercard",
         };
       case "visa":
         return {
-          image: "/images/payment_types/visa.png",
+          image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${size}/v1599082122/payment/visa.webp`,
           bgColor: "#FFF",
           title: "Visa",
         };
       case "boleto":
       default:
         return {
-          image: "/images/payment_types/boleto.png",
+          image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${size}/v1599082122/payment/boleto.webp`,
           bgColor: "#FFF",
           title: "Boleto Bancário",
         };

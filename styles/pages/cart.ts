@@ -3,17 +3,15 @@ import Colors from "../../src/enums/Colors";
 
 export const MainColumn = styled.div<{ isSmartPhone: boolean }>`
   margin: ${(props) => (props.isSmartPhone ? "0 0 16px 0" : "32px 0")};
-  padding-top: 24px;
   display: flex;
   flex: 2;
   flex-direction: column;
-  background-color: ${Colors.WHITE};
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
 `;
 
 export const SideColumn = styled(MainColumn)`
   flex: 1;
-  padding: 24px 16px;
+  position: relative;
+  top: 0px;
 `;
 
 export const StyledCartContainer = styled.div`
