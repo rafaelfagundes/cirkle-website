@@ -21,7 +21,6 @@ const LegalText = styled.span`
     sans-serif;
   font-weight: 400;
   font-size: 11px;
-  color: ${Colors.VERY_LIGHT_GRAY};
 `;
 
 function Footer(): JSX.Element {
@@ -34,8 +33,10 @@ function Footer(): JSX.Element {
         <MobileFooter></MobileFooter>
       </Hidden>
       <Legal>
-        <LegalText>CIRKLE TECNOLOGIA E COMERCIO LTDA - MG</LegalText>
-        <LegalText>
+        <LegalText style={{ color: "#fff" }}>
+          CIRKLE TECNOLOGIA E COMERCIO LTDA - MG
+        </LegalText>
+        <LegalText style={{ color: "#fff" }}>
           ©2020 TODOS OS DIREITOS RESERVADOS - CNPJ: 11.222.333/0001-99
         </LegalText>
       </Legal>

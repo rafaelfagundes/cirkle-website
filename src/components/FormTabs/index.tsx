@@ -33,6 +33,8 @@ const Tab = styled.div<{
   align-items: center;
   max-width: 200px;
   cursor: pointer;
+  letter-spacing: -0.25px;
+  text-align: center;
 `;
 
 export interface ITab {

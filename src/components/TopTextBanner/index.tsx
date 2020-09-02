@@ -18,7 +18,7 @@ const BannerText = styled.p`
     sans-serif;
   font-weight: 700;
   font-size: 14px;
-  letter-spacing: 0.5px;
+  letter-spacing: -0.25px;
 `;
 
 function TopTextBanner({

@@ -96,9 +96,10 @@ export const CartText = styled.p`
     sans-serif;
   text-transform: uppercase;
   letter-spacing: 0px;
-  font-size: 14px;
+  font-size: 12px;
   color: ${Colors.RED_PINK};
   font-weight: 700;
+  text-align: center;
 `;
 
 export const Row = styled.div<{ padding?: boolean; spaceBetween?: boolean }>`

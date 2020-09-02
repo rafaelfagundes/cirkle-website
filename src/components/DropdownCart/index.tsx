@@ -10,7 +10,6 @@ import Padding from "../Padding";
 import SizedBox from "../SizedBox";
 import {
   CartHeader,
-  CartHeaderNumber,
   CartHeaderText,
   CartItem,
   CartItemImage,
@@ -81,9 +80,9 @@ function DropdownCart(): JSX.Element {
           <>
             <CartHeader>
               <CartHeaderText>Minha Sacola</CartHeaderText>
-              <CartHeaderNumber>
+              {/* <CartHeaderNumber>
                 {cartContext.cart.items.length}
-              </CartHeaderNumber>
+              </CartHeaderNumber> */}
             </CartHeader>
             <CartItems height={window.innerHeight}>
               {cartContext.cart.items.map((item, index) => (
