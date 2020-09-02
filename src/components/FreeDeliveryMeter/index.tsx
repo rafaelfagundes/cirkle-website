@@ -16,24 +16,24 @@ const Truck = styled.div<{ value: number }>`
 
   @keyframes MoveUpDown {
     0% {
-      bottom: -2px;
-      transform: rotate(4deg) translateX(-1px);
+      bottom: 0px;
+      transform: rotate(4deg);
     }
     25% {
-      bottom: 0px;
-      transform: rotate(-4deg);
+      bottom: -2px;
+      transform: rotate(4deg);
     }
     50% {
       bottom: 1px;
-      transform: rotate(0deg) translateX(1px);
+      transform: rotate(-4deg);
     }
     75% {
-      transform: rotate(-4deg);
-      bottom: 0px;
+      transform: rotate(0deg);
+      bottom: 1px;
     }
     100% {
-      bottom: -2px;
-      transform: rotate(4deg) translateX(-1px);
+      bottom: 1px;
+      transform: rotate(8deg);
     }
   }
 `;
