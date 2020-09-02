@@ -1,6 +1,21 @@
 import styled from "styled-components";
 import Colors from "../../src/enums/Colors";
 
+export const MainColumn = styled.div<{ isSmartPhone: boolean }>`
+  margin: ${(props) => (props.isSmartPhone ? "0 0 16px 0" : "32px 0")};
+  padding-top: 24px;
+  display: flex;
+  flex: 2;
+  flex-direction: column;
+  background-color: ${Colors.WHITE};
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+`;
+
+export const SideColumn = styled(MainColumn)`
+  flex: 1;
+  padding: 24px 16px;
+`;
+
 export const StyledCartContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -57,7 +72,7 @@ export const CartItem = styled.div<{ showBackground: boolean }>`
   flex-direction: row;
   align-items: flex-start;
   background-color: ${(props) =>
-    props.showBackground ? "rgba(0, 0, 0, 0.025)" : "transparent"};
+    props.showBackground ? "rgba(0, 0, 0, 0.015)" : "transparent"};
 `;
 
 export const CartItemImage = styled.div<{ image: string; size: number }>`
@@ -123,7 +138,7 @@ export const TitleAndRemove = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: calc(100% - 6px);
   margin-left: 6px;
 `;
 
@@ -137,7 +152,7 @@ export const ImagePrice = styled.div`
 
 export const CartFooter = styled.div<{ isSmartPhone: boolean }>`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   ${(props) => (props.isSmartPhone ? `width: 100%;` : "")};
   margin-bottom: ${(props) => (props.isSmartPhone ? "32px" : 0)};

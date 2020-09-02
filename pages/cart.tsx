@@ -11,6 +11,7 @@ import PaymentType from "../src/components/PaymentType";
 import SimpleText from "../src/components/SimpleText";
 import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
+import Colors from "../src/enums/Colors";
 import { useCart } from "../src/hooks/use-cart";
 import theme from "../src/theme/theme";
 import Shipping from "../src/types/Shipping";
@@ -23,10 +24,12 @@ import {
   Description,
   ImagePrice,
   Label,
+  MainColumn,
   MoreInfo,
   Price,
   Qty,
   Row,
+  SideColumn,
   Size,
   StyledCartContainer,
   Subvalue,
@@ -68,6 +71,7 @@ function Cart(): JSX.Element {
   // };
 
   const _getItemMaxQty = (id: string) => {
+    console.log("id", id);
     return [
       { title: "1", value: 1 },
       { title: "2", value: 2 },
@@ -77,6 +81,7 @@ function Cart(): JSX.Element {
   };
 
   const _getItemSizes = (id: string) => {
+    console.log("id", id);
     return [
       { title: "36", value: "36" },
       { title: "37", value: "37" },
@@ -88,17 +93,26 @@ function Cart(): JSX.Element {
       { title: "43", value: "43" },
       { title: "44", value: "44" },
       { title: "45", value: "45" },
+      { title: "P", value: "P" },
+      { title: "M", value: "M" },
+      { title: "G", value: "G" },
+      { title: "GG", value: "GG" },
     ];
   };
 
   const _getItemColors = (id: string) => {
+    console.log("id", id);
     return [
-      { title: "Preta", value: "Preta" },
-      { title: "Vermelha", value: "Vermelha" },
       { title: "Azul Escuro", value: "Azul Escuro" },
-      { title: "Rosa", value: "Rosa" },
-      { title: "Laranja", value: "Laranja" },
       { title: "Bege", value: "Bege" },
+      { title: "Cinza", value: "Cinza" },
+      { title: "Dourado", value: "Dourado" },
+      { title: "Laranja", value: "Laranja" },
+      { title: "Marrom", value: "Marrom" },
+      { title: "Ouro", value: "Ouro" },
+      { title: "Preto", value: "Preto" },
+      { title: "Rosa", value: "Rosa" },
+      { title: "Vermelho", value: "Vermelho" },
     ];
   };
 
@@ -174,6 +188,17 @@ function Cart(): JSX.Element {
     }
   };
 
+  const _showFreeDeliveryMeter = () => {
+    if (cartContext.cart.freeShipping) {
+      if (cartContext.cart.subtotal < cartContext.cart.freeShippingValue) {
+        return true;
+      }
+      return false;
+    } else {
+      return false;
+    }
+  };
+
   useEffect(() => {
     _updateDeliveryFee();
   }, [deliveryType]);
@@ -182,8 +207,15 @@ function Cart(): JSX.Element {
     <StyledCartContainer>
       {cartContext.cart.items.length > 0 && (
         <>
-          <div style={{ display: "flex", flex: 2, flexDirection: "column" }}>
-            <SizedBox height={32}></SizedBox>
+          <MainColumn
+            isSmartPhone={isSmartPhone}
+            style={{
+              display: "flex",
+              flex: 2,
+              flexDirection: "column",
+              backgroundColor: Colors.WHITE,
+            }}
+          >
             <Padding horizontal={16}>
               <Title size={18}>Sacola de Compras</Title>
             </Padding>
@@ -291,156 +323,167 @@ function Cart(): JSX.Element {
                 </CartItem>
               ))}
             </CartItems>
-          </div>
-          <SizedBox width={isSmartPhone ? 0 : 48}></SizedBox>
-          <div style={{ display: "flex", flex: 1 }}>
+          </MainColumn>
+          <SizedBox width={isSmartPhone ? 0 : 16}></SizedBox>
+          <SideColumn isSmartPhone={isSmartPhone}>
             <CartFooter isSmartPhone={isSmartPhone}>
-              <Padding vertical={isSmartPhone ? 0 : 32} horizontal={0}>
+              <Row spaceBetween>
+                <Label>Subtotal</Label>
+                <Value>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(cartContext.cart.subtotal)}
+                </Value>
+              </Row>
+              <SizedBox height={16}></SizedBox>
+              <Row spaceBetween>
+                <Label>Frete</Label>
+                {_getShippingValue()}
+              </Row>
+              {_showShippingSelect() && (
                 <>
-                  <Row spaceBetween>
-                    <Label>Subtotal</Label>
-                    <Value>
-                      {new Intl.NumberFormat("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      }).format(cartContext.cart.subtotal)}
-                    </Value>
-                  </Row>
+                  <CustomSelect
+                    value={cartContext.cart.shipping.type}
+                    setValue={setDeliveryType}
+                    items={_getDeliveryTypes()}
+                  ></CustomSelect>
                   <SizedBox height={16}></SizedBox>
                   <Row spaceBetween>
-                    <Label>Frete</Label>
-                    {_getShippingValue()}
-                  </Row>
-                  {_showShippingSelect() && (
-                    <>
-                      <CustomSelect
-                        value={cartContext.cart.shipping.type}
-                        setValue={setDeliveryType}
-                        items={_getDeliveryTypes()}
-                      ></CustomSelect>
-                      <SizedBox height={16}></SizedBox>
-                      <Row spaceBetween>
-                        <Subvalue>Rua Frederico Ozanan, 150</Subvalue>
-                        <CustomButton
-                          type="primary"
-                          variant="outlined"
-                          onClick={null}
-                          small
-                        >
-                          Alterar
-                        </CustomButton>
-                      </Row>
-                    </>
-                  )}
-                  <SizedBox height={16}></SizedBox>
-                  {cartContext.cart.freeShipping && (
-                    <FreeDeliveryMeter
-                      current={cartContext.cart.subtotal}
-                      max={cartContext.cart.freeShippingValue}
-                    ></FreeDeliveryMeter>
-                  )}
-                  <SizedBox height={24}></SizedBox>
-                  <Row spaceBetween>
-                    <Label>Total</Label>
-                    <Value>
-                      {new Intl.NumberFormat("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      }).format(cartContext.cart.total)}
-                    </Value>
-                  </Row>
-                  <SizedBox height={16}></SizedBox>
-                  <Row>
-                    <CustomButton
-                      width={340}
-                      variant="contained"
-                      type="success"
-                      onClick={null}
-                    >
-                      Comprar
-                    </CustomButton>
-                  </Row>
-                  <SizedBox height={24}></SizedBox>
-                  <Title>Cupom de Desconto</Title>
-                  <SizedBox height={8}></SizedBox>
-                  <SimpleText>Tem cupom? Adicione na próxima tela.</SimpleText>
-                  <SizedBox height={24}></SizedBox>
-                  <Title>Nós aceitamos:</Title>
-                  <SizedBox height={16}></SizedBox>
-                  <>
-                    <Grid container spacing={2}>
-                      <Grid item xs={2}>
-                        <PaymentType type="mastercard" size={32}></PaymentType>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <PaymentType type="visa" size={32}></PaymentType>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <PaymentType type="amex" size={32}></PaymentType>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <PaymentType type="aura" size={32}></PaymentType>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <PaymentType type="dinersclub" size={32}></PaymentType>
-                      </Grid>
-                    </Grid>
-                    <SizedBox height={16}></SizedBox>
-                    <Grid container spacing={2}>
-                      <Grid item xs={2}>
-                        <PaymentType type="discover" size={32}></PaymentType>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <PaymentType type="elo" size={32}></PaymentType>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <PaymentType type="hipercard" size={32}></PaymentType>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <PaymentType type="jcb" size={32}></PaymentType>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <PaymentType type="boleto" size={32}></PaymentType>
-                      </Grid>
-                    </Grid>
-                    <SizedBox height={16}></SizedBox>
-                    <Grid container spacing={2}>
-                      <Grid item xs={2}>
-                        <PaymentType
-                          type="bank_transfer"
-                          size={32}
-                        ></PaymentType>
-                      </Grid>
-                    </Grid>
-                  </>
-                  <SizedBox height={24}></SizedBox>
-                  <Title>Compartilhar Carrinho</Title>
-                  <SizedBox height={8}></SizedBox>
-                  <Row>
-                    <CustomButton
-                      type="success"
-                      variant="outlined"
-                      icon="whatsapp"
-                      onClick={null}
-                      width={180}
-                    >
-                      Via WhatsApp
-                    </CustomButton>
-                    <SizedBox width={10}></SizedBox>
+                    <Subvalue>Rua Frederico Ozanan, 150</Subvalue>
                     <CustomButton
                       type="primary"
                       variant="outlined"
-                      icon="email"
                       onClick={null}
-                      width={150}
+                      small
                     >
-                      Via E-mail
+                      Alterar
                     </CustomButton>
                   </Row>
                 </>
-              </Padding>
+              )}
+              <SizedBox height={16}></SizedBox>
+              {_showFreeDeliveryMeter() && (
+                <>
+                  <FreeDeliveryMeter
+                    current={cartContext.cart.subtotal}
+                    max={cartContext.cart.freeShippingValue}
+                  ></FreeDeliveryMeter>
+                  <SizedBox height={24}></SizedBox>
+                </>
+              )}
+              <Row spaceBetween>
+                <Label>Total</Label>
+                <Value>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(cartContext.cart.total)}
+                </Value>
+              </Row>
+              <SizedBox height={16}></SizedBox>
+              <Row>
+                <CustomButton
+                  width={340}
+                  variant="contained"
+                  type="success"
+                  onClick={null}
+                >
+                  Comprar
+                </CustomButton>
+              </Row>
+              <SizedBox height={24}></SizedBox>
+              <Title>Cupom de Desconto</Title>
+              <SizedBox height={8}></SizedBox>
+              <SimpleText>Tem cupom? Adicione na próxima tela.</SimpleText>
+              <SizedBox height={24}></SizedBox>
+              <Title>Nós aceitamos:</Title>
+              <SizedBox height={16}></SizedBox>
+              <>
+                <Grid container spacing={8}>
+                  <Grid item xs={2}>
+                    <PaymentType
+                      border
+                      type="mastercard"
+                      size={42}
+                    ></PaymentType>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <PaymentType border type="visa" size={42}></PaymentType>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <PaymentType border type="amex" size={42}></PaymentType>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <PaymentType border type="aura" size={42}></PaymentType>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <PaymentType
+                      border
+                      type="dinersclub"
+                      size={42}
+                    ></PaymentType>
+                  </Grid>
+                </Grid>
+                <SizedBox height={16}></SizedBox>
+                <Grid container spacing={8}>
+                  <Grid item xs={2}>
+                    <PaymentType border type="discover" size={42}></PaymentType>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <PaymentType border type="elo" size={42}></PaymentType>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <PaymentType
+                      border
+                      type="hipercard"
+                      size={42}
+                    ></PaymentType>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <PaymentType border type="jcb" size={42}></PaymentType>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <PaymentType border type="boleto" size={42}></PaymentType>
+                  </Grid>
+                </Grid>
+                <SizedBox height={16}></SizedBox>
+                <Grid container spacing={8}>
+                  <Grid item xs={2}>
+                    <PaymentType
+                      border
+                      type="bank_transfer"
+                      size={42}
+                    ></PaymentType>
+                  </Grid>
+                </Grid>
+              </>
+              <SizedBox height={24}></SizedBox>
+              <Title>Compartilhar Carrinho</Title>
+              <SizedBox height={8}></SizedBox>
+              <Row>
+                <CustomButton
+                  type="success"
+                  variant="outlined"
+                  icon="whatsapp"
+                  onClick={null}
+                  width={180}
+                >
+                  Via WhatsApp
+                </CustomButton>
+                <SizedBox width={10}></SizedBox>
+                <CustomButton
+                  type="primary"
+                  variant="outlined"
+                  icon="email"
+                  onClick={null}
+                  width={150}
+                >
+                  Via E-mail
+                </CustomButton>
+              </Row>
             </CartFooter>
-          </div>
+          </SideColumn>
         </>
       )}
 

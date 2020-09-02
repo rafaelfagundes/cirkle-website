@@ -2,40 +2,41 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
-const StyledPaymentType = styled.div<{ size: number }>`
+const StyledPaymentType = styled.div<{
+  size: number;
+  border: boolean;
+  bgColor: string;
+}>`
   width: ${(props) => props.size * 1.4}px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: ${(props) => (props.border ? "1px" : 0)};
+  border: ${(props) => (props.border ? "1px solid #EEE" : "none")};
+  border-radius: ${(props) => props.size * 0.084}px;
+  background-color: ${(props) => props.bgColor};
 `;
 
-const ImageHolder = styled.div<{ bgColor: string; size: number }>`
+const ImageHolder = styled.div<{
+  size: number;
+}>`
   width: ${(props) => props.size * 1.4}px;
   height: ${(props) => props.size}px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: ${(props) => props.size * 0.084}px;
-  background-color: ${(props) => props.bgColor};
 `;
-
-// const Title = styled.span`
-//   margin-top: 5px;
-//   color: ${Colors.WHITE};
-//   font-family: "FuturaPT";
-//   font-size: 14px;
-//   text-align: center;
-//   line-height: 100%;
-// `;
 
 function PaymentType({
   type,
   size = 48,
+  border = false,
 }: {
   type: string;
   size?: number;
+  border?: boolean;
 }): JSX.Element {
   function getPaymentType(): { image: string; bgColor: string; title: string } {
     switch (type) {
@@ -112,8 +113,12 @@ function PaymentType({
   const paymentType = getPaymentType();
 
   return (
-    <StyledPaymentType size={size}>
-      <ImageHolder bgColor={paymentType.bgColor} size={size}>
+    <StyledPaymentType
+      size={size}
+      border={border}
+      bgColor={paymentType.bgColor}
+    >
+      <ImageHolder size={size}>
         <img
           src={paymentType.image}
           alt={paymentType.title}
