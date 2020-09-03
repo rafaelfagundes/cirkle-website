@@ -97,7 +97,7 @@ const MenuItemText = styled.span<{
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
   padding: ${(props) => (props.first ? "16px 16px 16px 0" : "0 0 0 16px")} ;
   text-transform: uppercase;
-  font-weight: 400;
+  font-weight: 700;
 `;
 
 const SubcategoriesHolder = styled.div`
@@ -170,7 +170,7 @@ const LogoHolder = styled.div`
   height: 65px;
 `;
 
-function TopMenu({ data }: { data: any }): JSX.Element {
+function DesktopTopMenu({ data }: { data: any }): JSX.Element {
   const [menuData, setMenuData] = useState(data);
   const [selectedTab, setSelectedTab] = useState("women");
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -333,4 +333,4 @@ function TopMenu({ data }: { data: any }): JSX.Element {
   );
 }
 
-export default TopMenu;
+export default DesktopTopMenu;

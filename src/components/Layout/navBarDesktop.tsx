@@ -1,7 +1,7 @@
 import { AppBar } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import TopMenu from "../TopMenu";
+import DesktopTopMenu from "../DesktopTopMenu";
 
 const NavBarSpacer = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ function NavBarDesktop({ menuData }: { menuData: any }): JSX.Element {
     <>
       <NavBarSpacer> </NavBarSpacer>
       <AppBar position="fixed" color="transparent">
-        <TopMenu data={menuData}></TopMenu>
+        <DesktopTopMenu data={menuData}></DesktopTopMenu>
       </AppBar>
     </>
   );
