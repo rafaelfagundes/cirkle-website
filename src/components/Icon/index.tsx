@@ -53,6 +53,7 @@ Icon.propTypes = {
     "facebook",
     "google",
     "heart",
+    "heart-fill",
     "instagram-white",
     "instagram",
     "key",

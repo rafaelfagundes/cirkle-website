@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const FavoriteHolder = styled.div<{ active: boolean }>`
@@ -15,9 +15,13 @@ const StyledFavoriteIcon = styled.img`
   cursor: pointer;
 `;
 
-function FavoriteIcon(): JSX.Element {
-  const [active, setActive] = useState(false);
-
+function FavoriteIcon({
+  active,
+  setActive,
+}: {
+  active: boolean;
+  setActive: (value: boolean) => void;
+}): JSX.Element {
   return (
     <FavoriteHolder active={active} onClick={() => setActive(!active)}>
       <StyledFavoriteIcon
