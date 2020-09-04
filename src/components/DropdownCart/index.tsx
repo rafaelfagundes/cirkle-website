@@ -1,4 +1,3 @@
-import { useMediaQuery, useTheme } from "@material-ui/core";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useCart } from "../../hooks/use-cart";
@@ -8,6 +7,7 @@ import EmptyBag from "../EmptyBag";
 import Icon from "../Icon";
 import Padding from "../Padding";
 import SizedBox from "../SizedBox";
+import Bag from "./bag";
 import {
   CartHeader,
   CartHeaderText,
@@ -17,8 +17,6 @@ import {
   CartText,
   Color,
   Description,
-  IconCounter,
-  IconHolder,
   Label,
   MoreInfo,
   Price,
@@ -32,13 +30,10 @@ import {
 } from "./styles";
 
 function DropdownCart(): JSX.Element {
-  const theme = useTheme();
-  const isSmartphone = useMediaQuery(theme.breakpoints.down("xs"));
   const router = useRouter();
-  const cartButton = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-
   const cartContext = useCart();
+  const cartButton = useRef<HTMLDivElement>(null);
 
   const goToCart = () => {
     router.push("/cart");
@@ -47,18 +42,25 @@ function DropdownCart(): JSX.Element {
 
   return (
     <>
-      <IconHolder
+      <Bag
+        counter={cartContext.cart.items.length}
+        setIsOpen={setIsOpen}
         ref={cartButton}
-        onClick={() => setIsOpen(true)}
-        onMouseOver={isSmartphone ? null : () => setIsOpen(true)}
-      >
-        <Icon
-          type={cartContext.cart.items.length > 0 ? "bag-full" : "bag"}
-        ></Icon>
-        {cartContext.cart.items.length > 0 && (
-          <IconCounter>{cartContext.cart.items.length}</IconCounter>
-        )}
-      </IconHolder>
+      ></Bag>
+      {/* <animated.div style={props}>
+        <IconHolder
+          ref={cartButton}
+          onClick={() => setIsOpen(true)}
+          onMouseOver={isSmartphone ? null : () => setIsOpen(true)}
+        >
+          <Icon
+            type={cartContext.cart.items.length > 0 ? "bag-full" : "bag"}
+          ></Icon>
+          {cartContext.cart.items.length > 0 && (
+            <IconCounter>{cartContext.cart.items.length}</IconCounter>
+          )}
+        </IconHolder>
+      </animated.div> */}
       <StyledCart
         id="cart-dropdown"
         open={isOpen}
