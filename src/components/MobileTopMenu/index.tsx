@@ -35,7 +35,7 @@ const LogoHolder = styled.div`
   height: 64px;
   margin-left: 10px;
   position: fixed;
-  left: calc(50% - 48px);
+  left: calc(50% - 56px);
   top: 2px;
 `;
 
