@@ -57,13 +57,13 @@ function ProductItem({ data }: { data: Product }): JSX.Element {
 
     await controls.start({
       opacity: 1,
-      scale: 5,
+      scale: 2,
       transition: { duration: speed },
     });
 
     await controls.start({
       opacity: 0,
-      scale: 3,
+      scale: 1,
       transition: { duration: speed },
     });
     controls.start({
@@ -88,10 +88,13 @@ function ProductItem({ data }: { data: Product }): JSX.Element {
           setActive={setIsFavorited}
         ></FavoriteIcon>
       </FavoriteIconHolder>
-      <Item isSmartphone={smartphone}>
-        <AnimatedHeart>
-          <motion.div animate={controls} initial={{ opacity: 0, scale: 1 }}>
-            <Icon type="heart-fill" size={44}></Icon>
+      <Item
+        isSmartphone={smartphone}
+        onDoubleClick={() => setIsFavorited(!isFavorited)}
+      >
+        <AnimatedHeart isSmartphone={smartphone}>
+          <motion.div animate={controls} initial={{ opacity: 0, scale: 0 }}>
+            <Icon type="heart-fill" size={96}></Icon>
           </motion.div>
         </AnimatedHeart>
         <Image image={data.image}></Image>

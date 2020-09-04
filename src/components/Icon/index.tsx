@@ -28,7 +28,11 @@ function Icon({
   onClick?: () => void;
 }): JSX.Element {
   return (
-    <StyledIcon size={size} onClick={onClick} clickable={onClick !== null}>
+    <StyledIcon
+      size={size}
+      onClick={onClick}
+      clickable={onClick !== undefined && onClick !== null}
+    >
       <Image
         size={size}
         src={light ? `/icons/${type}-light.svg` : `/icons/${type}.svg`}

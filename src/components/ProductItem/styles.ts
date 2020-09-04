@@ -17,6 +17,7 @@ export const Image = styled.div<{ image: string }>`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  z-index: 900000000;
 `;
 
 export const BrandName = styled.div`
@@ -124,8 +125,9 @@ export const FavoriteIconHolder = styled.div`
   padding: 5px 5px 0 0;
 `;
 
-export const AnimatedHeart = styled.div`
+export const AnimatedHeart = styled.div<{ isSmartphone: boolean }>`
   position: absolute;
-  left: calc(50% - 22px);
-  top: calc(110px - 22px);
+  left: ${(props) =>
+    props.isSmartphone ? "calc(50% - 56px);" : "calc(50% - 48px);"};
+  top: calc(110px - 48px);
 `;
