@@ -84,14 +84,17 @@ function HotSection({
         {isSmartphone ? <Spacer>-</Spacer> : null}
       </ItemsHolder>
       <Center>
-        <CustomButton
-          width={250}
-          type="secondary"
-          variant="outlined"
-          onClick={null}
-        >
-          VER MAIS PRODUTOS
-        </CustomButton>
+        <>
+          <CustomButton
+            width={250}
+            type="secondary"
+            variant="outlined"
+            onClick={null}
+          >
+            VER MAIS PRODUTOS
+          </CustomButton>
+          {isSmartphone ? <SizedBox width={16}></SizedBox> : null}
+        </>
       </Center>
       <SizedBox height={48}></SizedBox>
       <BrandsHolder isSmartphone={isSmartphone}>
@@ -101,14 +104,17 @@ function HotSection({
       </BrandsHolder>
       <SizedBox height={12}></SizedBox>
       <Center>
-        <CustomButton
-          width={250}
-          type="secondary"
-          variant="outlined"
-          onClick={null}
-        >
-          VER TODAS MARCAS
-        </CustomButton>
+        <>
+          <CustomButton
+            width={250}
+            type="secondary"
+            variant="outlined"
+            onClick={null}
+          >
+            VER TODAS MARCAS
+          </CustomButton>
+          {isSmartphone ? <SizedBox width={16}></SizedBox> : null}
+        </>
       </Center>
     </Section>
   );
