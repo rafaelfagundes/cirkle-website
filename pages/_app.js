@@ -10,6 +10,7 @@ import Layout from "../src/components/Layout/index";
 import AuthProvider from "../src/hooks/use-auth";
 import CartProvider from "../src/hooks/use-cart";
 import DialogProvider from "../src/hooks/use-dialog";
+import WishlistProvider from "../src/hooks/use-wishlist";
 import MenuController from "../src/modules/menu/MenuController";
 import theme from "../src/theme/theme";
 import "../styles/global.css";
@@ -132,15 +133,17 @@ export default function MyApp(props) {
       </Head>
       <DialogProvider>
         <AuthProvider>
-          <CartProvider>
-            <ThemeProvider theme={theme}>
-              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-              <CssBaseline />
-              <Layout menuData={menuData}>
-                <Component {...pageProps} />
-              </Layout>
-            </ThemeProvider>
-          </CartProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <ThemeProvider theme={theme}>
+                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                <CssBaseline />
+                <Layout menuData={menuData}>
+                  <Component {...pageProps} />
+                </Layout>
+              </ThemeProvider>
+            </CartProvider>
+          </WishlistProvider>
         </AuthProvider>
       </DialogProvider>
     </>

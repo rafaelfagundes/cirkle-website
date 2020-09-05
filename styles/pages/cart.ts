@@ -64,7 +64,7 @@ export const Row = styled.div<{ padding?: boolean; spaceBetween?: boolean }>`
 
 export const CartItems = styled.div``;
 
-export const CartItem = styled.div<{ showBackground: boolean }>`
+export const CartItem = styled.div<{ showBackground?: boolean }>`
   padding: 16px;
   display: flex;
   flex-direction: row;
@@ -135,7 +135,7 @@ export const TitleAndRemove = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   width: calc(100% - 6px);
   margin-left: 6px;
 `;

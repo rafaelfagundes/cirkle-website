@@ -38,11 +38,11 @@ const Bag = React.forwardRef(
     }, [props.counter]);
 
     return (
-      <div ref={ref}>
+      <div ref={ref} style={{ cursor: "pointer" }}>
         <motion.div animate={controls}>
           <IconHolder
             onClick={() => props.setIsOpen(true)}
-            onMouseOver={isSmartphone ? null : () => props.setIsOpen(true)}
+            // onMouseOver={isSmartphone ? null : () => props.setIsOpen(true)}
           >
             <Icon type={props.counter > 0 ? "bag-full" : "bag"}></Icon>
             {props.counter > 0 && <IconCounter>{props.counter}</IconCounter>}

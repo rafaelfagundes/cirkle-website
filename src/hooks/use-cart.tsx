@@ -2,14 +2,15 @@ import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Address from "../types/Address";
 import Cart from "../types/Cart";
-import CartItem from "../types/Product";
+import Product from "../types/Product";
 import Shipping from "../types/Shipping";
 
 export interface ICartContextProps {
   cart: Cart;
-  addToCart: (item: CartItem) => void;
+  addToCart: (item: Product) => void;
   removeFromCart: (id: string) => void;
-  updateItem: (item: CartItem) => void;
+  isItemInCart: (id: string) => boolean;
+  updateItem: (item: Product) => void;
   setShipping: (shipping: Shipping) => void;
   setAddress: (address: Address) => void;
   updateQuantity: (id: string, qty: number) => void;
@@ -75,7 +76,7 @@ function useCartProvider() {
     return { subtotal, total };
   }
 
-  const addToCart = (item: CartItem) => {
+  const addToCart = (item: Product) => {
     const _cart = _.cloneDeep(cart);
     _cart.items.push(item);
 
@@ -98,7 +99,14 @@ function useCartProvider() {
     setCart(_cart);
   };
 
-  const updateItem = (item: CartItem) => {
+  const isItemInCart = (id: string): boolean => {
+    const item = _.find(cart.items, (o) => o.id === id);
+
+    if (item) return true;
+    else return false;
+  };
+
+  const updateItem = (item: Product) => {
     const _cart = _.cloneDeep(cart);
     const _index = _.findIndex(_cart.items, (o) => o.id === item.id);
     if (_index < 0) {
@@ -174,6 +182,7 @@ function useCartProvider() {
     cart,
     addToCart,
     removeFromCart,
+    isItemInCart,
     updateItem,
     setShipping,
     setAddress,

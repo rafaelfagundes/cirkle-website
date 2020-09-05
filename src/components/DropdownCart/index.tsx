@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { useCart } from "../../hooks/use-cart";
 import Column from "../Column";
 import CustomButton from "../CustomButton";
-import EmptyBag from "../EmptyBag";
+import EmptyPage from "../EmptyPage";
 import Icon from "../Icon";
 import Padding from "../Padding";
 import SizedBox from "../SizedBox";
@@ -35,32 +35,22 @@ function DropdownCart(): JSX.Element {
   const cartContext = useCart();
   const cartButton = useRef<HTMLDivElement>(null);
 
+  const _goToProducts = () => {
+    router.push("/products");
+  };
+
   const goToCart = () => {
     router.push("/cart");
     setIsOpen(false);
   };
 
   return (
-    <>
+    <div style={{ cursor: "pointer" }}>
       <Bag
         counter={cartContext.cart.items.length}
         setIsOpen={setIsOpen}
         ref={cartButton}
       ></Bag>
-      {/* <animated.div style={props}>
-        <IconHolder
-          ref={cartButton}
-          onClick={() => setIsOpen(true)}
-          onMouseOver={isSmartphone ? null : () => setIsOpen(true)}
-        >
-          <Icon
-            type={cartContext.cart.items.length > 0 ? "bag-full" : "bag"}
-          ></Icon>
-          {cartContext.cart.items.length > 0 && (
-            <IconCounter>{cartContext.cart.items.length}</IconCounter>
-          )}
-        </IconHolder>
-      </animated.div> */}
       <StyledCart
         id="cart-dropdown"
         open={isOpen}
@@ -110,7 +100,7 @@ function DropdownCart(): JSX.Element {
                       </Price>
                       <Icon
                         size={16}
-                        type="remove-fill"
+                        type="remove"
                         onClick={() => cartContext.removeFromCart(item.id)}
                       ></Icon>
                     </PriceAndButton>
@@ -173,14 +163,20 @@ function DropdownCart(): JSX.Element {
             <Column>
               <SizedBox height={56}></SizedBox>
               <Padding horizontal={36}>
-                <EmptyBag></EmptyBag>
+                <EmptyPage
+                  buttonAction={_goToProducts}
+                  buttonText="Explorar"
+                  icon="bag"
+                  subtitle="Não perca tempo, adicione os melhores produtos."
+                  title="A sacola está vazia"
+                ></EmptyPage>
               </Padding>
               <SizedBox height={56}></SizedBox>
             </Column>
           </>
         )}
       </StyledCart>
-    </>
+    </div>
   );
 }
 

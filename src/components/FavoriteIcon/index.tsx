@@ -20,10 +20,10 @@ function FavoriteIcon({
   setActive,
 }: {
   active: boolean;
-  setActive: (value: boolean) => void;
+  setActive: () => void;
 }): JSX.Element {
   return (
-    <FavoriteHolder active={active} onClick={() => setActive(!active)}>
+    <FavoriteHolder active={active} onClick={setActive}>
       <StyledFavoriteIcon
         src={
           active ? "/icons/favorite_active.svg" : "/icons/favorite_inactive.svg"

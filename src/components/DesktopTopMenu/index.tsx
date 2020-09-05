@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 import { useAuth } from "../../hooks/use-auth";
-import CustomButton from "../CustomButton";
 import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../HorizontalLogo";
 import Icon from "../Icon";
@@ -233,19 +232,19 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
             </Tabs>
           </LogoAndTabs>
           <SearchAndBag>
-            <CustomButton
+            {/* <CustomButton
               type="success"
               variant="text"
-              width={140}
+              width={160}
               onClick={null}
             >
               Quero Vender
-            </CustomButton>
+            </CustomButton> */}
             <SizedBox width={16}></SizedBox>
             <UserProfileMenuItem
               isLogged={auth.user !== null}
             ></UserProfileMenuItem>
-            <SizedBox width={16}></SizedBox>
+            <SizedBox width={32}></SizedBox>
             <DropdownCart></DropdownCart>
           </SearchAndBag>
         </Top>

@@ -20,15 +20,18 @@ function Icon({
   type,
   size = 24,
   light = false,
+  alt,
   onClick,
 }: {
   type: string;
   size?: number;
   light?: boolean;
+  alt?: string;
   onClick?: () => void;
 }): JSX.Element {
   return (
     <StyledIcon
+      title={alt}
       size={size}
       onClick={onClick}
       clickable={onClick !== undefined && onClick !== null}
@@ -52,6 +55,7 @@ Icon.propTypes = {
     "close",
     "delivery-truck",
     "email",
+    "empty",
     "exit",
     "facebook-white",
     "facebook",

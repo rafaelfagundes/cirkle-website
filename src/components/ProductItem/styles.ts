@@ -131,3 +131,11 @@ export const AnimatedHeart = styled.div<{ isSmartphone: boolean }>`
     props.isSmartphone ? "calc(50% - 56px);" : "calc(50% - 48px);"};
   top: calc(110px - 48px);
 `;
+
+export const RemoveIconHolder = styled(FavoriteIconHolder)``;
+
+export const RemoveButton = styled.div`
+  background-color: ${Colors.VERY_LIGHT_GRAY};
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+`;

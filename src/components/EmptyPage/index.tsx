@@ -1,46 +1,56 @@
-import { useRouter } from "next/router";
 import React from "react";
 import Center from "../Center";
 import Column from "../Column";
 import CustomButton from "../CustomButton";
 import Icon from "../Icon";
+import Padding from "../Padding";
 import SimpleText from "../SimpleText";
 import SizedBox from "../SizedBox";
 import Title from "../Title";
 
-function EmptyBag(): JSX.Element {
-  const router = useRouter();
+type EmptyPageProps = {
+  title?: string;
+  subtitle?: string;
+  icon?: string;
+  buttonText?: string;
+  buttonAction?: () => void;
+};
 
-  const _goToProducts = () => {
-    router.push("/products");
-  };
-
+function EmptyPage({
+  title = "Não Encontrado",
+  subtitle = "O recurso não pode ser encontrado",
+  icon = "empty",
+  buttonText = "Voltar",
+  buttonAction = process.browser ? () => window.history.back() : null,
+}: EmptyPageProps): JSX.Element {
   return (
     <Column>
       <Center>
-        <Icon type="bag" size={128}></Icon>
+        <Icon type={icon} size={128}></Icon>
       </Center>
       <SizedBox height={32}></SizedBox>
       <Center>
-        <Title>A sacola está vazia</Title>
+        <Title>{title}</Title>
       </Center>
       <SizedBox height={8}></SizedBox>
       <Center>
-        <SimpleText>Não perca tempo, adicione os melhores produtos.</SimpleText>
+        <Padding horizontal={32}>
+          <SimpleText centered>{subtitle}</SimpleText>
+        </Padding>
       </Center>
       <SizedBox height={32}></SizedBox>
       <Center>
         <CustomButton
           type="primary"
           variant="contained"
-          onClick={_goToProducts}
+          onClick={buttonAction}
           width={150}
         >
-          Explorar
+          {buttonText}
         </CustomButton>
       </Center>
     </Column>
   );
 }
 
-export default EmptyBag;
+export default EmptyPage;

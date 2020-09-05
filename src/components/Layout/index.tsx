@@ -92,7 +92,10 @@ function Layout({
           onClose={() => setDrawer(false)}
           onOpen={() => setDrawer(true)}
         >
-          <SideMenu data={menuData}></SideMenu>
+          <SideMenu
+            data={menuData}
+            closeMenu={() => setDrawer(false)}
+          ></SideMenu>
         </SwipeableDrawer>
       </Hidden>
       <Footer></Footer>

@@ -1,10 +1,11 @@
 import { Grid, useMediaQuery } from "@material-ui/core";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Card from "../src/components/Card";
 import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
 import CustomSelect from "../src/components/CustomSelect";
-import EmptyBag from "../src/components/EmptyBag";
+import EmptyPage from "../src/components/EmptyPage";
 import FreeDeliveryMeter from "../src/components/FreeDeliveryMeter";
 import Icon from "../src/components/Icon";
 import Padding from "../src/components/Padding";
@@ -38,11 +39,21 @@ import {
 } from "../styles/pages/cart";
 
 function Cart(): JSX.Element {
+  const router = useRouter();
+
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const cartContext = useCart();
   const [showEdit, setShowEdit] = useState(false);
   const [deliveryType, setDeliveryType] = useState(null);
-  const [postalCode, setPostalCode] = useState(36309012);
+  // const [postalCode, setPostalCode] = useState(36309012);
+  const [postalCode] = useState(36309012);
+
+  // Scroll to top when page is loaded
+  if (process.browser) window.scrollTo(0, 0);
+
+  const _goToProducts = () => {
+    router.push("/products");
+  };
 
   const _getItemMaxQty = (id: string) => {
     console.log("id", id);
@@ -122,10 +133,6 @@ function Cart(): JSX.Element {
   };
 
   const _getShippingValue = () => {
-    // console.log("Frete grátis", cartContext.cart.freeShipping);
-    // console.log("Frete grátis a partir de", cartContext.cart.freeShippingValue);
-    // console.log("Subtotal", cartContext.cart.subtotal);
-
     if (cartContext.cart.freeShipping) {
       if (cartContext.cart.subtotal < cartContext.cart.freeShippingValue) {
         return (
@@ -183,7 +190,7 @@ function Cart(): JSX.Element {
         <>
           <MainColumn isSmartPhone={isSmartPhone}>
             <Card padding={false}>
-              <SizedBox height={16}></SizedBox>
+              <SizedBox height={isSmartPhone ? 32 : 16}></SizedBox>
               <Padding horizontal={16}>
                 <Title size={18}>Sacola de Compras</Title>
               </Padding>
@@ -207,9 +214,10 @@ function Cart(): JSX.Element {
                     <Column>
                       <TitleAndRemove>
                         <Title>{item.title}</Title>
+                        <SizedBox width={16}></SizedBox>
                         <Icon
                           size={16}
-                          type="remove-fill"
+                          type="remove"
                           onClick={() => cartContext.removeFromCart(item.id)}
                         ></Icon>
                       </TitleAndRemove>
@@ -467,7 +475,13 @@ function Cart(): JSX.Element {
       {cartContext.cart.items.length === 0 && (
         <Column>
           <SizedBox height={72}></SizedBox>
-          <EmptyBag></EmptyBag>
+          <EmptyPage
+            buttonAction={_goToProducts}
+            buttonText="Explorar"
+            icon="bag"
+            subtitle="Não perca tempo, adicione os melhores produtos."
+            title="A sacola está vazia"
+          ></EmptyPage>
           <SizedBox height={72}></SizedBox>
         </Column>
       )}

@@ -1,5 +1,6 @@
 import { Link } from "@material-ui/core";
 import _ from "lodash";
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -170,10 +171,16 @@ const SocialDataInfo = styled.span`
   color: ${Colors.PRIMARY};
 `;
 
-function SideMenu({ data }: { data: any }): JSX.Element {
+function SideMenu({
+  data,
+  closeMenu,
+}: {
+  data: any;
+  closeMenu: () => void;
+}): JSX.Element {
   const [menuData, setMenuData] = useState(data);
   const [selectedTab, setSelectedTab] = useState("women");
-
+  const router = useRouter();
   const auth = useAuth();
 
   const AVATAR_PLACEHOLDER =
@@ -196,6 +203,11 @@ function SideMenu({ data }: { data: any }): JSX.Element {
     ]["active"];
     setMenuData(_menuData);
   }
+
+  const goToWishlist = () => {
+    closeMenu();
+    router.push("/wishlist");
+  };
 
   return (
     <StyledSideMenu>
@@ -285,21 +297,10 @@ function SideMenu({ data }: { data: any }): JSX.Element {
             </StyledMenuItem>
           </Link>
         </MenuContainer>
-        <SizedBox height={16}></SizedBox>
-        <HorizontalPadding>
-          <CustomButton
-            width={300 - 32}
-            type="success"
-            variant="outlined"
-            onClick={null}
-          >
-            Quero Vender
-          </CustomButton>
-        </HorizontalPadding>
         {auth.user && (
           <SecondaryMenu>
             <Padding>
-              <SecondaryItem>
+              <SecondaryItem onClick={goToWishlist}>
                 <Icon type="heart"></Icon>
                 <SecondaryText>Lista de Desejos</SecondaryText>
               </SecondaryItem>
@@ -321,6 +322,18 @@ function SideMenu({ data }: { data: any }): JSX.Element {
             </Padding>
           </SecondaryMenu>
         )}
+
+        <HorizontalPadding>
+          <CustomButton
+            width={300 - 32}
+            type="success"
+            variant="outlined"
+            onClick={null}
+          >
+            Quero Vender
+          </CustomButton>
+          <SizedBox height={16}></SizedBox>
+        </HorizontalPadding>
       </div>
       <div>
         <SocialFooter>

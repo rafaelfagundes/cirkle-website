@@ -1,9 +1,9 @@
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import { motion, useAnimation } from "framer-motion";
-import _ from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useCart } from "../../hooks/use-cart";
+import { useWishlist } from "../../hooks/use-wishlist";
 import Product from "../../types/Product";
 import CustomButton from "../CustomButton";
 import FavoriteIcon from "../FavoriteIcon";
@@ -24,15 +24,25 @@ import {
   OldPrice,
   Price,
   PriceText,
+  RemoveButton,
+  RemoveIconHolder,
   Title,
 } from "./styles";
 
-function ProductItem({ data }: { data: Product }): JSX.Element {
+function ProductItem({
+  data,
+  removeButton = false,
+}: {
+  data: Product;
+  removeButton: boolean;
+}): JSX.Element {
   const controls = useAnimation();
   const theme = useTheme();
   const smartphone = useMediaQuery(theme.breakpoints.down("sm"));
   const cartContext = useCart();
-  const [isFavorited, setIsFavorited] = useState(false);
+  const wishlistContext = useWishlist();
+  const isAlreadyInWishlist = wishlistContext.isItemInWishlist(data.id);
+  // const [isFavorited, setIsFavorited] = useState(false);
 
   const _goToProduct = (id: string) => {
     console.log("go to product:", id);
@@ -43,14 +53,7 @@ function ProductItem({ data }: { data: Product }): JSX.Element {
     cartContext.addToCart(item);
   };
 
-  const _alreadyInCart = () => {
-    const item = _.find(cartContext.cart.items, (o) => o.id === data.id);
-
-    if (item) return true;
-    else return false;
-  };
-
-  const isAlreadyInCart = _alreadyInCart();
+  const isAlreadyInCart = cartContext.isItemInCart(data.id);
 
   const heartAnimation = async () => {
     const speed = 0.4; // lower is faster
@@ -74,23 +77,43 @@ function ProductItem({ data }: { data: Product }): JSX.Element {
   };
 
   useEffect(() => {
-    if (isFavorited) {
-      console.log("favoritou");
+    if (isAlreadyInWishlist && !removeButton) {
       heartAnimation();
     }
-  }, [isFavorited]);
+  }, [isAlreadyInWishlist]);
 
   return (
     <div style={{ position: "relative" }}>
-      <FavoriteIconHolder>
-        <FavoriteIcon
-          active={isFavorited}
-          setActive={setIsFavorited}
-        ></FavoriteIcon>
-      </FavoriteIconHolder>
+      {!removeButton && (
+        <FavoriteIconHolder>
+          <FavoriteIcon
+            active={isAlreadyInWishlist}
+            setActive={
+              isAlreadyInWishlist
+                ? () => wishlistContext.removeFromWishlist(data.id)
+                : () => wishlistContext.addToWishlist(data)
+            }
+          ></FavoriteIcon>
+        </FavoriteIconHolder>
+      )}
+      {removeButton && (
+        <RemoveIconHolder>
+          <RemoveButton>
+            <Icon
+              type="remove"
+              alt="Remover da Lista de Favoritos"
+              onClick={() => wishlistContext.removeFromWishlist(data.id)}
+            ></Icon>
+          </RemoveButton>
+        </RemoveIconHolder>
+      )}
       <Item
         isSmartphone={smartphone}
-        onDoubleClick={() => setIsFavorited(!isFavorited)}
+        onDoubleClick={
+          isAlreadyInWishlist
+            ? () => wishlistContext.removeFromWishlist(data.id)
+            : () => wishlistContext.addToWishlist(data)
+        }
       >
         <AnimatedHeart isSmartphone={smartphone}>
           <motion.div animate={controls} initial={{ opacity: 0, scale: 0 }}>
@@ -140,8 +163,10 @@ function ProductItem({ data }: { data: Product }): JSX.Element {
               type={isAlreadyInCart ? "disabled" : "success"}
               variant="contained"
               onClick={() => _addToCart(data)}
-              icon={isAlreadyInCart ? "check" : "bag-plus"}
-            ></CustomButton>
+              icon={isAlreadyInCart ? null : "bag-plus"}
+            >
+              {isAlreadyInCart ? "Está No Carrinho" : ""}
+            </CustomButton>
           </Row>
         </Padding>
         <SizedBox height={8}></SizedBox>

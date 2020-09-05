@@ -83,6 +83,9 @@ function Login(): JSX.Element {
   const [page, setPage] = useState(router.asPath);
   const [loading, setLoading] = useState(false);
 
+  // Scroll to top when page is loaded
+  if (process.browser) window.scrollTo(0, 0);
+
   const errorsTemplate = {
     displayName: null,
     email: null,

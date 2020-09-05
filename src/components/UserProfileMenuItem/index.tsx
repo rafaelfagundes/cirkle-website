@@ -1,4 +1,5 @@
 import { Link, Menu, MenuItem } from "@material-ui/core";
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
@@ -50,6 +51,7 @@ const MenuItemText = styled.p`
 function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
   const [userMenu, setUserMenu] = useState(false);
   const userButtonMenu = useRef(null);
+  const router = useRouter();
 
   const auth = useAuth();
 
@@ -58,6 +60,10 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
     await auth.signout();
   }
 
+  const _goToWishlist = () => {
+    router.push("/wishlist");
+  };
+
   if (isLogged) {
     return (
       <div>
@@ -65,7 +71,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
           aria-controls="user-menu"
           aria-haspopup="true"
           onClick={() => setUserMenu(true)}
-          onMouseOver={() => setUserMenu(true)}
+          // onMouseOver={() => setUserMenu(true)}
           ref={userButtonMenu}
         >
           <Profile center={true}>
@@ -102,7 +108,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
             <Icon type="profile"></Icon>
             <MenuItemText>Minha Conta</MenuItemText>
           </StyledMenuItem>
-          <StyledMenuItem>
+          <StyledMenuItem onClick={_goToWishlist}>
             <Icon type="heart"></Icon>
             <MenuItemText>Lista de Desejos</MenuItemText>
           </StyledMenuItem>

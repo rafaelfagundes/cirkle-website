@@ -1,18 +1,25 @@
-import React from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 
-const Text = styled.span`
+const Text = styled.p<{ centered: boolean }>`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   color: ${Colors.PRIMARY};
   font-size: 1rem;
-  line-height: 1rem;
+  line-height: 1.1rem;
+  ${(props) => (props.centered ? "text-align: center;" : null)};
+  margin: 0;
 `;
 
-function SimpleText({ children }: { children: string }): JSX.Element {
-  return <Text>{children}</Text>;
+function SimpleText({
+  children,
+  centered = false,
+}: {
+  children: string;
+  centered?: boolean;
+}): JSX.Element {
+  return <Text centered={centered}>{children}</Text>;
 }
 
 export default SimpleText;
