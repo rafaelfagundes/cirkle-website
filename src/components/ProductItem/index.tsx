@@ -34,7 +34,7 @@ function ProductItem({
   removeButton = false,
 }: {
   data: Product;
-  removeButton: boolean;
+  removeButton?: boolean;
 }): JSX.Element {
   const controls = useAnimation();
   const theme = useTheme();
