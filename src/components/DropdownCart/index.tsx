@@ -86,9 +86,9 @@ function DropdownCart(): JSX.Element {
                     <Description>{item.description}</Description>
                     <SizedBox height={4}></SizedBox>
                     <MoreInfo>
-                      <Color>Cor: {item.color}</Color>
-                      <Size>Tam.: {item.size}</Size>
-                      <Qty>Qtd.: {item.qty}</Qty>
+                      <Color>Cor: {item.cartColor}</Color>
+                      <Size>Tam.: {item.cartSize}</Size>
+                      <Qty>Qtd.: {item.cartQty}</Qty>
                     </MoreInfo>
                     <SizedBox height={4}></SizedBox>
                     <PriceAndButton>
