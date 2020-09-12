@@ -6,8 +6,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 import { useAuth } from "../../hooks/use-auth";
+import Center from "../Center";
 import CustomButton from "../CustomButton";
 import Icon from "../Icon";
+import LoadingAnimation from "../LoadingAnimation";
+import SimpleText from "../SimpleText";
 import SizedBox from "../SizedBox";
 
 const StyledSideMenu = styled.div`
@@ -238,65 +241,87 @@ function SideMenu({
           </UserProfile>
         </Padding>
         <SizedBox height={8}></SizedBox>
-        <HorizontalPadding>
-          <Tabs>
-            {Object.keys(menuData).map((element) => (
-              <StyledTab
-                key={menuData[element].title}
-                active={menuData[element].active}
-                onClick={() => toggleTab(element)}
-                color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
-              >
-                <TabText active={menuData[element].active}>
-                  {menuData[element].title}
-                </TabText>
-              </StyledTab>
-            ))}
-          </Tabs>
-        </HorizontalPadding>
-        <MenuContainer
-          color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
-        >
-          <Link href="/products/newin">
-            <StyledMenuItem>
-              <MenuItemText color={Colors.WHITE}>Novidades</MenuItemText>
-            </StyledMenuItem>
-          </Link>
-          {Object.keys(menuData[selectedTab].categories).map((item) => (
-            <div key={menuData[selectedTab].categories[item].title}>
-              <StyledMenuItem onClick={() => toggleCategory(selectedTab, item)}>
-                <MenuItemText>
-                  {menuData[selectedTab].categories[item].title}
-                </MenuItemText>
-                <MenuItemText>
-                  <Icon
-                    size={16}
-                    type={
-                      menuData[selectedTab].categories[item].active
-                        ? "minus-light"
-                        : "plus-light"
+        {!menuData && (
+          <Column>
+            <Center>
+              <LoadingAnimation size={32} color={true}></LoadingAnimation>
+            </Center>
+            <SizedBox height={16}></SizedBox>
+            <Center>
+              <SimpleText>Carregando o Menu...</SimpleText>
+            </Center>
+          </Column>
+        )}
+        {menuData && (
+          <>
+            <HorizontalPadding>
+              <Tabs>
+                {Object.keys(menuData).map((element) => (
+                  <StyledTab
+                    key={menuData[element].title}
+                    active={menuData[element].active}
+                    onClick={() => toggleTab(element)}
+                    color={
+                      selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS
                     }
-                  ></Icon>
-                </MenuItemText>
-              </StyledMenuItem>
-              {menuData[selectedTab].categories[item].active &&
-                menuData[selectedTab].categories[item].items.map(
-                  (subcategory: { title: string; link: string }) => (
-                    <StyledMenuItem key={subcategory.link} subcategory={true}>
-                      <MenuItemText>{subcategory.title}</MenuItemText>
-                    </StyledMenuItem>
-                  )
-                )}
-            </div>
-          ))}
-          <Link href="/products/offers">
-            <StyledMenuItem lastOne>
-              <MenuItemText color={Colors.MIDDLE_YELLOW}>
-                Promoções
-              </MenuItemText>
-            </StyledMenuItem>
-          </Link>
-        </MenuContainer>
+                  >
+                    <TabText active={menuData[element].active}>
+                      {menuData[element].title}
+                    </TabText>
+                  </StyledTab>
+                ))}
+              </Tabs>
+            </HorizontalPadding>
+            <MenuContainer
+              color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
+            >
+              <Link href="/products/newin">
+                <StyledMenuItem>
+                  <MenuItemText color={Colors.WHITE}>Novidades</MenuItemText>
+                </StyledMenuItem>
+              </Link>
+              {Object.keys(menuData[selectedTab].categories).map((item) => (
+                <div key={menuData[selectedTab].categories[item].title}>
+                  <StyledMenuItem
+                    onClick={() => toggleCategory(selectedTab, item)}
+                  >
+                    <MenuItemText>
+                      {menuData[selectedTab].categories[item].title}
+                    </MenuItemText>
+                    <MenuItemText>
+                      <Icon
+                        size={16}
+                        type={
+                          menuData[selectedTab].categories[item].active
+                            ? "minus-light"
+                            : "plus-light"
+                        }
+                      ></Icon>
+                    </MenuItemText>
+                  </StyledMenuItem>
+                  {menuData[selectedTab].categories[item].active &&
+                    menuData[selectedTab].categories[item].items.map(
+                      (subcategory: { title: string; link: string }) => (
+                        <StyledMenuItem
+                          key={subcategory.link}
+                          subcategory={true}
+                        >
+                          <MenuItemText>{subcategory.title}</MenuItemText>
+                        </StyledMenuItem>
+                      )
+                    )}
+                </div>
+              ))}
+              <Link href="/products/offers">
+                <StyledMenuItem lastOne>
+                  <MenuItemText color={Colors.MIDDLE_YELLOW}>
+                    Promoções
+                  </MenuItemText>
+                </StyledMenuItem>
+              </Link>
+            </MenuContainer>
+          </>
+        )}
         {auth.user && (
           <SecondaryMenu>
             <Padding>

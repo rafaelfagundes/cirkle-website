@@ -11,7 +11,6 @@ import AuthProvider from "../src/hooks/use-auth";
 import CartProvider from "../src/hooks/use-cart";
 import DialogProvider from "../src/hooks/use-dialog";
 import WishlistProvider from "../src/hooks/use-wishlist";
-import MenuController from "../src/modules/menu/MenuController";
 import theme from "../src/theme/theme";
 import "../styles/global.css";
 import "../styles/nprogress.css";
@@ -38,7 +37,7 @@ Router.onRouteChangeError = () => {
 };
 
 export default function MyApp(props) {
-  const { Component, pageProps, menuData } = props;
+  const { Component, pageProps } = props;
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -138,7 +137,7 @@ export default function MyApp(props) {
               <ThemeProvider theme={theme}>
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
-                <Layout menuData={menuData}>
+                <Layout>
                   <Component {...pageProps} />
                 </Layout>
               </ThemeProvider>
@@ -150,18 +149,17 @@ export default function MyApp(props) {
   );
 }
 
-MyApp.getInitialProps = async function (ctx) {
-  const controller = new MenuController();
-  const data = await controller.getMenu();
+// MyApp.getInitialProps = async function (ctx) {
+//   const controller = new MenuController();
+//   const data = await controller.getMenu();
 
-  return {
-    menuData: data,
-    pageProps: ctx?.pageProps ? ctx.pageProps : {},
-  };
-};
+//   return {
+//     menuData: data,
+//     pageProps: ctx?.pageProps ? ctx.pageProps : {},
+//   };
+// };
 
 MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired,
-  menuData: PropTypes.object.isRequired,
 };

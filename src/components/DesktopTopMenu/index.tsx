@@ -1,7 +1,7 @@
 import { Container, Hidden, InputBase } from "@material-ui/core";
 import _ from "lodash";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 import { useAuth } from "../../hooks/use-auth";
@@ -169,11 +169,38 @@ const LogoHolder = styled.div`
   height: 65px;
 `;
 
+const TextPlaceholder = styled.div<{ width: number; color: string }>`
+  width: ${(props) => props.width}px;
+  height: 18px;
+  background-color: ${(props) => props.color};
+
+  animation: MoveUpDown 1500ms linear infinite;
+
+  @keyframes MoveUpDown {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.75;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
+
 function DesktopTopMenu({ data }: { data: any }): JSX.Element {
   const [menuData, setMenuData] = useState(data);
   const [selectedTab, setSelectedTab] = useState("women");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const auth = useAuth();
+
+  useEffect(() => {
+    console.log("data", data);
+    if (data) {
+      setMenuData(data);
+    }
+  }, [data]);
 
   function toggleTab(tab: string) {
     setSelectedCategory(null);
@@ -215,21 +242,41 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
                 <HorizontalLogo width={102}></HorizontalLogo>
               </LogoHolder>
             </Link>
-            <Tabs>
-              {Object.keys(menuData).map((element) => (
-                <Tab
-                  key={menuData[element].title}
-                  active={menuData[element].active}
-                  onClick={() => toggleTab(element)}
-                  onMouseOver={() => toggleTab(element)}
-                  color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
-                >
-                  <TabText active={menuData[element].active}>
-                    {menuData[element].title}
-                  </TabText>
+            {menuData && (
+              <Tabs>
+                {Object.keys(menuData).map((element) => (
+                  <Tab
+                    key={menuData[element].title}
+                    active={menuData[element].active}
+                    onClick={() => toggleTab(element)}
+                    onMouseOver={() => toggleTab(element)}
+                    color={
+                      selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS
+                    }
+                  >
+                    <TabText active={menuData[element].active}>
+                      {menuData[element].title}
+                    </TabText>
+                  </Tab>
+                ))}
+              </Tabs>
+            )}
+            {!menuData && (
+              <Tabs>
+                <Tab active={true} color={Colors.PRIMARY}>
+                  <TextPlaceholder
+                    width={80}
+                    color={Colors.LIGHT_GRAY}
+                  ></TextPlaceholder>
                 </Tab>
-              ))}
-            </Tabs>
+                <Tab active={false} color={Colors.KIDS}>
+                  <TextPlaceholder
+                    width={50}
+                    color={Colors.LIGHT_GRAY}
+                  ></TextPlaceholder>
+                </Tab>
+              </Tabs>
+            )}
           </LogoAndTabs>
           <SearchAndBag>
             {/* <CustomButton
@@ -259,44 +306,115 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
         <Container maxWidth="lg">
           <Row>
             <Categories>
-              <MenuItem>
-                <MenuItemText first color={Colors.WHITE}>
-                  Novidades
-                </MenuItemText>
-              </MenuItem>
-              {Object.keys(menuData[selectedTab].categories).map((item) => (
-                <Link
-                  href={menuData[selectedTab].categories[item].link}
-                  key={menuData[selectedTab].categories[item].link}
-                >
-                  <MenuItem
-                    active={menuData[selectedTab].categories[item].active}
-                    onMouseOver={() => toggleCategory(selectedTab, item)}
+              {menuData && (
+                <MenuItem>
+                  <MenuItemText first color={Colors.WHITE}>
+                    Novidades
+                  </MenuItemText>
+                </MenuItem>
+              )}
+              {!menuData && (
+                <>
+                  <Link href="/">
+                    <MenuItem>
+                      <TextPlaceholder
+                        width={95}
+                        color={Colors.LIGHT_GRAY}
+                      ></TextPlaceholder>
+                    </MenuItem>
+                  </Link>
+                  <SizedBox width={16}></SizedBox>
+                  <Link href="/">
+                    <MenuItem>
+                      <TextPlaceholder
+                        width={90}
+                        color={Colors.LIGHT_GRAY}
+                      ></TextPlaceholder>
+                    </MenuItem>
+                  </Link>
+                  <SizedBox width={16}></SizedBox>
+                  <Link href="/">
+                    <MenuItem>
+                      <TextPlaceholder
+                        width={95}
+                        color={Colors.LIGHT_GRAY}
+                      ></TextPlaceholder>
+                    </MenuItem>
+                  </Link>
+                  <SizedBox width={16}></SizedBox>
+                  <Link href="/">
+                    <MenuItem>
+                      <TextPlaceholder
+                        width={90}
+                        color={Colors.LIGHT_GRAY}
+                      ></TextPlaceholder>
+                    </MenuItem>
+                  </Link>
+                  <SizedBox width={16}></SizedBox>
+                  <Link href="/">
+                    <MenuItem>
+                      <TextPlaceholder
+                        width={100}
+                        color={Colors.LIGHT_GRAY}
+                      ></TextPlaceholder>
+                    </MenuItem>
+                  </Link>
+                  <SizedBox width={16}></SizedBox>
+                  <Link href="/">
+                    <MenuItem>
+                      <TextPlaceholder
+                        width={95}
+                        color={Colors.LIGHT_GRAY}
+                      ></TextPlaceholder>
+                    </MenuItem>
+                  </Link>
+                  <SizedBox width={16}></SizedBox>
+                  <Link href="/">
+                    <MenuItem>
+                      <TextPlaceholder
+                        width={100}
+                        color={Colors.MIDDLE_YELLOW}
+                      ></TextPlaceholder>
+                    </MenuItem>
+                  </Link>
+                </>
+              )}
+              {menuData &&
+                Object.keys(menuData[selectedTab].categories).map((item) => (
+                  <Link
+                    href={menuData[selectedTab].categories[item].link}
+                    key={menuData[selectedTab].categories[item].link}
                   >
-                    <MenuItemText
+                    <MenuItem
                       active={menuData[selectedTab].categories[item].active}
-                      color={Colors.WHITE}
+                      onMouseOver={() => toggleCategory(selectedTab, item)}
                     >
-                      {menuData[selectedTab].categories[item].title}
-                    </MenuItemText>
-                    <MenuItemArrow>
-                      <Icon
-                        size={8}
-                        type={
-                          menuData[selectedTab].categories[item].active
-                            ? "triangle-down-fill"
-                            : "triangle-down"
-                        }
-                      ></Icon>
-                    </MenuItemArrow>
-                  </MenuItem>
-                </Link>
-              ))}
-              <MenuItem>
-                <MenuItemText color={Colors.MIDDLE_YELLOW}>
-                  Promoções
-                </MenuItemText>
-              </MenuItem>
+                      <MenuItemText
+                        active={menuData[selectedTab].categories[item].active}
+                        color={Colors.WHITE}
+                      >
+                        {menuData[selectedTab].categories[item].title}
+                      </MenuItemText>
+                      <MenuItemArrow>
+                        <Icon
+                          size={8}
+                          type={
+                            menuData[selectedTab].categories[item].active
+                              ? "triangle-down-fill"
+                              : "triangle-down"
+                          }
+                        ></Icon>
+                      </MenuItemArrow>
+                    </MenuItem>
+                  </Link>
+                ))}
+              {menuData && (
+                <MenuItem>
+                  <MenuItemText color={Colors.MIDDLE_YELLOW}>
+                    Promoções
+                  </MenuItemText>
+                </MenuItem>
+              )}
             </Categories>
             <Hidden only="sm">
               <StyledSearchBar>
