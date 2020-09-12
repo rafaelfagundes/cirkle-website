@@ -1,24 +1,20 @@
 import { NowRequest, NowResponse } from "@vercel/node";
-import { Db, ObjectId } from "mongodb";
+import { ObjectId } from "mongodb";
 import Menu from "../../src/types/Menu";
-import { connectToDatabase } from "../../src/utils/mongo";
-
-let cachedDb: Db = null;
+import { closeConnection, connectToDatabase } from "../../src/utils/mongo";
 
 export default async (
   request: NowRequest,
   response: NowResponse
 ): Promise<NowResponse> => {
-  if (!cachedDb) {
-    cachedDb = await connectToDatabase(process.env.MONGO_DB_URI);
-  }
+  const db = await connectToDatabase(process.env.MONGO_DB_URI);
 
-  const menu: Menu = await cachedDb
+  const menu: Menu = await db
     .collection("menu")
     .findOne(
       { _id: new ObjectId("5f5c0bc308537565d5ed8dd2") },
       { projection: { _id: 0 } }
     );
-
+  closeConnection();
   return response.json(menu);
 };

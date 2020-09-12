@@ -147,7 +147,15 @@ export default function MyApp(props) {
                 <CssBaseline />
                 <SWRConfig
                   value={{
-                    refreshInterval: 3000,
+                    refreshInterval: 1000,
+                    refreshWhenHidden: false,
+                    refreshWhenOffline: false,
+                    revalidateOnFocus: true,
+                    revalidateOnMount: true,
+                    revalidateOnReconnect: true,
+                    // dedupingInterval: 5000,
+                    // focusThrottleInterval: 15000,
+                    errorRetryCount: 3,
                     fetcher,
                   }}
                 >

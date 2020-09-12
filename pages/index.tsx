@@ -17,28 +17,24 @@ import { useCart } from "../src/hooks/use-cart";
 function Home(): JSX.Element {
   const cartContext = useCart();
 
-  const { data: banner, error: bannerError } = useSWR("/api/banner", {
-    refreshInterval: 60000,
-  });
+  const { data: banner, error: bannerError } = useSWR("/api/banner");
   if (bannerError) console.log("Banner loading error", bannerError);
 
-  const { data: brands, error: brandsError } = useSWR("/api/brands", {
-    refreshInterval: 60000,
-  });
+  const { data: brands, error: brandsError } = useSWR("/api/brands");
   if (brandsError) console.log("Brands loading error", brandsError);
 
   const { data: hotProducts, error: productsError } = useSWR(
-    "/api/hot-products",
-    {
-      refreshInterval: 60000,
-    }
+    "/api/hot-products"
   );
   if (productsError) console.log("Brands loading error", productsError);
 
-  const { data: shipping, error: shippingError } = useSWR("/api/shipping", {
-    refreshInterval: 25000,
-  });
+  const { data: shipping, error: shippingError } = useSWR("/api/shipping");
   if (shippingError) console.log("Shipping loading error", shippingError);
+
+  const { data: highlights, error: highlightsError } = useSWR(
+    "/api/highlights"
+  );
+  if (highlightsError) console.log("Highlights loading error", highlightsError);
 
   useEffect(() => {
     if (shipping) {
@@ -53,15 +49,6 @@ function Home(): JSX.Element {
       }
     }
   }, [shipping]);
-
-  const { data: highlights, error: highlightsError } = useSWR(
-    "/api/highlights",
-    {
-      refreshInterval: 25000,
-    }
-  );
-  if (highlightsError) console.log("Highlights loading error", highlightsError);
-
   return (
     <>
       <Hidden mdUp={true}>

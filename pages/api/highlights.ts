@@ -1,22 +1,18 @@
 import { NowRequest, NowResponse } from "@vercel/node";
-import { Db } from "mongodb";
 import Highlight from "../../src/types/Highlight";
-import { connectToDatabase } from "../../src/utils/mongo";
-
-let cachedDb: Db = null;
+import { closeConnection, connectToDatabase } from "../../src/utils/mongo";
 
 export default async (
   request: NowRequest,
   response: NowResponse
 ): Promise<NowResponse> => {
-  if (!cachedDb) {
-    cachedDb = await connectToDatabase(process.env.MONGO_DB_URI);
-  }
+  const db = await connectToDatabase(process.env.MONGO_DB_URI);
 
-  const highlights: Array<Highlight> = await cachedDb
+  const highlights: Array<Highlight> = await db
     .collection("highlights")
     .find({}, { projection: { _id: 0 } })
     .toArray();
 
+  closeConnection();
   return response.json(highlights);
 };

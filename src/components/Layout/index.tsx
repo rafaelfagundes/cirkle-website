@@ -20,7 +20,7 @@ function Layout({ children }: { children: JSX.Element }): JSX.Element {
   const dialogContext = useDialog();
 
   const { data: menuData, error } = useSWR("/api/menu", {
-    refreshInterval: 25000,
+    errorRetryInterval: 25000,
   });
   if (error) console.log("Menu loading error", error);
 
