@@ -136,42 +136,42 @@ function Home(): JSX.Element {
       id: "39dbf21f-e9d9-4c52-99d1-730ffba49a24",
       name: "Armani",
       image:
-        "https://res.cloudinary.com/cirklebr/image/upload/v1599164215/brands/armani.webp",
+        "https://res.cloudinary.com/cirklebr/image/upload/v1599164215/brands/armani.png",
       link: "/brands/armani",
     },
     {
       id: "9ca7318e-6fcd-4eed-bb5e-2623c7d7b2f1",
       name: "Chanel",
       image:
-        "https://res.cloudinary.com/cirklebr/image/upload/v1599164215/brands/chanel.webp",
+        "https://res.cloudinary.com/cirklebr/image/upload/v1599164215/brands/chanel.png",
       link: "/brands/chanel",
     },
     {
       id: "f442a582-7803-47ff-af17-c05497926f84",
       name: "Dolce & Gabbanna",
       image:
-        "https://res.cloudinary.com/cirklebr/image/upload/v1599164215/brands/deg.webp",
+        "https://res.cloudinary.com/cirklebr/image/upload/v1599164215/brands/deg.png",
       link: "/brands/deg",
     },
     {
       id: "207f004d-5190-4a3e-9a79-0ba424c2c32c",
       name: "Dior",
       image:
-        "https://res.cloudinary.com/cirklebr/image/upload/v1599164215/brands/dior.webp",
+        "https://res.cloudinary.com/cirklebr/image/upload/v1599164215/brands/dior.png",
       link: "/brands/dior",
     },
     {
       id: "7b934def-5c05-495d-9d61-b6f30631dec2",
       name: "Prada",
       image:
-        "https://res.cloudinary.com/cirklebr/image/upload/v1599164215/brands/prada.webp",
+        "https://res.cloudinary.com/cirklebr/image/upload/v1599164215/brands/prada.png",
       link: "/brands/prada",
     },
     {
       id: "6e64ae7a-9c9f-4cd9-ab02-07ccd9adcd19",
       name: "Versace",
       image:
-        "https://res.cloudinary.com/cirklebr/image/upload/v1599164215/brands/versace.webp",
+        "https://res.cloudinary.com/cirklebr/image/upload/v1599164215/brands/versace.png",
       link: "/brands/versace",
     },
   ];
