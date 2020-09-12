@@ -1,7 +1,11 @@
 type Shipping = {
-  type: string;
+  _id?: string;
+  freeShipping: FreeShipping;
+};
+
+type FreeShipping = {
+  enabled: boolean;
   value: number;
-  postalCode: number;
 };
 
 export default Shipping;

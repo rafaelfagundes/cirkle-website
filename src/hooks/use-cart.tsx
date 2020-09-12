@@ -2,8 +2,8 @@ import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Address from "../types/Address";
 import Cart from "../types/Cart";
+import Shipping from "../types/CartShipping";
 import Product from "../types/Product";
-import Shipping from "../types/Shipping";
 
 export interface ICartContextProps {
   cart: Cart;
@@ -58,7 +58,7 @@ function useCartProvider() {
 
   function calculateValues(newCart: Cart): { subtotal: number; total: number } {
     const subtotal = newCart.items.reduce((sum, item) => {
-      return sum + item.price * item.qty;
+      return sum + item.price * item.cartQty;
     }, 0);
     const shippingValue = newCart?.shipping ? newCart?.shipping.value : 0;
 
@@ -153,7 +153,7 @@ function useCartProvider() {
   const updateQuantity = (id: string, qty: number) => {
     const _item = _.find(cart.items, (o) => o.id === id);
     if (_item) {
-      _item.qty = qty;
+      _item.cartQty = qty;
       updateItem(_item);
     }
   };
@@ -161,7 +161,7 @@ function useCartProvider() {
   const updateColor = (id: string, color: string) => {
     const _item = _.find(cart.items, (o) => o.id === id);
     if (_item) {
-      _item.color = color;
+      _item.cartColor = color;
       updateItem(_item);
     }
   };
@@ -169,7 +169,7 @@ function useCartProvider() {
   const updateSize = (id: string, size: string) => {
     const _item = _.find(cart.items, (o) => o.id === id);
     if (_item) {
-      _item.size = size;
+      _item.cartSize = size;
       updateItem(_item);
     }
   };

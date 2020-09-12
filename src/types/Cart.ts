@@ -1,9 +1,10 @@
 import Address from "./Address";
+import Shipping from "./CartShipping";
 import Payment from "./Payment";
 import Product from "./Product";
-import Shipping from "./Shipping";
 
 type Cart = {
+  _id?: string;
   items: Array<Product>;
   shipping: Shipping;
   address: Address;

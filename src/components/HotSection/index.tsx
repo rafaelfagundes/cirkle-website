@@ -1,5 +1,6 @@
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
+import _ from "lodash";
 import React from "react";
 import styled from "styled-components";
 import Product from "../../types/Product";
@@ -65,6 +66,8 @@ function HotSection({
 }): JSX.Element {
   const theme = useTheme();
   const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
+  let randomBrands = _.shuffle(brands);
+  randomBrands = randomBrands.slice(0, 6);
 
   return (
     <Section isSmartphone={isSmartphone}>
@@ -79,7 +82,7 @@ function HotSection({
       <SizedBox height={16}></SizedBox>
       <ItemsHolder disableScroll={!isSmartphone}>
         {products.map((item) => (
-          <ProductItem data={item} key={item.id}></ProductItem>
+          <ProductItem data={item} key={item._id}></ProductItem>
         ))}
         {isSmartphone ? <Spacer>-</Spacer> : null}
       </ItemsHolder>
@@ -98,8 +101,8 @@ function HotSection({
       </Center>
       <SizedBox height={48}></SizedBox>
       <BrandsHolder isSmartphone={isSmartphone}>
-        {brands.map((item) => (
-          <Brand key={item.id} data={item}></Brand>
+        {randomBrands.map((item) => (
+          <Brand key={item.image} data={item}></Brand>
         ))}
       </BrandsHolder>
       <SizedBox height={12}></SizedBox>

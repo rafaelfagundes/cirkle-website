@@ -41,19 +41,20 @@ function ProductItem({
   const smartphone = useMediaQuery(theme.breakpoints.down("sm"));
   const cartContext = useCart();
   const wishlistContext = useWishlist();
-  const isAlreadyInWishlist = wishlistContext.isItemInWishlist(data.id);
-  // const [isFavorited, setIsFavorited] = useState(false);
+  const isAlreadyInWishlist = wishlistContext.isItemInWishlist(data._id);
 
   const _goToProduct = (id: string) => {
     console.log("go to product:", id);
   };
 
   const _addToCart = (item: Product) => {
-    console.log("add to cart:", item);
+    // console.log("add to cart:", item);
+    item.id = item._id;
+    item.cartQty = item.cartQty ? item.cartQty + 1 : 1;
     cartContext.addToCart(item);
   };
 
-  const isAlreadyInCart = cartContext.isItemInCart(data.id);
+  const isAlreadyInCart = cartContext.isItemInCart(data._id);
 
   const heartAnimation = async () => {
     const speed = 0.4; // lower is faster
@@ -90,7 +91,7 @@ function ProductItem({
             active={isAlreadyInWishlist}
             setActive={
               isAlreadyInWishlist
-                ? () => wishlistContext.removeFromWishlist(data.id)
+                ? () => wishlistContext.removeFromWishlist(data._id)
                 : () => wishlistContext.addToWishlist(data)
             }
           ></FavoriteIcon>
@@ -102,7 +103,7 @@ function ProductItem({
             <Icon
               type="remove"
               alt="Remover da Lista de Favoritos"
-              onClick={() => wishlistContext.removeFromWishlist(data.id)}
+              onClick={() => wishlistContext.removeFromWishlist(data._id)}
             ></Icon>
           </RemoveButton>
         </RemoveIconHolder>
@@ -111,7 +112,7 @@ function ProductItem({
         isSmartphone={smartphone}
         onDoubleClick={
           isAlreadyInWishlist
-            ? () => wishlistContext.removeFromWishlist(data.id)
+            ? () => wishlistContext.removeFromWishlist(data._id)
             : () => wishlistContext.addToWishlist(data)
         }
       >
@@ -154,7 +155,7 @@ function ProductItem({
             <CustomButton
               type="secondary"
               variant="outlined"
-              onClick={() => _goToProduct(data.id)}
+              onClick={() => _goToProduct(data._id)}
             >
               Ver
             </CustomButton>

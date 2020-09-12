@@ -53,14 +53,14 @@ function useWishlistProvider() {
 
   const removeFromWishlist = (id: string) => {
     const _wishlist = _.cloneDeep(wishlist);
-    const _newItems = _wishlist.items.filter((o) => o.id !== id);
+    const _newItems = _wishlist.items.filter((o) => o._id !== id);
     _wishlist.items = _newItems;
 
     setWishlist(_wishlist);
   };
 
   const isItemInWishlist = (id: string): boolean => {
-    const item = _.find(wishlist.items, (o) => o.id === id);
+    const item = _.find(wishlist.items, (o) => o._id === id);
 
     if (item) return true;
     else return false;

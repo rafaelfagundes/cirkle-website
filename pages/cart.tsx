@@ -15,7 +15,7 @@ import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
 import { useCart } from "../src/hooks/use-cart";
 import theme from "../src/theme/theme";
-import Shipping from "../src/types/Shipping";
+import Shipping from "../src/types/CartShipping";
 import {
   CartFooter,
   CartItem,
@@ -55,50 +55,42 @@ function Cart(): JSX.Element {
     router.push("/products");
   };
 
-  const _getItemMaxQty = (id: string) => {
-    console.log("id", id);
-    return [
-      { title: "1", value: 1 },
-      { title: "2", value: 2 },
-      { title: "3", value: 3 },
-      { title: "4", value: 4 },
-    ];
+  const _getItemMaxQty = (qty: number) => {
+    if (!qty) return [{ title: "1", value: 1 }];
+    const qtyList = [];
+
+    for (let index = 1; index <= qty; index++) {
+      qtyList.push({ title: index.toString(), value: index });
+    }
+
+    return qtyList;
   };
 
-  const _getItemSizes = (id: string) => {
-    console.log("id", id);
-    return [
-      { title: "36", value: "36" },
-      { title: "37", value: "37" },
-      { title: "38", value: "38" },
-      { title: "39", value: "39" },
-      { title: "40", value: "40" },
-      { title: "41", value: "41" },
-      { title: "42", value: "42" },
-      { title: "43", value: "43" },
-      { title: "44", value: "44" },
-      { title: "45", value: "45" },
-      { title: "P", value: "P" },
-      { title: "M", value: "M" },
-      { title: "G", value: "G" },
-      { title: "GG", value: "GG" },
-    ];
+  const _getItemSizes = (sizes: Array<string>) => {
+    if (sizes) {
+      return sizes.map((item) => ({ title: item, value: item }));
+    } else {
+      return [{ title: "M", value: "M" }];
+    }
   };
 
-  const _getItemColors = (id: string) => {
-    console.log("id", id);
-    return [
-      { title: "Azul Escuro", value: "Azul Escuro" },
-      { title: "Bege", value: "Bege" },
-      { title: "Cinza", value: "Cinza" },
-      { title: "Dourado", value: "Dourado" },
-      { title: "Laranja", value: "Laranja" },
-      { title: "Marrom", value: "Marrom" },
-      { title: "Ouro", value: "Ouro" },
-      { title: "Preto", value: "Preto" },
-      { title: "Rosa", value: "Rosa" },
-      { title: "Vermelho", value: "Vermelho" },
-    ];
+  const _getItemColors = (colors: Array<string>) => {
+    if (!colors) {
+      return [
+        { title: "Azul Escuro", value: "Azul Escuro" },
+        { title: "Bege", value: "Bege" },
+        { title: "Cinza", value: "Cinza" },
+        { title: "Dourado", value: "Dourado" },
+        { title: "Laranja", value: "Laranja" },
+        { title: "Marrom", value: "Marrom" },
+        { title: "Ouro", value: "Ouro" },
+        { title: "Preto", value: "Preto" },
+        { title: "Rosa", value: "Rosa" },
+        { title: "Vermelho", value: "Vermelho" },
+      ];
+    } else {
+      return colors.map((item) => ({ title: item, value: item }));
+    }
   };
 
   const _getDeliveryTypes = () => {
@@ -229,11 +221,11 @@ function Cart(): JSX.Element {
                           <Padding horizontal={6}>
                             <>
                               <Row spaceBetween>
-                                <Color>Cor: {item.color}</Color>
+                                <Color>Cor: {item.cartColor}</Color>
                                 <SizedBox width={8}></SizedBox>
-                                <Size>Tam.: {item.size}</Size>
+                                <Size>Tam.: {item.cartSize}</Size>
                                 <SizedBox width={8}></SizedBox>
-                                <Qty>Qtd.: {item.qty}</Qty>
+                                <Qty>Qtd.: {item.cartQty}</Qty>
                               </Row>
                               <SizedBox height={8}></SizedBox>
                               <Row spaceBetween>
@@ -254,27 +246,27 @@ function Cart(): JSX.Element {
                           <>
                             <SizedBox width={8}></SizedBox>
                             <CustomSelect
-                              items={_getItemColors(item.id)}
+                              items={_getItemColors(item.colors)}
                               label="Cor"
-                              value={item.color}
+                              value={item.cartColor || ""}
                               setValue={(value) =>
                                 cartContext.updateColor(item.id, value)
                               }
                             ></CustomSelect>
                             <SizedBox width={8}></SizedBox>
                             <CustomSelect
-                              items={_getItemSizes(item.id)}
+                              items={_getItemSizes(item.sizes)}
                               label="Tamanho"
-                              value={item.size}
+                              value={item.cartSize || ""}
                               setValue={(value) =>
                                 cartContext.updateSize(item.id, value)
                               }
                             ></CustomSelect>
                             <SizedBox width={8}></SizedBox>
                             <CustomSelect
-                              items={_getItemMaxQty(item.id)}
+                              items={_getItemMaxQty(item.qty)}
                               label="Quantidade"
-                              value={item.qty}
+                              value={item.cartQty || ""}
                               setValue={(value) =>
                                 cartContext.updateQuantity(item.id, value)
                               }

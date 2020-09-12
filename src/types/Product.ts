@@ -1,4 +1,5 @@
 type Product = {
+  _id?: string;
   id: string;
   sku: string;
   image: string;
@@ -8,8 +9,13 @@ type Product = {
   title: string;
   description: string;
   qty: number;
-  color: string;
-  size: string;
+  cartQty?: number;
+  colors: Array<string>;
+  cartColor?: string;
+  sizes: Array<string>;
+  cartSize?: string;
+  viewCount: number;
+  enabled: true;
 };
 
 export default Product;

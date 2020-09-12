@@ -1,11 +1,9 @@
 import { Container, Hidden, SwipeableDrawer } from "@material-ui/core";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
-import firebase from "../../config/firebase";
 import Colors from "../../enums/Colors";
-import { useCart } from "../../hooks/use-cart";
 import { useDialog } from "../../hooks/use-dialog";
 import CustomDialog from "../CustomDialog";
 import Footer from "../Footer";
@@ -20,34 +18,11 @@ const Background = styled.div`
 function Layout({ children }: { children: JSX.Element }): JSX.Element {
   const [drawer, setDrawer] = useState(false);
   const dialogContext = useDialog();
-  const cartContext = useCart();
 
-  const { data: menuData, error } = useSWR("/api/menu");
+  const { data: menuData, error } = useSWR("/api/menu", {
+    refreshInterval: 25000,
+  });
   if (error) console.log("Menu loading error", error);
-
-  useEffect(() => {
-    const remoteConfig = firebase.remoteConfig();
-    remoteConfig.settings = {
-      minimumFetchIntervalMillis: 60000,
-      fetchTimeoutMillis: 60000,
-    };
-    remoteConfig
-      .fetchAndActivate()
-      .then(() => {
-        const freeDelivery = remoteConfig.getValue("free_shipping").asBoolean();
-        const freeDeliveryValue = remoteConfig
-          .getValue("free_shipping_value")
-          .asNumber();
-
-        // Free Shipping
-        if (freeDelivery && freeDeliveryValue) {
-          cartContext.updateFreeShipping(freeDelivery, freeDeliveryValue);
-        } else {
-          cartContext.updateFreeShipping(false, 0);
-        }
-      })
-      .catch((error) => console.log(error));
-  }, []);
 
   return (
     <div>
