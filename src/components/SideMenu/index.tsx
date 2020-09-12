@@ -347,7 +347,7 @@ function SideMenu({
             </Padding>
           </SecondaryMenu>
         )}
-
+        {!auth.user && <SizedBox height={16}></SizedBox>}
         <HorizontalPadding>
           <CustomButton
             width={300 - 32}
