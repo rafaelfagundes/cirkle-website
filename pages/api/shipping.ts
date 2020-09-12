@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse } from "@vercel/node";
 import { ObjectId } from "mongodb";
 import Shipping from "../../src/types/Shipping";
-import { closeConnection, connectToDatabase } from "../../src/utils/mongo";
+import { connectToDatabase } from "../../src/utils/mongo";
 
 export default async (
   request: NowRequest,
@@ -16,6 +16,5 @@ export default async (
       { projection: { _id: 0 } }
     );
 
-  closeConnection();
   return response.json(shipping);
 };

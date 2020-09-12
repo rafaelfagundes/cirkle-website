@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from "@vercel/node";
 import Highlight from "../../src/types/Highlight";
-import { closeConnection, connectToDatabase } from "../../src/utils/mongo";
+import { connectToDatabase } from "../../src/utils/mongo";
 
 export default async (
   request: NowRequest,
@@ -13,6 +13,5 @@ export default async (
     .find({}, { projection: { _id: 0 } })
     .toArray();
 
-  closeConnection();
   return response.json(highlights);
 };

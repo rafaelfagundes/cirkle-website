@@ -2,7 +2,7 @@ import { Db, MongoClient } from "mongodb";
 
 let cachedDb: Db = null;
 let client: MongoClient = null;
-let connNumber = 0;
+// let connNumber = 0;
 
 export async function connectToDatabase(uri: string): Promise<Db> {
   if (client) {
@@ -12,7 +12,7 @@ export async function connectToDatabase(uri: string): Promise<Db> {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
-      connNumber++;
+      // connNumber++;
     }
   } else {
     console.log("nao tem cliente");
@@ -20,22 +20,12 @@ export async function connectToDatabase(uri: string): Promise<Db> {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    connNumber++;
+    // connNumber++;
     cachedDb = client.db("cirkle");
   }
 
-  console.log("connNumber", connNumber);
+  // console.log("connNumber", connNumber);
 
   if (!cachedDb) cachedDb = client.db("cirkle");
   return cachedDb;
-}
-
-export async function closeConnection(): Promise<void> {
-  // setTimeout(async () => {
-  //   if (client && client.isConnected()) {
-  //     await client.close();
-  //     connNumber--;
-  //     console.log("connNumber", connNumber);
-  //   }
-  // }, 10000);
 }

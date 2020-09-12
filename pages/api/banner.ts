@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse } from "@vercel/node";
 import { ObjectId } from "mongodb";
 import Banner from "../../src/types/Banner";
-import { closeConnection, connectToDatabase } from "../../src/utils/mongo";
+import { connectToDatabase } from "../../src/utils/mongo";
 
 export default async (
   request: NowRequest,
@@ -15,8 +15,6 @@ export default async (
       { _id: new ObjectId("5f5cf4c730015dcd82d114ba") },
       { projection: { _id: 0 } }
     );
-
-  closeConnection();
 
   return response.json(banner);
 };

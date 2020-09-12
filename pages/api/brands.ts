@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from "@vercel/node";
 import Brand from "../../src/types/Brand";
-import { closeConnection, connectToDatabase } from "../../src/utils/mongo";
+import { connectToDatabase } from "../../src/utils/mongo";
 
 export default async (
   request: NowRequest,
@@ -12,8 +12,6 @@ export default async (
     .collection("brands")
     .find({ enabled: true }, { projection: { _id: 0 } })
     .toArray();
-
-  closeConnection();
 
   return response.json(brands);
 };

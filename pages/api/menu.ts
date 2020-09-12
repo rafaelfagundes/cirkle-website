@@ -1,7 +1,7 @@
 import { NowRequest, NowResponse } from "@vercel/node";
 import { ObjectId } from "mongodb";
 import Menu from "../../src/types/Menu";
-import { closeConnection, connectToDatabase } from "../../src/utils/mongo";
+import { connectToDatabase } from "../../src/utils/mongo";
 
 export default async (
   request: NowRequest,
@@ -15,6 +15,5 @@ export default async (
       { _id: new ObjectId("5f5c0bc308537565d5ed8dd2") },
       { projection: { _id: 0 } }
     );
-  closeConnection();
   return response.json(menu);
 };

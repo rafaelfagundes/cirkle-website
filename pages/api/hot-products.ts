@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from "@vercel/node";
 import Product from "../../src/types/Product";
-import { closeConnection, connectToDatabase } from "../../src/utils/mongo";
+import { connectToDatabase } from "../../src/utils/mongo";
 
 export default async (
   request: NowRequest,
@@ -14,8 +14,6 @@ export default async (
     .sort({ viewCount: -1 })
     .limit(8)
     .toArray();
-
-  closeConnection();
 
   return response.json(hotProducts);
 };
