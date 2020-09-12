@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import CssBaseline from "@material-ui/core/CssBaseline";
+import axios from "axios";
 import Head from "next/head";
 import Router from "next/router";
 import NProgress from "nprogress";
 import PropTypes from "prop-types";
 import React from "react";
 import { ThemeProvider } from "styled-components";
+import { SWRConfig } from "swr";
 import Layout from "../src/components/Layout/index";
 import AuthProvider from "../src/hooks/use-auth";
 import CartProvider from "../src/hooks/use-cart";
@@ -36,6 +38,8 @@ Router.onRouteChangeError = () => {
   NProgress.done();
 };
 
+const fetcher = (url) => axios.get(url).then((res) => res.data);
+
 export default function MyApp(props) {
   const { Component, pageProps } = props;
 
@@ -56,6 +60,10 @@ export default function MyApp(props) {
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, maximum-scale=1"
         />
+        {/* <meta
+          name="viewport"
+          content="width=device-width,minimum-scale=1,initial-scale=1"
+        ></meta> */}
         <link
           rel="apple-touch-icon"
           sizes="57x57"
@@ -137,9 +145,16 @@ export default function MyApp(props) {
               <ThemeProvider theme={theme}>
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
+                <SWRConfig
+                  value={{
+                    refreshInterval: 3000,
+                    fetcher,
+                  }}
+                >
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </SWRConfig>
               </ThemeProvider>
             </CartProvider>
           </WishlistProvider>

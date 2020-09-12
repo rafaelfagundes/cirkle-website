@@ -196,7 +196,6 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
   const auth = useAuth();
 
   useEffect(() => {
-    console.log("data", data);
     if (data) {
       setMenuData(data);
     }

@@ -2,16 +2,12 @@
 import { ServerStyleSheets } from "@material-ui/core/styles";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 import React from "react";
-import theme from "../src/theme/theme";
 
 export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head>
-          {/* PWA primary color */}
-          <meta name="theme-color" content={theme.palette.primary.main} />
-        </Head>
+        <Head>{/* PWA primary color */}</Head>
         <body>
           <Main />
           <NextScript />

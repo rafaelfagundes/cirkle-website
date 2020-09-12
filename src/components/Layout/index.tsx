@@ -2,11 +2,11 @@ import { Container, Hidden, SwipeableDrawer } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import useSWR from "swr";
 import firebase from "../../config/firebase";
 import Colors from "../../enums/Colors";
 import { useCart } from "../../hooks/use-cart";
 import { useDialog } from "../../hooks/use-dialog";
-import MenuController from "../../modules/menu/MenuController";
 import CustomDialog from "../CustomDialog";
 import Footer from "../Footer";
 import SideMenu from "../SideMenu/index";
@@ -22,16 +22,10 @@ function Layout({ children }: { children: JSX.Element }): JSX.Element {
   const dialogContext = useDialog();
   const cartContext = useCart();
 
-  const [menuData, setMenuData] = useState(null);
-
-  const getMenuData = async () => {
-    const controller = new MenuController();
-    const menuData = await controller.getMenu();
-    setMenuData(menuData);
-  };
+  const { data: menuData, error } = useSWR("/api/menu");
+  if (error) console.log("Menu loading error", error);
 
   useEffect(() => {
-    getMenuData();
     const remoteConfig = firebase.remoteConfig();
     remoteConfig.settings = {
       minimumFetchIntervalMillis: 60000,
