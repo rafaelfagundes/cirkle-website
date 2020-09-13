@@ -88,7 +88,7 @@ function HighlightsSection({
           <Link href={item.link} key={item.link}>
             <HighlightItem width={widthHighlightItem}>
               <Image
-                image={cloudinaryImage(item.image, widthHighlightItem)}
+                image={cloudinaryImage(item.image, 460)}
                 width={widthHighlightItem}
               ></Image>
               <Title fontSize={widthHighlightItem * 0.073170732}>
