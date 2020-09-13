@@ -5,6 +5,10 @@
 .scannerwork
 sonarscanner.sh
 
+# PWA
+sw.js
+sw.js.map
+
 # Logs
 logs
 *.log
