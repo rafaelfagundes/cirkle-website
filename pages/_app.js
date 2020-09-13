@@ -54,16 +54,23 @@ export default function MyApp(props) {
   return (
     <>
       <Head>
+        <meta charset="utf-8" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+        />
+        <meta name="description" content="Compre de forma sustentável" />
+        <meta
+          name="keywords"
+          content="loja,ecommerce,sustentavel,sustentabilidade,natureza,economia,circular,reciclavel,reuso,second,hand"
+        />
         <title>Cirkle</title>
 
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, maximum-scale=1"
         />
-        {/* <meta
-          name="viewport"
-          content="width=device-width,minimum-scale=1,initial-scale=1"
-        ></meta> */}
         <link
           rel="apple-touch-icon"
           sizes="57x57"
@@ -134,9 +141,9 @@ export default function MyApp(props) {
           href="/favicon-16x16.png"
         />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="msapplication-TileColor" content="#80D0C7" />
+        <meta name="msapplication-TileColor" content="#FDF2F5" />
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
-        <meta name="theme-color" content="#80D0C7"></meta>
+        <meta name="theme-color" content="#FDF2F5"></meta>
       </Head>
       <DialogProvider>
         <AuthProvider>
