@@ -5,6 +5,7 @@ import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
+import { cloudinaryImage } from "../../utils/image";
 
 const StyledBrand = styled.div<{ width: number }>`
   width: ${(props) => props.width}px;
@@ -62,7 +63,10 @@ function Brand({
   return (
     <Link href={data.link}>
       <StyledBrand width={widthHighlightItem} key={data.id}>
-        <BrandImage width={widthHighlightItem} image={data.image}></BrandImage>
+        <BrandImage
+          width={widthHighlightItem}
+          image={cloudinaryImage(data.image, 140)}
+        ></BrandImage>
       </StyledBrand>
     </Link>
   );

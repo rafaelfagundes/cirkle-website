@@ -1,18 +1,30 @@
 import { Hidden } from "@material-ui/core";
+import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import useSWR from "swr";
 import HighlightsSection from "../src/components/HighlightsSection";
 import HomeCategories from "../src/components/HomeCategories";
-import HotSection from "../src/components/HotSection/index";
+// import HotSection from "../src/components/HotSection";
 import HighlightsLoader from "../src/components/Loaders/Highlights";
 import MainBannerLoader from "../src/components/Loaders/MainBanner";
-import MainBanner from "../src/components/MainBanner/index";
-import NewsletterSignUp from "../src/components/NewsletterSignUp";
-import SearchBar from "../src/components/SearchBar/index";
-import SizedBox from "../src/components/SizedBox/index";
+import MainBanner from "../src/components/MainBanner";
+// import NewsletterSignUp from "../src/components/NewsletterSignUp";
+import SearchBar from "../src/components/SearchBar";
+import SizedBox from "../src/components/SizedBox";
 import TopTextBanner from "../src/components/TopTextBanner";
 import Colors from "../src/enums/Colors";
 import { useCart } from "../src/hooks/use-cart";
+
+const HotSection = dynamic(() => import("../src/components/HotSection/"), {
+  ssr: false,
+});
+
+const NewsletterSignUp = dynamic(
+  () => import("../src/components/NewsletterSignUp/"),
+  {
+    ssr: false,
+  }
+);
 
 function Home(): JSX.Element {
   const cartContext = useCart();

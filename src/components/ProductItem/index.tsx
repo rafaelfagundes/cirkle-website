@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { useCart } from "../../hooks/use-cart";
 import { useWishlist } from "../../hooks/use-wishlist";
 import Product from "../../types/Product";
+import { cloudinaryImage } from "../../utils/image";
 import CustomButton from "../CustomButton";
 import FavoriteIcon from "../FavoriteIcon";
 import Icon from "../Icon";
@@ -121,7 +122,7 @@ function ProductItem({
             <Icon type="heart-fill" size={96}></Icon>
           </motion.div>
         </AnimatedHeart>
-        <Image image={data.image}></Image>
+        <Image image={cloudinaryImage(data.image, 460)}></Image>
         <BrandName>
           <BrandNameText>{data.brand}</BrandNameText>
         </BrandName>
@@ -166,7 +167,7 @@ function ProductItem({
               onClick={() => _addToCart(data)}
               icon={isAlreadyInCart ? null : "bag-plus"}
             >
-              {isAlreadyInCart ? "Está No Carrinho" : ""}
+              {isAlreadyInCart ? "Está Na Sacola" : ""}
             </CustomButton>
           </Row>
         </Padding>

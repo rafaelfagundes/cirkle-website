@@ -1,15 +1,26 @@
 import { Container, Hidden, SwipeableDrawer } from "@material-ui/core";
+import dynamic from "next/dynamic";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
 import Colors from "../../enums/Colors";
 import { useDialog } from "../../hooks/use-dialog";
-import CustomDialog from "../CustomDialog";
-import Footer from "../Footer";
+// import CustomDialog from "../CustomDialog";
+// import Footer from "../Footer";
 import SideMenu from "../SideMenu/index";
 import NavBarDesktop from "./navBarDesktop";
 import NavBarMobile from "./navBarMobile";
+
+const Footer = dynamic(() => import("../Footer"), {
+  ssr: false,
+});
+
+// const SideMenu = dynamic(() => import("../SideMenu"));
+
+const CustomDialog = dynamic(() => import("../CustomDialog"), {
+  ssr: false,
+});
 
 const Background = styled.div`
   background: linear-gradient(180deg, #fafafa, ${Colors.ULTRA_LIGHT_GRAY});

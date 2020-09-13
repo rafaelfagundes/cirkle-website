@@ -1,15 +1,23 @@
 import { Container, Hidden, InputBase } from "@material-ui/core";
 import _ from "lodash";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 import { useAuth } from "../../hooks/use-auth";
-import DropdownCart from "../DropdownCart";
+// import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../HorizontalLogo";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox";
-import UserProfileMenuItem from "../UserProfileMenuItem";
+// import UserProfileMenuItem from "../UserProfileMenuItem";
+
+const DropdownCart = dynamic(() => import("../DropdownCart"), {
+  ssr: false,
+});
+const UserProfileMenuItem = dynamic(() => import("../UserProfileMenuItem"), {
+  ssr: false,
+});
 
 const MenuContainer = styled.div`
   background-color: ${Colors.WHITE};

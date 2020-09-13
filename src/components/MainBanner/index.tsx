@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
+import { cloudinaryImage } from "../../utils/image";
 import SizedBox from "../SizedBox/index";
 
 const StyledBanner = styled.div<{ bgImage: string; height: number }>`
@@ -99,7 +100,7 @@ function MainBanner({
   const positions = getPositions();
 
   return (
-    <StyledBanner bgImage={url} height={bannerSize}>
+    <StyledBanner bgImage={cloudinaryImage(url, 960)} height={bannerSize}>
       <InnerContent>
         <Column
           height={bannerSize}

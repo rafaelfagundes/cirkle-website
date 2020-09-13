@@ -436,7 +436,7 @@ function Cart(): JSX.Element {
                   </Grid>
                 </>
                 <SizedBox height={24}></SizedBox>
-                <Title>Compartilhar Carrinho</Title>
+                <Title>Compartilhar Sacola</Title>
                 <SizedBox height={8}></SizedBox>
                 <Row>
                   <CustomButton

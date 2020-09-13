@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
+import { cloudinaryImage } from "../../utils/image";
 
 const Highlights = styled.div<{ padding: boolean }>`
   display: flex;
@@ -86,7 +87,10 @@ function HighlightsSection({
         {data.map((item) => (
           <Link href={item.link} key={item.link}>
             <HighlightItem width={widthHighlightItem}>
-              <Image image={item.image} width={widthHighlightItem}></Image>
+              <Image
+                image={cloudinaryImage(item.image, widthHighlightItem)}
+                width={widthHighlightItem}
+              ></Image>
               <Title fontSize={widthHighlightItem * 0.073170732}>
                 {item.title}
               </Title>

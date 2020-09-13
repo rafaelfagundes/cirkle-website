@@ -74,7 +74,7 @@ function Wishlist(): JSX.Element {
         onClick={() => cartContext.addToCart(item)}
         icon={isAlreadyInCart ? null : "bag-plus"}
       >
-        {isAlreadyInCart ? "Está No Carrinho" : ""}
+        {isAlreadyInCart ? "Está Na Sacola" : ""}
       </CustomButton>
     );
   };

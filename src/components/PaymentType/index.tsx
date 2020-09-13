@@ -43,7 +43,7 @@ function PaymentType({
       case "amex":
         return {
           image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${
-            size * 3
+            size * 2
           }/v1599082122/payment/amex.png`,
           bgColor: "#016fd0",
           title: "American Express",
@@ -51,7 +51,7 @@ function PaymentType({
       case "aura":
         return {
           image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${
-            size * 3
+            size * 2
           }/v1599082122/payment/aura.png`,
           bgColor: "#fff202",
           title: "Aura",
@@ -59,7 +59,7 @@ function PaymentType({
       case "bank_transfer":
         return {
           image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${
-            size * 3
+            size * 2
           }/v1599082122/payment/bank_transfer.png`,
           bgColor: "#FFF",
           title: "Transferência Bancária",
@@ -67,7 +67,7 @@ function PaymentType({
       case "dinersclub":
         return {
           image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${
-            size * 3
+            size * 2
           }/v1599082122/payment/dinersclub.png`,
           bgColor: "#FFF",
           title: "Diners",
@@ -75,7 +75,7 @@ function PaymentType({
       case "discover":
         return {
           image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${
-            size * 3
+            size * 2
           }/v1599082122/payment/discover.png`,
           bgColor: "#FFF",
           title: "Discover",
@@ -83,7 +83,7 @@ function PaymentType({
       case "elo":
         return {
           image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${
-            size * 3
+            size * 2
           }/v1599082122/payment/elo.png`,
           bgColor: "#242020",
           title: "Elo",
@@ -91,7 +91,7 @@ function PaymentType({
       case "hipercard":
         return {
           image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${
-            size * 3
+            size * 2
           }/v1599082122/payment/hipercard.png`,
           bgColor: "#FFF",
           title: "Hipercard",
@@ -99,7 +99,7 @@ function PaymentType({
       case "jcb":
         return {
           image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${
-            size * 3
+            size * 2
           }/v1599082122/payment/jcb.png`,
           bgColor: "#FFF",
           title: "JCB",
@@ -107,7 +107,7 @@ function PaymentType({
       case "mastercard":
         return {
           image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${
-            size * 3
+            size * 2
           }/v1599082122/payment/mastercard.png`,
           bgColor: "#FFF",
           title: "Mastercard",
@@ -115,7 +115,7 @@ function PaymentType({
       case "visa":
         return {
           image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${
-            size * 3
+            size * 2
           }/v1599082122/payment/visa.png`,
           bgColor: "#FFF",
           title: "Visa",
@@ -124,7 +124,7 @@ function PaymentType({
       default:
         return {
           image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${
-            size * 3
+            size * 2
           }/v1599082122/payment/boleto.png`,
           bgColor: "#FFF",
           title: "Boleto Bancário",
