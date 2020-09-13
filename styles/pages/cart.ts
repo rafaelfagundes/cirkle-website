@@ -97,9 +97,7 @@ export const Description = styled.span`
 
 export const MoreInfo = styled.div`
   display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
-  font-size: 14px;
 `;
 
 export const Price = styled.span`

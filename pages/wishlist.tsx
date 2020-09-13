@@ -14,6 +14,7 @@ import Colors from "../src/enums/Colors";
 import { useCart } from "../src/hooks/use-cart";
 import { useWishlist } from "../src/hooks/use-wishlist";
 import Product from "../src/types/Product";
+import { cloudinaryImage } from "../src/utils/image";
 import {
   CartItem,
   CartItemImage,
@@ -65,13 +66,17 @@ function Wishlist(): JSX.Element {
   };
 
   const getCartButton = (item: Product) => {
-    const isAlreadyInCart = cartContext.isItemInCart(item.id);
+    const isAlreadyInCart = cartContext.isItemInCart(item._id);
 
     return (
       <CustomButton
         type={isAlreadyInCart ? "disabled" : "success"}
         variant="contained"
-        onClick={() => cartContext.addToCart(item)}
+        onClick={() => {
+          item.id = item._id;
+          item.cartQty = 1;
+          cartContext.addToCart(item);
+        }}
         icon={isAlreadyInCart ? null : "bag-plus"}
       >
         {isAlreadyInCart ? "Está Na Sacola" : ""}
@@ -111,11 +116,11 @@ function Wishlist(): JSX.Element {
             <CartItems>
               {wishlistContext.wishlist.items.map(
                 (item: Product, index: number) => (
-                  <CartItem key={item.id} showBackground={index % 2 === 0}>
+                  <CartItem key={item._id} showBackground={index % 2 === 0}>
                     <ImagePrice>
                       <CartItemImage
-                        image={item.image}
-                        size={90}
+                        image={cloudinaryImage(item.image, 90)}
+                        size={window.innerWidth * 0.24}
                       ></CartItemImage>
                       <SizedBox height={8}></SizedBox>
                       <Price>
@@ -134,7 +139,7 @@ function Wishlist(): JSX.Element {
                             size={16}
                             type="remove"
                             onClick={() =>
-                              wishlistContext.removeFromWishlist(item.id)
+                              wishlistContext.removeFromWishlist(item._id)
                             }
                           ></Icon>
                         </TitleAndRemove>
@@ -146,11 +151,10 @@ function Wishlist(): JSX.Element {
                         <CustomButton
                           type="secondary"
                           variant="text"
-                          onClick={() => _goToProduct(item.id)}
+                          onClick={() => _goToProduct(item._id)}
                         >
                           Ver Produto
                         </CustomButton>
-                        <SizedBox width={8}></SizedBox>
                         {getCartButton(item)}
                       </MoreInfo>
                     </SpaceBetweenColumn>

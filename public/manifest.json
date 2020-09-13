@@ -4,6 +4,7 @@
   "theme_color": "#561643",
   "background_color": "#FDF2F5",
   "display": "standalone",
+  "orientation": "portrait",
   "start_url": "https://cirkle.com.br",
   "icons": [
     {
