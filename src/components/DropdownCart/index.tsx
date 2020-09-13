@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useCart } from "../../hooks/use-cart";
+import { cloudinaryImage } from "../../utils/image";
 import Column from "../Column";
 import CustomButton from "../CustomButton";
 import EmptyPage from "../EmptyPage";
@@ -79,7 +80,10 @@ function DropdownCart(): JSX.Element {
             <CartItems height={window.innerHeight}>
               {cartContext.cart.items.map((item, index) => (
                 <CartItem key={item.id} showBackground={index % 2 !== 0}>
-                  <CartItemImage image={item.image} size={120}></CartItemImage>
+                  <CartItemImage
+                    image={cloudinaryImage(item.image, 120)}
+                    size={120}
+                  ></CartItemImage>
                   <Column>
                     <Title>{item.title}</Title>
                     <SizedBox height={2}></SizedBox>

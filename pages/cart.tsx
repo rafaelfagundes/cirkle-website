@@ -16,6 +16,7 @@ import Title from "../src/components/Title";
 import { useCart } from "../src/hooks/use-cart";
 import theme from "../src/theme/theme";
 import Shipping from "../src/types/CartShipping";
+import { cloudinaryImage } from "../src/utils/image";
 import {
   CartFooter,
   CartItem,
@@ -192,7 +193,7 @@ function Cart(): JSX.Element {
                   <CartItem key={item.id} showBackground={index % 2 === 0}>
                     <ImagePrice>
                       <CartItemImage
-                        image={item.image}
+                        image={cloudinaryImage(item.image, 112)}
                         size={90}
                       ></CartItemImage>
                       <SizedBox height={8}></SizedBox>
