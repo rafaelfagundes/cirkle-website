@@ -122,7 +122,7 @@ function ProductItem({
             <Icon type="heart-fill" size={96}></Icon>
           </motion.div>
         </AnimatedHeart>
-        <Image image={cloudinaryImage(data.image, 460)}></Image>
+        <Image image={cloudinaryImage(data.image, 230)}></Image>
         <BrandName>
           <BrandNameText>{data.brand}</BrandNameText>
         </BrandName>

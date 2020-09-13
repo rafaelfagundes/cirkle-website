@@ -99,8 +99,13 @@ function MainBanner({
 
   const positions = getPositions();
 
+  const bannerImageSize = window.innerWidth > 960 ? 960 : window.innerWidth;
+
   return (
-    <StyledBanner bgImage={cloudinaryImage(url, 960)} height={bannerSize}>
+    <StyledBanner
+      bgImage={cloudinaryImage(url, bannerImageSize)}
+      height={bannerSize}
+    >
       <InnerContent>
         <Column
           height={bannerSize}
