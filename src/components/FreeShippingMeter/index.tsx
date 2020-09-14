@@ -11,6 +11,7 @@ const Truck = styled.div<{ value: number }>`
 
   position: relative;
   left: ${(props) => `calc(${props.value}% - 12px)`};
+  transition: left 1.5s;
 
   animation: MoveUpDown 1000ms linear infinite;
 
@@ -52,13 +53,14 @@ const StyledLinearProgress = styled.div<{ value: number; color: string }>`
   background-color: ${Colors.LIGHT_GRAY};
 
   & > div {
+    transition: width 1s;
     background-color: ${(props) => props.color};
     width: ${(props) => props.value}%;
     height: 10px;
   }
 `;
 
-function FreeDeliveryMeter({
+function FreeShippingMeter({
   current = 50,
   max = 1000,
 }: {
@@ -98,4 +100,4 @@ function FreeDeliveryMeter({
   );
 }
 
-export default FreeDeliveryMeter;
+export default FreeShippingMeter;

@@ -6,7 +6,7 @@ import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
 import CustomSelect from "../src/components/CustomSelect";
 import EmptyPage from "../src/components/EmptyPage";
-import FreeDeliveryMeter from "../src/components/FreeDeliveryMeter";
+import FreeDeliveryMeter from "../src/components/FreeShippingMeter";
 import Icon from "../src/components/Icon";
 import Padding from "../src/components/Padding";
 import PaymentType from "../src/components/PaymentType";

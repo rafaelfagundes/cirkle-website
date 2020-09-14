@@ -1,4 +1,3 @@
-import { useMediaQuery, useTheme } from "@material-ui/core";
 import { motion, useAnimation } from "framer-motion";
 import React, { LegacyRef, useEffect, useState } from "react";
 import Icon from "../Icon";
@@ -13,8 +12,6 @@ type BagProps = {
 const Bag = React.forwardRef(
   (props: BagProps, ref: LegacyRef<HTMLDivElement>) => {
     const controls = useAnimation();
-    const theme = useTheme();
-    const isSmartphone = useMediaQuery(theme.breakpoints.down("xs"));
     const [prevCounter, setprevCounter] = useState(0);
 
     const bagAnimation = async () => {
