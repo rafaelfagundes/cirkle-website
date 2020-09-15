@@ -2,7 +2,7 @@
   "name": "Cirkle",
   "short_name": "Cirkle",
   "theme_color": "#561643",
-  "background_color": "#EBEBEB",
+  "background_color": "#ececec",
   "display": "standalone",
   "orientation": "portrait",
   "start_url": "https://cirkle.com.br",
