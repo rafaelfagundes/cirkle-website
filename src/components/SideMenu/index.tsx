@@ -220,15 +220,15 @@ function SideMenu({
             <Row>
               <Avatar
                 src={
-                  auth?.user?.photoURL
-                    ? auth?.user?.photoURL
+                  auth?.user?.picture
+                    ? auth?.user?.picture
                     : AVATAR_PLACEHOLDER
                 }
               ></Avatar>
               <Column>
                 <UserName>
-                  {auth?.user?.displayName
-                    ? `Olá, ${auth.user.displayName}`
+                  {auth?.user?.name
+                    ? `Olá, ${auth.user.name}`
                     : "Olá, visitante!"}
                 </UserName>
                 {auth.user ? (
