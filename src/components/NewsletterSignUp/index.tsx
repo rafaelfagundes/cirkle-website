@@ -55,9 +55,10 @@ const NLButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${Colors.PRIMARY};
+  background-color: ${Colors.SECONDARY};
   padding: 0 16px;
   cursor: pointer;
+  border: 1px solid ${Colors.SECONDARY};
 `;
 
 const NLButtonText = styled.span`
@@ -83,9 +84,11 @@ function NewsletterSignUp(): JSX.Element {
             />
           </NewsletterInput>
           {showButton && (
-            <NLButton>
-              <NLButtonText>Enviar</NLButtonText>
-            </NLButton>
+            <>
+              <NLButton>
+                <NLButtonText>Enviar</NLButtonText>
+              </NLButton>
+            </>
           )}
         </Row>
         <NewsletterDescription>

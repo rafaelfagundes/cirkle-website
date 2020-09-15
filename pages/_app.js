@@ -54,6 +54,13 @@ export default function MyApp(props) {
   return (
     <>
       <Head>
+        <noscript>
+          <center>
+            <h1>Seu navegador não suporta Javascript.</h1>
+            <h2>Por favor, utilize outro navegador.</h2>
+            <h3>Ou, se for o caso, habilite o Javascript.</h3>
+          </center>
+        </noscript>
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta
@@ -154,7 +161,7 @@ export default function MyApp(props) {
                 <CssBaseline />
                 <SWRConfig
                   value={{
-                    refreshInterval: 10000,
+                    refreshInterval: 60000,
                     refreshWhenHidden: false,
                     refreshWhenOffline: false,
                     revalidateOnFocus: true,
@@ -162,7 +169,7 @@ export default function MyApp(props) {
                     revalidateOnReconnect: true,
                     dedupingInterval: 5000,
                     focusThrottleInterval: 15000,
-                    errorRetryCount: 3,
+                    errorRetryCount: 5,
                     fetcher,
                   }}
                 >
