@@ -70,7 +70,7 @@ function MobileTopMenu({
                 <span onClick={() => setDrawer(true)}>
                   <Row>
                     <Icon type="menu"></Icon>
-                    <AvatarMenu image={auth.user.photoURL}></AvatarMenu>
+                    <AvatarMenu image={auth.user.picture}></AvatarMenu>
                   </Row>
                 </span>
               )}
