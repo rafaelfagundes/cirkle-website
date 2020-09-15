@@ -16,6 +16,7 @@ import TextSeparator from "../src/components/TextSeparator";
 import Title from "../src/components/Title";
 import Colors from "../src/enums/Colors";
 import { IAuthContextProps, useAuth } from "../src/hooks/use-auth";
+import User from "../src/types/User";
 import { capitalizeFirstLetter, validateEmail } from "../src/utils/string";
 
 const LoginContainer = styled.div`
@@ -39,7 +40,7 @@ function SocialLogin({ auth }: { auth: IAuthContextProps }): JSX.Element {
   const router = useRouter();
 
   const signIn = async (type: string): Promise<void> => {
-    let result: firebase.User;
+    let result: User;
     switch (type) {
       case "facebook":
         result = await auth.signinWithFacebook();
