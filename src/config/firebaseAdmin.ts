@@ -19,7 +19,7 @@ if (!firebaseAdmin.apps.length) {
 
   firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert(
-      JSON.stringify(firebaseServiceAccountKey)
+      JSON.parse(JSON.stringify(firebaseServiceAccountKey))
     ),
     databaseURL: process.env.FIREBASE_DATABASE_URL,
   });

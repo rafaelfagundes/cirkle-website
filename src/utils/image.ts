@@ -6,9 +6,6 @@ export function cloudinaryImage(
   const options = `c_scale,q_auto:${quality},w_${
     size * window.devicePixelRatio
   }/`;
-
   const newUri = uri.replace("upload/", "upload/" + options);
-
-  console.log("functioncloudinaryImage -> uri", newUri);
   return newUri;
 }

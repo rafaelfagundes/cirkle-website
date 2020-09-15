@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
+import React, { createContext, useContext, useState } from "react";
 import firebase from "../config/firebase";
+import User from "../types/User";
 import { useDialog } from "./use-dialog";
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
@@ -48,15 +50,15 @@ const ErrorMessages = {
 };
 
 export interface IAuthContextProps {
-  user: firebase.User;
-  signin: (email: string, password: string) => Promise<firebase.User>;
-  signinWithGoogle: () => Promise<firebase.User>;
-  signinWithFacebook: () => Promise<firebase.User>;
+  user: any;
+  signin: (email: string, password: string) => Promise<User>;
+  signinWithGoogle: () => Promise<User>;
+  signinWithFacebook: () => Promise<User>;
   signup: (
     displayName: string,
     email: string,
     password: string
-  ) => Promise<firebase.User>;
+  ) => Promise<User>;
   signout: () => Promise<void>;
   sendPasswordResetEmail: (email: string) => Promise<void>;
   confirmPasswordReset: (code: string, password: string) => Promise<void>;
@@ -77,17 +79,61 @@ export const useAuth = (): IAuthContextProps => {
   return useContext(AuthContext);
 };
 
+async function saveUserDB(idToken: string) {
+  try {
+    const response = await axios.post("/api/user", { idToken });
+    if (response) return response?.data?.user;
+  } catch (error) {
+    return null;
+  }
+}
+
+async function getUserDB(idToken: string): Promise<User> {
+  try {
+    const response = await axios.get("/api/user", { params: { idToken } });
+    if (response) return response?.data?.user;
+  } catch (error) {
+    return null;
+  }
+}
+
 function useProviderAuth() {
-  const [user, setUser] = useState(null);
+  let localUser = null;
+  if (process.browser) {
+    localUser = JSON.parse(localStorage.getItem("user"));
+  }
+
+  const [user, setUser] = useState(localUser || null);
   const dialogContext = useDialog();
+
+  const saveUserInContextAndLocalStorage = (user: User) => {
+    setUser(user);
+    localStorage.setItem("user", JSON.stringify(user));
+  };
 
   const signin = async (email: string, password: string) => {
     try {
-      const response = await firebase
+      const response: firebase.auth.UserCredential = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password);
 
-      return response.user;
+      const idToken = await response.user.getIdToken();
+      const user = await getUserDB(idToken);
+      if (user) {
+        saveUserInContextAndLocalStorage(user);
+      } else {
+        const savedUser = await saveUserDB(idToken);
+        if (savedUser) {
+          saveUserInContextAndLocalStorage(savedUser);
+        } else {
+          dialogContext.newDialog(
+            true,
+            "Erro ao Tentar Entrar",
+            "Não foi possível entrar com o usuário escolhido"
+          );
+        }
+      }
+      return user;
     } catch (error) {
       dialogContext.newDialog(
         true,
@@ -98,9 +144,28 @@ function useProviderAuth() {
   };
 
   const signinWithGoogle = async () => {
+    console.log("### signinWithGoogle");
     try {
       const result = await firebase.auth().signInWithPopup(googleProvider);
-      return result.user;
+      const idToken = await result.user.getIdToken();
+      const user = await getUserDB(idToken);
+
+      if (user) {
+        saveUserInContextAndLocalStorage(user);
+      } else {
+        const savedUser = await saveUserDB(idToken);
+        if (savedUser) {
+          saveUserInContextAndLocalStorage(savedUser);
+        } else {
+          dialogContext.newDialog(
+            true,
+            "Erro ao Tentar Entrar",
+            "Não foi possível entrar com o usuário escolhido"
+          );
+        }
+      }
+
+      return user;
     } catch (error) {
       dialogContext.newDialog(
         true,
@@ -113,8 +178,23 @@ function useProviderAuth() {
   const signinWithFacebook = async () => {
     try {
       const result = await firebase.auth().signInWithPopup(facebookProvider);
-      console.log("result.user", result.user);
-      return result.user;
+      const idToken = await result.user.getIdToken();
+      const user = await getUserDB(idToken);
+      if (user) {
+        saveUserInContextAndLocalStorage(user);
+      } else {
+        const savedUser = await saveUserDB(idToken);
+        if (savedUser) {
+          saveUserInContextAndLocalStorage(savedUser);
+        } else {
+          dialogContext.newDialog(
+            true,
+            "Erro ao Tentar Entrar",
+            "Não foi possível entrar com o usuário escolhido"
+          );
+        }
+      }
+      return user;
     } catch (error) {
       dialogContext.newDialog(
         true,
@@ -140,7 +220,18 @@ function useProviderAuth() {
           "https://res.cloudinary.com/cirklebr/image/upload/v1598000887/avatar.jpg",
       });
 
-      return response.user;
+      const idToken = await response.user.getIdToken();
+      const user = await saveUserDB(idToken);
+      if (user) {
+        saveUserInContextAndLocalStorage(user);
+      } else {
+        dialogContext.newDialog(
+          true,
+          "Erro ao Tentar Entrar",
+          "Não foi possível encontrar o usuário no sistema."
+        );
+      }
+      return user;
     } catch (error) {
       dialogContext.newDialog(
         true,
@@ -153,6 +244,7 @@ function useProviderAuth() {
   const signout = async () => {
     try {
       await firebase.auth().signOut();
+      saveUserInContextAndLocalStorage(null);
     } catch (error) {
       dialogContext.newDialog(
         true,
@@ -185,23 +277,6 @@ function useProviderAuth() {
       );
     }
   };
-
-  // Subscribe to user on mount
-  // Because this sets state in the callback it will cause any ...
-  // ... component that utilizes this hook to re-render with the ...
-  // ... latest auth object.
-  useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((newUser) => {
-      if (newUser) {
-        setUser(newUser);
-      } else {
-        setUser(null);
-      }
-    });
-
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, []);
 
   // Return the user object and auth methods
   return {

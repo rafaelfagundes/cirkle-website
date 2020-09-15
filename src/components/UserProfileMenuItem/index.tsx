@@ -75,12 +75,12 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
           ref={userButtonMenu}
         >
           <Profile center={true}>
-            {auth.user.photoURL ? (
-              <UserImage src={auth.user.photoURL}></UserImage>
+            {auth.user.picture ? (
+              <UserImage src={auth.user.picture}></UserImage>
             ) : (
               <Icon type="profile"></Icon>
             )}
-            <UserName>{firstNameOnly(auth.user.displayName)}</UserName>
+            <UserName>{firstNameOnly(auth.user.name)}</UserName>
           </Profile>
         </UserButton>
         <Menu
@@ -95,12 +95,12 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
         >
           <StyledMenuItem>
             <Profile>
-              {auth.user.photoURL ? (
-                <UserImage src={auth.user.photoURL}></UserImage>
+              {auth.user.picture ? (
+                <UserImage src={auth.user.picture}></UserImage>
               ) : (
                 <Icon type="profile"></Icon>
               )}
-              <UserName>{firstNameOnly(auth.user.displayName)}</UserName>
+              <UserName>{firstNameOnly(auth.user.name)}</UserName>
             </Profile>
           </StyledMenuItem>
           <br />
