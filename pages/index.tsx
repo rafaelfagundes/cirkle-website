@@ -43,7 +43,9 @@ function Home(): JSX.Element {
   );
   if (productsError) console.log("Brands loading error", productsError);
 
-  const { data: shipping, error: shippingError } = useSWR("/api/shipping");
+  const { data: shipping, error: shippingError } = useSWR("/api/shipping", {
+    initialData: initialData.shipping,
+  });
   if (shippingError) console.log("Shipping loading error", shippingError);
 
   const { data: highlights, error: highlightsError } = useSWR(
