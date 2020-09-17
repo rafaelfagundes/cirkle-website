@@ -38,7 +38,8 @@ Router.onRouteChangeError = () => {
   NProgress.done();
 };
 
-const fetcher = (url) => axios.get(url).then((res) => res.data);
+const fetcher = (url, params = null) =>
+  axios.get(url, { params: params }).then((res) => res.data);
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;

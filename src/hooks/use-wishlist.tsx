@@ -1,7 +1,9 @@
+import axios from "axios";
 import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Product from "../types/Product";
 import Wishlist from "../types/Wishlist";
+import { useAuth } from "./use-auth";
 
 export interface IWishlistContextProps {
   wishlist: Wishlist;
@@ -30,19 +32,31 @@ export const useWishlist = (): IWishlistContextProps => {
 };
 
 function useWishlistProvider() {
-  const emptyWishlist: Wishlist = {
-    items: [],
-  };
-
   let savedWishlist: Wishlist;
 
   if (process.browser) {
     savedWishlist = JSON.parse(localStorage.getItem("wishlist"));
   }
 
+  const authContext = useAuth();
+
+  const emptyWishlist: Wishlist = {
+    items: [],
+  };
   const [wishlist, setWishlist] = useState(
     savedWishlist ? savedWishlist : emptyWishlist
   );
+
+  const getWishlist = async (id: string) => {
+    const result = await axios.get("/api/wishlist", { params: { userId: id } });
+    setWishlist(result.data.wishlist);
+  };
+
+  useEffect(() => {
+    if (authContext?.user?.uid) {
+      getWishlist(authContext.user.uid);
+    }
+  }, [authContext?.user?.uid]);
 
   const addToWishlist = (item: Product) => {
     const _wishlist = _.cloneDeep(wishlist);
@@ -66,8 +80,19 @@ function useWishlistProvider() {
     else return false;
   };
 
+  const updateWishlist = async (wishlist: Wishlist) => {
+    const result = await axios.post("/api/wishlist", { wishlist });
+    localStorage.setItem("wishlist", JSON.stringify(result.data.wishlist));
+  };
+
   useEffect(() => {
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    if (authContext.user) {
+      const _wishlist = _.cloneDeep(wishlist);
+      _wishlist.userId = authContext.user.uid;
+      updateWishlist(_wishlist);
+    } else {
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    }
   }, [wishlist]);
 
   return {
