@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
-import initialData from "../../../public/prepopulated.json";
+import initialData from "../../../src/cache/prepopulated.json";
 import Colors from "../../enums/Colors";
 import { useDialog } from "../../hooks/use-dialog";
 // import CustomDialog from "../CustomDialog";

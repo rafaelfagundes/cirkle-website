@@ -14,7 +14,7 @@ async function getData() {
 
   const stringData = JSON.stringify(data);
 
-  fs.writeFileSync("public/prepopulated.json", stringData);
+  fs.writeFileSync("src/cache/prepopulated.json", stringData);
 }
 
 getData();

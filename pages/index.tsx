@@ -2,7 +2,7 @@ import { Hidden } from "@material-ui/core";
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import useSWR from "swr";
-import initialData from "../public/prepopulated.json";
+import initialData from "../src/cache/prepopulated.json";
 import HighlightsSection from "../src/components/HighlightsSection";
 import HomeCategories from "../src/components/HomeCategories";
 // import HotSection from "../src/components/HotSection";
