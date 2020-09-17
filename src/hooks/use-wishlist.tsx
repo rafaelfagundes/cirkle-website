@@ -48,8 +48,7 @@ function useWishlistProvider() {
   );
 
   const getWishlist = async (id: string) => {
-    const result = await axios.get("/api/wishlist", { params: { userId: id } });
-    setWishlist(result.data.wishlist);
+    await axios.get("/api/wishlist", { params: { userId: id } });
   };
 
   useEffect(() => {

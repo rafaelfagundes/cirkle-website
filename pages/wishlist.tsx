@@ -100,14 +100,10 @@ function Wishlist(): JSX.Element {
           {!isSmartphone && (
             <Items>
               {wishlistContext.wishlist.items.map((item, index) => (
-                <>
-                  <ProductItem
-                    key={index}
-                    data={item}
-                    removeButton={true}
-                  ></ProductItem>
+                <React.Fragment key={index}>
+                  <ProductItem data={item} removeButton={true}></ProductItem>
                   {(index + 1) % 4 !== 0 && <SizedBox width={16}></SizedBox>}
-                </>
+                </React.Fragment>
               ))}
             </Items>
           )}
