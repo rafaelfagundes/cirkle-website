@@ -5,6 +5,13 @@ const DEV = {
   publicRuntimeConfig: {
     API_ENDPOINT: process.env.API_ENDPOINT,
   },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      require("./scripts/pre_populate.js");
+    }
+
+    return config;
+  },
 };
 
 const PROD = withPWA({
@@ -13,6 +20,13 @@ const PROD = withPWA({
   },
   publicRuntimeConfig: {
     API_ENDPOINT: process.env.API_ENDPOINT,
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      require("./scripts/pre_populate.js");
+    }
+
+    return config;
   },
 });
 

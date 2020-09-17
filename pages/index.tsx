@@ -2,6 +2,7 @@ import { Hidden } from "@material-ui/core";
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import useSWR from "swr";
+import initialData from "../public/prepopulated.json";
 import HighlightsSection from "../src/components/HighlightsSection";
 import HomeCategories from "../src/components/HomeCategories";
 // import HotSection from "../src/components/HotSection";
@@ -29,7 +30,9 @@ const NewsletterSignUp = dynamic(
 function Home(): JSX.Element {
   const cartContext = useCart();
 
-  const { data: banner, error: bannerError } = useSWR("/api/banner");
+  const { data: banner, error: bannerError } = useSWR("/api/banner", {
+    initialData: initialData.banner,
+  });
   if (bannerError) console.log("Banner loading error", bannerError);
 
   const { data: brands, error: brandsError } = useSWR("/api/brands");
@@ -44,7 +47,10 @@ function Home(): JSX.Element {
   if (shippingError) console.log("Shipping loading error", shippingError);
 
   const { data: highlights, error: highlightsError } = useSWR(
-    "/api/highlights"
+    "/api/highlights",
+    {
+      initialData: initialData.highlights,
+    }
   );
   if (highlightsError) console.log("Highlights loading error", highlightsError);
 
