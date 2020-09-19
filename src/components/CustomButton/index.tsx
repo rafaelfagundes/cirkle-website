@@ -71,7 +71,7 @@ const ButtonTypeText = styled(ButtonBase)`
 
 function CustomButton({
   children,
-  type = "default",
+  type = "primary",
   variant = "contained",
   width = 120,
   loading = false,

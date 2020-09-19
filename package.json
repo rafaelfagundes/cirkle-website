@@ -8,7 +8,9 @@
     "start": "next start",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "storybook": "start-storybook -s ./public -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -41,6 +43,11 @@
     "swr": "^0.3.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@storybook/addon-actions": "^6.0.21",
+    "@storybook/addon-essentials": "^6.0.21",
+    "@storybook/addon-links": "^6.0.21",
+    "@storybook/react": "^6.0.21",
     "@testing-library/jest-dom": "^5.11.2",
     "@testing-library/react": "^10.4.8",
     "@types/enzyme": "^3.10.6",
@@ -48,6 +55,7 @@
     "@typescript-eslint/eslint-plugin": "^3.8.0",
     "@typescript-eslint/parser": "^3.8.0",
     "babel-jest": "^26.2.2",
+    "babel-loader": "^8.1.0",
     "babel-plugin-styled-components": "^1.11.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.4",
@@ -60,6 +68,7 @@
     "jest-cli": "^26.4.2",
     "jest-styled-components": "^7.0.3",
     "prettier": "^2.0.5",
+    "react-is": "^16.13.1",
     "ts-jest": "^26.3.0",
     "typescript": "^3.9.7"
   }

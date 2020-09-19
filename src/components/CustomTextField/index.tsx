@@ -7,8 +7,13 @@ import Icon from "../Icon";
 import SizedBox from "../SizedBox";
 
 const StyledInput = styled.div<{ error: boolean }>`
-  border: ${(props) => (props.error ? "3px" : "2px")} solid
-    ${(props) => (props.error ? Colors.ERROR : Colors.PRIMARY)};
+  border: ${(props) => {
+    if (props.error) {
+      return `3px solid ${Colors.ERROR}`;
+    } else {
+      return `2px solid ${Colors.PRIMARY}`;
+    }
+  }};
   height: 44px;
   display: flex;
   align-items: center;
@@ -35,10 +40,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 type CustomTextFieldProps = {
-  children: string;
+  children?: string;
   error?: string;
   type?: string;
   initialValue?: string;
+  showIcon?: boolean;
 };
 
 function getConfig(type: string): { icon: string; inputType: string } {
@@ -69,7 +75,7 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
           props.error !== ""
         }
       >
-        {config.icon && (
+        {config.icon && props.showIcon && (
           <>
             <Icon type={config.icon}></Icon>
             <SizedBox width={5}></SizedBox>
