@@ -220,9 +220,7 @@ function SideMenu({
             <Row>
               <Avatar
                 src={
-                  auth?.user?.picture
-                    ? auth?.user?.picture
-                    : AVATAR_PLACEHOLDER
+                  auth?.user?.picture ? auth?.user?.picture : AVATAR_PLACEHOLDER
                 }
               ></Avatar>
               <Column>
@@ -232,7 +230,7 @@ function SideMenu({
                     : "Olá, visitante!"}
                 </UserName>
                 {auth.user ? (
-                  <AccountLink href="/account">Minha Conta</AccountLink>
+                  <AccountLink href="/profile">Minha Conta</AccountLink>
                 ) : (
                   <AccountLink href="/login">Entrar ou Cadastrar</AccountLink>
                 )}

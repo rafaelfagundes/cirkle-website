@@ -38,6 +38,7 @@ type CustomTextFieldProps = {
   children: string;
   error?: string;
   type?: string;
+  initialValue?: string;
 };
 
 function getConfig(type: string): { icon: string; inputType: string } {
@@ -48,6 +49,8 @@ function getConfig(type: string): { icon: string; inputType: string } {
       return { icon: "email", inputType: "email" };
     case "user":
       return { icon: "person", inputType: "text" };
+    case "phone":
+      return { icon: "phone", inputType: "text" };
 
     default:
       return { icon: null, inputType: "text" };
@@ -77,6 +80,7 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
           className={useStyles().input}
           placeholder={props.children}
           type={config.inputType}
+          defaultValue={props.initialValue}
         />
       </StyledInput>
       {props.error && (

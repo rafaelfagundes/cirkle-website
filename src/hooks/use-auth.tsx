@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { createContext, useContext, useState } from "react";
 import firebase from "../config/firebase";
-import User from "../types/User";
+import User, { LoginType } from "../types/User";
 import { useDialog } from "./use-dialog";
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
@@ -50,7 +50,7 @@ const ErrorMessages = {
 };
 
 export interface IAuthContextProps {
-  user: any;
+  user: User;
   signin: (email: string, password: string) => Promise<User>;
   signinWithGoogle: () => Promise<User>;
   signinWithFacebook: () => Promise<User>;
@@ -62,6 +62,7 @@ export interface IAuthContextProps {
   signout: () => Promise<void>;
   sendPasswordResetEmail: (email: string) => Promise<void>;
   confirmPasswordReset: (code: string, password: string) => Promise<void>;
+  updateUser: (user: User) => Promise<void>;
 }
 
 const AuthContext = createContext({} as IAuthContextProps);
@@ -120,6 +121,7 @@ function useProviderAuth() {
       const idToken = await response.user.getIdToken();
       const user = await getUserDB(idToken);
       if (user) {
+        user.login_type = LoginType.EMAIL_PASSWORD;
         saveUserInContextAndLocalStorage(user);
       } else {
         const savedUser = await saveUserDB(idToken);
@@ -144,13 +146,13 @@ function useProviderAuth() {
   };
 
   const signinWithGoogle = async () => {
-    console.log("### signinWithGoogle");
     try {
       const result = await firebase.auth().signInWithPopup(googleProvider);
       const idToken = await result.user.getIdToken();
       const user = await getUserDB(idToken);
 
       if (user) {
+        user.login_type = LoginType.GOOGLE;
         saveUserInContextAndLocalStorage(user);
       } else {
         const savedUser = await saveUserDB(idToken);
@@ -181,6 +183,7 @@ function useProviderAuth() {
       const idToken = await result.user.getIdToken();
       const user = await getUserDB(idToken);
       if (user) {
+        user.login_type = LoginType.FACEBOOK;
         saveUserInContextAndLocalStorage(user);
       } else {
         const savedUser = await saveUserDB(idToken);
@@ -223,6 +226,7 @@ function useProviderAuth() {
       const idToken = await response.user.getIdToken();
       const user = await saveUserDB(idToken);
       if (user) {
+        user.login_type = LoginType.EMAIL_PASSWORD;
         saveUserInContextAndLocalStorage(user);
       } else {
         dialogContext.newDialog(
@@ -278,6 +282,16 @@ function useProviderAuth() {
     }
   };
 
+  const updateUser = async (user: User) => {
+    try {
+      const response = await axios.patch("/api/user", { user });
+      if (response) setUser(response?.data?.user);
+    } catch (error) {
+      console.log("updateUser -> error", error);
+      return null;
+    }
+  };
+
   // Return the user object and auth methods
   return {
     user,
@@ -288,6 +302,7 @@ function useProviderAuth() {
     signout,
     sendPasswordResetEmail,
     confirmPasswordReset,
+    updateUser,
   };
 }
 

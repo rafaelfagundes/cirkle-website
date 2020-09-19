@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 
-const StyledSubtitle = styled.span<{ color: string; size: number }>`
+const StyledSubtitle = styled.h2<{ color: string; size: number }>`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;

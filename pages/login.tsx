@@ -228,9 +228,7 @@ function Login(): JSX.Element {
             <SizedBox height={72}></SizedBox>
           </Hidden>
           <Center>
-            <Title>{`Olá ${
-              auth?.user?.displayName || auth?.user?.email
-            }!`}</Title>
+            <Title>{`Olá ${auth?.user?.name || auth?.user?.email}!`}</Title>
           </Center>
           <SizedBox height={8}></SizedBox>
           <Center>

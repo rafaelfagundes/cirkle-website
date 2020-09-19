@@ -71,8 +71,8 @@ const ButtonTypeText = styled(ButtonBase)`
 
 function CustomButton({
   children,
-  type,
-  variant,
+  type = "default",
+  variant = "contained",
   width = 120,
   loading = false,
   onClick,
@@ -80,8 +80,8 @@ function CustomButton({
   icon,
 }: {
   children?: string;
-  type: string;
-  variant: string;
+  type?: string;
+  variant?: string;
   width?: number;
   loading?: boolean;
   small?: boolean;

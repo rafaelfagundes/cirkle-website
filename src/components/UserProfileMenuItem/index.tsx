@@ -64,6 +64,10 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
     router.push("/wishlist");
   };
 
+  const _goToProfile = () => {
+    router.push("/profile");
+  };
+
   if (isLogged) {
     return (
       <div>
@@ -104,7 +108,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
             </Profile>
           </StyledMenuItem>
           <br />
-          <StyledMenuItem>
+          <StyledMenuItem onClick={_goToProfile}>
             <Icon type="profile"></Icon>
             <MenuItemText>Minha Conta</MenuItemText>
           </StyledMenuItem>

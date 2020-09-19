@@ -1,6 +1,7 @@
 import axios from "axios";
 import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { setInterval } from "timers";
 import Product from "../types/Product";
 import Wishlist from "../types/Wishlist";
 import { useAuth } from "./use-auth";
@@ -47,13 +48,15 @@ function useWishlistProvider() {
     savedWishlist ? savedWishlist : emptyWishlist
   );
 
-  const getWishlist = async (id: string) => {
-    await axios.get("/api/wishlist", { params: { userId: id } });
-  };
-
   useEffect(() => {
     if (authContext?.user?.uid) {
-      getWishlist(authContext.user.uid);
+      setInterval(async () => {
+        const result = await axios.get("/api/wishlist", {
+          params: { userId: authContext.user.uid },
+        });
+
+        setWishlist(result.data.wishlist);
+      }, 5000);
     }
   }, [authContext?.user?.uid]);
 

@@ -53,13 +53,11 @@ export default async (
     return response.status(500).json({ message: "Method Not Allowed" });
   }
 
-  console.log("request.method", request.method);
   switch (request.method) {
     case "POST":
       await updateWishlist(request.body.wishlist, response);
       break;
     case "GET":
-      console.log("request", request.query);
       await getWishlist(request.query["userId"].toString(), response);
       break;
     default:

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 
-const StyledTitle = styled.span<{ color: string; size: number }>`
+const StyledTitle = styled.h1<{ color: string; size: number }>`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -11,6 +11,7 @@ const StyledTitle = styled.span<{ color: string; size: number }>`
   line-height: 16px;
   letter-spacing: -0.005em;
   text-transform: uppercase;
+  margin: 0;
 
   color: ${(props) => props.color};
 `;

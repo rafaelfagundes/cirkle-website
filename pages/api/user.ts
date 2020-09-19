@@ -17,9 +17,11 @@ async function createUser(
   if (!user) {
     return response.status(500).json("Invalid user");
   } else {
-    const { email, email_verified, phone_number, picture, uid, name } = user;
+    console.log("user", user);
+
+    const { email, email_verified, phone_number, picture, uid } = user;
     const result = await db.collection("users").insertOne({
-      name,
+      name: user.name || user.displayName,
       email,
       email_verified,
       phone_number,
@@ -59,6 +61,32 @@ async function getUser(
   }
 }
 
+async function updateUser(user: User, response: NowResponse) {
+  console.log("updateUser -> user", user);
+  const db = await connectToDatabase(process.env.MONGO_DB_URI);
+
+  if (!user) {
+    return response.status(500).json("Invalid user");
+  } else {
+    const result = await db.collection("users").updateOne(
+      { uid: user.uid },
+      {
+        $set: {
+          name: user.name,
+          phone_number: user.phone_number,
+          email: user.email,
+          picture: user.picture,
+        },
+      }
+    );
+    if (result.result.ok) {
+      return response.status(200).json({ user });
+    } else {
+      return response.status(404).json({ message: "User not found" });
+    }
+  }
+}
+
 export default async (
   request: NowRequest,
   response: NowResponse
@@ -66,9 +94,11 @@ export default async (
   if (!allowedHosts(request.headers.host)) {
     return response.status(500).json({ message: "Host Not Allowed" });
   }
-  if (!allowedMethods(request.method, ["GET", "POST"])) {
+  if (!allowedMethods(request.method, ["GET", "POST", "PATCH"])) {
     return response.status(500).json({ message: "Method Not Allowed" });
   }
+
+  console.log("request.body", request.body);
 
   switch (request.method) {
     case "POST":
@@ -79,6 +109,9 @@ export default async (
         await verifyToken(request.query["idToken"].toString()),
         response
       );
+      break;
+    case "PATCH":
+      await updateUser(request.body.user, response);
       break;
     default:
       return response.status(500).json({ message: "Fatal Error" });

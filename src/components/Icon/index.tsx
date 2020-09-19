@@ -70,6 +70,7 @@ Icon.propTypes = {
     "minus-light",
     "minus",
     "person",
+    "phone",
     "plus-light",
     "plus",
     "products",
