@@ -24,7 +24,7 @@ export default {
     type: {
       control: {
         type: "inline-radio",
-        options: ["text", "password", "email", "user", "phone"],
+        options: ["text", "password", "email", "user", "phone", "coupon"],
       },
     },
   },

@@ -8,13 +8,13 @@ const theme = createMuiTheme({
       main: Colors.PRIMARY,
     },
     secondary: {
-      main: "#C94277",
+      main: Colors.SECONDARY,
     },
     error: {
-      main: "#F05D5E",
+      main: Colors.ERROR,
     },
     warning: {
-      main: "#FF8552",
+      main: Colors.WARNING,
     },
     info: {
       main: "#9A348E",

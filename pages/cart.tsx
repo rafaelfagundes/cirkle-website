@@ -1,10 +1,12 @@
 import { Grid, useMediaQuery } from "@material-ui/core";
+import Checkbox from "@material-ui/core/Checkbox";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Card from "../src/components/Card";
 import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
 import CustomSelect from "../src/components/CustomSelect";
+import CustomTextField from "../src/components/CustomTextField";
 import EmptyPage from "../src/components/EmptyPage";
 import FreeDeliveryMeter from "../src/components/FreeShippingMeter";
 import Icon from "../src/components/Icon";
@@ -23,11 +25,13 @@ import {
   CartItemImage,
   CartItems,
   Color,
+  CouponCheckboxRow,
   Description,
   ImagePrice,
   Label,
   MainColumn,
   MoreInfo,
+  OpacityAnimation,
   Price,
   Qty,
   Row,
@@ -48,6 +52,7 @@ function Cart(): JSX.Element {
   const [deliveryType, setDeliveryType] = useState(null);
   // const [postalCode, setPostalCode] = useState(36309012);
   const [postalCode] = useState(36309012);
+  const [hasCoupon, setHasCoupon] = useState(false);
 
   // Scroll to top when page is loaded
   if (process.browser) window.scrollTo(0, 0);
@@ -367,12 +372,29 @@ function Cart(): JSX.Element {
                   </CustomButton>
                 </Row>
                 <SizedBox height={24}></SizedBox>
-                <Title>Cupom de Desconto</Title>
-                <SizedBox height={8}></SizedBox>
-                <SimpleText>Tem cupom? Adicione na próxima tela.</SimpleText>
+                <CouponCheckboxRow>
+                  <Checkbox
+                    checked={hasCoupon}
+                    onChange={() => setHasCoupon(!hasCoupon)}
+                    inputProps={{ "aria-label": "primary checkbox" }}
+                  />
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setHasCoupon(!hasCoupon)}
+                  >
+                    <Title>Tenho um Cupom de Desconto</Title>
+                  </span>
+                </CouponCheckboxRow>
+
+                <OpacityAnimation animate={hasCoupon}>
+                  <CustomTextField type="coupon" showIcon>
+                    Insira seu cupom de desconto
+                  </CustomTextField>
+                </OpacityAnimation>
+
                 <SizedBox height={24}></SizedBox>
-                <Title>Nós aceitamos:</Title>
-                <SizedBox height={16}></SizedBox>
+                <Title>Aceitamos</Title>
+                <SizedBox height={10}></SizedBox>
                 <>
                   <Grid container spacing={8}>
                     <Grid item xs={2}>
@@ -438,7 +460,7 @@ function Cart(): JSX.Element {
                 </>
                 <SizedBox height={24}></SizedBox>
                 <Title>Compartilhar Sacola</Title>
-                <SizedBox height={8}></SizedBox>
+                <SizedBox height={10}></SizedBox>
                 <Row>
                   <CustomButton
                     type="success"
@@ -459,6 +481,11 @@ function Cart(): JSX.Element {
                     Via E-mail
                   </CustomButton>
                 </Row>
+                <SizedBox height={10}></SizedBox>
+                <SimpleText>
+                  Ao compartilhar você pode continuar em outro aparelho ou outra
+                  pessoa concluir a compra
+                </SimpleText>
               </CartFooter>
             </Card>
           </SideColumn>

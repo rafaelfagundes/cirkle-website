@@ -116,6 +116,8 @@ function getConfig(type: string): { icon: string; inputType: string } {
       return { icon: "person", inputType: "text" };
     case "phone":
       return { icon: "phone", inputType: "text" };
+    case "coupon":
+      return { icon: "coupon", inputType: "text" };
 
     default:
       return { icon: null, inputType: "text" };
@@ -176,7 +178,7 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
         {config.icon && props.showIcon && (
           <IconHolder showLabel={showLabel}>
             <SizedBox width={5}></SizedBox>
-            <Icon type={config.icon}></Icon>
+            <Icon type={config.icon} size={28}></Icon>
           </IconHolder>
         )}
       </StyledInput>

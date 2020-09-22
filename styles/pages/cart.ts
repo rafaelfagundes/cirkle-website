@@ -58,8 +58,18 @@ export const Row = styled.div<{ padding?: boolean; spaceBetween?: boolean }>`
   flex-direction: row;
   align-items: center;
   justify-content: ${(props) =>
-    props.spaceBetween ? "space-between" : "center"};
+    props.spaceBetween ? "space-between" : "flex-start"};
   padding: ${(props) => (props.padding ? "0 16px" : 0)};
+`;
+
+export const CouponCheckboxRow = styled.div<{
+  padding?: boolean;
+  spaceBetween?: boolean;
+}>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: -12px;
 `;
 
 export const CartItems = styled.div``;
@@ -152,4 +162,10 @@ export const CartFooter = styled.div<{ isSmartPhone: boolean }>`
   justify-content: center;
   ${(props) => (props.isSmartPhone ? `width: 100%;` : "")};
   margin-bottom: ${(props) => (props.isSmartPhone ? "32px" : 0)};
+`;
+
+export const OpacityAnimation = styled.div<{ animate: boolean }>`
+  height: ${(props) => (props.animate ? "44px" : 0)};
+  opacity: ${(props) => (props.animate ? 1 : 0)};
+  transition: 250ms opacity ease-in, 250ms height ease-in;
 `;
