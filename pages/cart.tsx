@@ -50,8 +50,8 @@ function Cart(): JSX.Element {
   const cartContext = useCart();
   const [showEdit, setShowEdit] = useState(false);
   const [deliveryType, setDeliveryType] = useState(null);
-  // const [postalCode, setPostalCode] = useState(36309012);
-  const [postalCode] = useState(36309012);
+
+  const [postalCode] = useState("12345678");
   const [hasCoupon, setHasCoupon] = useState(false);
 
   // Scroll to top when page is loaded
