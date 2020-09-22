@@ -8,7 +8,7 @@ import CustomTextField from "../src/components/CustomTextField";
 import SizedBox from "../src/components/SizedBox";
 import Subtitle from "../src/components/Subtitle";
 import Title from "../src/components/Title";
-import { useAuth } from "../src/hooks/use-auth";
+import { useAuth } from "../src/hooks/auth/useAuth";
 import { validateEmail } from "../src/utils/string";
 
 function RecoverPassword(): JSX.Element {

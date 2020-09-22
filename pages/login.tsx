@@ -15,7 +15,7 @@ import TextLink from "../src/components/TextLink";
 import TextSeparator from "../src/components/TextSeparator";
 import Title from "../src/components/Title";
 import Colors from "../src/enums/Colors";
-import { IAuthContextProps, useAuth } from "../src/hooks/use-auth";
+import { IAuthContextProps, useAuth } from "../src/hooks/auth/useAuth";
 import User from "../src/modules/user/User";
 import { capitalizeFirstLetter, validateEmail } from "../src/utils/string";
 

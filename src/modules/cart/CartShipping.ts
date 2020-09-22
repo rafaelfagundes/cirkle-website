@@ -1,7 +1,7 @@
 type CartShipping = {
   type: string;
   value: number;
-  postalCode: number;
+  postalCode: string;
 };
 
 export default CartShipping;

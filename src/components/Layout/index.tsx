@@ -6,7 +6,7 @@ import styled from "styled-components";
 import useSWR from "swr";
 import initialData from "../../../src/cache/prepopulated.json";
 import Colors from "../../enums/Colors";
-import { useDialog } from "../../hooks/use-dialog";
+import { useDialog } from "../../hooks/dialog/useDialog";
 // import CustomDialog from "../CustomDialog";
 // import Footer from "../Footer";
 import SideMenu from "../SideMenu/index";

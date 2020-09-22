@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
-import { useAuth } from "../../hooks/use-auth";
+import { useAuth } from "../../hooks/auth/useAuth";
 import Center from "../Center";
 import CustomButton from "../CustomButton";
 import Icon from "../Icon";

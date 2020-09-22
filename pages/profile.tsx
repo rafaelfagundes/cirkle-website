@@ -7,7 +7,7 @@ import Center from "../src/components/Center";
 import CustomButton from "../src/components/CustomButton";
 import CustomTextField from "../src/components/CustomTextField";
 import SizedBox from "../src/components/SizedBox";
-import { useAuth } from "../src/hooks/use-auth";
+import { useAuth } from "../src/hooks/auth/useAuth";
 import { LoginType } from "../src/modules/user/User";
 import theme from "../src/theme/theme";
 

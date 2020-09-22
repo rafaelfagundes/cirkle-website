@@ -1,9 +1,9 @@
 import axios from "axios";
 import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import Product from "../modules/product/Product";
-import Wishlist from "../modules/wishlist/Wishlist";
-import { useAuth } from "./use-auth";
+import Product from "../../modules/product/Product";
+import Wishlist from "../../modules/wishlist/Wishlist";
+import { useAuth } from "../auth/useAuth";
 
 export interface IWishlistContextProps {
   wishlist: Wishlist;

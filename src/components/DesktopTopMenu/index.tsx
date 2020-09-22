@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
-import { useAuth } from "../../hooks/use-auth";
+import { useAuth } from "../../hooks/auth/useAuth";
 // import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../HorizontalLogo";
 import Icon from "../Icon";

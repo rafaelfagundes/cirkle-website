@@ -15,7 +15,7 @@ import PaymentType from "../src/components/PaymentType";
 import SimpleText from "../src/components/SimpleText";
 import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
-import { useCart } from "../src/hooks/use-cart";
+import { useCart } from "../src/hooks/cart/useCart";
 import Shipping from "../src/modules/cart/CartShipping";
 import theme from "../src/theme/theme";
 import { cloudinaryImage } from "../src/utils/image";

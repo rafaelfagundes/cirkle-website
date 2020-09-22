@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
-import { useCart } from "../../hooks/use-cart";
+import { useCart } from "../../hooks/cart/useCart";
 import { cloudinaryImage } from "../../utils/image";
 import Column from "../Column";
 import CustomButton from "../CustomButton";

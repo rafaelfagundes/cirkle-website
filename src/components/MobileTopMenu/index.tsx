@@ -1,7 +1,7 @@
 import { AppBar, Container, Link } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import { useAuth } from "../../hooks/use-auth";
+import { useAuth } from "../../hooks/auth/useAuth";
 import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../HorizontalLogo/index";
 import Icon from "../Icon";

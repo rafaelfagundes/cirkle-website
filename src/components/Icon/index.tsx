@@ -9,6 +9,7 @@ export const AVAILABLE_ICONS = [
   "bag",
   "box",
   "check",
+  "coupon",
   "close",
   "delivery-truck",
   "email",

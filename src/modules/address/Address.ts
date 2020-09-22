@@ -6,7 +6,7 @@ type Address = {
   neighborhood: string;
   city: string;
   state: string;
-  postalCode: number;
+  postalCode: string;
 };
 
 export default Address;

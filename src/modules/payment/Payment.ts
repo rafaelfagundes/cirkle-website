@@ -3,9 +3,9 @@ import PaymentType from "../../enums/PaymentType";
 type Payment = {
   _id?: string;
   type: PaymentType;
-  creditCardNumber?: number;
+  creditCardNumber?: string;
   cardHolderName?: string;
-  validUntil?: Date;
+  validUntil?: string;
   cvv?: number;
 };
 

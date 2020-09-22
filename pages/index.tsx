@@ -14,7 +14,7 @@ import SearchBar from "../src/components/SearchBar";
 import SizedBox from "../src/components/SizedBox";
 import TopTextBanner from "../src/components/TopTextBanner";
 import Colors from "../src/enums/Colors";
-import { useCart } from "../src/hooks/use-cart";
+import { useCart } from "../src/hooks/cart/useCart";
 
 const HotSection = dynamic(() => import("../src/components/HotSection/"), {
   ssr: false,

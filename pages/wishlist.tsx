@@ -11,8 +11,8 @@ import ProductItem from "../src/components/ProductItem";
 import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
 import Colors from "../src/enums/Colors";
-import { useCart } from "../src/hooks/use-cart";
-import { useWishlist } from "../src/hooks/use-wishlist";
+import { useCart } from "../src/hooks/cart/useCart";
+import { useWishlist } from "../src/hooks/wishlist/useWishlist";
 import Product from "../src/modules/product/Product";
 import { cloudinaryImage } from "../src/utils/image";
 import {

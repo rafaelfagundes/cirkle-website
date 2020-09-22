@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { createContext, useContext, useState } from "react";
-import firebase from "../config/firebase";
-import User, { LoginType } from "../modules/user/User";
-import { useDialog } from "./use-dialog";
+import firebase from "../../config/firebase";
+import User, { LoginType } from "../../modules/user/User";
+import { useDialog } from "../dialog/useDialog";
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 firebase.auth().languageCode = "pt";

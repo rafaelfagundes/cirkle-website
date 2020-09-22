@@ -1,9 +1,10 @@
 import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import Address from "../modules/address/Address";
-import Cart from "../modules/cart/Cart";
-import Shipping from "../modules/cart/CartShipping";
-import Product from "../modules/product/Product";
+import Address from "../../modules/address/Address";
+import Cart from "../../modules/cart/Cart";
+import Shipping from "../../modules/cart/CartShipping";
+import Payment from "../../modules/payment/Payment";
+import Product from "../../modules/product/Product";
 
 export interface ICartContextProps {
   cart: Cart;
@@ -37,17 +38,13 @@ export const useCart = (): ICartContextProps => {
 function useCartProvider() {
   const emptyCart: Cart = {
     items: [],
-    shipping: {
-      type: "express",
-      value: 0,
-      postalCode: 36309012,
-    },
+    shipping: null,
     address: null,
     payment: null,
     subtotal: 0,
     total: 0,
     freeShipping: false,
-    freeShippingValue: 600,
+    freeShippingValue: 0,
   };
 
   let savedCart: Cart;
@@ -135,7 +132,17 @@ function useCartProvider() {
   };
 
   const setAddress = (address: Address) => {
-    console.log("setAddress");
+    const _cart = _.cloneDeep(cart);
+    _cart.address = address;
+
+    setCart(_cart);
+  };
+
+  const setPayment = (payment: Payment) => {
+    const _cart = _.cloneDeep(cart);
+    _cart.payment = payment;
+
+    setCart(_cart);
   };
 
   const updateFreeShipping = (active: boolean, value: number) => {
@@ -151,7 +158,8 @@ function useCartProvider() {
   };
 
   const updateQuantity = (id: string, qty: number) => {
-    const _item = _.find(cart.items, (o) => o.id === id);
+    const _cart = _.cloneDeep(cart);
+    const _item = _.find(_cart.items, (o) => o.id === id);
     if (_item) {
       _item.cartQty = qty;
       updateItem(_item);
@@ -159,7 +167,8 @@ function useCartProvider() {
   };
 
   const updateColor = (id: string, color: string) => {
-    const _item = _.find(cart.items, (o) => o.id === id);
+    const _cart = _.cloneDeep(cart);
+    const _item = _.find(_cart.items, (o) => o.id === id);
     if (_item) {
       _item.cartColor = color;
       updateItem(_item);
@@ -167,7 +176,8 @@ function useCartProvider() {
   };
 
   const updateSize = (id: string, size: string) => {
-    const _item = _.find(cart.items, (o) => o.id === id);
+    const _cart = _.cloneDeep(cart);
+    const _item = _.find(_cart.items, (o) => o.id === id);
     if (_item) {
       _item.cartSize = size;
       updateItem(_item);
@@ -186,6 +196,7 @@ function useCartProvider() {
     updateItem,
     setShipping,
     setAddress,
+    setPayment,
     updateQuantity,
     updateColor,
     updateSize,

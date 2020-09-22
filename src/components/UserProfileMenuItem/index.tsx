@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
-import { useAuth } from "../../hooks/use-auth";
+import { useAuth } from "../../hooks/auth/useAuth";
 import { firstNameOnly } from "../../utils/string";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox/index";
