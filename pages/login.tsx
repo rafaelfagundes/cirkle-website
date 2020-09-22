@@ -270,11 +270,17 @@ function Login(): JSX.Element {
               </Center>
               <Container maxWidth="xs">
                 <SizedBox height={24}></SizedBox>
-                <CustomTextField type="email" ref={email} error={errors.email}>
+                <CustomTextField
+                  showIcon
+                  type="email"
+                  ref={email}
+                  error={errors.email}
+                >
                   Email
                 </CustomTextField>
                 <SizedBox height={16}></SizedBox>
                 <CustomTextField
+                  showIcon
                   type="password"
                   ref={password}
                   error={errors.password}
@@ -319,6 +325,7 @@ function Login(): JSX.Element {
               <Container maxWidth="xs">
                 <SizedBox height={24}></SizedBox>
                 <CustomTextField
+                  showIcon
                   type="user"
                   ref={displayName}
                   error={errors.displayName}
@@ -326,11 +333,17 @@ function Login(): JSX.Element {
                   Nome e Sobrenome
                 </CustomTextField>
                 <SizedBox height={16}></SizedBox>
-                <CustomTextField type="email" ref={email} error={errors.email}>
+                <CustomTextField
+                  showIcon
+                  type="email"
+                  ref={email}
+                  error={errors.email}
+                >
                   Email
                 </CustomTextField>
                 <SizedBox height={16}></SizedBox>
                 <CustomTextField
+                  showIcon
                   type="password"
                   ref={password}
                   error={errors.password}

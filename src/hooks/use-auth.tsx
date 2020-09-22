@@ -16,7 +16,7 @@ const ErrorMessages = {
   "auth/weak-password":
     "A senha é muito fraca. Use números, caracteres especiais (!@#$%&*) e letras maiúsculas e minúsculas",
   "auth/user-not-found":
-    "Usuário não encontrado. Caso não possua conta, cadastre-se. É bem simples.",
+    "Usuário não encontrado. Caso não possua conta, cadastre-se. É rapidinho.",
   "auth/wrong-password":
     "Não foi possível logar. Verifique se seu email e/ou senha estão corretos.",
   "auth/user-disabled":

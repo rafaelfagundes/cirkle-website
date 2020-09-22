@@ -50,7 +50,7 @@ const StyledInput = styled.div<{ error: boolean; showLabel: boolean }>`
   height: 44px;
   display: flex;
   align-items: center;
-  padding: ${(props) => (props.showLabel ? "13px 10px 7px 10px" : "0 10px")};
+  padding: ${(props) => (props.showLabel ? "14px 10px 6px 10px" : "0 10px")};
   position: relative;
   transition: 250ms padding;
 `;
@@ -76,6 +76,11 @@ const PlaceHolderText = styled.span`
     sans-serif;
   font-size: 14px;
   font-weight: 400;
+`;
+
+const IconHolder = styled.div<{ showLabel: boolean }>`
+  margin-top: ${(props) => (props.showLabel ? "-8px" : 0)};
+  transition: 250ms margin;
 `;
 
 const ErrorText = styled.span`
@@ -149,12 +154,6 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
         <PlaceHolder show={showLabel}>
           <PlaceHolderText>{props.children}</PlaceHolderText>
         </PlaceHolder>
-        {config.icon && props.showIcon && (
-          <>
-            <Icon type={config.icon}></Icon>
-            <SizedBox width={5}></SizedBox>
-          </>
-        )}
         {props.type !== "phone" && (
           <StyledInputBase
             ref={ref}
@@ -173,6 +172,12 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
             defaultValue={props.initialValue}
             inputComponent={TextMaskCustom}
           />
+        )}
+        {config.icon && props.showIcon && (
+          <IconHolder showLabel={showLabel}>
+            <SizedBox width={5}></SizedBox>
+            <Icon type={config.icon}></Icon>
+          </IconHolder>
         )}
       </StyledInput>
       {props.error && (
