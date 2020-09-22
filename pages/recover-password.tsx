@@ -1,7 +1,7 @@
 import { Container } from "@material-ui/core";
 import _ from "lodash";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Center from "../src/components/Center";
 import CustomButton from "../src/components/CustomButton";
 import CustomTextField from "../src/components/CustomTextField";
@@ -18,7 +18,9 @@ function RecoverPassword(): JSX.Element {
   const [done, setDone] = useState(false);
 
   // Scroll to top when page is loaded
-  if (process.browser) window.scrollTo(0, 0);
+  useEffect(() => {
+    if (process.browser) window.scrollTo(0, 0);
+  }, []);
 
   const errorsTemplate = {
     displayName: null,

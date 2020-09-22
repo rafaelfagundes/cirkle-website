@@ -55,7 +55,9 @@ function Cart(): JSX.Element {
   const [hasCoupon, setHasCoupon] = useState(false);
 
   // Scroll to top when page is loaded
-  if (process.browser) window.scrollTo(0, 0);
+  useEffect(() => {
+    if (process.browser) window.scrollTo(0, 0);
+  }, []);
 
   const _goToProducts = () => {
     router.push("/products");

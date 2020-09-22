@@ -1,6 +1,6 @@
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
@@ -85,7 +85,9 @@ function Wishlist(): JSX.Element {
   };
 
   // Scroll to top when page is loaded
-  if (process.browser) window.scrollTo(0, 0);
+  useEffect(() => {
+    if (process.browser) window.scrollTo(0, 0);
+  }, []);
 
   return (
     <StyledWishlist isSmartphone={isSmartphone}>
