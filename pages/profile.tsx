@@ -49,7 +49,7 @@ function Profile(): JSX.Element {
     const _user = _.cloneDeep(authContext.user);
 
     _user.email = email.current.children[0].value;
-    _user.phone_number = phoneNumber.current.children[0].value;
+    _user.phoneNumber = phoneNumber.current.children[0].value;
     _user.name = displayName.current.children[0].value;
 
     setLoading(true);
@@ -75,7 +75,7 @@ function Profile(): JSX.Element {
             >
               Alterar Foto
             </CustomButton>
-            {authContext.user.login_type === LoginType.EMAIL_PASSWORD && (
+            {authContext.user.loginType === LoginType.EMAIL_PASSWORD && (
               <>
                 <SizedBox width={16}></SizedBox>
                 <CustomButton
@@ -114,7 +114,7 @@ function Profile(): JSX.Element {
               type="phone"
               ref={phoneNumber}
               error={errors.phoneNumber}
-              initialValue={authContext.user.phone_number}
+              initialValue={authContext.user.phoneNumber}
             >
               Celular (DDD + Número)
             </CustomTextField>
