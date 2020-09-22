@@ -1,12 +1,45 @@
 import { InputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import MaskedInput from "react-text-mask";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox";
 
-const StyledInput = styled.div<{ error: boolean }>`
+function TextMaskCustom(props) {
+  const { inputRef, ...other } = props;
+
+  return (
+    <MaskedInput
+      {...other}
+      ref={(ref) => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={[
+        "(",
+        /[1-9]/,
+        /\d/,
+        ")",
+        " ",
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        "-",
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+      ]}
+      placeholderChar={"\u2000"}
+      showMask
+    />
+  );
+}
+
+const StyledInput = styled.div<{ error: boolean; showLabel: boolean }>`
   border: ${(props) => {
     if (props.error) {
       return `3px solid ${Colors.ERROR}`;
@@ -17,11 +50,32 @@ const StyledInput = styled.div<{ error: boolean }>`
   height: 44px;
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  padding: ${(props) => (props.showLabel ? "13px 10px 7px 10px" : "0 10px")};
+  position: relative;
+  transition: 250ms padding;
 `;
 
 const StyledInputBase = styled(InputBase)`
   flex: 1;
+`;
+
+const PlaceHolder = styled.div<{ show: boolean }>`
+  position: absolute;
+  background-color: ${Colors.PRIMARY};
+  top: -10px;
+  left: 6px;
+  padding: 0 8px;
+  opacity: ${(props) => (props.show ? 1 : 0)};
+  transition: 500ms opacity;
+`;
+
+const PlaceHolderText = styled.span`
+  color: ${Colors.WHITE};
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-size: 14px;
+  font-weight: 400;
 `;
 
 const ErrorText = styled.span`
@@ -65,6 +119,22 @@ function getConfig(type: string): { icon: string; inputType: string } {
 
 const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
   const config = getConfig(props.type);
+  const [showLabel, setShowLabel] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (ref) {
+        if (ref["current"].children[0].value !== "") {
+          if (!showLabel) setShowLabel(true);
+        } else if (ref["current"].children[0].value === "") {
+          setShowLabel(false);
+        }
+      }
+    }, 100);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <>
@@ -74,20 +144,36 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
           props.error !== null &&
           props.error !== ""
         }
+        showLabel={showLabel}
       >
+        <PlaceHolder show={showLabel}>
+          <PlaceHolderText>{props.children}</PlaceHolderText>
+        </PlaceHolder>
         {config.icon && props.showIcon && (
           <>
             <Icon type={config.icon}></Icon>
             <SizedBox width={5}></SizedBox>
           </>
         )}
-        <StyledInputBase
-          ref={ref}
-          className={useStyles().input}
-          placeholder={props.children}
-          type={config.inputType}
-          defaultValue={props.initialValue}
-        />
+        {props.type !== "phone" && (
+          <StyledInputBase
+            ref={ref}
+            className={useStyles().input}
+            placeholder={props.children}
+            type={config.inputType}
+            defaultValue={props.initialValue}
+          />
+        )}
+        {props.type === "phone" && (
+          <StyledInputBase
+            ref={ref}
+            className={useStyles().input}
+            placeholder={props.children}
+            type={config.inputType}
+            defaultValue={props.initialValue}
+            inputComponent={TextMaskCustom}
+          />
+        )}
       </StyledInput>
       {props.error && (
         <>
