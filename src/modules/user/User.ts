@@ -5,15 +5,15 @@ export enum LoginType {
 }
 
 type User = {
-  _id: string;
+  _id?: string;
   name: string;
   email?: string;
-  email_verified?: boolean;
-  phone_number?: string;
+  isEmailVerified?: boolean;
+  phoneNumber?: string;
   picture?: string;
   uid: string;
-  created_at: Date;
-  login_type: LoginType;
+  createdAt?: Date;
+  loginType: LoginType;
 };
 
 export default User;

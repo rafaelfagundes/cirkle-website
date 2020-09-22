@@ -4,7 +4,7 @@ import { motion, useAnimation } from "framer-motion";
 import React, { useEffect } from "react";
 import { useCart } from "../../hooks/use-cart";
 import { useWishlist } from "../../hooks/use-wishlist";
-import Product from "../../types/Product";
+import Product from "../../modules/product/Product";
 import { cloudinaryImage } from "../../utils/image";
 import CustomButton from "../CustomButton";
 import FavoriteIcon from "../FavoriteIcon";

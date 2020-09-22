@@ -1,4 +1,4 @@
-import Product from "./Product";
+import Product from "../product/Product";
 
 type Wishlist = {
   _id?: string;

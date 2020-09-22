@@ -11,8 +11,8 @@ const StyledSubtitle = styled.h2<{ color: string; size: number }>`
   line-height: 18px;
   letter-spacing: -0.0055em;
   text-align: center;
-
   color: ${(props) => props.color};
+  margin: 0;
 `;
 
 function Subtitle({

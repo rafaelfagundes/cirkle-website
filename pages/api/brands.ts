@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from "@vercel/node";
-import Brand from "../../src/types/Brand";
+import Brand from "../../src/modules/brand/Brand";
 import { connectToDatabase } from "../../src/utils/mongo";
 import { allowedHosts, allowedMethods } from "../../src/utils/server";
 

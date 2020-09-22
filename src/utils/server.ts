@@ -1,4 +1,6 @@
+import { NowResponse } from "@vercel/node";
 import _ from "lodash";
+import moment from "moment";
 import firebaseAdmin from "../config/firebaseAdmin";
 
 let ALLOWED_HOSTS: Array<string>;
@@ -37,8 +39,35 @@ export async function verifyToken(
     const result: firebaseAdmin.auth.DecodedIdToken = await firebaseAdmin
       .auth()
       .verifyIdToken(token);
-    return result;
+    if (result.aud === "cirklebr") {
+      console.log(
+        "Token expira em:",
+        moment(result.exp * 1000).toLocaleString()
+      );
+      return result;
+    } else {
+      return null;
+    }
   } catch (error) {
     return null;
   }
+}
+
+export function statusOK(
+  response: NowResponse,
+  data: Record<any, any>
+): NowResponse {
+  return response.status(200).json({ data });
+}
+
+export function statusForbidden(response: NowResponse): NowResponse {
+  return response.status(403).json({ message: "Forbidden" });
+}
+
+export function statusNotFound(response: NowResponse): NowResponse {
+  return response.status(404).json({ message: "Not found" });
+}
+
+export function statusServerError(response: NowResponse): NowResponse {
+  return response.status(500).json({ message: "Internal server error" });
 }

@@ -3,7 +3,7 @@ import { useTheme } from "@material-ui/core/styles";
 import _ from "lodash";
 import React from "react";
 import styled from "styled-components";
-import Product from "../../types/Product";
+import Product from "../../modules/product/Product";
 import Center from "../Center";
 import Column from "../Column";
 import CustomButton from "../CustomButton";

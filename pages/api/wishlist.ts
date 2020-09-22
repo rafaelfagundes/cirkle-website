@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from "@vercel/node";
-import Wishlist from "../../src/types/Wishlist";
+import Wishlist from "../../src/modules/wishlist/Wishlist";
 import { connectToDatabase } from "../../src/utils/mongo";
 import { allowedHosts, allowedMethods } from "../../src/utils/server";
 

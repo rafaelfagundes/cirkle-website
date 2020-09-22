@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { createContext, useContext, useState } from "react";
 import firebase from "../config/firebase";
-import User, { LoginType } from "../types/User";
+import User, { LoginType } from "../modules/user/User";
 import { useDialog } from "./use-dialog";
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
@@ -80,10 +80,24 @@ export const useAuth = (): IAuthContextProps => {
   return useContext(AuthContext);
 };
 
-async function saveUserDB(idToken: string) {
+async function saveUserDB(
+  firebaseUser: firebase.User,
+  token: string,
+  loginType: LoginType
+) {
   try {
-    const response = await axios.post("/api/user", { idToken });
-    if (response) return response?.data?.user;
+    const user: User = {
+      loginType,
+      name: firebaseUser.displayName,
+      uid: firebaseUser.uid,
+      email: firebaseUser.email,
+      isEmailVerified: firebaseUser.emailVerified,
+      phoneNumber: firebaseUser.phoneNumber,
+      picture: firebaseUser.photoURL,
+    };
+    const response = await axios.post("/api/user", { user, token });
+    if (response) return response?.data?.data;
+    else return null;
   } catch (error) {
     return null;
   }
@@ -92,7 +106,7 @@ async function saveUserDB(idToken: string) {
 async function getUserDB(idToken: string): Promise<User> {
   try {
     const response = await axios.get("/api/user", { params: { idToken } });
-    if (response) return response?.data?.user;
+    if (response) return response?.data?.data;
   } catch (error) {
     return null;
   }
@@ -120,11 +134,16 @@ function useProviderAuth() {
 
       const idToken = await response.user.getIdToken();
       const user = await getUserDB(idToken);
+      console.log("signin -> user", user);
       if (user) {
-        user.login_type = LoginType.EMAIL_PASSWORD;
+        user.loginType = LoginType.EMAIL_PASSWORD;
         saveUserInContextAndLocalStorage(user);
       } else {
-        const savedUser = await saveUserDB(idToken);
+        const savedUser = await saveUserDB(
+          response.user,
+          idToken,
+          LoginType.EMAIL_PASSWORD
+        );
         if (savedUser) {
           saveUserInContextAndLocalStorage(savedUser);
         } else {
@@ -147,15 +166,20 @@ function useProviderAuth() {
 
   const signinWithGoogle = async () => {
     try {
-      const result = await firebase.auth().signInWithPopup(googleProvider);
-      const idToken = await result.user.getIdToken();
+      const response = await firebase.auth().signInWithPopup(googleProvider);
+      const idToken = await response.user.getIdToken();
+      console.log("signinWithGoogle -> idToken", idToken);
       const user = await getUserDB(idToken);
 
       if (user) {
-        user.login_type = LoginType.GOOGLE;
+        user.loginType = LoginType.GOOGLE;
         saveUserInContextAndLocalStorage(user);
       } else {
-        const savedUser = await saveUserDB(idToken);
+        const savedUser = await saveUserDB(
+          response.user,
+          idToken,
+          LoginType.GOOGLE
+        );
         if (savedUser) {
           saveUserInContextAndLocalStorage(savedUser);
         } else {
@@ -179,14 +203,18 @@ function useProviderAuth() {
 
   const signinWithFacebook = async () => {
     try {
-      const result = await firebase.auth().signInWithPopup(facebookProvider);
-      const idToken = await result.user.getIdToken();
+      const response = await firebase.auth().signInWithPopup(facebookProvider);
+      const idToken = await response.user.getIdToken();
       const user = await getUserDB(idToken);
       if (user) {
-        user.login_type = LoginType.FACEBOOK;
+        user.loginType = LoginType.FACEBOOK;
         saveUserInContextAndLocalStorage(user);
       } else {
-        const savedUser = await saveUserDB(idToken);
+        const savedUser = await saveUserDB(
+          response.user,
+          idToken,
+          LoginType.FACEBOOK
+        );
         if (savedUser) {
           saveUserInContextAndLocalStorage(savedUser);
         } else {
@@ -224,10 +252,13 @@ function useProviderAuth() {
       });
 
       const idToken = await response.user.getIdToken();
-      const user = await saveUserDB(idToken);
-      if (user) {
-        user.login_type = LoginType.EMAIL_PASSWORD;
-        saveUserInContextAndLocalStorage(user);
+      const savedUser = await saveUserDB(
+        response.user,
+        idToken,
+        LoginType.EMAIL_PASSWORD
+      );
+      if (savedUser) {
+        saveUserInContextAndLocalStorage(savedUser);
       } else {
         dialogContext.newDialog(
           true,
@@ -235,7 +266,7 @@ function useProviderAuth() {
           "Não foi possível encontrar o usuário no sistema."
         );
       }
-      return user;
+      return savedUser;
     } catch (error) {
       dialogContext.newDialog(
         true,

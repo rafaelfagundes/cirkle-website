@@ -16,8 +16,8 @@ import SimpleText from "../src/components/SimpleText";
 import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
 import { useCart } from "../src/hooks/use-cart";
+import Shipping from "../src/modules/cart/CartShipping";
 import theme from "../src/theme/theme";
-import Shipping from "../src/types/CartShipping";
 import { cloudinaryImage } from "../src/utils/image";
 import {
   CartFooter,
@@ -264,7 +264,7 @@ function Cart(): JSX.Element {
                             <SizedBox width={8}></SizedBox>
                             <CustomSelect
                               items={_getItemSizes(item.sizes)}
-                              label="Tamanho"
+                              label="Tam."
                               value={item.cartSize || ""}
                               setValue={(value) =>
                                 cartContext.updateSize(item.id, value)

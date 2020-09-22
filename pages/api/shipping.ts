@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from "@vercel/node";
 import { ObjectId } from "mongodb";
-import Shipping from "../../src/types/Shipping";
+import Shipping from "../../src/modules/shipping/Shipping";
 import { connectToDatabase } from "../../src/utils/mongo";
 import { allowedHosts, allowedMethods } from "../../src/utils/server";
 

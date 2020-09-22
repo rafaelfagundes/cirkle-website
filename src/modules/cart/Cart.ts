@@ -1,7 +1,7 @@
-import Address from "./Address";
+import Address from "../address/Address";
+import Payment from "../payment/Payment";
+import Product from "../product/Product";
 import Shipping from "./CartShipping";
-import Payment from "./Payment";
-import Product from "./Product";
 
 type Cart = {
   _id?: string;

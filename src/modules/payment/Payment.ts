@@ -1,4 +1,4 @@
-import PaymentType from "../enums/PaymentType";
+import PaymentType from "../../enums/PaymentType";
 
 type Payment = {
   _id?: string;

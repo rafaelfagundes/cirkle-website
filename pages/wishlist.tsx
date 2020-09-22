@@ -13,7 +13,7 @@ import Title from "../src/components/Title";
 import Colors from "../src/enums/Colors";
 import { useCart } from "../src/hooks/use-cart";
 import { useWishlist } from "../src/hooks/use-wishlist";
-import Product from "../src/types/Product";
+import Product from "../src/modules/product/Product";
 import { cloudinaryImage } from "../src/utils/image";
 import {
   CartItem,

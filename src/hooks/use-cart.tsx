@@ -1,9 +1,9 @@
 import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import Address from "../types/Address";
-import Cart from "../types/Cart";
-import Shipping from "../types/CartShipping";
-import Product from "../types/Product";
+import Address from "../modules/address/Address";
+import Cart from "../modules/cart/Cart";
+import Shipping from "../modules/cart/CartShipping";
+import Product from "../modules/product/Product";
 
 export interface ICartContextProps {
   cart: Cart;

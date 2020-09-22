@@ -1,9 +1,8 @@
 import axios from "axios";
 import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { setInterval } from "timers";
-import Product from "../types/Product";
-import Wishlist from "../types/Wishlist";
+import Product from "../modules/product/Product";
+import Wishlist from "../modules/wishlist/Wishlist";
 import { useAuth } from "./use-auth";
 
 export interface IWishlistContextProps {
@@ -48,17 +47,17 @@ function useWishlistProvider() {
     savedWishlist ? savedWishlist : emptyWishlist
   );
 
-  useEffect(() => {
-    if (authContext?.user?.uid) {
-      setInterval(async () => {
-        const result = await axios.get("/api/wishlist", {
-          params: { userId: authContext.user.uid },
-        });
+  // useEffect(() => {
+  //   if (authContext?.user?.uid) {
+  //     setInterval(async () => {
+  //       const result = await axios.get("/api/wishlist", {
+  //         params: { userId: authContext.user.uid },
+  //       });
 
-        setWishlist(result.data.wishlist);
-      }, 5000);
-    }
-  }, [authContext?.user?.uid]);
+  //       setWishlist(result.data.wishlist);
+  //     }, 30000);
+  //   }
+  // }, [authContext?.user?.uid]);
 
   const addToWishlist = (item: Product) => {
     const _wishlist = _.cloneDeep(wishlist);

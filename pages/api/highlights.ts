@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from "@vercel/node";
-import Highlight from "../../src/types/Highlight";
+import Highlight from "../../src/modules/highlight/Highlight";
 import { connectToDatabase } from "../../src/utils/mongo";
 import { allowedHosts, allowedMethods } from "../../src/utils/server";
 

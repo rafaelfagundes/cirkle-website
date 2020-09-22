@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from "@vercel/node";
 import { ObjectId } from "mongodb";
-import Banner from "../../src/types/Banner";
+import Banner from "../../src/modules/banner/Banner";
 import { connectToDatabase } from "../../src/utils/mongo";
 import { allowedHosts, allowedMethods } from "../../src/utils/server";
 

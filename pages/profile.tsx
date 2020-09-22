@@ -8,8 +8,8 @@ import CustomButton from "../src/components/CustomButton";
 import CustomTextField from "../src/components/CustomTextField";
 import SizedBox from "../src/components/SizedBox";
 import { useAuth } from "../src/hooks/use-auth";
+import { LoginType } from "../src/modules/user/User";
 import theme from "../src/theme/theme";
-import { LoginType } from "../src/types/User";
 
 const StyledAvatar = styled(Avatar)`
   width: 128px;
