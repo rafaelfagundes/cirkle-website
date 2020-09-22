@@ -11,37 +11,6 @@ import {
   statusServerError,
 } from "../../src/utils/server";
 
-// async function createUser(
-//   user: firebaseAdmin.auth.DecodedIdToken,
-//   response: NowResponse
-// ) {
-//   const db = await connectToDatabase(process.env.MONGO_DB_URI);
-
-//   if (!user) {
-//     return response.status(500).json("Invalid user");
-//   } else {
-//     const { email, email_verified, phone_number, picture, uid } = user;
-//     const result = await db.collection("users").insertOne({
-//       name: user.name || user.displayName,
-//       email,
-//       email_verified,
-//       phone_number,
-//       picture,
-//       uid,
-//       created_at: Date.now(),
-//     });
-
-//     if (result.result.ok) {
-//       const databaseUser = await db
-//         .collection("users")
-//         .findOne({ uid: user.uid });
-//       return response.status(200).json({ user: databaseUser });
-//     } else {
-//       return response.status(500).json("Cannot create user");
-//     }
-//   }
-// }
-
 async function createUser(user: User, token: string, response: NowResponse) {
   if (!token) return statusForbidden(response);
   const controller = new UserController();
@@ -76,7 +45,7 @@ async function updateUser(user: User, response: NowResponse) {
       {
         $set: {
           name: user.name,
-          phone_number: user.phone_number,
+          phone_number: user.phoneNumber,
           email: user.email,
           picture: user.picture,
         },

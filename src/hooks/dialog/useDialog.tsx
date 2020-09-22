@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React, { createContext, useContext, useState } from "react";
 
-interface IDialog {
+export interface IDialog {
   isOpen: boolean;
   title: string;
   description: string;

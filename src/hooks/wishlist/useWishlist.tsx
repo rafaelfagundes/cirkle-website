@@ -47,18 +47,6 @@ function useWishlistProvider() {
     savedWishlist ? savedWishlist : emptyWishlist
   );
 
-  // useEffect(() => {
-  //   if (authContext?.user?.uid) {
-  //     setInterval(async () => {
-  //       const result = await axios.get("/api/wishlist", {
-  //         params: { userId: authContext.user.uid },
-  //       });
-
-  //       setWishlist(result.data.wishlist);
-  //     }, 30000);
-  //   }
-  // }, [authContext?.user?.uid]);
-
   const addToWishlist = (item: Product) => {
     const _wishlist = _.cloneDeep(wishlist);
     _wishlist.items.push(item);
