@@ -187,16 +187,6 @@ export default function MyApp(props) {
   );
 }
 
-// MyApp.getInitialProps = async function (ctx) {
-//   const controller = new MenuController();
-//   const data = await controller.getMenu();
-
-//   return {
-//     menuData: data,
-//     pageProps: ctx?.pageProps ? ctx.pageProps : {},
-//   };
-// };
-
 MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired,

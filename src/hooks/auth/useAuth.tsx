@@ -52,6 +52,7 @@ const ErrorMessages = {
 export interface IAuthContextProps {
   user: User;
   signin: (email: string, password: string) => Promise<User>;
+  updateUser: (user: User) => Promise<User>;
   signinWithGoogle: () => Promise<User>;
   signinWithFacebook: () => Promise<User>;
   signup: (
@@ -62,7 +63,6 @@ export interface IAuthContextProps {
   signout: () => Promise<void>;
   sendPasswordResetEmail: (email: string) => Promise<void>;
   confirmPasswordReset: (code: string, password: string) => Promise<void>;
-  updateUser: (user: User) => Promise<void>;
 }
 
 const AuthContext = createContext({} as IAuthContextProps);
@@ -315,8 +315,12 @@ function useProviderAuth() {
 
   const updateUser = async (user: User) => {
     try {
-      const response = await axios.patch("/api/user", { user });
-      if (response) setUser(response?.data?.user);
+      const token = await firebase.auth().currentUser.getIdToken();
+      const response = await axios.patch("/api/user", { user, token });
+      if (response) {
+        saveUserInContextAndLocalStorage(response?.data?.data);
+        return response?.data?.data;
+      } else return null;
     } catch (error) {
       console.log("updateUser -> error", error);
       return null;

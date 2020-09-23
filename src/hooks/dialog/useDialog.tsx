@@ -6,6 +6,7 @@ export interface IDialog {
   title: string;
   description: string;
   buttonText: string;
+  isError: boolean;
 }
 
 export interface IDialogContextProps {
@@ -14,7 +15,8 @@ export interface IDialogContextProps {
     showDialog: boolean,
     title: string,
     description: string,
-    buttonText?: string
+    buttonText?: string,
+    error?: boolean
   ) => void;
   closeDialog: () => void;
   showDialog: () => void;
@@ -43,19 +45,22 @@ function useDialogProvider() {
     title: "Erro",
     description: "Oops, ocorreu algum erro desconhecido. Tente novamente.",
     buttonText: "OK",
+    isError: true,
   });
 
   const newDialog = (
     isOpen: boolean,
     title: string,
     description: string,
-    buttonText = "OK"
+    buttonText = "OK",
+    isError = true
   ) => {
     const _newError: IDialog = {
       isOpen,
       title,
       description,
       buttonText,
+      isError,
     };
 
     setDialog(_newError);

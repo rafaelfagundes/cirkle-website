@@ -28,6 +28,26 @@ class UserService {
       return null;
     }
   }
+  async update(user: User): Promise<User> {
+    const db = await connectToDatabase(process.env.MONGO_DB_URI);
+
+    const result = await db.collection("users").updateOne(
+      { uid: user.uid },
+      {
+        $set: {
+          name: user.name,
+          phone_number: user.phoneNumber,
+          email: user.email,
+          picture: user.picture,
+        },
+      }
+    );
+    if (result.result.ok) {
+      return user;
+    } else {
+      return null;
+    }
+  }
 }
 
 export default UserService;

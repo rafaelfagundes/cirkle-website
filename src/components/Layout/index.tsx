@@ -7,8 +7,6 @@ import useSWR from "swr";
 import initialData from "../../../src/cache/prepopulated.json";
 import Colors from "../../enums/Colors";
 import { useDialog } from "../../hooks/dialog/useDialog";
-// import CustomDialog from "../CustomDialog";
-// import Footer from "../Footer";
 import SideMenu from "../SideMenu/index";
 import NavBarDesktop from "./navBarDesktop";
 import NavBarMobile from "./navBarMobile";
@@ -16,8 +14,6 @@ import NavBarMobile from "./navBarMobile";
 const Footer = dynamic(() => import("../Footer"), {
   ssr: false,
 });
-
-// const SideMenu = dynamic(() => import("../SideMenu"));
 
 const CustomDialog = dynamic(() => import("../CustomDialog"), {
   ssr: false,
@@ -43,6 +39,7 @@ function Layout({ children }: { children: JSX.Element }): JSX.Element {
         open={dialogContext.dialog.isOpen}
         title={dialogContext.dialog.title}
         buttonText={dialogContext.dialog.buttonText}
+        error={dialogContext.dialog.isError}
         onClose={dialogContext.closeDialog}
       >
         {dialogContext.dialog.description}

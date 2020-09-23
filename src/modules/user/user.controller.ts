@@ -18,6 +18,16 @@ class UserController {
     const service = new UserService();
     return await service.create(user);
   }
+
+  async update(user: User, token?: string): Promise<User> {
+    const tokenUser = await verifyToken(token);
+
+    if (!tokenUser) return null;
+    if (tokenUser.uid !== user.uid) return null;
+
+    const service = new UserService();
+    return await service.update(user);
+  }
 }
 
 export default UserController;

@@ -97,14 +97,14 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
             onMouseLeave: () => setTimeout(() => setUserMenu(false), 250),
           }}
         >
-          <StyledMenuItem>
+          <StyledMenuItem onClick={_goToProfile}>
             <Profile>
               {auth.user.picture ? (
                 <UserImage src={auth.user.picture}></UserImage>
               ) : (
                 <Icon type="profile"></Icon>
               )}
-              <UserName>{firstNameOnly(auth.user.name)}</UserName>
+              <UserName>{auth.user.name}</UserName>
             </Profile>
           </StyledMenuItem>
           <br />
