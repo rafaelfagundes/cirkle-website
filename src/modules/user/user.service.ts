@@ -36,7 +36,7 @@ class UserService {
       {
         $set: {
           name: user.name,
-          phone_number: user.phoneNumber,
+          phoneNumber: user.phoneNumber,
           email: user.email,
           picture: user.picture,
         },

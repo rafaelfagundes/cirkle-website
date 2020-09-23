@@ -63,6 +63,10 @@ export interface IAuthContextProps {
   signout: () => Promise<void>;
   sendPasswordResetEmail: (email: string) => Promise<void>;
   confirmPasswordReset: (code: string, password: string) => Promise<void>;
+  changePassword: (
+    currentPassword: string,
+    newPassword: string
+  ) => Promise<boolean>;
 }
 
 const AuthContext = createContext({} as IAuthContextProps);
@@ -327,6 +331,27 @@ function useProviderAuth() {
     }
   };
 
+  const changePassword = async (
+    currentPassword: string,
+    newPassword: string
+  ) => {
+    const _user = firebase.auth().currentUser;
+    const credential = firebase.auth.EmailAuthProvider.credential(
+      user.email,
+      currentPassword
+    );
+
+    await _user.reauthenticateWithCredential(credential);
+
+    try {
+      await _user.updatePassword(newPassword);
+      return true;
+    } catch (error) {
+      console.log("changePassword -> error", error);
+      return false;
+    }
+  };
+
   // Return the user object and auth methods
   return {
     user,
@@ -338,6 +363,7 @@ function useProviderAuth() {
     sendPasswordResetEmail,
     confirmPasswordReset,
     updateUser,
+    changePassword,
   };
 }
 

@@ -7,7 +7,7 @@ const Text = styled.p<{ centered: boolean }>`
     sans-serif;
   color: ${Colors.PRIMARY};
   font-size: 1rem;
-  line-height: 1.1rem;
+  line-height: 1.3rem;
   ${(props) => (props.centered ? "text-align: center;" : null)};
   margin: 0;
 `;

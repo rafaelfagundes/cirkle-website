@@ -52,6 +52,10 @@ function Profile(): JSX.Element {
     router.push("/login");
   }
 
+  const _goToPasswordChange = () => {
+    router.push("/password-change");
+  };
+
   const _validate = () => {
     const _email = email.current?.children[0].value;
     const _phoneNumber = phoneNumber.current?.children[0].value;
@@ -208,7 +212,7 @@ function Profile(): JSX.Element {
             <FileUploadButton
               type="primary"
               variant="outlined"
-              width={150}
+              width={166}
               onChange={setPicture}
               loading={userAvatarLoading}
             >
@@ -218,10 +222,10 @@ function Profile(): JSX.Element {
               <>
                 <SizedBox width={16}></SizedBox>
                 <CustomButton
-                  onClick={null}
-                  type="primary"
+                  onClick={_goToPasswordChange}
+                  type="delete"
                   variant="outlined"
-                  width={150}
+                  width={166}
                 >
                   Alterar Senha
                 </CustomButton>
