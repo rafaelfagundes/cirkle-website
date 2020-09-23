@@ -27,7 +27,6 @@ function FileUploadButton(props: IFileUploadButtonProps): JSX.Element {
           type="file"
           onChange={viewChanges}
         />
-
         <CustomButton
           onClick={null}
           loading={props.loading}
