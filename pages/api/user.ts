@@ -1,16 +1,54 @@
 import { NowRequest, NowResponse } from "@vercel/node";
-import User from "../../src/modules/user/User";
+import User, { LoginType } from "../../src/modules/user/User";
 import UserController from "../../src/modules/user/user.controller";
 import {
   allowedHosts,
   allowedMethods,
+  statusBadRequest,
   statusForbidden,
   statusNotFound,
   statusOK,
   statusServerError,
 } from "../../src/utils/server";
+import { validateEmail } from "../../src/utils/string";
+
+const checkUser = (user: User) => {
+  // First and Lastname
+  const splitedFullName: Array<string> = user.name.split(" ");
+  if (user.name === "" || user.name === null || user.name === undefined) {
+    return false;
+  } else if (splitedFullName.length < 2) {
+    return false;
+  } else if (splitedFullName.length > 2) {
+    return false;
+  }
+
+  // Phone Number
+  if (user.phoneNumber === "(  )      -    ") {
+    return false;
+  }
+
+  // Email
+  if (user.email === "" || user.email === null || user.email === undefined) {
+    return false;
+  } else if (!validateEmail(user.email)) {
+    return false;
+  }
+
+  // Login Type
+  if (
+    user.loginType !== LoginType.EMAIL_PASSWORD &&
+    user.loginType !== LoginType.FACEBOOK &&
+    user.loginType !== LoginType.GOOGLE
+  ) {
+    return false;
+  }
+
+  return true;
+};
 
 async function createUser(user: User, token: string, response: NowResponse) {
+  if (!checkUser(user)) return statusBadRequest(response);
   if (!token) return statusForbidden(response);
   const controller = new UserController();
   const data = await controller.create(user, token);
@@ -33,6 +71,8 @@ async function getUser(token: string, response: NowResponse) {
 }
 
 async function updateUser(user: User, token: string, response: NowResponse) {
+  if (!checkUser(user)) return statusBadRequest(response);
+
   if (!token) return statusForbidden(response);
   const controller = new UserController();
   const data = await controller.update(user, token);

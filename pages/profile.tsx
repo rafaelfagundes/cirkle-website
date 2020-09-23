@@ -13,6 +13,7 @@ import { useAuth } from "../src/hooks/auth/useAuth";
 import { useDialog } from "../src/hooks/dialog/useDialog";
 import { LoginType } from "../src/modules/user/User";
 import theme from "../src/theme/theme";
+import { capitalizeFirstLetter, validateEmail } from "../src/utils/string";
 
 const StyledAvatar = styled(Avatar)`
   width: 128px;
@@ -40,15 +41,82 @@ function Profile(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [userAvatarLoading, setUserAvatarLoading] = useState(false);
 
-  const errors = {
-    email: "",
-    phoneNumber: "",
-    displayName: "",
+  const errorsTemplate = {
+    displayName: null,
+    email: null,
+    phoneNumber: null,
   };
+  const [errors, setErrors] = useState(_.cloneDeep(errorsTemplate));
 
   if (!authContext.user) {
     router.push("/login");
   }
+
+  const _validate = () => {
+    const _email = email.current?.children[0].value;
+    const _phoneNumber = phoneNumber.current?.children[0].value;
+    const _displayName = displayName.current?.children[0].value;
+
+    const _errors = _.cloneDeep(errorsTemplate);
+    let _errorsCount = 0;
+
+    // Email
+    if (_email === "" || _email === null || _email === undefined) {
+      _errorsCount++;
+      _errors.email = "Por favor, preencha o email";
+    } else if (!validateEmail(_email)) {
+      _errorsCount++;
+      _errors.email =
+        "Por favor, preencha um email válido. Ex.: maria@gmail.com";
+    }
+
+    // Phone Number
+    if (
+      _phoneNumber === "" ||
+      _phoneNumber === null ||
+      _phoneNumber === undefined ||
+      _phoneNumber === "(  )      -    "
+    ) {
+      _errorsCount++;
+      _errors.phoneNumber = "Por favor, preencha o número celular";
+    } else if (_phoneNumber.length !== "(00) 12345-1234".length) {
+      _errorsCount++;
+      _errors.phoneNumber =
+        "Por favor, preencha o número corretamente. (XX) YYYYY-ZZZZ";
+    }
+
+    // First and Lastname
+    const splitedFullName: Array<string> = _displayName.split(" ");
+    if (
+      _displayName === "" ||
+      _displayName === null ||
+      _displayName === undefined
+    ) {
+      _errorsCount++;
+      _errors.displayName = "Por favor, preencha o seu nome e sobrenome";
+    } else if (splitedFullName.length < 2) {
+      _errorsCount++;
+      _errors.displayName =
+        "Nome e sobrenome são obrigatórios. Ex.: Maria Silva";
+    } else if (splitedFullName.length > 2) {
+      _errorsCount++;
+      _errors.displayName =
+        "Por favor, preencha seu nome e somente 1 (um) sobrenome. Ex.: Maria Silva";
+    } else {
+      const _fullName =
+        capitalizeFirstLetter(splitedFullName[0]) +
+        " " +
+        capitalizeFirstLetter(splitedFullName[1]);
+      displayName.current.children[0].value = _fullName;
+    }
+
+    if (_errorsCount) {
+      setErrors(_errors);
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   const uploadImage = async (file: any) => {
     setUserAvatarLoading(true);
@@ -95,6 +163,7 @@ function Profile(): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const update = async () => {
+    if (!_validate()) return;
     const _user = _.cloneDeep(authContext.user);
 
     _user.email = email.current.children[0].value;
@@ -194,7 +263,7 @@ function Profile(): JSX.Element {
                 width={300}
                 type="primary"
                 variant="contained"
-                onClick={() => update()}
+                onClick={update}
                 loading={loading}
               >
                 Salvar

@@ -71,3 +71,7 @@ export function statusNotFound(response: NowResponse): NowResponse {
 export function statusServerError(response: NowResponse): NowResponse {
   return response.status(500).json({ message: "Internal server error" });
 }
+
+export function statusBadRequest(response: NowResponse): NowResponse {
+  return response.status(400).json({ message: "Bad Request" });
+}
