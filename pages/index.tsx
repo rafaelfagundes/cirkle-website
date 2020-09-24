@@ -5,8 +5,10 @@ import useSWR from "swr";
 import initialData from "../src/cache/prepopulated.json";
 import HighlightsSection from "../src/components/HighlightsSection";
 import HomeCategories from "../src/components/HomeCategories";
+import HotSectionTitle from "../src/components/HotSection/HotSectionTitle";
 // import HotSection from "../src/components/HotSection";
 import HighlightsLoader from "../src/components/Loaders/Highlights";
+import HotProductsLoader from "../src/components/Loaders/HotProducts";
 import MainBannerLoader from "../src/components/Loaders/MainBanner";
 import MainBanner from "../src/components/MainBanner";
 // import NewsletterSignUp from "../src/components/NewsletterSignUp";
@@ -110,6 +112,10 @@ function Home(): JSX.Element {
       </Hidden>
       {!highlights && <HighlightsLoader></HighlightsLoader>}
       {highlights && <HighlightsSection data={highlights}></HighlightsSection>}
+      <SizedBox height={18}></SizedBox>
+      <HotSectionTitle></HotSectionTitle>
+      <SizedBox height={16}></SizedBox>
+      {!hotProducts && <HotProductsLoader></HotProductsLoader>}
       {hotProducts && brands && (
         <HotSection products={hotProducts} brands={brands}></HotSection>
       )}

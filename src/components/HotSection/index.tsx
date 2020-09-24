@@ -5,26 +5,14 @@ import React from "react";
 import styled from "styled-components";
 import Product from "../../modules/product/Product";
 import Center from "../Center";
-import Column from "../Column";
 import CustomButton from "../CustomButton";
-import Icon from "../Icon";
 import ProductItem from "../ProductItem";
 import SizedBox from "../SizedBox";
-import Subtitle from "../Subtitle";
-import Title from "../Title";
 import Brand from "./brand";
 
 const Section = styled.div<{ isSmartphone: boolean }>`
   padding: ${(props) =>
-    props.isSmartphone ? "18px 0 32px 16px" : "18px 0 32px 0"};
-`;
-
-const SectionTitle = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 320px;
-  margin-left: -10px;
+    props.isSmartphone ? "0px 0 32px 16px" : "0px 0 32px 0"};
 `;
 
 const ItemsHolder = styled.div<{ disableScroll?: boolean }>`
@@ -71,15 +59,6 @@ function HotSection({
 
   return (
     <Section isSmartphone={isSmartphone}>
-      <SectionTitle>
-        <Icon type="thermometer" size={48}></Icon>
-        <Column>
-          <Title size={18}>EM ALTA</Title>
-          <SizedBox height={6}></SizedBox>
-          <Subtitle size={18}>Produtos que todo mundo está de olho</Subtitle>
-        </Column>
-      </SectionTitle>
-      <SizedBox height={16}></SizedBox>
       <ItemsHolder disableScroll={!isSmartphone}>
         {products.map((item) => (
           <ProductItem data={item} key={item._id}></ProductItem>
