@@ -11,6 +11,8 @@ export const AVAILABLE_ICONS = [
   "check",
   "coupon",
   "close",
+  "close-dark",
+  "close-red",
   "delivery-truck",
   "email",
   "empty",
@@ -42,6 +44,10 @@ export const AVAILABLE_ICONS = [
   "triangle-down",
   "whatsapp-white",
   "whatsapp",
+  "star-light",
+  "star-yellow",
+  "star-circle-dark",
+  "star-circle-light",
 ];
 
 const StyledIcon = styled.div<{ size: number; clickable: boolean }>`

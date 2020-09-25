@@ -7,6 +7,7 @@ type Address = {
   city: string;
   state: string;
   postalCode: string;
+  mainAddress?: boolean;
 };
 
 export default Address;

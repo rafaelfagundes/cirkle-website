@@ -7,15 +7,14 @@ import Colors from "../../enums/Colors";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox";
 
-function TextMaskCustom(props) {
-  const { inputRef, ...other } = props;
-
+function PhoneMask(props) {
   return (
     <MaskedInput
-      {...other}
+      {...props}
       ref={(ref) => {
-        inputRef(ref ? ref.inputElement : null);
+        props.inputRef(ref ? ref.inputElement : null);
       }}
+      guide={false}
       mask={[
         "(",
         /[1-9]/,
@@ -33,13 +32,30 @@ function TextMaskCustom(props) {
         /\d/,
         /\d/,
       ]}
-      placeholderChar={"\u2000"}
-      showMask
+      keepCharPositions={true}
     />
   );
 }
 
-const StyledInput = styled.div<{ error: boolean; showLabel: boolean }>`
+function PostalCodeMask(props) {
+  return (
+    <MaskedInput
+      {...props}
+      ref={(ref) => {
+        props.inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={[/\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/]}
+      guide={false}
+      keepCharPositions={true}
+    />
+  );
+}
+
+const StyledInput = styled.div<{
+  error: boolean;
+  showLabel: boolean;
+  width?: number;
+}>`
   border: ${(props) => {
     if (props.error) {
       return `3px solid ${Colors.ERROR}`;
@@ -53,6 +69,7 @@ const StyledInput = styled.div<{ error: boolean; showLabel: boolean }>`
   padding: ${(props) => (props.showLabel ? "14px 10px 6px 10px" : "0 10px")};
   position: relative;
   transition: 250ms padding;
+  max-width: ${(props) => (props.width ? props.width + "px" : "100%")};
 `;
 
 const StyledInputBase = styled(InputBase)`
@@ -105,6 +122,7 @@ type CustomTextFieldProps = {
   type?: string;
   initialValue?: string;
   showIcon?: boolean;
+  width?: number;
   onEnterKeyPressed?: () => void;
 };
 
@@ -136,12 +154,26 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
     }
   };
 
+  const isEmptyField = (value) => {
+    switch (value) {
+      case "":
+        return true;
+      case "     -   ":
+        return true;
+      case "(  )      -    ":
+        return true;
+
+      default:
+        return false;
+    }
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (ref) {
-        if (ref["current"].children[0].value !== "") {
+        if (!isEmptyField(ref["current"].children[0].value)) {
           if (!showLabel) setShowLabel(true);
-        } else if (ref["current"].children[0].value === "") {
+        } else if (isEmptyField(ref["current"].children[0].value)) {
           setShowLabel(false);
         }
       }
@@ -150,6 +182,51 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
       clearInterval(interval);
     };
   }, []);
+
+  const _getInput = (type) => {
+    switch (type) {
+      case "phone":
+        return (
+          <StyledInputBase
+            ref={ref}
+            className={useStyles().input}
+            placeholder={props.children}
+            type={config.inputType}
+            defaultValue={props.initialValue}
+            inputComponent={PhoneMask}
+            id={props.id}
+            onKeyPress={handleOnKeyPress}
+          />
+        );
+
+      case "postalCode":
+        return (
+          <StyledInputBase
+            ref={ref}
+            className={useStyles().input}
+            placeholder={props.children}
+            type={config.inputType}
+            defaultValue={props.initialValue}
+            inputComponent={PostalCodeMask}
+            id={props.id}
+            onKeyPress={handleOnKeyPress}
+          />
+        );
+
+      default:
+        return (
+          <StyledInputBase
+            ref={ref}
+            className={useStyles().input}
+            placeholder={props.children}
+            type={config.inputType}
+            defaultValue={props.initialValue}
+            id={props.id}
+            onKeyPress={handleOnKeyPress}
+          />
+        );
+    }
+  };
 
   return (
     <>
@@ -160,33 +237,13 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
           props.error !== ""
         }
         showLabel={showLabel}
+        width={props.width}
       >
         <PlaceHolder show={showLabel}>
           <PlaceHolderText>{props.children}</PlaceHolderText>
         </PlaceHolder>
-        {props.type !== "phone" && (
-          <StyledInputBase
-            ref={ref}
-            className={useStyles().input}
-            placeholder={props.children}
-            type={config.inputType}
-            defaultValue={props.initialValue}
-            id={props.id}
-            onKeyPress={handleOnKeyPress}
-          />
-        )}
-        {props.type === "phone" && (
-          <StyledInputBase
-            ref={ref}
-            className={useStyles().input}
-            placeholder={props.children}
-            type={config.inputType}
-            defaultValue={props.initialValue}
-            inputComponent={TextMaskCustom}
-            id={props.id}
-            onKeyPress={handleOnKeyPress}
-          />
-        )}
+        {_getInput(props.type)}
+
         {config.icon && props.showIcon && (
           <IconHolder showLabel={showLabel}>
             <SizedBox width={5}></SizedBox>

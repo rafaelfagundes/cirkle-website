@@ -4,10 +4,12 @@ import _ from "lodash";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import AddressTab from "../src/components/AddressTab";
 import Center from "../src/components/Center";
 import CustomButton from "../src/components/CustomButton";
 import CustomTextField from "../src/components/CustomTextField";
 import FileUploadButton from "../src/components/FileUploadButton";
+import FormTabs from "../src/components/FormTabs";
 import SizedBox from "../src/components/SizedBox";
 import { useAuth } from "../src/hooks/auth/useAuth";
 import { useDialog } from "../src/hooks/dialog/useDialog";
@@ -35,9 +37,10 @@ function Profile(): JSX.Element {
   const email = useRef(null);
   const phoneNumber = useRef(null);
   const displayName = useRef(null);
+
   const [picture, setPicture] = useState(null);
   const [uploadedPicture, setUploadedPicture] = useState(null);
-
+  const [activeTab, setActiveTab] = useState(router.asPath);
   const [loading, setLoading] = useState(false);
   const [userAvatarLoading, setUserAvatarLoading] = useState(false);
 
@@ -56,7 +59,7 @@ function Profile(): JSX.Element {
     router.push("/password-change");
   };
 
-  const _validate = () => {
+  const _validateProfile = () => {
     const _email = email.current?.children[0].value;
     const _phoneNumber = phoneNumber.current?.children[0].value;
     const _displayName = displayName.current?.children[0].value;
@@ -166,8 +169,8 @@ function Profile(): JSX.Element {
 
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const update = async () => {
-    if (!_validate()) return;
+  const updateProfile = async () => {
+    if (!_validateProfile()) return;
     const _user = _.cloneDeep(authContext.user);
 
     _user.email = email.current.children[0].value;
@@ -201,79 +204,96 @@ function Profile(): JSX.Element {
       {authContext.user && (
         <Container maxWidth="xs">
           <SizedBox height={isSmartPhone ? 32 : 72}></SizedBox>
-          <Center>
-            <StyledAvatar
-              alt=""
-              src={uploadedPicture || authContext.user.picture}
-            ></StyledAvatar>
-          </Center>
-          <SizedBox height={16}></SizedBox>
-          <ButtonsHolder>
-            <FileUploadButton
-              type="primary"
-              variant="outlined"
-              width={166}
-              onChange={setPicture}
-              loading={userAvatarLoading}
-            >
-              Alterar Foto
-            </FileUploadButton>
-            {authContext.user.loginType === LoginType.EMAIL_PASSWORD && (
-              <>
-                <SizedBox width={16}></SizedBox>
-                <CustomButton
-                  onClick={_goToPasswordChange}
-                  type="delete"
+          <FormTabs
+            tabs={[
+              { id: "/profile", title: "Dados Pessoais" },
+              { id: "/address", title: "Endereços" },
+            ]}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          ></FormTabs>
+          <SizedBox height={32}></SizedBox>
+          {activeTab === "/profile" && (
+            <>
+              <Center>
+                <StyledAvatar
+                  alt=""
+                  src={uploadedPicture || authContext.user.picture}
+                ></StyledAvatar>
+              </Center>
+              <SizedBox height={16}></SizedBox>
+              <ButtonsHolder>
+                <FileUploadButton
+                  type="primary"
                   variant="outlined"
                   width={166}
+                  onChange={setPicture}
+                  loading={userAvatarLoading}
                 >
-                  Alterar Senha
-                </CustomButton>
-              </>
-            )}
-          </ButtonsHolder>
+                  Alterar Foto
+                </FileUploadButton>
+                {authContext.user.loginType === LoginType.EMAIL_PASSWORD && (
+                  <>
+                    <SizedBox width={16}></SizedBox>
+                    <CustomButton
+                      onClick={_goToPasswordChange}
+                      type="delete"
+                      variant="outlined"
+                      width={166}
+                    >
+                      Alterar Senha
+                    </CustomButton>
+                  </>
+                )}
+              </ButtonsHolder>
 
-          <Container maxWidth="xs">
-            <SizedBox height={36}></SizedBox>
-            <CustomTextField
-              type="user"
-              ref={displayName}
-              error={errors.displayName}
-              initialValue={authContext.user.name}
-            >
-              Nome e Sobrenome
-            </CustomTextField>
-            <SizedBox height={16}></SizedBox>
-            <CustomTextField
-              type="email"
-              ref={email}
-              error={errors.email}
-              initialValue={authContext.user.email}
-            >
-              Email
-            </CustomTextField>
-            <SizedBox height={16}></SizedBox>
-            <CustomTextField
-              type="phone"
-              ref={phoneNumber}
-              error={errors.phoneNumber}
-              initialValue={authContext.user.phoneNumber}
-            >
-              Celular (DDD + Número)
-            </CustomTextField>
-            <SizedBox height={36}></SizedBox>
-            <Center>
-              <CustomButton
-                width={300}
-                type="primary"
-                variant="contained"
-                onClick={update}
-                loading={loading}
-              >
-                Salvar
-              </CustomButton>
-            </Center>
-          </Container>
+              <Container maxWidth="xs">
+                <SizedBox height={36}></SizedBox>
+                <CustomTextField
+                  type="user"
+                  ref={displayName}
+                  error={errors.displayName}
+                  initialValue={authContext.user.name}
+                  showIcon
+                >
+                  Nome e Sobrenome
+                </CustomTextField>
+                <SizedBox height={16}></SizedBox>
+                <CustomTextField
+                  type="email"
+                  ref={email}
+                  error={errors.email}
+                  initialValue={authContext.user.email}
+                  showIcon
+                >
+                  Email
+                </CustomTextField>
+                <SizedBox height={16}></SizedBox>
+                <CustomTextField
+                  type="phone"
+                  ref={phoneNumber}
+                  error={errors.phoneNumber}
+                  initialValue={authContext.user.phoneNumber}
+                  showIcon
+                >
+                  Celular (DDD + Número)
+                </CustomTextField>
+                <SizedBox height={36}></SizedBox>
+                <Center>
+                  <CustomButton
+                    width={300}
+                    type="primary"
+                    variant="contained"
+                    onClick={updateProfile}
+                    loading={loading}
+                  >
+                    Salvar
+                  </CustomButton>
+                </Center>
+              </Container>
+            </>
+          )}
+          {activeTab === "/address" && <AddressTab></AddressTab>}
           <SizedBox height={72}></SizedBox>
         </Container>
       )}

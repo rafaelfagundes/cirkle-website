@@ -1,14 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 
-const StyledRow = styled.div`
+const StyledRow = styled.div<{ spaceBetween: boolean }>`
   display: flex;
+  flex: 1;
   align-items: center;
   flex-direction: row;
+  justify-content: ${(props) =>
+    props.spaceBetween ? "space-between" : "flex-start"};
 `;
 
-function Row({ children }: { children: Array<JSX.Element> }): JSX.Element {
-  return <StyledRow>{children}</StyledRow>;
+function Row({
+  children,
+  spaceBetween = false,
+}: {
+  children: Array<JSX.Element>;
+  spaceBetween?: boolean;
+}): JSX.Element {
+  return <StyledRow spaceBetween={spaceBetween}>{children}</StyledRow>;
 }
 
 export default Row;
