@@ -34,10 +34,9 @@ function AddressList(props: IAddressList): JSX.Element {
       )}
 
       {props.addressList.map((item) => (
-        <>
+        <span key={item.street}>
           <AddressItem
             _id={item._id}
-            key={item.street}
             city={item.city}
             complement={item.complement}
             mainAddress={item.mainAddress}
@@ -50,7 +49,7 @@ function AddressList(props: IAddressList): JSX.Element {
             neighborhood={item.neighborhood}
           ></AddressItem>
           <SizedBox height={24}></SizedBox>
-        </>
+        </span>
       ))}
 
       <SizedBox height={16}></SizedBox>
