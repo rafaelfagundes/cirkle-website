@@ -84,7 +84,9 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
             ) : (
               <Icon type="profile"></Icon>
             )}
-            <UserName>{firstNameOnly(auth.user.name)}</UserName>
+            <UserName id="user-name-text">
+              {firstNameOnly(auth.user.name)}
+            </UserName>
           </Profile>
         </UserButton>
         <Menu

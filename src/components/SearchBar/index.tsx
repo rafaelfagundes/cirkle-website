@@ -43,6 +43,7 @@ function SearchBar({ placeHolder }: { placeHolder: string }): JSX.Element {
       <SearchBackground>
         <Icon type="search"></Icon>
         <StyledInputBase
+          id="search-bar"
           placeholder={placeHolder}
           inputProps={{ "aria-label": "search" }}
         />

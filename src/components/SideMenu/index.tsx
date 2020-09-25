@@ -275,7 +275,7 @@ function SideMenu({
             >
               <Link href="/products/newin">
                 <StyledMenuItem>
-                  <MenuItemText color={Colors.WHITE}>Novidades</MenuItemText>
+                  <MenuItemText color={Colors.WHITE}>New In</MenuItemText>
                 </StyledMenuItem>
               </Link>
               {Object.keys(menuData[selectedTab].categories).map((item) => (
@@ -312,9 +312,7 @@ function SideMenu({
               ))}
               <Link href="/products/offers">
                 <StyledMenuItem lastOne>
-                  <MenuItemText color={Colors.MIDDLE_YELLOW}>
-                    Promoções
-                  </MenuItemText>
+                  <MenuItemText color={Colors.MIDDLE_YELLOW}>Sale</MenuItemText>
                 </StyledMenuItem>
               </Link>
             </MenuContainer>

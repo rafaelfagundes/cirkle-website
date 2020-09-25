@@ -84,6 +84,7 @@ const MenuItem = styled.div<{ active?: boolean; first?: boolean }>`
   flex-direction: row;
   cursor: pointer;
   height: 51px;
+  min-width: 68px;
   background-color: ${(props) =>
     props.active ? "rgba(255, 255, 255, 0.1)" : "transparent"};
 `;
@@ -297,7 +298,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
               {menuData && (
                 <MenuItem>
                   <MenuItemText first color={Colors.WHITE}>
-                    Novidades
+                    New In
                   </MenuItemText>
                 </MenuItem>
               )}
@@ -398,16 +399,16 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
                 ))}
               {menuData && (
                 <MenuItem>
-                  <MenuItemText color={Colors.MIDDLE_YELLOW}>
-                    Promoções
-                  </MenuItemText>
+                  <MenuItemText color={Colors.MIDDLE_YELLOW}>Sale</MenuItemText>
                 </MenuItem>
               )}
             </Categories>
             <Hidden only="sm">
+              <SizedBox width={32}></SizedBox>
               <StyledSearchBar>
                 <StyledInputBase
-                  placeholder="Procure marcas, categorias, modelos"
+                  id="search-bar-on-menu"
+                  placeholder="Procure marcas, modelos e mais"
                   inputProps={{ "aria-label": "search" }}
                 />
                 <Icon type="search"></Icon>

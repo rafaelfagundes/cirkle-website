@@ -5,6 +5,7 @@ import Colors from "../../enums/Colors";
 import Icon from "../Icon";
 import PaymentType from "../PaymentType";
 import SizedBox from "../SizedBox";
+import TextLink from "../TextLink";
 
 const Footer = styled.div`
   padding-top: 16px;
@@ -31,15 +32,7 @@ const HeaderSection = styled.span`
 `;
 
 const FooterLink = styled.span`
-  text-align: center;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  color: ${Colors.WHITE};
   height: 36px;
-  cursor: pointer;
 `;
 
 const Columns = styled.div`
@@ -150,13 +143,37 @@ function DesktopFooter(): JSX.Element {
       <Container maxWidth="md" disableGutters>
         <Columns>
           <LinksSection>
-            <HeaderSection>Cirkle</HeaderSection>
-            <FooterLink>Como Funciona</FooterLink>
-            <FooterLink>Quero Vender</FooterLink>
-            <FooterLink>Quero Comprar</FooterLink>
-            <FooterLink>Contato</FooterLink>
-            <FooterLink>Devolução</FooterLink>
-            <FooterLink>Termos de Uso</FooterLink>
+            <HeaderSection>Saiba mais</HeaderSection>
+            <FooterLink>
+              <TextLink href="" color={Colors.WHITE} size={16}>
+                Como Funciona
+              </TextLink>
+            </FooterLink>
+            <FooterLink>
+              <TextLink href="" color={Colors.WHITE} size={16}>
+                Quero Vender
+              </TextLink>
+            </FooterLink>
+            <FooterLink>
+              <TextLink href="" color={Colors.WHITE} size={16}>
+                Quero Comprar
+              </TextLink>
+            </FooterLink>
+            <FooterLink>
+              <TextLink href="" color={Colors.WHITE} size={16}>
+                Contato
+              </TextLink>
+            </FooterLink>
+            <FooterLink>
+              <TextLink href="" color={Colors.WHITE} size={16}>
+                Devolução
+              </TextLink>
+            </FooterLink>
+            <FooterLink>
+              <TextLink href="" color={Colors.WHITE} size={16}>
+                Termos de Uso
+              </TextLink>
+            </FooterLink>
             <SizedBox height={16}></SizedBox>
             <HeaderSection>Manda um oi pra gente</HeaderSection>
             <SocialFooter>
@@ -177,10 +194,31 @@ function DesktopFooter(): JSX.Element {
           <Hidden only="xs">
             <LinksSection>
               <HeaderSection>Categorias</HeaderSection>
-              <FooterLink>Roupas</FooterLink>
-              <FooterLink>Bolsas</FooterLink>
-              <FooterLink>Calçados</FooterLink>
-              <FooterLink>Acessórios</FooterLink>
+              <FooterLink>
+                <TextLink href="" color={Colors.WHITE} size={16}>
+                  Roupas
+                </TextLink>
+              </FooterLink>
+              <FooterLink>
+                <TextLink href="" color={Colors.WHITE} size={16}>
+                  Bolsas
+                </TextLink>
+              </FooterLink>
+              <FooterLink>
+                <TextLink href="" color={Colors.WHITE} size={16}>
+                  Calçados
+                </TextLink>
+              </FooterLink>
+              <FooterLink>
+                <TextLink href="" color={Colors.WHITE} size={16}>
+                  Acessórios
+                </TextLink>
+              </FooterLink>
+              <FooterLink>
+                <TextLink href="" color={Colors.WHITE} size={16}>
+                  Marcas
+                </TextLink>
+              </FooterLink>
             </LinksSection>
           </Hidden>
           <LinksSection>
@@ -189,6 +227,7 @@ function DesktopFooter(): JSX.Element {
               <NewsletterInput>
                 <Icon type="email"></Icon>
                 <StyledInputBase
+                  id="newsletter-input-desktop"
                   placeholder="Informe seu email"
                   inputProps={{ "aria-label": "search" }}
                 />

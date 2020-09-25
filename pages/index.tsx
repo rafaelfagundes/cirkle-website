@@ -74,7 +74,7 @@ function Home(): JSX.Element {
   return (
     <>
       <Hidden mdUp={true}>
-        <SearchBar placeHolder="Procure marcas, categorias, modelos"></SearchBar>
+        <SearchBar placeHolder="Procure marcas, modelos e mais"></SearchBar>
       </Hidden>
       {!cartContext.cart.freeShipping && <SizedBox height={48}></SizedBox>}
       {cartContext.cart.freeShipping && (

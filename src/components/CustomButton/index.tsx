@@ -70,6 +70,7 @@ const ButtonTypeText = styled(ButtonBase)`
 `;
 
 function CustomButton({
+  id,
   children,
   type = "primary",
   variant = "contained",
@@ -79,6 +80,7 @@ function CustomButton({
   small = false,
   icon,
 }: {
+  id?: string;
   children?: string;
   type?: string;
   variant?: string;
@@ -124,6 +126,7 @@ function CustomButton({
     case "outlined":
       return (
         <ButtonOutlined
+          id={id}
           width={width}
           color={colors.background}
           onClick={type === "disabled" ? null : onClick}
@@ -148,6 +151,7 @@ function CustomButton({
     case "contained":
       return (
         <ButtonContained
+          id={id}
           width={width}
           color={colors.background}
           onClick={type === "disabled" ? null : onClick}
@@ -172,6 +176,7 @@ function CustomButton({
     case "text":
       return (
         <ButtonTypeText
+          id={id}
           width={width}
           onClick={type === "disabled" ? null : onClick}
           small={small}

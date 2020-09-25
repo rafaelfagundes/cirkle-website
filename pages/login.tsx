@@ -191,7 +191,14 @@ function Login(): JSX.Element {
     if (action === "signup") {
       // First and Lastname
       const splitedFullName: Array<string> = _displayName.split(" ");
-      if (splitedFullName.length < 2) {
+      if (
+        _displayName === "" ||
+        _displayName === null ||
+        _displayName === undefined
+      ) {
+        _errorsCount++;
+        _errors.displayName = "Por favor, preencha o seu nome e sobrenome";
+      } else if (splitedFullName.length < 2) {
         _errorsCount++;
         _errors.displayName =
           "Nome e sobrenome são obrigatórios. Ex.: Maria Silva";
@@ -199,13 +206,6 @@ function Login(): JSX.Element {
         _errorsCount++;
         _errors.displayName =
           "Por favor, preencha seu nome e somente 1 (um) sobrenome. Ex.: Maria Silva";
-      } else if (
-        _displayName === "" ||
-        _displayName === null ||
-        _displayName === undefined
-      ) {
-        _errorsCount++;
-        _errors.displayName = "Por favor, preencha o seu nome e sobrenome";
       } else {
         const _fullName =
           capitalizeFirstLetter(splitedFullName[0]) +
@@ -277,6 +277,8 @@ function Login(): JSX.Element {
                   type="email"
                   ref={email}
                   error={errors.email}
+                  id="login-email-field"
+                  onEnterKeyPressed={_login}
                 >
                   Email
                 </CustomTextField>
@@ -286,6 +288,8 @@ function Login(): JSX.Element {
                   type="password"
                   ref={password}
                   error={errors.password}
+                  id="login-password-field"
+                  onEnterKeyPressed={_login}
                 >
                   Senha
                 </CustomTextField>
@@ -298,6 +302,7 @@ function Login(): JSX.Element {
                   variant="contained"
                   onClick={_login}
                   loading={loading}
+                  id="login-button-send"
                 >
                   Entrar
                 </CustomButton>
@@ -370,6 +375,7 @@ function Login(): JSX.Element {
                   variant="contained"
                   onClick={_signUp}
                   loading={loading}
+                  id="signup-button-send"
                 >
                   Cadastrar
                 </CustomButton>

@@ -99,11 +99,13 @@ const useStyles = makeStyles(() => ({
 }));
 
 type CustomTextFieldProps = {
+  id?: string;
   children?: string;
   error?: string;
   type?: string;
   initialValue?: string;
   showIcon?: boolean;
+  onEnterKeyPressed?: () => void;
 };
 
 function getConfig(type: string): { icon: string; inputType: string } {
@@ -127,6 +129,12 @@ function getConfig(type: string): { icon: string; inputType: string } {
 const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
   const config = getConfig(props.type);
   const [showLabel, setShowLabel] = useState(false);
+
+  const handleOnKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (props.onEnterKeyPressed && event.key === "Enter") {
+      props.onEnterKeyPressed();
+    }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -163,6 +171,8 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
             placeholder={props.children}
             type={config.inputType}
             defaultValue={props.initialValue}
+            id={props.id}
+            onKeyPress={handleOnKeyPress}
           />
         )}
         {props.type === "phone" && (
@@ -173,6 +183,8 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
             type={config.inputType}
             defaultValue={props.initialValue}
             inputComponent={TextMaskCustom}
+            id={props.id}
+            onKeyPress={handleOnKeyPress}
           />
         )}
         {config.icon && props.showIcon && (

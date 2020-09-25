@@ -10,7 +10,8 @@ if (process.env.NODE_ENV === "development") {
 } else if (process.env.NODE_ENV === "test") {
   ALLOWED_HOSTS = ["localhost", "cirkle.com.br"];
 } else if (process.env.NODE_ENV === "production") {
-  ALLOWED_HOSTS = ["cirkle.com.br"];
+  // TODO: REMOVER
+  ALLOWED_HOSTS = ["localhost", "cirkle.com.br"];
 }
 export function allowedHosts(host: string): boolean {
   const result = _.findIndex(ALLOWED_HOSTS, function (o) {
