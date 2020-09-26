@@ -7,5 +7,6 @@ export function cloudinaryImage(
     size * window.devicePixelRatio
   }/`;
   const newUri = uri.replace("upload/", "upload/" + options);
+
   return newUri;
 }

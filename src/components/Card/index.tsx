@@ -21,7 +21,7 @@ function Card(props: CardProps): JSX.Element {
   return (
     <StyledCard
       bgColor={props.bgColor || Colors.WHITE}
-      padding={props.padding || true}
+      padding={props.padding === undefined ? true : props.padding}
     >
       {props.children}
     </StyledCard>

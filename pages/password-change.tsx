@@ -5,6 +5,7 @@ import React, { useRef, useState } from "react";
 import Center from "../src/components/Center";
 import CustomButton from "../src/components/CustomButton";
 import CustomTextField from "../src/components/CustomTextField";
+import Row from "../src/components/Row";
 import SimpleText from "../src/components/SimpleText";
 import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
@@ -200,7 +201,15 @@ function PasswordChange(): JSX.Element {
             Confirme a Nova Senha
           </CustomTextField>
           <SizedBox height={32}></SizedBox>
-          <Center>
+          <Row>
+            <CustomButton
+              type="delete"
+              variant="text"
+              width={160}
+              onClick={() => router.push("/profile")}
+            >
+              Cancelar
+            </CustomButton>
             <CustomButton
               width={160}
               onClick={changePassword}
@@ -208,7 +217,7 @@ function PasswordChange(): JSX.Element {
             >
               Alterar Senha
             </CustomButton>
-          </Center>
+          </Row>
           <SizedBox height={72}></SizedBox>
         </>
       )}

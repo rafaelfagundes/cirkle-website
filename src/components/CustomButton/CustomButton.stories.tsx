@@ -43,7 +43,14 @@ export default {
     type: {
       control: {
         type: "inline-radio",
-        options: ["primary", "secondary", "disabled", "success", "delete"],
+        options: [
+          "primary",
+          "secondary",
+          "disabled",
+          "success",
+          "delete",
+          "edit",
+        ],
       },
     },
     icon: {

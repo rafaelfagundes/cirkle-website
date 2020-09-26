@@ -5,10 +5,10 @@ import firebaseAdmin from "../config/firebaseAdmin";
 
 let ALLOWED_HOSTS: Array<string>;
 if (process.env.NODE_ENV === "development") {
-  ALLOWED_HOSTS = ["localhost"];
+  ALLOWED_HOSTS = ["localhost", "192.168.0.111"];
   console.log("Servidor de desenvolvimento");
 } else if (process.env.NODE_ENV === "test") {
-  ALLOWED_HOSTS = ["localhost", "cirkle.com.br"];
+  ALLOWED_HOSTS = ["localhost", "cirkle.com.br", "192.168.0.111"];
 } else if (process.env.NODE_ENV === "production") {
   // TODO: REMOVER
   ALLOWED_HOSTS = ["localhost", "cirkle.com.br"];

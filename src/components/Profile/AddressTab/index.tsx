@@ -1,9 +1,8 @@
-import { Container } from "@material-ui/core";
 import Axios from "axios";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import Address from "../../modules/address/Address";
+import Address from "../../../modules/address/Address";
 import AddressList from "./AddressList";
 import NewAddress from "./NewAddress";
 
@@ -11,6 +10,7 @@ function AddressTab(): JSX.Element {
   const storedAddressList = JSON.parse(localStorage.getItem("addressList"));
 
   const [showNewAddressPanel, setShowNewAddressPanel] = useState(false);
+  const [editAddressObj, setEditAddressObj] = useState(null);
   const [addressList, setAddressList] = useState(storedAddressList || []);
 
   const addAddress = (address: Address) => {
@@ -31,6 +31,7 @@ function AddressTab(): JSX.Element {
 
   const cancelAddAddress = () => {
     setShowNewAddressPanel(false);
+    setEditAddressObj(null);
   };
 
   const removeAddress = (id: string) => {
@@ -38,6 +39,12 @@ function AddressTab(): JSX.Element {
     const result = _addressList.filter((o: Address) => o._id !== id);
 
     setAddressList(result);
+  };
+
+  const editAddress = (id: string) => {
+    const address = _.find(addressList, (o: Address) => o._id === id);
+    setEditAddressObj(address);
+    setShowNewAddressPanel(true);
   };
 
   const setMainAddress = (id: string) => {
@@ -59,6 +66,23 @@ function AddressTab(): JSX.Element {
     setAddressList([mainAddress, ...others]);
   };
 
+  const updateAddress = (address: Address) => {
+    const _addressList = _.cloneDeep(addressList);
+
+    _addressList.forEach((item: Address, index: number) => {
+      if (item._id === address._id) {
+        console.log("achou", index);
+        _addressList[index] = address;
+      }
+    });
+
+    console.log("updateAddress -> _addressList", _addressList);
+
+    setAddressList(_addressList);
+    setEditAddressObj(null);
+    setShowNewAddressPanel(false);
+  };
+
   useEffect(() => {
     if (addressList) {
       localStorage.setItem("addressList", JSON.stringify(addressList));
@@ -68,22 +92,23 @@ function AddressTab(): JSX.Element {
 
   return (
     <>
-      <Container maxWidth="xs">
-        {!showNewAddressPanel && (
-          <AddressList
-            addressList={addressList}
-            removeAddress={removeAddress}
-            setMainAddress={setMainAddress}
-            setShowNewAddressPanel={setShowNewAddressPanel}
-          ></AddressList>
-        )}
-        {showNewAddressPanel && (
-          <NewAddress
-            addAddress={addAddress}
-            cancelAddAddress={cancelAddAddress}
-          ></NewAddress>
-        )}
-      </Container>
+      {!showNewAddressPanel && (
+        <AddressList
+          addressList={addressList}
+          removeAddress={removeAddress}
+          setMainAddress={setMainAddress}
+          setShowNewAddressPanel={setShowNewAddressPanel}
+          editAddress={editAddress}
+        ></AddressList>
+      )}
+      {showNewAddressPanel && (
+        <NewAddress
+          updateAddress={updateAddress}
+          editAddressObj={editAddressObj}
+          addAddress={addAddress}
+          cancelAddAddress={cancelAddAddress}
+        ></NewAddress>
+      )}
     </>
   );
 }

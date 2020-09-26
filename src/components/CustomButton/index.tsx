@@ -102,6 +102,11 @@ function CustomButton({
           background: Colors.LIGHT_GRAY,
           text: Colors.WHITE,
         };
+      case "edit":
+        return {
+          background: Colors.BLUE_JEANS,
+          text: Colors.WHITE,
+        };
       case "success":
         return {
           background: Colors.FOREST_GREEN_CRAYOLA,

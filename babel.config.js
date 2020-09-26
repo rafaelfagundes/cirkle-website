@@ -14,7 +14,7 @@ module.exports = function (api) {
     presets.push("next/babel");
     plugins.push([
       "styled-components",
-      { ssr: true, displayName: true, minify: true },
+      { ssr: true, displayName: true, minify: false },
     ]);
   } else {
     presets.push("next/babel");

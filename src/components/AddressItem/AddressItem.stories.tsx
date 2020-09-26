@@ -16,7 +16,9 @@ Default.args = {
   state: "MG",
   postalCode: "36309-012",
   mainAddress: false,
+  ediAddress: () => null,
   removeAddress: () => null,
+  setMainAddress: () => null,
 };
 
 export default {

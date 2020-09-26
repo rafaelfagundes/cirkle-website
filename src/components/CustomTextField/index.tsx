@@ -76,9 +76,9 @@ const StyledInputBase = styled(InputBase)`
   flex: 1;
 `;
 
-const PlaceHolder = styled.div<{ show: boolean }>`
+const PlaceHolder = styled.div<{ show: boolean; error: boolean }>`
   position: absolute;
-  background-color: ${Colors.PRIMARY};
+  background-color: ${(props) => (props.error ? Colors.ERROR : Colors.PRIMARY)};
   top: -10px;
   left: 6px;
   padding: 0 8px;
@@ -239,7 +239,14 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
         showLabel={showLabel}
         width={props.width}
       >
-        <PlaceHolder show={showLabel}>
+        <PlaceHolder
+          show={showLabel}
+          error={
+            props.error !== undefined &&
+            props.error !== null &&
+            props.error !== ""
+          }
+        >
           <PlaceHolderText>{props.children}</PlaceHolderText>
         </PlaceHolder>
         {_getInput(props.type)}

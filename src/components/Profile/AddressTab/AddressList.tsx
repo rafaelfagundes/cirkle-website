@@ -1,15 +1,15 @@
 import React from "react";
-import Address from "../../modules/address/Address";
-import AddressItem from "../AddressItem";
-import Center from "../Center";
-import CustomButton from "../CustomButton";
-import SimpleText from "../SimpleText";
-import SizedBox from "../SizedBox";
-import Title from "../Title";
+import Address from "../../../modules/address/Address";
+import AddressItem from "../../AddressItem";
+import Center from "../../Center";
+import CustomButton from "../../CustomButton";
+import SimpleText from "../../SimpleText";
+import SizedBox from "../../SizedBox";
 
 interface IAddressList {
   addressList: Array<Address>;
   removeAddress: (id: string) => void;
+  editAddress: (id: string) => void;
   setMainAddress: (id: string) => void;
   setShowNewAddressPanel: (value: boolean) => void;
 }
@@ -17,10 +17,6 @@ interface IAddressList {
 function AddressList(props: IAddressList): JSX.Element {
   return (
     <>
-      <SizedBox height={16}></SizedBox>
-      <Title>Seus Endereços</Title>
-      <SizedBox height={16}></SizedBox>
-
       {props.addressList.length === 0 && (
         <>
           <Center>
@@ -44,6 +40,7 @@ function AddressList(props: IAddressList): JSX.Element {
             number={item.number}
             removeAddress={props.removeAddress}
             setMainAddress={props.setMainAddress}
+            editAddress={props.editAddress}
             state={item.state}
             street={item.street}
             neighborhood={item.neighborhood}
