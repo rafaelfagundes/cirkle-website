@@ -10,7 +10,7 @@ import SimpleText from "../SimpleText";
 import SizedBox from "../SizedBox";
 
 interface IAddressItemsProps {
-  _id: string;
+  id: string;
   street: string;
   number: number;
   complement: string;
@@ -53,7 +53,7 @@ function AddressItem(props: IAddressItemsProps): JSX.Element {
                 <CloseButtonHolder title="Remover Endereço">
                   <Icon
                     type="close-red"
-                    onClick={() => props.removeAddress(props._id)}
+                    onClick={() => props.removeAddress(props.id)}
                   ></Icon>
                 </CloseButtonHolder>
               </span>
@@ -93,14 +93,14 @@ function AddressItem(props: IAddressItemsProps): JSX.Element {
         <Row spaceBetween>
           <CustomButton
             type="edit"
-            onClick={() => props.editAddress(props._id)}
+            onClick={() => props.editAddress(props.id)}
             width={400}
           >
             Editar
           </CustomButton>
           {!props.mainAddress && (
             <CustomButton
-              onClick={() => props.setMainAddress(props._id)}
+              onClick={() => props.setMainAddress(props.id)}
               width={400}
             >
               Definir Padrão

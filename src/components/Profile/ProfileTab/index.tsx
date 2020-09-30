@@ -116,8 +116,8 @@ function ProfileTab(): JSX.Element {
       displayName.current.children[0].value = _fullName;
     }
 
+    setErrors(_errors);
     if (_errorsCount) {
-      setErrors(_errors);
       return false;
     } else {
       return true;

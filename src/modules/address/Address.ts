@@ -1,5 +1,5 @@
 type Address = {
-  _id?: string;
+  id: string;
   street: string;
   number: number;
   complement?: string;

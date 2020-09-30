@@ -42,20 +42,18 @@ function ProductItem({
   const smartphone = useMediaQuery(theme.breakpoints.down("sm"));
   const cartContext = useCart();
   const wishlistContext = useWishlist();
-  const isAlreadyInWishlist = wishlistContext.isItemInWishlist(data._id);
+  const isAlreadyInWishlist = wishlistContext.isItemInWishlist(data.id);
 
   const _goToProduct = (id: string) => {
     console.log("go to product:", id);
   };
 
   const _addToCart = (item: Product) => {
-    // console.log("add to cart:", item);
-    item.id = item._id;
     item.cartQty = item.cartQty ? item.cartQty + 1 : 1;
     cartContext.addToCart(item);
   };
 
-  const isAlreadyInCart = cartContext.isItemInCart(data._id);
+  const isAlreadyInCart = cartContext.isItemInCart(data.id);
 
   const heartAnimation = async () => {
     const speed = 0.4; // lower is faster
@@ -92,7 +90,7 @@ function ProductItem({
             active={isAlreadyInWishlist}
             setActive={
               isAlreadyInWishlist
-                ? () => wishlistContext.removeFromWishlist(data._id)
+                ? () => wishlistContext.removeFromWishlist(data.id)
                 : () => wishlistContext.addToWishlist(data)
             }
           ></FavoriteIcon>
@@ -104,7 +102,7 @@ function ProductItem({
             <Icon
               type="remove"
               alt="Remover da Lista de Favoritos"
-              onClick={() => wishlistContext.removeFromWishlist(data._id)}
+              onClick={() => wishlistContext.removeFromWishlist(data.id)}
             ></Icon>
           </RemoveButton>
         </RemoveIconHolder>
@@ -113,7 +111,7 @@ function ProductItem({
         isSmartphone={smartphone}
         onDoubleClick={
           isAlreadyInWishlist
-            ? () => wishlistContext.removeFromWishlist(data._id)
+            ? () => wishlistContext.removeFromWishlist(data.id)
             : () => wishlistContext.addToWishlist(data)
         }
       >
@@ -124,7 +122,7 @@ function ProductItem({
         </AnimatedHeart>
         <Image image={cloudinaryImage(data.image, 230)}></Image>
         <BrandName>
-          <BrandNameText>{data.brand}</BrandNameText>
+          <BrandNameText>{data.brand.name}</BrandNameText>
         </BrandName>
         <Description>
           <Title>{data.title}</Title>
@@ -156,7 +154,7 @@ function ProductItem({
             <CustomButton
               type="secondary"
               variant="outlined"
-              onClick={() => _goToProduct(data._id)}
+              onClick={() => _goToProduct(data.id)}
             >
               Ver
             </CustomButton>

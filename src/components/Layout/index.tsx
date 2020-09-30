@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
-import initialData from "../../../src/cache/prepopulated.json";
 import Colors from "../../enums/Colors";
 import { useDialog } from "../../hooks/dialog/useDialog";
 import SideMenu from "../SideMenu/index";
@@ -23,14 +22,16 @@ const Background = styled.div`
   background: linear-gradient(180deg, #fafafa, ${Colors.ULTRA_LIGHT_GRAY});
 `;
 
-function Layout({ children }: { children: JSX.Element }): JSX.Element {
+interface LayoutProps {
+  children: JSX.Element;
+  menu: any;
+}
+
+function Layout(props: LayoutProps): JSX.Element {
   const [drawer, setDrawer] = useState(false);
   const dialogContext = useDialog();
 
-  const { data: menuData, error } = useSWR("/api/menu", {
-    errorRetryInterval: 25000,
-    initialData: initialData.menu,
-  });
+  const { data: menuData, error } = useSWR("/menu");
   if (error) console.log("Menu loading error", error);
 
   return (
@@ -47,7 +48,7 @@ function Layout({ children }: { children: JSX.Element }): JSX.Element {
 
       {/* Desktop */}
       <Hidden only={["xs"]}>
-        <NavBarDesktop menuData={menuData}></NavBarDesktop>
+        <NavBarDesktop menuData={menuData?.content}></NavBarDesktop>
       </Hidden>
       {/* Mobile */}
       <Hidden only={["sm", "md", "lg", "xl"]}>
@@ -58,14 +59,14 @@ function Layout({ children }: { children: JSX.Element }): JSX.Element {
       <Hidden only={["xs", "sm"]}>
         <Background>
           <Container maxWidth="md" disableGutters={true}>
-            {children}
+            {props.children}
           </Container>
         </Background>
       </Hidden>
       <Hidden only={["md", "lg", "xl"]}>
         <Background>
           <Container maxWidth="md" disableGutters={true}>
-            {children}
+            {props.children}
           </Container>
         </Background>
         <SwipeableDrawer
@@ -75,7 +76,7 @@ function Layout({ children }: { children: JSX.Element }): JSX.Element {
           onOpen={() => setDrawer(true)}
         >
           <SideMenu
-            data={menuData}
+            data={menuData?.content}
             closeMenu={() => setDrawer(false)}
           ></SideMenu>
         </SwipeableDrawer>

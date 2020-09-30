@@ -3,7 +3,7 @@ export function cloudinaryImage(
   size: number,
   quality = "low"
 ): string {
-  const options = `c_scale,q_auto:${quality},w_${
+  const options = `f_auto,c_scale,q_auto:${quality},w_${
     size * window.devicePixelRatio
   }/`;
   const newUri = uri.replace("upload/", "upload/" + options);

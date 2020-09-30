@@ -15,7 +15,7 @@ function AddressTab(): JSX.Element {
 
   const addAddress = (address: Address) => {
     const _id = uuidv4();
-    address._id = _id;
+    address.id = _id;
 
     addressList.length === 0
       ? (address.mainAddress = true)
@@ -36,13 +36,13 @@ function AddressTab(): JSX.Element {
 
   const removeAddress = (id: string) => {
     const _addressList = _.cloneDeep(addressList);
-    const result = _addressList.filter((o: Address) => o._id !== id);
+    const result = _addressList.filter((o: Address) => o.id !== id);
 
     setAddressList(result);
   };
 
   const editAddress = (id: string) => {
-    const address = _.find(addressList, (o: Address) => o._id === id);
+    const address = _.find(addressList, (o: Address) => o.id === id);
     setEditAddressObj(address);
     setShowNewAddressPanel(true);
   };
@@ -54,7 +54,7 @@ function AddressTab(): JSX.Element {
     const others: Array<Address> = [];
 
     _addressList.forEach((item: Address) => {
-      if (item._id === id) {
+      if (item.id === id) {
         item.mainAddress = true;
         mainAddress = _.cloneDeep(item);
       } else {
@@ -70,13 +70,10 @@ function AddressTab(): JSX.Element {
     const _addressList = _.cloneDeep(addressList);
 
     _addressList.forEach((item: Address, index: number) => {
-      if (item._id === address._id) {
-        console.log("achou", index);
+      if (item.id === address.id) {
         _addressList[index] = address;
       }
     });
-
-    console.log("updateAddress -> _addressList", _addressList);
 
     setAddressList(_addressList);
     setEditAddressObj(null);

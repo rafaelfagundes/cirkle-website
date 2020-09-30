@@ -3,8 +3,17 @@ import Product from "../../modules/product/Product";
 import useWishlist from "./useWishlist";
 
 const product: Product = {
-  brand: "Apple",
-  colors: ["Gray", "White", "Red", "Green"],
+  brand: {
+    id: "80ebff07-687a-48fa-a8d8-b57a5c40e353",
+    name: "Apple",
+    image: "apple.png",
+  },
+  colors: [
+    { id: "68f82d5f-6823-412b-9581-264c2e6fb495", name: "Gray" },
+    { id: "66af13c3-390f-4ab1-828c-b3b0af43e2af", name: "White" },
+    { id: "19dc594d-26dc-48ad-9999-3784c946ab56", name: "Red" },
+    { id: "f207fc8c-d606-47c5-81f9-814132c2acc7", name: "Green" },
+  ],
   description:
     "Expedita officiis impedit deleniti omnis sint labore perferendis debitis eaque. Architecto velit eius repellendus excepturi. Laborum magnam quo voluptas dicta similique quod. Non eum voluptatem ullam consequatur reiciendis repudiandae vel illo assumenda. Et corporis in.",
   enabled: true,
@@ -13,7 +22,10 @@ const product: Product = {
   price: 500,
   priceWhenNew: 700,
   qty: 10,
-  sizes: ["Normal", "Max"],
+  sizes: [
+    { id: "a2715b6d-26b0-4082-954d-07def627b09a", value: "Normal" },
+    { id: "44b5fc1a-9fc4-4c75-b46a-3af81b8d3d07", value: "Max" },
+  ],
   sku: "srilanka123",
   title: "iPhone 11 Pro",
   viewCount: 0,
@@ -24,8 +36,17 @@ const product: Product = {
 };
 
 const product2: Product = {
-  brand: "Apple",
-  colors: ["Gray", "White", "Red", "Green"],
+  brand: {
+    id: "80ebff07-687a-48fa-a8d8-b57a5c40e353",
+    name: "Apple",
+    image: "apple.png",
+  },
+  colors: [
+    { id: "68f82d5f-6823-412b-9581-264c2e6fb495", name: "Gray" },
+    { id: "66af13c3-390f-4ab1-828c-b3b0af43e2af", name: "White" },
+    { id: "19dc594d-26dc-48ad-9999-3784c946ab56", name: "Red" },
+    { id: "f207fc8c-d606-47c5-81f9-814132c2acc7", name: "Green" },
+  ],
   description:
     "Expedita officiis impedit deleniti omnis sint labore perferendis debitis eaque. Architecto velit eius repellendus excepturi. Laborum magnam quo voluptas dicta similique quod. Non eum voluptatem ullam consequatur reiciendis repudiandae vel illo assumenda. Et corporis in.",
   enabled: true,
@@ -34,7 +55,10 @@ const product2: Product = {
   price: 400,
   priceWhenNew: 600,
   qty: 5,
-  sizes: ["Normal", "Max"],
+  sizes: [
+    { id: "a2715b6d-26b0-4082-954d-07def627b09a", value: "Normal" },
+    { id: "44b5fc1a-9fc4-4c75-b46a-3af81b8d3d07", value: "Max" },
+  ],
   sku: "srilanka123",
   title: "iPhone 11 Pro",
   viewCount: 0,
@@ -86,7 +110,7 @@ test("should be able to remove an item from wishlist", () => {
   expect(result.current.props.value.wishlist.items[0].id).toEqual(product.id);
 
   act(() => {
-    result.current.props.value.removeFromWishlist(product._id);
+    result.current.props.value.removeFromWishlist(product.id);
   });
 
   expect(result.current.props.value.wishlist.items.length).toEqual(0);
@@ -100,7 +124,7 @@ test("should be able to check if an item is in the wishlist", () => {
   });
 
   expect(result.current.props.value.wishlist.items[0].id).toEqual(product.id);
-  expect(result.current.props.value.isItemInWishlist(product._id)).toBeTruthy();
+  expect(result.current.props.value.isItemInWishlist(product.id)).toBeTruthy();
 });
 
 test("should be able to check if an item is not in the wishlist", () => {

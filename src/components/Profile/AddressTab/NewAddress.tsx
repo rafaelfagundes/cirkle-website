@@ -87,8 +87,6 @@ function NewAddress({
     neighborhood.current.children[0].value = address.neighborhood;
     city.current.children[0].value = address.city;
     state.current.children[0].value = address.state;
-
-    number.current.children[0].focus();
   };
 
   const _clearAddress = () => {
@@ -119,6 +117,7 @@ function NewAddress({
                 const { cep, state, city, neighborhood, street } = result.data;
 
                 const address: Address = {
+                  id: null,
                   postalCode: cep,
                   number: 0,
                   state,
@@ -138,7 +137,7 @@ function NewAddress({
           _clearAddress();
         }
       }
-    }, 1000);
+    }, 250);
 
     return () => {
       clearInterval(postalCodeInterval);
@@ -207,6 +206,7 @@ function NewAddress({
   const _add = () => {
     if (!_validate()) return false;
     const address: Address = {
+      id: null,
       street: street.current.children[0].value,
       number: number.current.children[0].value,
       complement: complement.current.children[0].value,
@@ -222,7 +222,7 @@ function NewAddress({
   const _edit = () => {
     if (!_validate()) return false;
     const address: Address = {
-      _id: editAddressObj._id,
+      id: editAddressObj.id,
       mainAddress: editAddressObj.mainAddress,
       street: street.current.children[0].value,
       number: number.current.children[0].value,

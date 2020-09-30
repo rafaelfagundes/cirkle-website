@@ -25,14 +25,16 @@ function LoadingAnimation({
   color?: boolean;
 }): JSX.Element {
   return (
-    <StyledAnimation
-      size={size}
-      image={
-        color
-          ? "/images/loading/loading_color.png"
-          : "/images/loading/loading_white.png"
-      }
-    ></StyledAnimation>
+    <span data-test="loading-animation">
+      <StyledAnimation
+        size={size}
+        image={
+          color
+            ? "/images/loading/loading_color.png"
+            : "/images/loading/loading_white.png"
+        }
+      ></StyledAnimation>
+    </span>
   );
 }
 

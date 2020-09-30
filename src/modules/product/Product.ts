@@ -1,3 +1,7 @@
+import Brand from "../brand/Brand";
+import Color from "../color/Color";
+import Size from "../size/Size";
+
 type Product = {
   _id?: string;
   id: string;
@@ -5,14 +9,14 @@ type Product = {
   image: string;
   price: number;
   priceWhenNew: number;
-  brand: string;
+  brand: Brand;
   title: string;
   description: string;
   qty: number;
   cartQty?: number;
-  colors: Array<string>;
+  colors: Array<Color>;
   cartColor?: string;
-  sizes: Array<string>;
+  sizes: Array<Size>;
   cartSize?: string;
   viewCount: number;
   enabled: true;

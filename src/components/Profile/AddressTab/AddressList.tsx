@@ -32,7 +32,7 @@ function AddressList(props: IAddressList): JSX.Element {
       {props.addressList.map((item) => (
         <span key={item.street}>
           <AddressItem
-            _id={item._id}
+            id={item.id}
             city={item.city}
             complement={item.complement}
             mainAddress={item.mainAddress}

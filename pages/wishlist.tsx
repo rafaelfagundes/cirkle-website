@@ -66,14 +66,14 @@ function Wishlist(): JSX.Element {
   };
 
   const getCartButton = (item: Product) => {
-    const isAlreadyInCart = cartContext.isItemInCart(item._id);
+    const isAlreadyInCart = cartContext.isItemInCart(item.id);
 
     return (
       <CustomButton
         type={isAlreadyInCart ? "disabled" : "success"}
         variant="contained"
         onClick={() => {
-          item.id = item._id;
+          item.id = item.id;
           item.cartQty = 1;
           cartContext.addToCart(item);
         }}
@@ -114,7 +114,7 @@ function Wishlist(): JSX.Element {
             <CartItems>
               {wishlistContext.wishlist.items.map(
                 (item: Product, index: number) => (
-                  <CartItem key={item._id} showBackground={index % 2 === 0}>
+                  <CartItem key={item.id} showBackground={index % 2 === 0}>
                     <ImagePrice>
                       <CartItemImage
                         image={cloudinaryImage(item.image, 90)}
@@ -137,7 +137,7 @@ function Wishlist(): JSX.Element {
                             size={16}
                             type="remove"
                             onClick={() =>
-                              wishlistContext.removeFromWishlist(item._id)
+                              wishlistContext.removeFromWishlist(item.id)
                             }
                           ></Icon>
                         </TitleAndRemove>
@@ -149,7 +149,7 @@ function Wishlist(): JSX.Element {
                         <CustomButton
                           type="secondary"
                           variant="text"
-                          onClick={() => _goToProduct(item._id)}
+                          onClick={() => _goToProduct(item.id)}
                         >
                           Ver Produto
                         </CustomButton>

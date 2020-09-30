@@ -1,4 +1,5 @@
 import axios from "axios";
+import getConfig from "next/config";
 import React, { createContext, useContext, useState } from "react";
 import firebase from "../../config/firebase";
 import User, { LoginType } from "../../modules/user/User";
@@ -6,6 +7,14 @@ import { useDialog } from "../dialog/useDialog";
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 firebase.auth().languageCode = "pt";
+
+const config = getConfig();
+let publicRuntimeConfig: any;
+
+if (config) {
+  publicRuntimeConfig = getConfig().publicRuntimeConfig;
+}
+axios.defaults.baseURL = publicRuntimeConfig?.API_ENDPOINT || "";
 
 const ErrorMessages = {
   "auth/email-already-in-use":
@@ -84,6 +93,11 @@ export const useAuth = (): IAuthContextProps => {
   return useContext(AuthContext);
 };
 
+async function setAxiosAuthToken(user: firebase.User) {
+  const token = await user.getIdToken(true);
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+}
+
 async function saveUserDB(
   firebaseUser: firebase.User,
   token: string,
@@ -91,27 +105,28 @@ async function saveUserDB(
 ) {
   try {
     const user: User = {
-      loginType,
       name: firebaseUser.displayName,
-      uid: firebaseUser.uid,
       email: firebaseUser.email,
       isEmailVerified: firebaseUser.emailVerified,
       phoneNumber: firebaseUser.phoneNumber,
       picture: firebaseUser.photoURL,
+      uid: firebaseUser.uid,
+      loginType,
     };
     const response = await axios.post("/api/user", { user, token });
-    if (response) return response?.data?.data;
+    if (response) return response?.data;
     else return null;
   } catch (error) {
     return null;
   }
 }
 
-async function getUserDB(idToken: string): Promise<User> {
+async function getUserDB(): Promise<User> {
   try {
-    const response = await axios.get("/api/user", { params: { idToken } });
-    if (response) return response?.data?.data;
+    const response = await axios.get("/public-users");
+    if (response) return response?.data;
   } catch (error) {
+    console.log("Can't retrieve user", error);
     return null;
   }
 }
@@ -137,8 +152,9 @@ function useProviderAuth() {
         .signInWithEmailAndPassword(email, password);
 
       const idToken = await response.user.getIdToken();
-      const user = await getUserDB(idToken);
-      console.log("signin -> user", user);
+      await setAxiosAuthToken(response.user);
+      const user = await getUserDB();
+
       if (user) {
         user.loginType = LoginType.EMAIL_PASSWORD;
         saveUserInContextAndLocalStorage(user);
@@ -173,7 +189,7 @@ function useProviderAuth() {
       const response = await firebase.auth().signInWithPopup(googleProvider);
       const idToken = await response.user.getIdToken();
       console.log("signinWithGoogle -> idToken", idToken);
-      const user = await getUserDB(idToken);
+      const user = await getUserDB();
 
       if (user) {
         user.loginType = LoginType.GOOGLE;
@@ -209,7 +225,7 @@ function useProviderAuth() {
     try {
       const response = await firebase.auth().signInWithPopup(facebookProvider);
       const idToken = await response.user.getIdToken();
-      const user = await getUserDB(idToken);
+      const user = await getUserDB();
       if (user) {
         user.loginType = LoginType.FACEBOOK;
         saveUserInContextAndLocalStorage(user);
@@ -351,6 +367,14 @@ function useProviderAuth() {
       return false;
     }
   };
+
+  React.useEffect(() => {
+    firebase.auth().onIdTokenChanged((user) => {
+      if (user) {
+        setAxiosAuthToken(user);
+      }
+    });
+  }, []);
 
   // Return the user object and auth methods
   return {

@@ -1,22 +1,25 @@
 import { Hidden } from "@material-ui/core";
+import Axios from "axios";
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import useSWR from "swr";
-import initialData from "../src/cache/prepopulated.json";
 import HighlightsSection from "../src/components/HighlightsSection";
 import HomeCategories from "../src/components/HomeCategories";
 import HotSectionTitle from "../src/components/HotSection/HotSectionTitle";
-// import HotSection from "../src/components/HotSection";
 import HighlightsLoader from "../src/components/Loaders/Highlights";
 import HotProductsLoader from "../src/components/Loaders/HotProducts";
 import MainBannerLoader from "../src/components/Loaders/MainBanner";
 import MainBanner from "../src/components/MainBanner";
-// import NewsletterSignUp from "../src/components/NewsletterSignUp";
 import SearchBar from "../src/components/SearchBar";
 import SizedBox from "../src/components/SizedBox";
 import TopTextBanner from "../src/components/TopTextBanner";
 import Colors from "../src/enums/Colors";
 import { useCart } from "../src/hooks/cart/useCart";
+import Banner from "../src/modules/banner/Banner";
+import Brand from "../src/modules/brand/Brand";
+import Highlight from "../src/modules/highlight/Highlight";
+import Product from "../src/modules/product/Product";
+import Shipping from "../src/modules/shipping/Shipping";
 
 const HotSection = dynamic(() => import("../src/components/HotSection/"), {
   ssr: false,
@@ -29,39 +32,50 @@ const NewsletterSignUp = dynamic(
   }
 );
 
-function Home(): JSX.Element {
+interface HomeProps {
+  banner: Banner;
+  brands: Array<Brand>;
+  highlights: Array<Highlight>;
+  shipping: Shipping;
+  products: Array<Product>;
+}
+
+function Home(props: HomeProps): JSX.Element {
   const cartContext = useCart();
 
-  const { data: banner, error: bannerError } = useSWR("/api/banner", {
-    initialData: initialData.banner,
+  const { data: banner, error: bannerError } = useSWR("/banner", {
+    initialData: props.banner,
   });
+
   if (bannerError) console.log("Banner loading error", bannerError);
 
-  const { data: brands, error: brandsError } = useSWR("/api/brands");
+  const { data: brands, error: brandsError } = useSWR("/brands", {
+    initialData: props.brands,
+  });
   if (brandsError) console.log("Brands loading error", brandsError);
 
   const { data: hotProducts, error: productsError } = useSWR(
-    "/api/hot-products"
+    "/products?_sort=views:DESC&_limit=8",
+    {
+      initialData: props.products,
+    }
   );
-  if (productsError) console.log("Brands loading error", productsError);
+  if (productsError) console.log("Products loading error", productsError);
 
-  const { data: shipping, error: shippingError } = useSWR("/api/shipping", {
-    initialData: initialData.shipping,
+  const { data: shipping, error: shippingError } = useSWR("/shipping", {
+    initialData: props.shipping,
   });
   if (shippingError) console.log("Shipping loading error", shippingError);
 
-  const { data: highlights, error: highlightsError } = useSWR(
-    "/api/highlights",
-    {
-      initialData: initialData.highlights,
-    }
-  );
+  const { data: highlights, error: highlightsError } = useSWR("/highlights", {
+    initialData: props.highlights,
+  });
   if (highlightsError) console.log("Highlights loading error", highlightsError);
 
   useEffect(() => {
     if (shipping) {
-      const freeShipping = shipping.freeShipping.enabled;
-      const freeShippingValue = shipping.freeShipping.value;
+      const freeShipping = shipping.freeShipping;
+      const freeShippingValue = shipping.freeShippingValue;
 
       // Free Shipping
       if (freeShipping && freeShippingValue) {
@@ -127,6 +141,46 @@ function Home(): JSX.Element {
       </Hidden>
     </>
   );
+}
+
+// This function gets called at build time on server-side.
+// It won't be called on client-side, so you can even do
+// direct database queries. See the "Technical details" section.
+export async function getStaticProps(): Promise<any> {
+  // Call an external API endpoint to get posts.
+  // You can use any data fetching library
+  const bannerUrl = `${process.env.API_ENDPOINT}/banner`;
+  const bannerResult = await Axios.get(bannerUrl);
+  const banner = bannerResult.data;
+
+  const brandsUrl = `${process.env.API_ENDPOINT}/brands`;
+  const brandsResult = await Axios.get(brandsUrl);
+  const brands = brandsResult.data;
+
+  const highlightsUrl = `${process.env.API_ENDPOINT}/highlights`;
+  const highlightsResult = await Axios.get(highlightsUrl);
+  const highlights = highlightsResult.data;
+
+  const shippingUrl = `${process.env.API_ENDPOINT}/shipping`;
+  const shippingResult = await Axios.get(shippingUrl);
+  const shipping = shippingResult.data;
+
+  const productsUrl = `${process.env.API_ENDPOINT}/products?_sort=views:DESC&_limit=8`;
+  const productsResult = await Axios.get(productsUrl);
+  const products = productsResult.data;
+
+  // By returning { props: posts }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      banner,
+      brands,
+      highlights,
+      shipping,
+      products,
+    },
+    unstable_revalidate: 60,
+  };
 }
 
 export default Home;

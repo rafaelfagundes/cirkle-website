@@ -49,7 +49,6 @@ function HotSection({
     id: string;
     name: string;
     image: string;
-    link: string;
   }[];
 }): JSX.Element {
   const theme = useTheme();
@@ -61,7 +60,7 @@ function HotSection({
     <Section isSmartphone={isSmartphone}>
       <ItemsHolder disableScroll={!isSmartphone}>
         {products.map((item) => (
-          <ProductItem data={item} key={item._id}></ProductItem>
+          <ProductItem data={item} key={item.id}></ProductItem>
         ))}
         {isSmartphone ? <Spacer>-</Spacer> : null}
       </ItemsHolder>

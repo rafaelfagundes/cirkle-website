@@ -17,6 +17,8 @@ import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
 import { useCart } from "../src/hooks/cart/useCart";
 import Shipping from "../src/modules/cart/CartShipping";
+import Color from "../src/modules/color/Color";
+import Size from "../src/modules/size/Size";
 import theme from "../src/theme/theme";
 import { cloudinaryImage } from "../src/utils/image";
 import {
@@ -24,7 +26,6 @@ import {
   CartItem,
   CartItemImage,
   CartItems,
-  Color,
   CouponCheckboxRow,
   Description,
   ImagePrice,
@@ -36,8 +37,9 @@ import {
   Qty,
   Row,
   SideColumn,
-  Size,
   StyledCartContainer,
+  StyledColor,
+  StyledSize,
   Subvalue,
   TitleAndRemove,
   Value,
@@ -74,30 +76,19 @@ function Cart(): JSX.Element {
     return qtyList;
   };
 
-  const _getItemSizes = (sizes: Array<string>) => {
+  const _getItemSizes = (sizes: Array<Size>) => {
     if (sizes) {
-      return sizes.map((item) => ({ title: item, value: item }));
+      return sizes.map((item) => ({ title: item.value, value: item.value }));
     } else {
-      return [{ title: "M", value: "M" }];
+      return [{ title: "N/D", value: "N/D" }];
     }
   };
 
-  const _getItemColors = (colors: Array<string>) => {
+  const _getItemColors = (colors: Array<Color>) => {
     if (!colors) {
-      return [
-        { title: "Azul Escuro", value: "Azul Escuro" },
-        { title: "Bege", value: "Bege" },
-        { title: "Cinza", value: "Cinza" },
-        { title: "Dourado", value: "Dourado" },
-        { title: "Laranja", value: "Laranja" },
-        { title: "Marrom", value: "Marrom" },
-        { title: "Ouro", value: "Ouro" },
-        { title: "Preto", value: "Preto" },
-        { title: "Rosa", value: "Rosa" },
-        { title: "Vermelho", value: "Vermelho" },
-      ];
+      return [{ title: "N/D", value: "N/D" }];
     } else {
-      return colors.map((item) => ({ title: item, value: item }));
+      return colors.map((item) => ({ title: item.name, value: item.name }));
     }
   };
 
@@ -229,9 +220,9 @@ function Cart(): JSX.Element {
                           <Padding horizontal={6}>
                             <>
                               <Row spaceBetween>
-                                <Color>Cor: {item.cartColor}</Color>
+                                <StyledColor>Cor: {item.cartColor}</StyledColor>
                                 <SizedBox width={8}></SizedBox>
-                                <Size>Tam.: {item.cartSize}</Size>
+                                <StyledSize>Tam.: {item.cartSize}</StyledSize>
                                 <SizedBox width={8}></SizedBox>
                                 <Qty>Qtd.: {item.cartQty}</Qty>
                               </Row>

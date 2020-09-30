@@ -118,14 +118,14 @@ export const Price = styled.span`
   font-weight: 700;
 `;
 
-export const Color = styled.span`
+export const StyledColor = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   color: ${Colors.PRIMARY};
 `;
 
-export const Size = styled.span`
+export const StyledSize = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;

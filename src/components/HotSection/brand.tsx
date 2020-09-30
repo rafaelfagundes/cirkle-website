@@ -36,7 +36,6 @@ function Brand({
     id: string;
     name: string;
     image: string;
-    link: string;
   };
 }): JSX.Element {
   function calcHighlightItemWidth(): number {
@@ -61,7 +60,7 @@ function Brand({
   const widthHighlightItem = calcHighlightItemWidth();
 
   return (
-    <Link href={data.link}>
+    <Link href={"/" + data.id}>
       <StyledBrand width={widthHighlightItem} key={data.id}>
         <BrandImage
           width={widthHighlightItem}
