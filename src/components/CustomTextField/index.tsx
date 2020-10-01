@@ -5,6 +5,7 @@ import MaskedInput from "react-text-mask";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 import Icon from "../Icon";
+import SimpleText from "../SimpleText";
 import SizedBox from "../SizedBox";
 
 function PhoneMask(props) {
@@ -123,6 +124,8 @@ type CustomTextFieldProps = {
   initialValue?: string;
   showIcon?: boolean;
   width?: number;
+  helperText?: string;
+  disabled?: boolean;
   onEnterKeyPressed?: () => void;
 };
 
@@ -138,6 +141,8 @@ function getConfig(type: string): { icon: string; inputType: string } {
       return { icon: "phone", inputType: "text" };
     case "coupon":
       return { icon: "coupon", inputType: "text" };
+    case "date":
+      return { icon: "calendar", inputType: "text" };
 
     default:
       return { icon: null, inputType: "text" };
@@ -154,7 +159,7 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
     }
   };
 
-  const isEmptyField = (value) => {
+  const isEmptyField = (value: string) => {
     switch (value) {
       case "":
         return true;
@@ -183,7 +188,7 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
     };
   }, []);
 
-  const _getInput = (type) => {
+  const _getInput = (type: string) => {
     switch (type) {
       case "phone":
         return (
@@ -196,6 +201,7 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
             inputComponent={PhoneMask}
             id={props.id}
             onKeyPress={handleOnKeyPress}
+            disabled={props.disabled}
           />
         );
 
@@ -210,6 +216,7 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
             inputComponent={PostalCodeMask}
             id={props.id}
             onKeyPress={handleOnKeyPress}
+            disabled={props.disabled}
           />
         );
 
@@ -223,6 +230,7 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
             defaultValue={props.initialValue}
             id={props.id}
             onKeyPress={handleOnKeyPress}
+            disabled={props.disabled}
           />
         );
     }
@@ -258,6 +266,12 @@ const CustomTextField = React.forwardRef((props: CustomTextFieldProps, ref) => {
           </IconHolder>
         )}
       </StyledInput>
+      {props.helperText && (
+        <>
+          <SizedBox height={4}></SizedBox>
+          <SimpleText size={0.9}>{props.helperText}</SimpleText>
+        </>
+      )}
       {props.error && (
         <>
           <SizedBox height={8}></SizedBox>

@@ -1,4 +1,3 @@
-import axios from "axios";
 import _ from "lodash";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Product from "../../modules/product/Product";
@@ -70,8 +69,8 @@ function useWishlistProvider() {
   };
 
   const updateWishlist = async (wishlist: Wishlist) => {
-    const result = await axios.post("/api/wishlist", { wishlist });
-    localStorage.setItem("wishlist", JSON.stringify(result.data.wishlist));
+    // const result = await axios.post("/api/wishlist", { wishlist });
+    // localStorage.setItem("wishlist", JSON.stringify(result.data.wishlist));
   };
 
   useEffect(() => {

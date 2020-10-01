@@ -1,4 +1,3 @@
-import Axios from "axios";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -81,10 +80,10 @@ function AddressTab(): JSX.Element {
   };
 
   useEffect(() => {
-    if (addressList) {
-      localStorage.setItem("addressList", JSON.stringify(addressList));
-      Axios.post("/api/address", { addressList });
-    }
+    // if (addressList) {
+    //   localStorage.setItem("addressList", JSON.stringify(addressList));
+    //   Axios.post("/api/address", { addressList });
+    // }
   }, [addressList]);
 
   return (

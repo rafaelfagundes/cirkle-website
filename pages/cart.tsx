@@ -1,8 +1,8 @@
 import { Grid, useMediaQuery } from "@material-ui/core";
-import Checkbox from "@material-ui/core/Checkbox";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Card from "../src/components/Card";
+import CheckBoxWithLabel from "../src/components/CheckboxWithLabel";
 import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
 import CustomSelect from "../src/components/CustomSelect";
@@ -26,7 +26,6 @@ import {
   CartItem,
   CartItemImage,
   CartItems,
-  CouponCheckboxRow,
   Description,
   ImagePrice,
   Label,
@@ -365,19 +364,13 @@ function Cart(): JSX.Element {
                   </CustomButton>
                 </Row>
                 <SizedBox height={24}></SizedBox>
-                <CouponCheckboxRow>
-                  <Checkbox
-                    checked={hasCoupon}
-                    onChange={() => setHasCoupon(!hasCoupon)}
-                    inputProps={{ "aria-label": "primary checkbox" }}
-                  />
-                  <span
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setHasCoupon(!hasCoupon)}
-                  >
-                    <Title>Tenho um Cupom de Desconto</Title>
-                  </span>
-                </CouponCheckboxRow>
+
+                <CheckBoxWithLabel
+                  value={hasCoupon}
+                  onClick={() => setHasCoupon(!hasCoupon)}
+                  label="Tenho um Cupom de Desconto"
+                ></CheckBoxWithLabel>
+                <SizedBox height={hasCoupon ? 8 : 0}></SizedBox>
 
                 <OpacityAnimation animate={hasCoupon}>
                   <CustomTextField type="coupon" showIcon>
@@ -385,7 +378,7 @@ function Cart(): JSX.Element {
                   </CustomTextField>
                 </OpacityAnimation>
 
-                <SizedBox height={24}></SizedBox>
+                <SizedBox height={hasCoupon ? 24 : 16}></SizedBox>
                 <Title>Aceitamos</Title>
                 <SizedBox height={10}></SizedBox>
                 <>

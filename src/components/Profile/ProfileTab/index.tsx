@@ -13,7 +13,10 @@ import Center from "../../Center";
 import CustomButton from "../../CustomButton";
 import CustomTextField from "../../CustomTextField";
 import FileUploadButton from "../../FileUploadButton";
+import RadioButtonWithLabel from "../../RadioButtonWithLabel";
+import Row from "../../Row";
 import SizedBox from "../../SizedBox";
+import Subtitle from "../../Subtitle";
 
 const StyledAvatar = styled(Avatar)`
   width: 128px;
@@ -35,6 +38,10 @@ function ProfileTab(): JSX.Element {
   const email = useRef(null);
   const phoneNumber = useRef(null);
   const displayName = useRef(null);
+  const [gender, setGender] = useState(authContext.user.gender || "ND");
+  const [dateOfBirth, setDateOfBirth] = useState(
+    authContext.user.dateOfBirth || null
+  );
 
   const [picture, setPicture] = useState(null);
   const [uploadedPicture, setUploadedPicture] = useState(null);
@@ -45,6 +52,7 @@ function ProfileTab(): JSX.Element {
     displayName: null,
     email: null,
     phoneNumber: null,
+    dateOfBirth: null,
   };
   const [errors, setErrors] = useState(_.cloneDeep(errorsTemplate));
 
@@ -208,7 +216,7 @@ function ProfileTab(): JSX.Element {
           )}
         </>
       </Center>
-      <SizedBox height={16}></SizedBox>
+      <SizedBox height={24}></SizedBox>
       <ButtonsHolder>
         <FileUploadButton
           type="primary"
@@ -235,35 +243,78 @@ function ProfileTab(): JSX.Element {
       </ButtonsHolder>
 
       <SizedBox height={36}></SizedBox>
-      <CustomTextField
-        type="user"
-        ref={displayName}
-        error={errors.displayName}
-        initialValue={authContext.user.name}
-        showIcon
-      >
-        Nome e Sobrenome
-      </CustomTextField>
-      <SizedBox height={16}></SizedBox>
-      <CustomTextField
-        type="email"
-        ref={email}
-        error={errors.email}
-        initialValue={authContext.user.email}
-        showIcon
-      >
-        Email
-      </CustomTextField>
-      <SizedBox height={16}></SizedBox>
-      <CustomTextField
-        type="phone"
-        ref={phoneNumber}
-        error={errors.phoneNumber}
-        initialValue={authContext.user.phoneNumber}
-        showIcon
-      >
-        Celular (DDD + Número)
-      </CustomTextField>
+      <span data-test="profile-name">
+        <CustomTextField
+          type="user"
+          ref={displayName}
+          error={errors.displayName}
+          initialValue={authContext.user.name}
+          showIcon
+        >
+          Nome e Sobrenome
+        </CustomTextField>
+      </span>
+      <SizedBox height={24}></SizedBox>
+      <span data-test="profile-birth">
+        <CustomTextField
+          type="date"
+          error={errors.dateOfBirth}
+          ref={null}
+          initialValue={authContext.user.dateOfBirth.toString()}
+          showIcon
+        >
+          Data de Nascimento
+        </CustomTextField>
+      </span>
+      <SizedBox height={24}></SizedBox>
+      <Subtitle>Sexo</Subtitle>
+      <SizedBox height={6}></SizedBox>
+      <Row>
+        <RadioButtonWithLabel
+          value={gender === "F"}
+          label="Feminino"
+          onClick={() => setGender("F")}
+        ></RadioButtonWithLabel>
+        <SizedBox width={16}></SizedBox>
+        <RadioButtonWithLabel
+          value={gender === "M"}
+          label="Masculino"
+          onClick={() => setGender("M")}
+        ></RadioButtonWithLabel>
+        <SizedBox width={16}></SizedBox>
+        <RadioButtonWithLabel
+          value={gender === "NB"}
+          label="Não-Binário"
+          onClick={() => setGender("NB")}
+        ></RadioButtonWithLabel>
+      </Row>
+      <SizedBox height={24}></SizedBox>
+      <span data-test="profile-email">
+        <CustomTextField
+          type="email"
+          ref={email}
+          error={errors.email}
+          initialValue={authContext.user.email}
+          showIcon
+          helperText="Email somente para consulta. Não é possível alterar."
+          disabled
+        >
+          Email
+        </CustomTextField>
+      </span>
+      <SizedBox height={24}></SizedBox>
+      <span data-test="profile-phone">
+        <CustomTextField
+          type="phone"
+          ref={phoneNumber}
+          error={errors.phoneNumber}
+          initialValue={authContext.user.phoneNumber}
+          showIcon
+        >
+          Celular (DDD + Número)
+        </CustomTextField>
+      </span>
+
       <SizedBox height={36}></SizedBox>
       <Center>
         <CustomButton

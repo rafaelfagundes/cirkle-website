@@ -68,7 +68,7 @@ function PasswordChange(): JSX.Element {
       _password === undefined
     ) {
       _errorsCount++;
-      _errors.currentPassword = "Por favor, preencha a senha";
+      _errors.currentPassword = "Por favor, preencha a senha atual";
     }
 
     // New Password
@@ -86,14 +86,22 @@ function PasswordChange(): JSX.Element {
       _newPassword === undefined
     ) {
       _errorsCount++;
-      _errors.newPassword = "Por favor, preencha a senha";
+      _errors.newPassword = "Por favor, preencha a nova senha";
     } else if (_newPassword === _password) {
       _errorsCount++;
       _errors.newPassword = "A nova senha deve ser diferente da atual";
     }
 
     // Password Confirmation
-    if (_passwordConfirmation !== _newPassword) {
+    if (
+      _passwordConfirmation === "" ||
+      _passwordConfirmation === null ||
+      _passwordConfirmation === undefined
+    ) {
+      _errorsCount++;
+      _errors.passwordConfirmation =
+        "Por favor, preencha a confirmação da nova senha";
+    } else if (_passwordConfirmation !== _newPassword) {
       _errorsCount++;
       _errors.passwordConfirmation =
         "A nova senha e a confirmação da senha são diferentes. Confira novamente.";
@@ -174,32 +182,38 @@ function PasswordChange(): JSX.Element {
           <SizedBox height={isSmartPhone ? 32 : 72}></SizedBox>
           <Title>Alterar Senha</Title>
           <SizedBox height={32}></SizedBox>
-          <CustomTextField
-            ref={currentPassword}
-            type="password"
-            showIcon
-            error={errors.currentPassword}
-          >
-            Senha Atual
-          </CustomTextField>
+          <span data-test="password-change-old-password">
+            <CustomTextField
+              ref={currentPassword}
+              type="password"
+              showIcon
+              error={errors.currentPassword}
+            >
+              Senha Atual
+            </CustomTextField>
+          </span>
           <SizedBox height={32}></SizedBox>
-          <CustomTextField
-            ref={newPassword}
-            type="password"
-            showIcon
-            error={errors.newPassword}
-          >
-            Nova Senha
-          </CustomTextField>
+          <span data-test="password-change-new-password">
+            <CustomTextField
+              ref={newPassword}
+              type="password"
+              showIcon
+              error={errors.newPassword}
+            >
+              Nova Senha
+            </CustomTextField>
+          </span>
           <SizedBox height={16}></SizedBox>
-          <CustomTextField
-            ref={passwordConfirmation}
-            type="password"
-            showIcon
-            error={errors.passwordConfirmation}
-          >
-            Confirme a Nova Senha
-          </CustomTextField>
+          <span data-test="password-change-confirmation-password">
+            <CustomTextField
+              ref={passwordConfirmation}
+              type="password"
+              showIcon
+              error={errors.passwordConfirmation}
+            >
+              Confirme a Nova Senha
+            </CustomTextField>
+          </span>
           <SizedBox height={32}></SizedBox>
           <Row>
             <CustomButton
@@ -210,13 +224,15 @@ function PasswordChange(): JSX.Element {
             >
               Cancelar
             </CustomButton>
-            <CustomButton
-              width={160}
-              onClick={changePassword}
-              loading={newPasswordLoading}
-            >
-              Alterar Senha
-            </CustomButton>
+            <span data-test="password-change-submit-button">
+              <CustomButton
+                width={160}
+                onClick={changePassword}
+                loading={newPasswordLoading}
+              >
+                Alterar Senha
+              </CustomButton>
+            </span>
           </Row>
           <SizedBox height={72}></SizedBox>
         </>

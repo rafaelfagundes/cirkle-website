@@ -179,7 +179,7 @@ export async function getStaticProps(): Promise<any> {
       shipping,
       products,
     },
-    unstable_revalidate: 60,
+    revalidate: 60,
   };
 }
 

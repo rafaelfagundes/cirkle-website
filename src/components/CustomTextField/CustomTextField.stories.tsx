@@ -7,6 +7,7 @@ const Template = (args) => <CustomTextField {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   children: "Digite aqui seu texto",
+  helperText: "Um texto de auxílio",
 };
 
 export const WithError = Template.bind({});
