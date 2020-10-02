@@ -1,6 +1,6 @@
 import ptBr from "date-fns/locale/pt";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
@@ -71,38 +71,27 @@ function CustomTextField(props: any): JSX.Element {
 }
 
 interface CustomDatePickerProps {
-  value: string;
-  setDate: (value) => void;
+  value: Date;
+  setDate: (value: Date) => void;
   placeholder: string;
   showYearDropdown: boolean;
   withPortal: boolean;
 }
 
 function CustomDatePicker(props: CustomDatePickerProps): JSX.Element {
-  const [startDate, setStartDate] = useState(
-    props.value ? moment(props.value).toDate() : null
-  );
-
-  useEffect(() => {
-    if (startDate) {
-      props.setDate(startDate);
-    }
-  }, [startDate]);
-
   return (
     <>
       <DatePicker
         dateFormat="dd/MM/yyyy"
         locale="pt"
         customInput={<CustomTextField></CustomTextField>}
-        selected={startDate}
-        onChange={(date: Date) => setStartDate(date)}
+        selected={moment(props.value).toDate()}
+        onChange={props.setDate}
         showYearDropdown={props.showYearDropdown}
         scrollableYearDropdown
         yearDropdownItemNumber={100}
         placeholderText={props.placeholder}
         maxDate={new Date()}
-        value={props.value}
         withPortal={props.withPortal}
       />
     </>

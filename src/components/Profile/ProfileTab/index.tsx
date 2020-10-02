@@ -1,7 +1,6 @@
 import { Avatar, useMediaQuery } from "@material-ui/core";
 import axios, { AxiosResponse } from "axios";
 import _ from "lodash";
-import moment from "moment";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
@@ -46,9 +45,7 @@ function ProfileTab(): JSX.Element {
     authContext.user.gender || Gender.NOT_DEFININED
   );
   const [dateOfBirth, setDateOfBirth] = useState(
-    authContext.user.dateOfBirth
-      ? moment(authContext.user.dateOfBirth).format("DD/MM/yyyy")
-      : null
+    authContext.user.dateOfBirth ? authContext.user.dateOfBirth : null
   );
 
   const [picture, setPicture] = useState(null);
@@ -174,7 +171,7 @@ function ProfileTab(): JSX.Element {
     _user.name = displayName.current.children[0].value;
     if (uploadedPicture) _user.picture = uploadedPicture;
     _user.gender = gender;
-    _user.dateOfBirth = moment(dateOfBirth).toDate();
+    _user.dateOfBirth = dateOfBirth;
 
     setLoading(true);
     const result = await authContext.updateUser(_user);
