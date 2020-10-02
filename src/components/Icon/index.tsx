@@ -8,6 +8,7 @@ export const AVAILABLE_ICONS = [
   "bag-plus",
   "bag",
   "box",
+  "calendar",
   "check",
   "checkmark",
   "coupon",

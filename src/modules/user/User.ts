@@ -5,14 +5,14 @@ export enum LoginType {
 }
 
 export enum Gender {
-  F = "F",
-  M = "M",
-  NB = "NB",
-  ND = "ND",
+  FEMALE = "F",
+  MALE = "M",
+  NON_BINARY = "NB",
+  NOT_DEFININED = "ND",
 }
 
 type User = {
-  _id?: string;
+  id?: string;
   name: string;
   email?: string;
   isEmailVerified?: boolean;

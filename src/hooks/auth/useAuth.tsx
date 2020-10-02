@@ -335,11 +335,17 @@ function useProviderAuth() {
 
   const updateUser = async (user: User) => {
     try {
-      const token = await firebase.auth().currentUser.getIdToken();
-      const response = await axios.patch("/api/user", { user, token });
+      await firebase.auth().currentUser.getIdToken(true);
+      const response = await axios.put("/public-users/" + user.id, {
+        name: user.name,
+        phoneNumber: user.phoneNumber,
+        picture: user.picture,
+        dateOfBirth: user.dateOfBirth,
+        gender: user.gender,
+      });
       if (response) {
-        saveUserInContextAndLocalStorage(response?.data?.data);
-        return response?.data?.data;
+        saveUserInContextAndLocalStorage(response?.data);
+        return response?.data;
       } else return null;
     } catch (error) {
       console.log("updateUser -> error", error);

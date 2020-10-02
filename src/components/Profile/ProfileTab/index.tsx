@@ -1,22 +1,24 @@
-import { Avatar } from "@material-ui/core";
-import Axios, { AxiosResponse } from "axios";
+import { Avatar, useMediaQuery } from "@material-ui/core";
+import axios, { AxiosResponse } from "axios";
 import _ from "lodash";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../../hooks/auth/useAuth";
 import { useDialog } from "../../../hooks/dialog/useDialog";
-import { LoginType } from "../../../modules/user/User";
+import { Gender, LoginType } from "../../../modules/user/User";
+import theme from "../../../theme/theme";
 import { cloudinaryImage } from "../../../utils/image";
-import { capitalizeFirstLetter, validateEmail } from "../../../utils/string";
+import { capitalizeFirstLetter } from "../../../utils/string";
 import Center from "../../Center";
 import CustomButton from "../../CustomButton";
+import CustomDatePicker from "../../CustomDatePicker";
 import CustomTextField from "../../CustomTextField";
 import FileUploadButton from "../../FileUploadButton";
 import RadioButtonWithLabel from "../../RadioButtonWithLabel";
 import Row from "../../Row";
 import SizedBox from "../../SizedBox";
-import Subtitle from "../../Subtitle";
+import Title from "../../Title";
 
 const StyledAvatar = styled(Avatar)`
   width: 128px;
@@ -31,17 +33,18 @@ const ButtonsHolder = styled.div`
 `;
 
 function ProfileTab(): JSX.Element {
+  const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
+
   const authContext = useAuth();
   const router = useRouter();
   const dialogContext = useDialog();
 
-  const email = useRef(null);
   const phoneNumber = useRef(null);
   const displayName = useRef(null);
-  const [gender, setGender] = useState(authContext.user.gender || "ND");
-  const [dateOfBirth, setDateOfBirth] = useState(
-    authContext.user.dateOfBirth || null
+  const [gender, setGender] = useState(
+    authContext.user.gender || Gender.NOT_DEFININED
   );
+  const [dateOfBirth, setDateOfBirth] = useState(authContext.user.dateOfBirth);
 
   const [picture, setPicture] = useState(null);
   const [uploadedPicture, setUploadedPicture] = useState(null);
@@ -50,7 +53,6 @@ function ProfileTab(): JSX.Element {
 
   const errorsTemplate = {
     displayName: null,
-    email: null,
     phoneNumber: null,
     dateOfBirth: null,
   };
@@ -67,22 +69,11 @@ function ProfileTab(): JSX.Element {
   };
 
   const _validateProfile = () => {
-    const _email = email.current?.children[0].value;
     const _phoneNumber = phoneNumber.current?.children[0].value;
     const _displayName = displayName.current?.children[0].value;
 
     const _errors = _.cloneDeep(errorsTemplate);
     let _errorsCount = 0;
-
-    // Email
-    if (_email === "" || _email === null || _email === undefined) {
-      _errorsCount++;
-      _errors.email = "Por favor, preencha o email";
-    } else if (!validateEmail(_email)) {
-      _errorsCount++;
-      _errors.email =
-        "Por favor, preencha um email válido. Ex.: maria@gmail.com";
-    }
 
     // Phone Number
     if (
@@ -140,8 +131,11 @@ function ProfileTab(): JSX.Element {
     formData.append("file", file);
     formData.append("upload_preset", "avatarUpload");
 
+    const authorization = axios.defaults.headers.common["Authorization"];
+    delete axios.defaults.headers.common["Authorization"];
     try {
-      const response: AxiosResponse<any> = await Axios.post(endpoint, formData);
+      const response: AxiosResponse<any> = await axios.post(endpoint, formData);
+      axios.defaults.headers.common["Authorization"] = authorization;
       if (!response) {
         dialogContext.newDialog(
           true,
@@ -171,11 +165,12 @@ function ProfileTab(): JSX.Element {
   const updateProfile = async () => {
     if (!_validateProfile()) return;
     const _user = _.cloneDeep(authContext.user);
-
-    _user.email = email.current.children[0].value;
     _user.phoneNumber = phoneNumber.current.children[0].value;
     _user.name = displayName.current.children[0].value;
     if (uploadedPicture) _user.picture = uploadedPicture;
+    _user.gender = gender;
+    _user.dateOfBirth = dateOfBirth;
+    console.log("updateProfile -> _user", _user);
 
     setLoading(true);
     const result = await authContext.updateUser(_user);
@@ -255,52 +250,36 @@ function ProfileTab(): JSX.Element {
         </CustomTextField>
       </span>
       <SizedBox height={24}></SizedBox>
-      <span data-test="profile-birth">
-        <CustomTextField
-          type="date"
-          error={errors.dateOfBirth}
-          ref={null}
-          initialValue={authContext.user.dateOfBirth.toString()}
-          showIcon
-        >
-          Data de Nascimento
-        </CustomTextField>
-      </span>
-      <SizedBox height={24}></SizedBox>
-      <Subtitle>Sexo</Subtitle>
+      <Title>Sexo</Title>
       <SizedBox height={6}></SizedBox>
       <Row>
         <RadioButtonWithLabel
-          value={gender === "F"}
+          value={gender === Gender.FEMALE}
           label="Feminino"
-          onClick={() => setGender("F")}
+          onClick={() => setGender(Gender.FEMALE)}
         ></RadioButtonWithLabel>
         <SizedBox width={16}></SizedBox>
         <RadioButtonWithLabel
-          value={gender === "M"}
+          value={gender === Gender.MALE}
           label="Masculino"
-          onClick={() => setGender("M")}
+          onClick={() => setGender(Gender.MALE)}
         ></RadioButtonWithLabel>
         <SizedBox width={16}></SizedBox>
         <RadioButtonWithLabel
-          value={gender === "NB"}
+          value={gender === Gender.NON_BINARY}
           label="Não-Binário"
-          onClick={() => setGender("NB")}
+          onClick={() => setGender(Gender.NON_BINARY)}
         ></RadioButtonWithLabel>
       </Row>
       <SizedBox height={24}></SizedBox>
-      <span data-test="profile-email">
-        <CustomTextField
-          type="email"
-          ref={email}
-          error={errors.email}
-          initialValue={authContext.user.email}
-          showIcon
-          helperText="Email somente para consulta. Não é possível alterar."
-          disabled
-        >
-          Email
-        </CustomTextField>
+      <span data-test="profile-birth">
+        <CustomDatePicker
+          placeholder="Data de Nascimento"
+          setDate={setDateOfBirth}
+          value={dateOfBirth}
+          showYearDropdown
+          withPortal={isSmartPhone}
+        ></CustomDatePicker>
       </span>
       <SizedBox height={24}></SizedBox>
       <span data-test="profile-phone">
@@ -310,8 +289,9 @@ function ProfileTab(): JSX.Element {
           error={errors.phoneNumber}
           initialValue={authContext.user.phoneNumber}
           showIcon
+          width={216}
         >
-          Celular (DDD + Número)
+          Celular
         </CustomTextField>
       </span>
 

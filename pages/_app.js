@@ -14,6 +14,7 @@ import CartProvider from "../src/hooks/cart/useCart";
 import DialogProvider from "../src/hooks/dialog/useDialog";
 import WishlistProvider from "../src/hooks/wishlist/useWishlist";
 import theme from "../src/theme/theme";
+import "../styles/datepicker.css";
 import "../styles/global.css";
 import "../styles/nprogress.css";
 
