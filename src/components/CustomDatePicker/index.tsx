@@ -82,7 +82,6 @@ function CustomDatePicker(props: CustomDatePickerProps): JSX.Element {
   const [startDate, setStartDate] = useState(
     props.value ? moment(props.value).toDate() : null
   );
-  console.log("startDate", startDate);
 
   useEffect(() => {
     if (startDate) {

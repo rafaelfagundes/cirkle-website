@@ -234,7 +234,7 @@ function Login(): JSX.Element {
           </Center>
           <SizedBox height={8}></SizedBox>
           <Center>
-            <Subtitle>Você já está conectada(o)!</Subtitle>
+            <Subtitle>Você está conectada(o)!</Subtitle>
           </Center>
           <SizedBox height={24}></SizedBox>
           <Center>

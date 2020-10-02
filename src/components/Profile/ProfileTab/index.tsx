@@ -175,7 +175,6 @@ function ProfileTab(): JSX.Element {
     if (uploadedPicture) _user.picture = uploadedPicture;
     _user.gender = gender;
     _user.dateOfBirth = moment(dateOfBirth).toDate();
-    console.log("updateProfile -> _user", _user);
 
     setLoading(true);
     const result = await authContext.updateUser(_user);
