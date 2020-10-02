@@ -71,7 +71,7 @@ function CustomTextField(props: any): JSX.Element {
 }
 
 interface CustomDatePickerProps {
-  value: Date;
+  value: string;
   setDate: (date: Date) => void;
   placeholder: string;
   showYearDropdown: boolean;
