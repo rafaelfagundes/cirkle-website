@@ -4,6 +4,7 @@ import Colors from "../../enums/Colors";
 import Card from "../Card";
 import CustomButton from "../CustomButton";
 import Icon from "../Icon";
+import LoadingAnimation from "../LoadingAnimation";
 import Padding from "../Padding";
 import Row from "../Row";
 import SimpleText from "../SimpleText";
@@ -22,6 +23,7 @@ interface IAddressItemsProps {
   removeAddress: (id: string) => void;
   editAddress: (id: string) => void;
   setMainAddress: (id: string) => void;
+  loading: boolean;
 }
 
 const StyledAddressItem = styled.div`
@@ -29,14 +31,16 @@ const StyledAddressItem = styled.div`
   /* width: 375px; */
 `;
 
-const CloseButtonHolder = styled.div`
+const CloseButtonHolder = styled.div<{ loading: boolean }>`
   position: absolute;
   max-width: 375px;
   top: -8px;
   right: -8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: ${(props) =>
+    props.loading ? "none" : "0px 4px 8px rgba(0, 0, 0, 0.15)"};
   border-radius: 12px;
-  background-color: ${Colors.WHITE};
+  background-color: ${(props) =>
+    props.loading ? "transparent" : Colors.WHITE};
 `;
 
 function AddressItem(props: IAddressItemsProps): JSX.Element {
@@ -50,11 +54,19 @@ function AddressItem(props: IAddressItemsProps): JSX.Element {
           <>
             {!props.mainAddress && (
               <span data-test="address-remove-button">
-                <CloseButtonHolder title="Remover Endereço">
-                  <Icon
-                    type="close-red"
-                    onClick={() => props.removeAddress(props.id)}
-                  ></Icon>
+                <CloseButtonHolder
+                  title="Remover Endereço"
+                  loading={props.loading}
+                >
+                  {!props.loading && (
+                    <Icon
+                      type="close-red"
+                      onClick={() => props.removeAddress(props.id)}
+                    ></Icon>
+                  )}
+                  {props.loading && (
+                    <LoadingAnimation size={24} color></LoadingAnimation>
+                  )}
                 </CloseButtonHolder>
               </span>
             )}

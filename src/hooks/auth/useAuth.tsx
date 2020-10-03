@@ -98,11 +98,13 @@ async function setAxiosAuthToken(user: firebase.User) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 
-async function saveUserDB(
-  firebaseUser: firebase.User,
-  token: string,
-  loginType: LoginType
-) {
+async function updateToken() {
+  // console.log("updating user token", moment().format("DD/MM/yyyy HH:mm:ss"));
+  const token = await firebase.auth().currentUser?.getIdToken(true);
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+}
+
+async function saveUserDB(firebaseUser: firebase.User, loginType: LoginType) {
   try {
     const user: User = {
       name: firebaseUser.displayName,
@@ -113,7 +115,7 @@ async function saveUserDB(
       uid: firebaseUser.uid,
       loginType,
     };
-    const response = await axios.post("/api/user", { user, token });
+    const response = await axios.post("/public-users", { user });
     if (response) return response?.data;
     else return null;
   } catch (error) {
@@ -151,7 +153,6 @@ function useProviderAuth() {
         .auth()
         .signInWithEmailAndPassword(email, password);
 
-      const idToken = await response.user.getIdToken();
       await setAxiosAuthToken(response.user);
       const user = await getUserDB();
 
@@ -161,7 +162,6 @@ function useProviderAuth() {
       } else {
         const savedUser = await saveUserDB(
           response.user,
-          idToken,
           LoginType.EMAIL_PASSWORD
         );
         if (savedUser) {
@@ -187,19 +187,13 @@ function useProviderAuth() {
   const signinWithGoogle = async () => {
     try {
       const response = await firebase.auth().signInWithPopup(googleProvider);
-      const idToken = await response.user.getIdToken();
-      console.log("signinWithGoogle -> idToken", idToken);
       const user = await getUserDB();
 
       if (user) {
         user.loginType = LoginType.GOOGLE;
         saveUserInContextAndLocalStorage(user);
       } else {
-        const savedUser = await saveUserDB(
-          response.user,
-          idToken,
-          LoginType.GOOGLE
-        );
+        const savedUser = await saveUserDB(response.user, LoginType.GOOGLE);
         if (savedUser) {
           saveUserInContextAndLocalStorage(savedUser);
         } else {
@@ -224,7 +218,6 @@ function useProviderAuth() {
   const signinWithFacebook = async () => {
     try {
       const response = await firebase.auth().signInWithPopup(facebookProvider);
-      const idToken = await response.user.getIdToken();
       const user = await getUserDB();
       if (user) {
         user.loginType = LoginType.FACEBOOK;
@@ -232,7 +225,7 @@ function useProviderAuth() {
       } else {
         const savedUser = await saveUserDB(
           response.user,
-          idToken,
+
           LoginType.FACEBOOK
         );
         if (savedUser) {
@@ -271,10 +264,9 @@ function useProviderAuth() {
           "https://res.cloudinary.com/cirklebr/image/upload/v1598000887/avatar.jpg",
       });
 
-      const idToken = await response.user.getIdToken();
       const savedUser = await saveUserDB(
         response.user,
-        idToken,
+
         LoginType.EMAIL_PASSWORD
       );
       if (savedUser) {
@@ -375,11 +367,19 @@ function useProviderAuth() {
   };
 
   React.useEffect(() => {
+    updateToken();
     firebase.auth().onIdTokenChanged((user) => {
       if (user) {
         setAxiosAuthToken(user);
       }
     });
+    const updateInterval = setInterval(() => {
+      updateToken();
+    }, 300000);
+
+    return () => {
+      clearInterval(updateInterval);
+    };
   }, []);
 
   // Return the user object and auth methods

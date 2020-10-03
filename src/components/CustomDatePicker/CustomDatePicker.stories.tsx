@@ -8,7 +8,7 @@ const Template = (args: any) => <CustomDatePicker {...args}></CustomDatePicker>;
 export const Default = Template.bind({});
 
 Default.args = {
-  value: null,
+  value: Date.now(),
   setDate: () => null,
   placeholder: "Informe a data",
   showYearDropdown: true,

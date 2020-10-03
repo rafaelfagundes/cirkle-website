@@ -12,6 +12,7 @@ interface IAddressList {
   editAddress: (id: string) => void;
   setMainAddress: (id: string) => void;
   setShowNewAddressPanel: (value: boolean) => void;
+  loading: boolean;
 }
 
 function AddressList(props: IAddressList): JSX.Element {
@@ -44,6 +45,7 @@ function AddressList(props: IAddressList): JSX.Element {
             state={item.state}
             street={item.street}
             neighborhood={item.neighborhood}
+            loading={props.loading}
           ></AddressItem>
           <SizedBox height={24}></SizedBox>
         </span>

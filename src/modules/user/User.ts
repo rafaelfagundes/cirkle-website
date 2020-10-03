@@ -1,3 +1,5 @@
+import Address from "../address/Address";
+
 export enum LoginType {
   GOOGLE = "GOOGLE",
   FACEBOOK = "FACEBOOK",
@@ -19,10 +21,10 @@ type User = {
   phoneNumber?: string;
   picture?: string;
   uid: string;
-  createdAt?: Date;
   loginType: LoginType;
   gender?: Gender;
   dateOfBirth?: Date;
+  addresses?: Array<Address>;
 };
 
 export default User;

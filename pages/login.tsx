@@ -16,7 +16,6 @@ import TextSeparator from "../src/components/TextSeparator";
 import Title from "../src/components/Title";
 import Colors from "../src/enums/Colors";
 import { IAuthContextProps, useAuth } from "../src/hooks/auth/useAuth";
-import User from "../src/modules/user/User";
 import { capitalizeFirstLetter, validateEmail } from "../src/utils/string";
 
 const LoginContainer = styled.div`
@@ -40,20 +39,17 @@ function SocialLogin({ auth }: { auth: IAuthContextProps }): JSX.Element {
   const router = useRouter();
 
   const signIn = async (type: string): Promise<void> => {
-    let result: User;
     switch (type) {
       case "facebook":
-        result = await auth.signinWithFacebook();
+        await auth.signinWithFacebook();
+        router.push("/");
         break;
 
       case "google":
       default:
-        result = await auth.signinWithGoogle();
+        await auth.signinWithGoogle();
+        router.push("/");
         break;
-    }
-
-    if (result) {
-      router.push("/");
     }
   };
 
@@ -131,7 +127,7 @@ function Login(): JSX.Element {
     }
   };
 
-  const _signUp = async () => {
+  const signUp = async () => {
     if (!_validate("signup")) {
       return;
     }
@@ -373,7 +369,7 @@ function Login(): JSX.Element {
                   width={300}
                   type="primary"
                   variant="contained"
-                  onClick={_signUp}
+                  onClick={signUp}
                   loading={loading}
                   id="signup-button-send"
                 >

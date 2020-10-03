@@ -12,11 +12,13 @@ import SizedBox from "../../SizedBox";
 import Title from "../../Title";
 
 function NewAddress({
+  loading,
   addAddress,
   updateAddress,
   cancelAddAddress,
   editAddressObj,
 }: {
+  loading: boolean;
   addAddress: (address: Address) => void;
   updateAddress: (address: Address) => void;
   cancelAddAddress: () => void;
@@ -319,6 +321,7 @@ function NewAddress({
           type="primary"
           variant="contained"
           onClick={editAddressObj ? _edit : _add}
+          loading={loading}
         >
           {editAddressObj ? "Salvar" : "Adicionar"}
         </CustomButton>
