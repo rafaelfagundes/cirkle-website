@@ -24,7 +24,6 @@ const Background = styled.div`
 
 interface LayoutProps {
   children: JSX.Element;
-  menu: any;
 }
 
 function Layout(props: LayoutProps): JSX.Element {

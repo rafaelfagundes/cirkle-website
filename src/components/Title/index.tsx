@@ -8,7 +8,7 @@ const StyledTitle = styled.h1<{ color: string; size: number }>`
     sans-serif;
   font-weight: bold;
   font-size: ${(props) => props.size}px;
-  line-height: 16px;
+  line-height: ${(props) => props.size * 1.14}px;
   letter-spacing: -0.005em;
   text-transform: uppercase;
   margin: 0;
@@ -19,7 +19,7 @@ const StyledTitle = styled.h1<{ color: string; size: number }>`
 function Title({
   children,
   color = Colors.PRIMARY,
-  size = 14,
+  size = 16,
 }: {
   children: string;
   color?: string;

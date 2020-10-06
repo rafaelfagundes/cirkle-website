@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import CssBaseline from "@material-ui/core/CssBaseline";
-import axios from "axios";
+import { default as axios } from "axios";
 import Head from "next/head";
 import Router from "next/router";
 import NProgress from "nprogress";

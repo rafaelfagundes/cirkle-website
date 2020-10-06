@@ -181,7 +181,14 @@ function SideMenu({
   data: any;
   closeMenu: () => void;
 }): JSX.Element {
-  const [menuData, setMenuData] = useState(data);
+  const [menuData, setMenuData] = useState(
+    data
+      ? {
+          women: data.women,
+          kids: data.kids,
+        }
+      : null
+  );
   const [selectedTab, setSelectedTab] = useState("women");
   const router = useRouter();
   const auth = useAuth();
@@ -312,7 +319,9 @@ function SideMenu({
               ))}
               <Link href="/products/offers">
                 <StyledMenuItem lastOne>
-                  <MenuItemText color={Colors.MIDDLE_YELLOW}>Sale</MenuItemText>
+                  <MenuItemText color={Colors.MIDDLE_YELLOW}>
+                    Promoções
+                  </MenuItemText>
                 </StyledMenuItem>
               </Link>
             </MenuContainer>

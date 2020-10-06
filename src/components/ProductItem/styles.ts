@@ -126,6 +126,7 @@ export const FavoriteIconHolder = styled.div`
 `;
 
 export const AnimatedHeart = styled.div<{ isSmartphone: boolean }>`
+  user-select: none;
   position: absolute;
   left: ${(props) =>
     props.isSmartphone ? "calc(50% - 56px);" : "calc(50% - 48px);"};

@@ -160,7 +160,7 @@ function ProductItem({
             </CustomButton>
             <SizedBox width={8}></SizedBox>
             <CustomButton
-              type={isAlreadyInCart ? "disabled" : "success"}
+              type={isAlreadyInCart ? "disabled" : "primary"}
               variant="contained"
               onClick={() => _addToCart(data)}
               icon={isAlreadyInCart ? null : "bag-plus"}

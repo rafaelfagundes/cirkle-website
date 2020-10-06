@@ -48,6 +48,8 @@ const Tab = styled.div<{ active: boolean; color: string }>`
   height: ${(props) => (props.active ? "40px" : "30px")};
   background-color: ${(props) =>
     props.active ? props.color : Colors.VERY_LIGHT_GRAY};
+
+  transition: height 200ms;
 `;
 
 const TabText = styled.span<{ active: boolean }>`
@@ -102,11 +104,10 @@ const MenuItemText = styled.span<{
 }>`
   font-family: "FuturaPT";
   /* opacity: ${(props) => (props.active ? 1 : 0.95)}; */
-  font-size: 14px;
+  font-size: 1rem;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
-  padding: ${(props) => (props.first ? "16px 16px 16px 0" : "0 0 0 16px")} ;
-  text-transform: uppercase;
-  font-weight: 700;
+  padding: ${(props) => (props.first ? "16px 16px 16px 0" : "0 0 0 16px")};
+  font-weight: 400;
 `;
 
 const SubcategoriesHolder = styled.div`
@@ -134,7 +135,7 @@ const SubMenuItem = styled.div`
 const SubMenuItemText = styled.span`
   font-family: "FuturaPT";
   font-weight: 400;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 22px;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
   padding: 16px;
@@ -180,14 +181,17 @@ const LogoHolder = styled.div`
 `;
 
 function DesktopTopMenu({ data }: { data: any }): JSX.Element {
-  const [menuData, setMenuData] = useState(data);
+  const [menuData, setMenuData] = useState(null);
   const [selectedTab, setSelectedTab] = useState("women");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const auth = useAuth();
 
   useEffect(() => {
     if (data) {
-      setMenuData(data);
+      setMenuData({
+        women: data.women,
+        kids: data.kids,
+      });
     }
   }, [data]);
 
@@ -399,7 +403,9 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
                 ))}
               {menuData && (
                 <MenuItem>
-                  <MenuItemText color={Colors.MIDDLE_YELLOW}>Sale</MenuItemText>
+                  <MenuItemText color={Colors.MIDDLE_YELLOW}>
+                    Promoções
+                  </MenuItemText>
                 </MenuItem>
               )}
             </Categories>

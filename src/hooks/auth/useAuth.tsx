@@ -95,13 +95,13 @@ export const useAuth = (): IAuthContextProps => {
 
 async function setAxiosAuthToken(user: firebase.User) {
   const token = await user.getIdToken(true);
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  if (token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 
 async function updateToken() {
   // console.log("updating user token", moment().format("DD/MM/yyyy HH:mm:ss"));
   const token = await firebase.auth().currentUser?.getIdToken(true);
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  if (token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 
 async function saveUserDB(firebaseUser: firebase.User, loginType: LoginType) {
