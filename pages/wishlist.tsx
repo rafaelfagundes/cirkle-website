@@ -1,4 +1,5 @@
 import { useMediaQuery, useTheme } from "@material-ui/core";
+import Axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
@@ -6,6 +7,7 @@ import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
 import EmptyPage from "../src/components/EmptyPage";
 import Icon from "../src/components/Icon";
+import Layout from "../src/components/Layout";
 import Padding from "../src/components/Padding";
 import ProductItem from "../src/components/ProductItem";
 import SizedBox from "../src/components/SizedBox";
@@ -13,6 +15,7 @@ import Title from "../src/components/Title";
 import Colors from "../src/enums/Colors";
 import { useCart } from "../src/hooks/cart/useCart";
 import { useWishlist } from "../src/hooks/wishlist/useWishlist";
+import Menu from "../src/modules/menu/Menu";
 import Product from "../src/modules/product/Product";
 import { cloudinaryImage } from "../src/utils/image";
 import {
@@ -48,7 +51,7 @@ const SpaceBetweenColumn = styled.div`
   min-height: 113px;
 `;
 
-function Wishlist(): JSX.Element {
+function Wishlist({ menu }: { menu: Menu }): JSX.Element {
   const theme = useTheme();
   const isSmartphone = useMediaQuery(theme.breakpoints.down("xs"));
   const wishlistContext = useWishlist();
@@ -57,7 +60,7 @@ function Wishlist(): JSX.Element {
   const router = useRouter();
 
   const _goToProducts = () => {
-    router.push("/products");
+    typeof window !== "undefined" && router.push("/products");
   };
 
   const _goToProduct = (id: string) => {
@@ -90,94 +93,115 @@ function Wishlist(): JSX.Element {
   }, []);
 
   return (
-    <StyledWishlist isSmartphone={isSmartphone}>
-      {wishlistContext.wishlist.items.length > 0 && (
-        <>
-          <SizedBox height={16}></SizedBox>
-          <Padding horizontal={isSmartphone ? 16 : 0}>
-            <Title size={18}>Lista de Desejos</Title>
-          </Padding>
-          <SizedBox height={16}></SizedBox>
+    <Layout menu={menu}>
+      <StyledWishlist isSmartphone={isSmartphone}>
+        {wishlistContext.wishlist.items.length > 0 && (
+          <>
+            <SizedBox height={16}></SizedBox>
+            <Padding horizontal={isSmartphone ? 16 : 0}>
+              <Title size={18}>Lista de Desejos</Title>
+            </Padding>
+            <SizedBox height={16}></SizedBox>
 
-          {!isSmartphone && (
-            <Items>
-              {wishlistContext.wishlist.items.map((item, index) => (
-                <React.Fragment key={index}>
-                  <ProductItem data={item} removeButton={true}></ProductItem>
-                  {(index + 1) % 4 !== 0 && <SizedBox width={16}></SizedBox>}
-                </React.Fragment>
-              ))}
-            </Items>
-          )}
+            {!isSmartphone && (
+              <Items>
+                {wishlistContext.wishlist.items.map((item, index) => (
+                  <React.Fragment key={index}>
+                    <ProductItem data={item} removeButton={true}></ProductItem>
+                    {(index + 1) % 4 !== 0 && <SizedBox width={16}></SizedBox>}
+                  </React.Fragment>
+                ))}
+              </Items>
+            )}
 
-          {isSmartphone && (
-            <CartItems>
-              {wishlistContext.wishlist.items.map(
-                (item: Product, index: number) => (
-                  <CartItem key={item.id} showBackground={index % 2 === 0}>
-                    <ImagePrice>
-                      <CartItemImage
-                        image={cloudinaryImage(item.image, 90)}
-                        size={window.innerWidth * 0.24}
-                      ></CartItemImage>
-                      <SizedBox height={8}></SizedBox>
-                      <Price>
-                        {new Intl.NumberFormat("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        }).format(item.price)}
-                      </Price>
-                    </ImagePrice>
-                    <SpaceBetweenColumn>
-                      <div>
-                        <TitleAndRemove>
-                          <Title>{item.title}</Title>
-                          <SizedBox width={16}></SizedBox>
-                          <Icon
-                            size={16}
-                            type="remove"
-                            onClick={() =>
-                              wishlistContext.removeFromWishlist(item.id)
-                            }
-                          ></Icon>
-                        </TitleAndRemove>
+            {isSmartphone && (
+              <CartItems>
+                {wishlistContext.wishlist.items.map(
+                  (item: Product, index: number) => (
+                    <CartItem key={item.id} showBackground={index % 2 === 0}>
+                      <ImagePrice>
+                        <CartItemImage
+                          image={cloudinaryImage(item.image, 90)}
+                          size={window.innerWidth * 0.24}
+                        ></CartItemImage>
                         <SizedBox height={8}></SizedBox>
-                        <Description>{item.description}</Description>
-                        <SizedBox height={8}></SizedBox>
-                      </div>
-                      <MoreInfo>
-                        <CustomButton
-                          type="secondary"
-                          variant="text"
-                          onClick={() => _goToProduct(item.id)}
-                        >
-                          Ver Produto
-                        </CustomButton>
-                        {getCartButton(item)}
-                      </MoreInfo>
-                    </SpaceBetweenColumn>
-                  </CartItem>
-                )
-              )}
-            </CartItems>
-          )}
-        </>
-      )}
-      {wishlistContext.wishlist.items.length === 0 && (
-        <Column>
-          <SizedBox height={72}></SizedBox>
-          <EmptyPage
-            buttonAction={_goToProducts}
-            buttonText="Explorar"
-            icon="heart"
-            title="A Lista De Desejos Está Vazia"
-            subtitle="Adicione os produtos que você não quer perder de vista."
-          ></EmptyPage>
-          <SizedBox height={72}></SizedBox>
-        </Column>
-      )}
-    </StyledWishlist>
+                        <Price>
+                          {new Intl.NumberFormat("pt-BR", {
+                            style: "currency",
+                            currency: "BRL",
+                          }).format(item.price)}
+                        </Price>
+                      </ImagePrice>
+                      <SpaceBetweenColumn>
+                        <div>
+                          <TitleAndRemove>
+                            <Title>{item.title}</Title>
+                            <SizedBox width={16}></SizedBox>
+                            <Icon
+                              size={16}
+                              type="remove"
+                              onClick={() =>
+                                wishlistContext.removeFromWishlist(item.id)
+                              }
+                            ></Icon>
+                          </TitleAndRemove>
+                          <SizedBox height={8}></SizedBox>
+                          <Description>{item.description}</Description>
+                          <SizedBox height={8}></SizedBox>
+                        </div>
+                        <MoreInfo>
+                          <CustomButton
+                            type="secondary"
+                            variant="text"
+                            onClick={() => _goToProduct(item.id)}
+                          >
+                            Ver Produto
+                          </CustomButton>
+                          {getCartButton(item)}
+                        </MoreInfo>
+                      </SpaceBetweenColumn>
+                    </CartItem>
+                  )
+                )}
+              </CartItems>
+            )}
+          </>
+        )}
+        {wishlistContext.wishlist.items.length === 0 && (
+          <Column>
+            <SizedBox height={72}></SizedBox>
+            <EmptyPage
+              buttonAction={_goToProducts}
+              buttonText="Explorar"
+              icon="heart"
+              title="A Lista De Desejos Está Vazia"
+              subtitle="Adicione os produtos que você não quer perder de vista."
+            ></EmptyPage>
+            <SizedBox height={72}></SizedBox>
+          </Column>
+        )}
+      </StyledWishlist>
+    </Layout>
   );
+}
+
+// This function gets called at build time on server-side.
+// It won't be called on client-side, so you can even do
+// direct database queries. See the "Technical details" section.
+export async function getStaticProps(): Promise<any> {
+  // Call an external API endpoint to get posts.
+  // You can use any data fetching library
+
+  const menuUrl = `${process.env.API_ENDPOINT}/menu`;
+  const menuResult = await Axios.get(menuUrl);
+  const menu = menuResult.data;
+
+  return {
+    props: {
+      menu,
+    },
+    revalidate: 60,
+  };
 }
 
 export default Wishlist;

@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import { ThemeProvider } from "styled-components";
 import { SWRConfig } from "swr";
-import Layout from "../src/components/Layout/index";
 import AuthProvider from "../src/hooks/auth/useAuth";
 import CartProvider from "../src/hooks/cart/useCart";
 import DialogProvider from "../src/hooks/dialog/useDialog";
@@ -175,9 +174,7 @@ export default function MyApp(props) {
                     fetcher,
                   }}
                 >
-                  <Layout>
-                    <Component {...pageProps} />
-                  </Layout>
+                  <Component {...pageProps} />
                 </SWRConfig>
               </ThemeProvider>
             </CartProvider>

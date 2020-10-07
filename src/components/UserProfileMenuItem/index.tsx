@@ -62,11 +62,11 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
   }
 
   const _goToWishlist = () => {
-    router.push("/wishlist");
+    typeof window !== "undefined" && router.push("/wishlist");
   };
 
   const _goToProfile = () => {
-    router.push("/profile");
+    typeof window !== "undefined" && router.push("/profile");
   };
 
   if (isLogged) {

@@ -240,11 +240,11 @@ function NewAddress({
 
   return (
     <>
-      <SizedBox height={16}></SizedBox>
+      <SizedBox height={20}></SizedBox>
       <Title>
         {editAddressObj ? "Editar Endereço" : "Cadastrar Novo Endereço"}
       </Title>
-      <SizedBox height={16}></SizedBox>
+      <SizedBox height={20}></SizedBox>
       {!editAddressObj && (
         <>
           <SimpleText>
@@ -253,7 +253,7 @@ function NewAddress({
           </SimpleText>
         </>
       )}
-      <SizedBox height={16}></SizedBox>
+      <SizedBox height={20}></SizedBox>
       <Row>
         <span data-test="address-postalCode">
           <CustomTextField
@@ -270,35 +270,35 @@ function NewAddress({
           <LoadingAnimation size={36} color={true}></LoadingAnimation>
         )}
       </Row>
-      <SizedBox height={16}></SizedBox>
+      <SizedBox height={20}></SizedBox>
       <span data-test="address-street">
         <CustomTextField ref={street} error={addressErrors.street}>
           Logradouro (Rua, Avenida, Alameda, etc)*
         </CustomTextField>
       </span>
-      <SizedBox height={16}></SizedBox>
+      <SizedBox height={20}></SizedBox>
       <span data-test="address-number">
         <CustomTextField ref={number} error={addressErrors.number} width={100}>
           Número*
         </CustomTextField>
       </span>
-      <SizedBox height={16}></SizedBox>
+      <SizedBox height={20}></SizedBox>
       <span data-test="address-complement">
         <CustomTextField ref={complement}>Complemento</CustomTextField>
       </span>
-      <SizedBox height={16}></SizedBox>
+      <SizedBox height={20}></SizedBox>
       <span data-test="address-neighborhood">
         <CustomTextField ref={neighborhood} error={addressErrors.neighborhood}>
           Bairro*
         </CustomTextField>
       </span>
-      <SizedBox height={16}></SizedBox>
+      <SizedBox height={20}></SizedBox>
       <span data-test="address-city">
         <CustomTextField ref={city} error={addressErrors.city}>
           Cidade*
         </CustomTextField>
       </span>
-      <SizedBox height={16}></SizedBox>
+      <SizedBox height={20}></SizedBox>
       <span data-test="address-state">
         <CustomTextField ref={state} error={addressErrors.state}>
           Sigla do Estado*
@@ -315,7 +315,7 @@ function NewAddress({
         >
           Cancelar
         </CustomButton>
-        <SizedBox width={16}></SizedBox>
+        <SizedBox width={20}></SizedBox>
         <CustomButton
           width={300}
           type="primary"

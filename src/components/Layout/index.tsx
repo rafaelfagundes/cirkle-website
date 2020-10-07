@@ -19,19 +19,36 @@ const CustomDialog = dynamic(() => import("../CustomDialog"), {
 });
 
 const Background = styled.div`
+  /* background-color: #fff; */
   background: linear-gradient(180deg, #fafafa, ${Colors.ULTRA_LIGHT_GRAY});
 `;
 
 interface LayoutProps {
   children: JSX.Element;
+  containerMargin?: boolean;
+  menu?: any;
 }
 
-function Layout(props: LayoutProps): JSX.Element {
+function Layout({
+  children,
+  containerMargin = true,
+  menu,
+}: LayoutProps): JSX.Element {
   const [drawer, setDrawer] = useState(false);
   const dialogContext = useDialog();
 
-  const { data: menuData, error } = useSWR("/menu");
+  const { data, error } = useSWR(
+    "/menu",
+    menu
+      ? {
+          initialData: menu,
+        }
+      : undefined
+  );
   if (error) console.log("Menu loading error", error);
+
+  let content: any;
+  if (data?.content) content = data.content;
 
   return (
     <div>
@@ -47,7 +64,7 @@ function Layout(props: LayoutProps): JSX.Element {
 
       {/* Desktop */}
       <Hidden only={["xs"]}>
-        <NavBarDesktop menuData={menuData?.content}></NavBarDesktop>
+        <NavBarDesktop menuData={content}></NavBarDesktop>
       </Hidden>
       {/* Mobile */}
       <Hidden only={["sm", "md", "lg", "xl"]}>
@@ -57,15 +74,21 @@ function Layout(props: LayoutProps): JSX.Element {
       {/* <SizedBox height={32}></SizedBox> */}
       <Hidden only={["xs", "sm"]}>
         <Background>
-          <Container maxWidth="md" disableGutters={true}>
-            {props.children}
+          <Container
+            maxWidth={containerMargin ? "md" : false}
+            disableGutters={true}
+          >
+            {children}
           </Container>
         </Background>
       </Hidden>
       <Hidden only={["md", "lg", "xl"]}>
         <Background>
-          <Container maxWidth="md" disableGutters={true}>
-            {props.children}
+          <Container
+            maxWidth={containerMargin ? "md" : false}
+            disableGutters={true}
+          >
+            {children}
           </Container>
         </Background>
         <SwipeableDrawer
@@ -75,7 +98,7 @@ function Layout(props: LayoutProps): JSX.Element {
           onOpen={() => setDrawer(true)}
         >
           <SideMenu
-            data={menuData?.content}
+            data={content}
             closeMenu={() => setDrawer(false)}
           ></SideMenu>
         </SwipeableDrawer>

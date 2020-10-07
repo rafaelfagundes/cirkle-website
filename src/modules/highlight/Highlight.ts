@@ -1,5 +1,4 @@
 type Highlight = {
-  _id?: string;
   id: string;
   title: string;
   subtitle: string;

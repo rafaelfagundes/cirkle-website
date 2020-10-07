@@ -4,7 +4,6 @@ import Product from "../product/Product";
 import Shipping from "./CartShipping";
 
 type Cart = {
-  _id?: string;
   items: Array<Product>;
   shipping: Shipping;
   address: Address;

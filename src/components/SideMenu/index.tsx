@@ -216,7 +216,7 @@ function SideMenu({
 
   const goToWishlist = () => {
     closeMenu();
-    router.push("/wishlist");
+    typeof window !== "undefined" && router.push("/wishlist");
   };
 
   return (

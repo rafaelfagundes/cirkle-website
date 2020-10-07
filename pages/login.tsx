@@ -1,4 +1,5 @@
 import { Container, Hidden } from "@material-ui/core";
+import Axios from "axios";
 import _ from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
@@ -7,6 +8,7 @@ import Center from "../src/components/Center";
 import CustomButton from "../src/components/CustomButton";
 import CustomTextField from "../src/components/CustomTextField";
 import FormTabs, { ITab } from "../src/components/FormTabs";
+import Layout from "../src/components/Layout";
 import Row from "../src/components/Row";
 import SizedBox from "../src/components/SizedBox";
 import SocialLoginButton from "../src/components/SocialLoginButton";
@@ -16,6 +18,7 @@ import TextSeparator from "../src/components/TextSeparator";
 import Title from "../src/components/Title";
 import Colors from "../src/enums/Colors";
 import { IAuthContextProps, useAuth } from "../src/hooks/auth/useAuth";
+import Menu from "../src/modules/menu/Menu";
 import { capitalizeFirstLetter, validateEmail } from "../src/utils/string";
 
 const LoginContainer = styled.div`
@@ -42,13 +45,13 @@ function SocialLogin({ auth }: { auth: IAuthContextProps }): JSX.Element {
     switch (type) {
       case "facebook":
         await auth.signinWithFacebook();
-        router.push("/");
+        typeof window !== "undefined" && router.push("/");
         break;
 
       case "google":
       default:
         await auth.signinWithGoogle();
-        router.push("/");
+        typeof window !== "undefined" && router.push("/");
         break;
     }
   };
@@ -74,7 +77,7 @@ function SocialLogin({ auth }: { auth: IAuthContextProps }): JSX.Element {
   );
 }
 
-function Login(): JSX.Element {
+function Login({ menu }: { menu: Menu }): JSX.Element {
   const auth: IAuthContextProps = useAuth();
   const router = useRouter();
   const [page, setPage] = useState(router.asPath);
@@ -123,7 +126,7 @@ function Login(): JSX.Element {
     const result = await auth.signin(_email, _password);
     setLoading(false);
     if (result) {
-      router.push("/");
+      typeof window !== "undefined" && router.push("/");
     }
   };
 
@@ -139,7 +142,7 @@ function Login(): JSX.Element {
     const result = await auth.signup(_displayName, _email, _password);
     setLoading(false);
     if (result) {
-      router.push("/");
+      typeof window !== "undefined" && router.push("/");
     }
   };
 
@@ -219,176 +222,197 @@ function Login(): JSX.Element {
   };
 
   return (
-    <Container maxWidth="sm" disableGutters>
-      {auth.user && (
-        <LoginContainer>
-          <Hidden only={["xs", "sm"]}>
-            <SizedBox height={72}></SizedBox>
-          </Hidden>
-          <Center>
-            <Title>{`Olá ${auth?.user?.name || auth?.user?.email}!`}</Title>
-          </Center>
-          <SizedBox height={8}></SizedBox>
-          <Center>
-            <Subtitle>Você está conectada(o)!</Subtitle>
-          </Center>
-          <SizedBox height={24}></SizedBox>
-          <Center>
-            <CustomButton
-              onClick={signOut}
-              type="primary"
-              variant="contained"
-              loading={loading}
-              width={300}
-            >
-              Desconectar
-            </CustomButton>
-          </Center>
-          <Hidden only={["xs", "sm"]}>
-            <SizedBox height={72}></SizedBox>
-          </Hidden>
-        </LoginContainer>
-      )}
-      {!auth.user && (
-        <LoginContainer>
-          <Hidden only={["xs", "sm"]}>
-            <SizedBox height={72}></SizedBox>
-          </Hidden>
-          <FormTabs
-            tabs={tabs}
-            activeTab={page}
-            setActiveTab={_setActiveTab}
-          ></FormTabs>
-          <SizedBox height={16}></SizedBox>
-          {page === "/login" && (
-            <>
-              <SizedBox height={32}></SizedBox>
-              <Center>
-                <Title>Entrar com Email</Title>
-              </Center>
-              <Container maxWidth="xs">
-                <SizedBox height={24}></SizedBox>
-                <CustomTextField
-                  showIcon
-                  type="email"
-                  ref={email}
-                  error={errors.email}
-                  id="login-email-field"
-                  onEnterKeyPressed={_login}
-                >
-                  Email
-                </CustomTextField>
-                <SizedBox height={16}></SizedBox>
-                <CustomTextField
-                  showIcon
-                  type="password"
-                  ref={password}
-                  error={errors.password}
-                  id="login-password-field"
-                  onEnterKeyPressed={_login}
-                >
-                  Senha
-                </CustomTextField>
-                <SizedBox height={24}></SizedBox>
-              </Container>
-              <Center>
-                <CustomButton
-                  width={300}
-                  type="primary"
-                  variant="contained"
-                  onClick={_login}
-                  loading={loading}
-                  id="login-button-send"
-                >
-                  Entrar
-                </CustomButton>
-              </Center>
-              <SizedBox height={16}></SizedBox>
-              <Center>
-                <TextLink href="/recover-password">
-                  Esqueci Minha Senha
-                </TextLink>
-              </Center>
-              <SizedBox height={16}></SizedBox>
-              <TextSeparator>OU</TextSeparator>
-              <SizedBox height={24}></SizedBox>
-              <SocialLogin auth={auth}></SocialLogin>
-            </>
-          )}
-          {page === "/signup" && (
-            <>
-              <SizedBox height={32}></SizedBox>
-              <SocialLogin auth={auth}></SocialLogin>
-              <SizedBox height={16}></SizedBox>
-              <TextSeparator>OU</TextSeparator>
-              <SizedBox height={24}></SizedBox>
-              <Center>
-                <Title>Cadastre-se com seu Email</Title>
-              </Center>
-              <Container maxWidth="xs">
-                <SizedBox height={24}></SizedBox>
-                <CustomTextField
-                  showIcon
-                  type="user"
-                  ref={displayName}
-                  error={errors.displayName}
-                >
-                  Nome e Sobrenome
-                </CustomTextField>
-                <SizedBox height={16}></SizedBox>
-                <CustomTextField
-                  showIcon
-                  type="email"
-                  ref={email}
-                  error={errors.email}
-                >
-                  Email
-                </CustomTextField>
-                <SizedBox height={16}></SizedBox>
-                <CustomTextField
-                  showIcon
-                  type="password"
-                  ref={password}
-                  error={errors.password}
-                >
-                  Senha
-                </CustomTextField>
-                <SizedBox height={24}></SizedBox>
-              </Container>
-
-              <Container maxWidth="xs">
-                <Text>
-                  Ao criar um conta, você concorda com os termos de uso e a
-                  política de privacidade
-                </Text>
-              </Container>
-
-              <SizedBox height={16}></SizedBox>
-              <Center>
-                <CustomButton
-                  width={300}
-                  type="primary"
-                  variant="contained"
-                  onClick={signUp}
-                  loading={loading}
-                  id="signup-button-send"
-                >
-                  Cadastrar
-                </CustomButton>
-              </Center>
-            </>
-          )}
-
-          <Hidden only={["xs", "sm"]}>
-            <SizedBox height={72}></SizedBox>
-          </Hidden>
-          <Hidden only={["md", "lg", "xl"]}>
+    <Layout menu={menu}>
+      <Container maxWidth="sm" disableGutters>
+        {auth.user && (
+          <LoginContainer>
+            <Hidden only={["xs", "sm"]}>
+              <SizedBox height={72}></SizedBox>
+            </Hidden>
+            <Center>
+              <Title>{`Olá ${auth?.user?.name || auth?.user?.email}!`}</Title>
+            </Center>
+            <SizedBox height={8}></SizedBox>
+            <Center>
+              <Subtitle>Você está conectada(o)!</Subtitle>
+            </Center>
             <SizedBox height={24}></SizedBox>
-          </Hidden>
-        </LoginContainer>
-      )}
-    </Container>
+            <Center>
+              <CustomButton
+                onClick={signOut}
+                type="primary"
+                variant="contained"
+                loading={loading}
+                width={300}
+              >
+                Desconectar
+              </CustomButton>
+            </Center>
+            <Hidden only={["xs", "sm"]}>
+              <SizedBox height={72}></SizedBox>
+            </Hidden>
+          </LoginContainer>
+        )}
+        {!auth.user && (
+          <LoginContainer>
+            <Hidden only={["xs", "sm"]}>
+              <SizedBox height={72}></SizedBox>
+            </Hidden>
+            <FormTabs
+              tabs={tabs}
+              activeTab={page}
+              setActiveTab={_setActiveTab}
+            ></FormTabs>
+            <SizedBox height={16}></SizedBox>
+            {page === "/login" && (
+              <>
+                <SizedBox height={32}></SizedBox>
+                <Center>
+                  <Title>Entrar com Email</Title>
+                </Center>
+                <Container maxWidth="xs">
+                  <SizedBox height={24}></SizedBox>
+                  <CustomTextField
+                    showIcon
+                    type="email"
+                    ref={email}
+                    error={errors.email}
+                    id="login-email-field"
+                    onEnterKeyPressed={_login}
+                  >
+                    Email
+                  </CustomTextField>
+                  <SizedBox height={16}></SizedBox>
+                  <CustomTextField
+                    showIcon
+                    type="password"
+                    ref={password}
+                    error={errors.password}
+                    id="login-password-field"
+                    onEnterKeyPressed={_login}
+                  >
+                    Senha
+                  </CustomTextField>
+                  <SizedBox height={24}></SizedBox>
+                </Container>
+                <Center>
+                  <CustomButton
+                    width={300}
+                    type="primary"
+                    variant="contained"
+                    onClick={_login}
+                    loading={loading}
+                    id="login-button-send"
+                  >
+                    Entrar
+                  </CustomButton>
+                </Center>
+                <SizedBox height={16}></SizedBox>
+                <Center>
+                  <TextLink href="/recover-password">
+                    Esqueci Minha Senha
+                  </TextLink>
+                </Center>
+                <SizedBox height={16}></SizedBox>
+                <TextSeparator>OU</TextSeparator>
+                <SizedBox height={24}></SizedBox>
+                <SocialLogin auth={auth}></SocialLogin>
+              </>
+            )}
+            {page === "/signup" && (
+              <>
+                <SizedBox height={32}></SizedBox>
+                <SocialLogin auth={auth}></SocialLogin>
+                <SizedBox height={16}></SizedBox>
+                <TextSeparator>OU</TextSeparator>
+                <SizedBox height={24}></SizedBox>
+                <Center>
+                  <Title>Cadastre-se com seu Email</Title>
+                </Center>
+                <Container maxWidth="xs">
+                  <SizedBox height={24}></SizedBox>
+                  <CustomTextField
+                    showIcon
+                    type="user"
+                    ref={displayName}
+                    error={errors.displayName}
+                  >
+                    Nome e Sobrenome
+                  </CustomTextField>
+                  <SizedBox height={16}></SizedBox>
+                  <CustomTextField
+                    showIcon
+                    type="email"
+                    ref={email}
+                    error={errors.email}
+                  >
+                    Email
+                  </CustomTextField>
+                  <SizedBox height={16}></SizedBox>
+                  <CustomTextField
+                    showIcon
+                    type="password"
+                    ref={password}
+                    error={errors.password}
+                  >
+                    Senha
+                  </CustomTextField>
+                  <SizedBox height={24}></SizedBox>
+                </Container>
+
+                <Container maxWidth="xs">
+                  <Text>
+                    Ao criar um conta, você concorda com os termos de uso e a
+                    política de privacidade
+                  </Text>
+                </Container>
+
+                <SizedBox height={16}></SizedBox>
+                <Center>
+                  <CustomButton
+                    width={300}
+                    type="primary"
+                    variant="contained"
+                    onClick={signUp}
+                    loading={loading}
+                    id="signup-button-send"
+                  >
+                    Cadastrar
+                  </CustomButton>
+                </Center>
+              </>
+            )}
+
+            <Hidden only={["xs", "sm"]}>
+              <SizedBox height={72}></SizedBox>
+            </Hidden>
+            <Hidden only={["md", "lg", "xl"]}>
+              <SizedBox height={24}></SizedBox>
+            </Hidden>
+          </LoginContainer>
+        )}
+      </Container>
+    </Layout>
   );
+}
+
+// This function gets called at build time on server-side.
+// It won't be called on client-side, so you can even do
+// direct database queries. See the "Technical details" section.
+export async function getStaticProps(): Promise<any> {
+  // Call an external API endpoint to get posts.
+  // You can use any data fetching library
+
+  const menuUrl = `${process.env.API_ENDPOINT}/menu`;
+  const menuResult = await Axios.get(menuUrl);
+  const menu = menuResult.data;
+
+  return {
+    props: {
+      menu,
+    },
+    revalidate: 60,
+  };
 }
 
 export default Login;

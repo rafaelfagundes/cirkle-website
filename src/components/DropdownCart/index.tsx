@@ -37,11 +37,11 @@ function DropdownCart(): JSX.Element {
   const cartButton = useRef<HTMLDivElement>(null);
 
   const _goToProducts = () => {
-    router.push("/products");
+    typeof window !== "undefined" && router.push("/products");
   };
 
   const goToCart = () => {
-    router.push("/cart");
+    typeof window !== "undefined" && router.push("/cart");
     setIsOpen(false);
   };
 

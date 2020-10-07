@@ -67,7 +67,7 @@ function ProfileTab(): JSX.Element {
   }, [picture]);
 
   const _goToPasswordChange = () => {
-    router.push("/password-change");
+    typeof window !== "undefined" && router.push("/password-change");
   };
 
   const _validateProfile = () => {
@@ -282,7 +282,7 @@ function ProfileTab(): JSX.Element {
           withPortal={isSmartPhone}
         ></CustomDatePicker>
       </span>
-      <SizedBox height={24}></SizedBox>
+      <SizedBox height={20}></SizedBox>
       <span data-test="profile-phone">
         <CustomTextField
           type="phone"

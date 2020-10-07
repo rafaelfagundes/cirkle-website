@@ -3,7 +3,6 @@ import Color from "../color/Color";
 import Size from "../size/Size";
 
 type Product = {
-  _id?: string;
   id: string;
   sku: string;
   image: string;

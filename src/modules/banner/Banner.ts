@@ -1,5 +1,4 @@
 type Banner = {
-  _id?: string;
   url: string;
   primaryText: string;
   secondaryText: string;
