@@ -210,7 +210,7 @@ const TitleText = styled.div`
 `;
 
 const Spacer = styled.div`
-  content: "";
+  content: "-";
   width: 0px;
   height: 0px;
   color: transparent;
@@ -305,7 +305,7 @@ function PromoHeroComponent({ data }: { data: PromoHero }): JSX.Element {
                     </TileTitle>
                   </Tile>
                 ))}
-                {showSpacer && <Spacer></Spacer>}
+                {showSpacer && <Spacer>-</Spacer>}
               </Tiles>
 
               <Button
