@@ -17,6 +17,7 @@ import "../styles/datepicker.css";
 import "../styles/global.css";
 import "../styles/nprogress.css";
 
+
 NProgress.configure({ showSpinner: false });
 
 Router.events.on("routeChangeStart", () => {

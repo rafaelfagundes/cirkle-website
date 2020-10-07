@@ -1,7 +1,15 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { ServerStyleSheets } from "@material-ui/core/styles";
+import getConfig from "next/config";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 import React from "react";
+
+const config = getConfig();
+let publicRuntimeConfig;
+
+if (config) {
+  publicRuntimeConfig = getConfig().publicRuntimeConfig;
+}
 
 export default class MyDocument extends Document {
   render() {
@@ -16,9 +24,12 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
+
+          {publicRuntimeConfig.SHOW_CHAT && (
+            <>
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `
 
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -30,8 +41,10 @@ s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
 `,
-            }}
-          />
+                }}
+              />
+            </>
+          )}
         </body>
       </Html>
     );

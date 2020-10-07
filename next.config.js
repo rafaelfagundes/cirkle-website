@@ -4,6 +4,7 @@ const withPWA = require("next-pwa");
 const DEV = {
   publicRuntimeConfig: {
     API_ENDPOINT: process.env.API_ENDPOINT,
+    SHOW_CHAT: false,
   },
 };
 
@@ -13,6 +14,7 @@ const PROD = withPWA({
   },
   publicRuntimeConfig: {
     API_ENDPOINT: process.env.API_ENDPOINT,
+    SHOW_CHAT: true,
   },
 });
 

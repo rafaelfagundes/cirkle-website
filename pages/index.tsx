@@ -237,33 +237,49 @@ function Home(props: HomeProps): JSX.Element {
 export async function getStaticProps(): Promise<any> {
   // Call an external API endpoint to get posts.
   // You can use any data fetching library
-  const bannerUrl = `${process.env.API_ENDPOINT}/banner`;
-  const bannerResult = await Axios.get(bannerUrl);
-  const banner = bannerResult.data;
+
+  // const bannerUrl = `${process.env.API_ENDPOINT}/banner`;
+  // const bannerResult = await Axios.get(bannerUrl);
+  // const banner = bannerResult.data;
+
+  function getBrands(url: string) {
+    return Axios.get(url);
+  }
+  function getHighlights(url: string) {
+    return Axios.get(url);
+  }
+  function getShipping(url: string) {
+    return Axios.get(url);
+  }
+  function getProducts(url: string) {
+    return Axios.get(url);
+  }
+  function getMenu(url: string) {
+    return Axios.get(url);
+  }
 
   const brandsUrl = `${process.env.API_ENDPOINT}/brands`;
-  const brandsResult = await Axios.get(brandsUrl);
-  const brands = brandsResult.data;
-
   const highlightsUrl = `${process.env.API_ENDPOINT}/highlights`;
-  const highlightsResult = await Axios.get(highlightsUrl);
-  const highlights = highlightsResult.data;
-
   const shippingUrl = `${process.env.API_ENDPOINT}/shipping`;
-  const shippingResult = await Axios.get(shippingUrl);
-  const shipping = shippingResult.data;
-
   const productsUrl = `${process.env.API_ENDPOINT}/products?_sort=views:DESC&_limit=8`;
-  const productsResult = await Axios.get(productsUrl);
-  const products = productsResult.data;
-
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
-  const menuResult = await Axios.get(menuUrl);
-  const menu = menuResult.data;
+
+  const results = await Promise.all([
+    getBrands(brandsUrl),
+    getHighlights(highlightsUrl),
+    getShipping(shippingUrl),
+    getProducts(productsUrl),
+    getMenu(menuUrl),
+  ]);
+
+  const brands = results[0].data;
+  const highlights = results[1].data;
+  const shipping = results[2].data;
+  const products = results[3].data;
+  const menu = results[4].data;
 
   return {
     props: {
-      banner,
       brands,
       highlights,
       shipping,

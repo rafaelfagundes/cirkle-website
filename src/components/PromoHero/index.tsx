@@ -70,7 +70,7 @@ const StripLine = styled.div<{
   sizeMultiplier: number;
 }>`
   padding: ${(props) => props.sizeMultiplier * 18}px
-    ${(props) => props.sizeMultiplier * 32}px;
+    ${(props) => props.sizeMultiplier * 24}px;
   background-color: ${(props) => props.backgroundColor};
   display: flex;
   flex-direction: row;
@@ -136,11 +136,11 @@ const Tiles = styled.div<{ size: number }>`
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 20px 0 30px 0;
 
   width: ${(props) => props.size}px;
 
-  margin-left: ${(props) => (props.size < 960 ? "30px" : 0)};
+  padding: ${(props) =>
+    props.size < 960 ? "20px 0px 30px 20px" : "20px 0 30px 0"};
 
   overflow-x: auto;
 `;
@@ -209,6 +209,13 @@ const TitleText = styled.div`
   color: ${Colors.PRIMARY};
 `;
 
+const Spacer = styled.div`
+  content: "";
+  width: 0px;
+  height: 0px;
+  color: transparent;
+`;
+
 function PromoHeroComponent({ data }: { data: PromoHero }): JSX.Element {
   const _goto = (url: string) => {
     console.log("_goto -> url", url);
@@ -217,6 +224,7 @@ function PromoHeroComponent({ data }: { data: PromoHero }): JSX.Element {
   let backgroundImage: string;
   let sizeMultiplier: number;
   let titlesHolderSize: number;
+  let showSpacer = false;
 
   if (window.innerWidth >= 1920) {
     backgroundImage = cloudinaryImage(data.backgroundImage, 1920);
@@ -240,8 +248,9 @@ function PromoHeroComponent({ data }: { data: PromoHero }): JSX.Element {
     titlesHolderSize = window.innerWidth;
   } else {
     backgroundImage = cloudinaryImage(data.backgroundImage, 480);
-    sizeMultiplier = 0.7;
+    sizeMultiplier = 0.6;
     titlesHolderSize = window.innerWidth;
+    showSpacer = true;
   }
 
   return (
@@ -296,6 +305,7 @@ function PromoHeroComponent({ data }: { data: PromoHero }): JSX.Element {
                     </TileTitle>
                   </Tile>
                 ))}
+                {showSpacer && <Spacer></Spacer>}
               </Tiles>
 
               <Button
