@@ -69,7 +69,6 @@ const StripLine = styled.div<{
   backgroundColor: string;
   sizeMultiplier: number;
 }>`
-  // height: ${(props) => props.sizeMultiplier * 64}px;
   padding: ${(props) => props.sizeMultiplier * 18}px
     ${(props) => props.sizeMultiplier * 32}px;
   background-color: ${(props) => props.backgroundColor};
@@ -198,7 +197,7 @@ const TileTitle = styled.div`
 `;
 
 const TitleText = styled.div`
-  font-family: Futura;
+  font-family: FuturaPT;
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
