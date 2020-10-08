@@ -1,6 +1,7 @@
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import { motion, useAnimation } from "framer-motion";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useCart } from "../../hooks/cart/useCart";
 import { useWishlist } from "../../hooks/wishlist/useWishlist";
@@ -10,6 +11,7 @@ import CustomButton from "../CustomButton";
 import FavoriteIcon from "../FavoriteIcon";
 import Icon from "../Icon";
 import Padding from "../Padding";
+import Price from "../Price";
 import Row from "../Row";
 import SizedBox from "../SizedBox";
 import {
@@ -17,14 +19,9 @@ import {
   BrandName,
   BrandNameText,
   Description,
-  Discount,
-  DiscountText,
   FavoriteIconHolder,
   Image,
   Item,
-  OldPrice,
-  Price,
-  PriceText,
   RemoveButton,
   RemoveIconHolder,
   Title,
@@ -43,9 +40,10 @@ function ProductItem({
   const cartContext = useCart();
   const wishlistContext = useWishlist();
   const isAlreadyInWishlist = wishlistContext.isItemInWishlist(data.id);
+  const router = useRouter();
 
   const _goToProduct = (id: string) => {
-    console.log("go to product:", id);
+    router.push(`/products/${id}`);
   };
 
   const _addToCart = (item: Product) => {
@@ -126,37 +124,19 @@ function ProductItem({
         </BrandName>
         <Description>
           <Title>{data.title}</Title>
-          <Price>
-            <Row>
-              <PriceText>
-                {new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(data.price)}
-              </PriceText>
-              <OldPrice>
-                {new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(data.priceWhenNew)}
-              </OldPrice>
-            </Row>
-            <Discount>
-              <DiscountText>
-                -{Math.round((1 - data.price / data.priceWhenNew) * 100)}%
-              </DiscountText>
-            </Discount>
-          </Price>
+          <Price price={data.price} priceWhenNew={data.priceWhenNew}></Price>
         </Description>
         <SizedBox height={8}></SizedBox>
         <Padding horizontal={8}>
           <Row>
             <CustomButton
               type="secondary"
-              variant="outlined"
-              onClick={() => _goToProduct(data.id)}
-              icon="search"
-            ></CustomButton>
+              variant="text"
+              onClick={() => _goToProduct(data.uid)}
+              // icon="search"
+            >
+              Ver Mais
+            </CustomButton>
             <SizedBox width={8}></SizedBox>
             <CustomButton
               type={isAlreadyInCart ? "disabled" : "primary"}

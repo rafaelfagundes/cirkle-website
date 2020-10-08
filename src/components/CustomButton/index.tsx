@@ -65,7 +65,7 @@ const ButtonOutlined = styled(ButtonBase)<{ color?: string }>`
 `;
 
 const ButtonTypeText = styled(ButtonBase)`
-  padding: 8px 16px;
+  padding: 8px 8px;
   box-sizing: border-box;
 `;
 

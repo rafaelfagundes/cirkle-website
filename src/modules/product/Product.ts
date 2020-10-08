@@ -4,13 +4,14 @@ import Size from "../size/Size";
 
 type Product = {
   id: string;
-  sku: string;
+  uid: string;
   image: string;
   price: number;
   priceWhenNew: number;
   brand: Brand;
   title: string;
   description: string;
+  longDescription?: string;
   qty: number;
   cartQty?: number;
   colors: Array<Color>;

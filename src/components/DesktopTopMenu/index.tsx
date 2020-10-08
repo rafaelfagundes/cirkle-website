@@ -195,7 +195,8 @@ const PromosDetail = styled.div`
   height: 51px;
 
   background: #c94277;
-  transform: matrix(0.91, 0, -0.52, 1, 0, 0);
+  /* transform: matrix(0.91, 0, -0.52, 1, 0, 0); */
+  transform: skew(-12deg);
 `;
 
 function DesktopTopMenu({ data }: { data: any }): JSX.Element {
@@ -330,6 +331,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
         <Container maxWidth="lg">
           <Row>
             <Categories>
+              <SizedBox width={6}></SizedBox>
               {menuData && (
                 <MenuItem>
                   <PromosDetail></PromosDetail>
