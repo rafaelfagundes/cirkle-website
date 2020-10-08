@@ -1,7 +1,8 @@
-import { Container, Hidden, InputBase } from "@material-ui/core";
+import { Container, InputBase } from "@material-ui/core";
 import _ from "lodash";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
@@ -9,6 +10,7 @@ import { useAuth } from "../../hooks/auth/useAuth";
 // import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../HorizontalLogo";
 import Icon from "../Icon";
+import IconButton from "../IconButton";
 import SizedBox from "../SizedBox";
 import { TextPlaceholder } from "../TextPlaceholder";
 // import UserProfileMenuItem from "../UserProfileMenuItem";
@@ -28,8 +30,9 @@ const Top = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   background-color: ${Colors.WHITE};
-  height: 64px;
+  height: 60px;
 `;
 
 const Tabs = styled.div`
@@ -45,16 +48,16 @@ const Tab = styled.div<{ active: boolean; color: string }>`
   justify-content: center;
   align-items: center;
   padding: 0 24px;
-  height: ${(props) => (props.active ? "40px" : "30px")};
+  height: 60px;
   background-color: ${(props) =>
     props.active ? props.color : Colors.VERY_LIGHT_GRAY};
 
-  transition: height 200ms;
+  transition: background 400ms;
 `;
 
 const TabText = styled.span<{ active: boolean }>`
   font-family: "FuturaPT";
-  font-size: 14px;
+  font-size: 16px;
   color: ${(props) => (props.active ? Colors.WHITE : Colors.GRAY)};
   text-transform: uppercase;
   font-weight: 700;
@@ -86,15 +89,11 @@ const MenuItem = styled.div<{ active?: boolean; first?: boolean }>`
   flex-direction: row;
   cursor: pointer;
   height: 51px;
-  min-width: 68px;
+  padding: 0 20px;
   background-color: ${(props) =>
     props.active ? "rgba(255, 255, 255, 0.1)" : "transparent"};
-`;
 
-const MenuItemArrow = styled.div`
-  bottom: 6px;
-  margin-left: 6px;
-  margin-right: 16px;
+  transition: background 200ms;
 `;
 
 const MenuItemText = styled.span<{
@@ -104,10 +103,10 @@ const MenuItemText = styled.span<{
 }>`
   font-family: "FuturaPT";
   /* opacity: ${(props) => (props.active ? 1 : 0.95)}; */
-  font-size: 1rem;
+  font-size: 17px;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
-  padding: ${(props) => (props.first ? "16px 16px 16px 0" : "0 0 0 16px")};
   font-weight: 400;
+  z-index: 100;
 `;
 
 const SubcategoriesHolder = styled.div`
@@ -150,41 +149,58 @@ const UnderTabsContent = styled.div<{ color: string }>`
 
 const StyledInputBase = styled(InputBase)`
   width: 100%;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  font-size: 16px;
-  margin-top: 3px;
+  font-size: 18px;
+  font-family: FuturaPT;
 `;
 
-const StyledSearchBar = styled.div`
+const StyledSearchBar = styled.div<{ active: boolean }>`
   display: flex;
-  width: 320px;
+  flex: 1;
   flex-direction: row;
   align-items: center;
   background-color: ${Colors.WHITE};
-  padding: 0px 10px;
-  margin: 8px 0 8px 0;
+  padding: 0px 16px 0 22px;
+  height: 44px;
+  border: 2px solid
+    ${(props) => (props.active ? Colors.PRIMARY : Colors.LIGHT_GRAY)};
+  border-radius: 22px;
+
+  transition: border 400ms;
 `;
 
-const SearchAndBag = styled.div`
+const SideIcons = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 174px;
 `;
 
 const LogoHolder = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 160px;
-  height: 65px;
+  width: 140px;
+  height: 60px;
+  padding-left: 12px;
+`;
+
+const PromosDetail = styled.div`
+  position: absolute;
+  width: 100px;
+  height: 51px;
+
+  background: #c94277;
+  transform: matrix(0.91, 0, -0.52, 1, 0, 0);
 `;
 
 function DesktopTopMenu({ data }: { data: any }): JSX.Element {
   const [menuData, setMenuData] = useState(null);
   const [selectedTab, setSelectedTab] = useState("women");
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchBarFocused, setSearchBarFocused] = useState(false);
+
   const auth = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (data) {
@@ -225,6 +241,10 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
     setSelectedCategory(null);
   }
 
+  function goTo(route: string) {
+    router.push(route);
+  }
+
   return (
     <MenuContainer>
       <Container maxWidth="lg">
@@ -232,7 +252,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
           <LogoAndTabs>
             <Link href="/">
               <LogoHolder>
-                <HorizontalLogo width={102}></HorizontalLogo>
+                <HorizontalLogo width={92}></HorizontalLogo>
               </LogoHolder>
             </Link>
             {menuData && (
@@ -271,22 +291,28 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
               </Tabs>
             )}
           </LogoAndTabs>
-          <SearchAndBag>
-            {/* <CustomButton
-              type="success"
-              variant="text"
-              width={160}
-              onClick={null}
-            >
-              Quero Vender
-            </CustomButton> */}
-            <SizedBox width={16}></SizedBox>
+          <SizedBox width={32}></SizedBox>
+          <StyledSearchBar active={searchBarFocused}>
+            <StyledInputBase
+              id="search-bar-on-menu"
+              placeholder="Procure marcas, modelos e mais"
+              inputProps={{ "aria-label": "search" }}
+              onFocus={() => setSearchBarFocused(true)}
+              onBlur={() => setSearchBarFocused(false)}
+            />
+            <Icon type="search"></Icon>
+          </StyledSearchBar>
+          <SizedBox width={22}></SizedBox>
+          <SideIcons>
             <UserProfileMenuItem
               isLogged={auth.user !== null}
             ></UserProfileMenuItem>
-            <SizedBox width={32}></SizedBox>
+            <IconButton
+              type="heart"
+              onClick={() => goTo("wishlist")}
+            ></IconButton>
             <DropdownCart></DropdownCart>
-          </SearchAndBag>
+          </SideIcons>
         </Top>
       </Container>
 
@@ -301,11 +327,12 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
             <Categories>
               {menuData && (
                 <MenuItem>
-                  <MenuItemText first color={Colors.WHITE}>
-                    New In
-                  </MenuItemText>
+                  <PromosDetail></PromosDetail>
+                  <MenuItemText color={Colors.WHITE}>Promos</MenuItemText>
                 </MenuItem>
               )}
+              <SizedBox width={16}></SizedBox>
+
               {!menuData && (
                 <>
                   <Link href="/">
@@ -388,7 +415,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
                       >
                         {menuData[selectedTab].categories[item].title}
                       </MenuItemText>
-                      <MenuItemArrow>
+                      {/* <MenuItemArrow>
                         <Icon
                           size={8}
                           type={
@@ -397,29 +424,18 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
                               : "triangle-down"
                           }
                         ></Icon>
-                      </MenuItemArrow>
+                      </MenuItemArrow> */}
                     </MenuItem>
                   </Link>
                 ))}
               {menuData && (
                 <MenuItem>
                   <MenuItemText color={Colors.MIDDLE_YELLOW}>
-                    Promoções
+                    Novidades
                   </MenuItemText>
                 </MenuItem>
               )}
             </Categories>
-            <Hidden only="sm">
-              <SizedBox width={32}></SizedBox>
-              <StyledSearchBar>
-                <StyledInputBase
-                  id="search-bar-on-menu"
-                  placeholder="Procure marcas, modelos e mais"
-                  inputProps={{ "aria-label": "search" }}
-                />
-                <Icon type="search"></Icon>
-              </StyledSearchBar>
-            </Hidden>
           </Row>
         </Container>
         {selectedCategory &&

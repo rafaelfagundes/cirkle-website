@@ -155,9 +155,8 @@ function ProductItem({
               type="secondary"
               variant="outlined"
               onClick={() => _goToProduct(data.id)}
-            >
-              Ver
-            </CustomButton>
+              icon="search"
+            ></CustomButton>
             <SizedBox width={8}></SizedBox>
             <CustomButton
               type={isAlreadyInCart ? "disabled" : "primary"}

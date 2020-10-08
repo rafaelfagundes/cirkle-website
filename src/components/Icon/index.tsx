@@ -50,6 +50,7 @@ export const AVAILABLE_ICONS = [
   "star-yellow",
   "star-circle-dark",
   "star-circle-light",
+  "signup",
 ];
 
 const StyledIcon = styled.div<{ size: number; clickable: boolean }>`

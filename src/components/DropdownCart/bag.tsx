@@ -39,7 +39,7 @@ const Bag = React.forwardRef(
         <motion.div animate={controls}>
           <IconHolder
             onClick={() => props.setIsOpen(true)}
-            // onMouseOver={isSmartphone ? null : () => props.setIsOpen(true)}
+            onMouseOver={() => props.setIsOpen(true)}
           >
             <Icon
               type={props.counter > 0 ? "bag-full" : "bag"}
@@ -52,30 +52,5 @@ const Bag = React.forwardRef(
     );
   }
 );
-
-// function Bag({
-//   counter,
-//   setIsOpen,
-//   ref,
-// }: {
-//   counter: number;
-//   setIsOpen: (value: boolean) => void;yar
-// }): JSX.Element {
-//   const theme = useTheme();
-//   const isSmartphone = useMediaQuery(theme.breakpoints.down("xs"));
-//   const props = useSpring({});
-
-//   return (
-//     <animated.div style={props} ref={ref}>
-//       <IconHolder
-//         onClick={() => setIsOpen(true)}
-//         onMouseOver={isSmartphone ? null : () => setIsOpen(true)}
-//       >
-//         <Icon type={counter > 0 ? "bag-full" : "bag"}></Icon>
-//         {counter > 0 && <IconCounter>{counter}</IconCounter>}
-//       </IconHolder>
-//     </animated.div>
-//   );
-// }
 
 export default Bag;

@@ -1,4 +1,4 @@
-import { Link, Menu, MenuItem } from "@material-ui/core";
+import { Menu, MenuItem } from "@material-ui/core";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React, { useRef, useState } from "react";
@@ -6,7 +6,6 @@ import styled from "styled-components";
 import Colors from "../../enums/Colors";
 import { useAuth } from "../../hooks/auth/useAuth";
 import { cloudinaryImage } from "../../utils/image";
-import { firstNameOnly } from "../../utils/string";
 import Icon from "../Icon";
 import SizedBox from "../SizedBox/index";
 
@@ -16,7 +15,6 @@ const Profile = styled.div<{ center?: boolean }>`
   flex: 1;
   align-items: center;
   justify-content: ${(props) => (props.center ? "center" : "flex-start")};
-  margin-right: 10px;
   height: 45px;
 `;
 
@@ -49,9 +47,20 @@ const MenuItemText = styled.p`
   margin-left: 5px;
 `;
 
+export const IconHolder = styled.div`
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
 function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
   const [userMenu, setUserMenu] = useState(false);
   const userButtonMenu = useRef(null);
+  const userNotLoggedInMenu = useRef(null);
   const router = useRouter();
 
   const auth = useAuth();
@@ -76,45 +85,55 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
           aria-controls="user-menu"
           aria-haspopup="true"
           onClick={() => setUserMenu(true)}
-          // onMouseOver={() => setUserMenu(true)}
+          onMouseOver={() => setUserMenu(true)}
           ref={userButtonMenu}
         >
           <Profile center={true}>
             {auth.user.picture ? (
-              <UserImage
-                src={cloudinaryImage(auth.user.picture, 32)}
-              ></UserImage>
+              <IconHolder>
+                <UserImage
+                  src={cloudinaryImage(auth.user.picture, 32)}
+                ></UserImage>
+              </IconHolder>
             ) : (
-              <Icon type="profile"></Icon>
+              <IconHolder>
+                <Icon type="person"></Icon>
+              </IconHolder>
             )}
-            <UserName id="user-name-text">
-              {firstNameOnly(auth.user.name)}
-            </UserName>
           </Profile>
         </UserButton>
         <Menu
           id="user-menu"
           anchorEl={userButtonMenu.current}
-          keepMounted
           open={userMenu}
+          keepMounted
           onClose={() => setUserMenu(false)}
           MenuListProps={{
-            onMouseLeave: () => setTimeout(() => setUserMenu(false), 250),
+            onMouseLeave: () => setUserMenu(false),
           }}
         >
           <StyledMenuItem onClick={_goToProfile}>
             <Profile>
               {auth.user.picture ? (
-                <UserImage src={auth.user.picture}></UserImage>
+                <>
+                  <IconHolder>
+                    <UserImage src={auth.user.picture}></UserImage>
+                  </IconHolder>
+                  <UserName>{auth.user.name}</UserName>
+                </>
               ) : (
-                <Icon type="profile"></Icon>
+                <>
+                  <IconHolder>
+                    <Icon type="person" onClick={null}></Icon>
+                  </IconHolder>
+                  <UserName>{auth.user.name}</UserName>
+                </>
               )}
-              <UserName>{auth.user.name}</UserName>
             </Profile>
           </StyledMenuItem>
           <br />
           <StyledMenuItem onClick={_goToProfile}>
-            <Icon type="profile"></Icon>
+            <Icon type="person" onClick={_goToProfile}></Icon>
             <MenuItemText>Minha Conta</MenuItemText>
           </StyledMenuItem>
           <StyledMenuItem onClick={_goToWishlist}>
@@ -142,12 +161,51 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
   } else {
     return (
       <div>
-        <Link href="/login">
+        <UserButton
+          aria-controls="user-menu-not-logged-in"
+          aria-haspopup="true"
+          onClick={() => setUserMenu(true)}
+          onMouseOver={() => setUserMenu(true)}
+          ref={userNotLoggedInMenu}
+        >
           <Profile>
-            <Icon type="profile"></Icon>
-            <UserName>Entrar ou Cadastrar</UserName>
+            <IconHolder>
+              <Icon type="person" onClick={_goToProfile}></Icon>
+            </IconHolder>
           </Profile>
-        </Link>
+        </UserButton>
+        <Menu
+          id="user-menu-not-logged-in"
+          anchorEl={userNotLoggedInMenu.current}
+          keepMounted
+          open={userMenu}
+          onClose={() => setUserMenu(false)}
+          MenuListProps={{
+            onMouseLeave: () => setUserMenu(false),
+          }}
+        >
+          <StyledMenuItem onClick={_goToProfile}>
+            <Icon type="signup" onClick={_goToProfile}></Icon>
+            <MenuItemText>Entrar ou Cadastrar</MenuItemText>
+          </StyledMenuItem>
+          <br />
+          <StyledMenuItem onClick={_goToProfile}>
+            <Icon type="person" onClick={_goToProfile}></Icon>
+            <MenuItemText>Minha Conta</MenuItemText>
+          </StyledMenuItem>
+          <StyledMenuItem onClick={_goToWishlist}>
+            <Icon type="heart"></Icon>
+            <MenuItemText>Lista de Desejos</MenuItemText>
+          </StyledMenuItem>
+          <StyledMenuItem onClick={_goToProfile}>
+            <Icon type="box"></Icon>
+            <MenuItemText>Meus Pedidos</MenuItemText>
+          </StyledMenuItem>
+          <StyledMenuItem onClick={_goToProfile}>
+            <Icon type="products"></Icon>
+            <MenuItemText>Meus Produtos à Venda</MenuItemText>
+          </StyledMenuItem>
+        </Menu>
       </div>
     );
   }

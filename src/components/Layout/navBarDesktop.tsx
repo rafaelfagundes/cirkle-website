@@ -8,7 +8,7 @@ const NavBarSpacer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 115px;
+  height: 110px;
   width: 100%;
 `;
 

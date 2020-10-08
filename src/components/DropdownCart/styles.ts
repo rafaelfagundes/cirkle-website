@@ -4,8 +4,8 @@ import Colors from "../../enums/Colors";
 
 export const IconHolder = styled.div`
   cursor: pointer;
-  width: 24px;
-  height: 24px;
+  width: 44px;
+  height: 44px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,7 +14,6 @@ export const IconHolder = styled.div`
 
 export const IconCounter = styled.span`
   cursor: pointer;
-
   position: absolute;
   color: ${Colors.WHITE};
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -24,7 +23,7 @@ export const IconCounter = styled.span`
   letter-spacing: -0.25px;
   font-size: 14px;
   font-weight: 700;
-  top: 4px;
+  top: 14px;
 `;
 
 export const StyledCart = styled(Popover)``;
@@ -152,7 +151,8 @@ export const Title = styled.span`
 
 export const Description = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   color: ${Colors.PRIMARY};
   /* background-color: ${Colors.PRIMARY}; */
   font-size: 16px;
