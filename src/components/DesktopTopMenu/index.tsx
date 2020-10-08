@@ -53,6 +53,10 @@ const Tab = styled.div<{ active: boolean; color: string }>`
     props.active ? props.color : Colors.VERY_LIGHT_GRAY};
 
   transition: background 400ms;
+
+  &:hover {
+    filter: brightness(90%);
+  }
 `;
 
 const TabText = styled.span<{ active: boolean }>`
@@ -91,9 +95,10 @@ const MenuItem = styled.div<{ active?: boolean; first?: boolean }>`
   height: 51px;
   padding: 0 20px;
   background-color: ${(props) =>
-    props.active ? "rgba(255, 255, 255, 0.1)" : "transparent"};
+    props.active ? "rgba(255, 255, 255, 0.15)" : "transparent"};
 
-  transition: background 200ms;
+  transition: background ${(props) => (props.active ? 500 : 1500)}ms
+    cubic-bezier(0.48, 1.04, 0.49, 0.95);
 `;
 
 const MenuItemText = styled.span<{
@@ -110,7 +115,7 @@ const MenuItemText = styled.span<{
 `;
 
 const SubcategoriesHolder = styled.div`
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.15);
 `;
 
 const Subcategories = styled.div`
@@ -262,7 +267,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
                     key={menuData[element].title}
                     active={menuData[element].active}
                     onClick={() => toggleTab(element)}
-                    onMouseOver={() => toggleTab(element)}
+                    // onMouseOver={() => toggleTab(element)}
                     color={
                       selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS
                     }
