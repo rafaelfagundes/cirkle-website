@@ -45,6 +45,7 @@ function ProductPage({
   menu: any;
   product: Product;
 }): JSX.Element {
+  if (!product) return <></>;
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [colors, setColors] = useState(null);
