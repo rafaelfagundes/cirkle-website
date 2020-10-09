@@ -113,6 +113,9 @@ function ProductPage({
   }
 
   useEffect(() => {
+    // Scroll to top when page is loaded
+    if (process.browser) window.scrollTo(0, 0);
+
     if (!colors) {
       getSelectColors(product.colors);
     }

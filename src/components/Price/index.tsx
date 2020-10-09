@@ -66,7 +66,7 @@ function Price({
 }: {
   price: number;
   priceWhenNew: number;
-  spaceBetween: boolean;
+  spaceBetween?: boolean;
 }): JSX.Element {
   return (
     <StyledPrice spaceBetween={spaceBetween}>
