@@ -315,7 +315,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
             ></UserProfileMenuItem>
             <IconButton
               type="heart"
-              onClick={() => goTo("wishlist")}
+              onClick={() => goTo("/wishlist")}
             ></IconButton>
             <DropdownCart></DropdownCart>
           </SideIcons>

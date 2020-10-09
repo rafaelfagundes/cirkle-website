@@ -100,7 +100,7 @@ function CustomButton({
       case "disabled":
         return {
           background: Colors.LIGHT_GRAY,
-          text: Colors.WHITE,
+          text: Colors.DARK_GRAY,
         };
       case "edit":
         return {

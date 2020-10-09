@@ -5,9 +5,11 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CustomButton from "../../src/components/CustomButton";
+import FavoriteIcon from "../../src/components/FavoriteIcon";
 import Layout from "../../src/components/Layout";
 import Padding from "../../src/components/Padding";
 import Price from "../../src/components/Price";
+import Row from "../../src/components/Row";
 import SelectMenu, {
   AssetType,
   SelectItem,
@@ -16,6 +18,7 @@ import SimpleText from "../../src/components/SimpleText";
 import SizedBox from "../../src/components/SizedBox";
 import Title from "../../src/components/Title";
 import { useCart } from "../../src/hooks/cart/useCart";
+import { useWishlist } from "../../src/hooks/wishlist/useWishlist";
 import Color from "../../src/modules/color/Color";
 import Product from "../../src/modules/product/Product";
 import Size from "../../src/modules/size/Size";
@@ -51,6 +54,7 @@ function ProductPage({
   const [errorSize, setErrorSize] = useState("");
 
   const cartContext = useCart();
+  const wishlistContext = useWishlist();
 
   function addToCart() {
     setErrorSize("");
@@ -77,9 +81,6 @@ function ProductPage({
     _product.cartColor = color.text;
     _product.cartSize = size.text;
     _product.cartQty = 1;
-
-    // console.log("addToCart -> _product", _product);
-
     cartContext.addToCart(_product);
   }
 
@@ -112,7 +113,17 @@ function ProductPage({
     setSizes(finalItems);
   }
 
+  function addOrRemoveFromWishlist(isIn: boolean) {
+    console.log("addOrRemoveFromWishlist -> addOrRemoveFromWishlist");
+    if (isIn) {
+      wishlistContext.removeFromWishlist(product.id);
+    } else {
+      wishlistContext.addToWishlist(product);
+    }
+  }
+
   useEffect(() => {
+    console.log("useEffect");
     // Scroll to top when page is loaded
     if (process.browser) window.scrollTo(0, 0);
 
@@ -123,6 +134,8 @@ function ProductPage({
       getSelectSizes(product.sizes);
     }
   }, []);
+
+  const isAlreadyInCart = cartContext.isItemInCart(product.id);
 
   return (
     <>
@@ -141,7 +154,9 @@ function ProductPage({
                   <>
                     <Title>{product.title}</Title>
                     <SizedBox height={16}></SizedBox>
-                    <SimpleText>{product.description}</SimpleText>
+                    <div style={{ maxWidth: isSmartPhone ? 343 : 310 }}>
+                      <SimpleText>{product.description}</SimpleText>
+                    </div>
                     <SizedBox height={8}></SizedBox>
                     <Price
                       spaceBetween={false}
@@ -154,7 +169,7 @@ function ProductPage({
                       placeholder="Selecione a cor"
                       items={colors}
                       setSelected={setColors}
-                      width={isSmartPhone ? 343 : 250}
+                      width={isSmartPhone ? 343 : 310}
                       errorText={errorColor}
                     ></SelectMenu>
                     <SizedBox height={16}></SizedBox>
@@ -163,17 +178,39 @@ function ProductPage({
                       placeholder="Selecione o tamanho"
                       items={sizes}
                       setSelected={setSizes}
-                      width={isSmartPhone ? 343 : 250}
+                      width={isSmartPhone ? 343 : 310}
                       errorText={errorSize}
                     ></SelectMenu>
                     <SizedBox height={24}></SizedBox>
-                    <CustomButton
-                      onClick={addToCart}
-                      width={isSmartPhone ? 343 : 250}
-                      type="success"
-                    >
-                      Adicionar à Sacola
-                    </CustomButton>
+                    <Row>
+                      {!isAlreadyInCart && (
+                        <CustomButton
+                          onClick={addToCart}
+                          width={isSmartPhone ? 343 : 250}
+                          type="success"
+                        >
+                          Adicionar à Sacola
+                        </CustomButton>
+                      )}
+                      {isAlreadyInCart && (
+                        <CustomButton
+                          onClick={null}
+                          width={isSmartPhone ? 343 : 250}
+                          type="disabled"
+                        >
+                          Está na Sacola
+                        </CustomButton>
+                      )}
+                      <SizedBox width={16}></SizedBox>
+                      <FavoriteIcon
+                        active={wishlistContext.isItemInWishlist(product.id)}
+                        setActive={() =>
+                          addOrRemoveFromWishlist(
+                            wishlistContext.isItemInWishlist(product.id)
+                          )
+                        }
+                      ></FavoriteIcon>
+                    </Row>
                   </>
                 </Padding>
               </Grid>

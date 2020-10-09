@@ -25,6 +25,7 @@ enum Colors {
   DARK_MOSS_GREEN = "#3F612D",
   DARK_PURPLE = "#231123",
   DARK_SEA_GREEN = "#8DB580",
+  DARK_GRAY = "#555",
   EMERALD = "#2FBF71",
   FIRE_OPAL = "#E65F5C",
   FLAX = "#E8DB7D",
