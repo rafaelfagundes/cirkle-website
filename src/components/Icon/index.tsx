@@ -44,6 +44,8 @@ export const AVAILABLE_ICONS = [
   "thermometer",
   "trash",
   "triangle-down-fill",
+  "triangle-down-fill-dark",
+  "triangle-down-fill-red",
   "triangle-down",
   "whatsapp-white",
   "whatsapp",

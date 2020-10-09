@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
-import Row from "../Row";
 
-const StyledPrice = styled.div`
+const StyledPrice = styled.div<{ spaceBetween: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: ${(props) =>
+    props.spaceBetween ? "space-between" : "flex-start"};
   padding: 4px 0;
   border-top-width: 0px;
   border-top-color: ${Colors.VERY_LIGHT_GRAY};
@@ -42,6 +42,7 @@ const Discount = styled.div`
   background: ${Colors.RED_CRAYOLA};
   border-radius: 12px;
   padding: 3px 6px;
+  margin-left: 10px;
 `;
 
 const DiscountText = styled.span`
@@ -61,13 +62,15 @@ const DiscountText = styled.span`
 function Price({
   price,
   priceWhenNew,
+  spaceBetween = true,
 }: {
   price: number;
   priceWhenNew: number;
+  spaceBetween: boolean;
 }): JSX.Element {
   return (
-    <StyledPrice>
-      <Row>
+    <StyledPrice spaceBetween={spaceBetween}>
+      <div>
         <PriceText>
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
@@ -80,7 +83,7 @@ function Price({
             currency: "BRL",
           }).format(priceWhenNew)}
         </OldPrice>
-      </Row>
+      </div>
       <Discount>
         <DiscountText>
           -{Math.round((1 - price / priceWhenNew) * 100)}%

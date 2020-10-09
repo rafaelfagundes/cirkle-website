@@ -71,6 +71,7 @@ const StyledInput = styled.div<{
   position: relative;
   transition: 250ms padding;
   max-width: ${(props) => (props.width ? props.width + "px" : "100%")};
+  background-color: ${Colors.WHITE};
 `;
 
 const StyledInputBase = styled(InputBase)`

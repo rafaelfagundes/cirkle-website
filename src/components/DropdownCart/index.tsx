@@ -8,6 +8,7 @@ import EmptyPage from "../EmptyPage";
 import Icon from "../Icon";
 import Padding from "../Padding";
 import SizedBox from "../SizedBox";
+import Title from "../Title";
 import Bag from "./bag";
 import {
   CartHeader,
@@ -26,7 +27,6 @@ import {
   Row,
   Size,
   StyledCart,
-  Title,
   Value,
 } from "./styles";
 

@@ -17,6 +17,7 @@ const StyledInput = styled.div`
   transition: 250ms padding;
   justify-content: space-between;
   cursor: pointer;
+  background-color: ${Colors.WHITE};
 `;
 
 const InputText = styled.span<{ isPlaceholder: boolean }>`
