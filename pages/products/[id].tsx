@@ -30,12 +30,18 @@ const ProductImage = styled.div<{ image: string }>`
   background-color: #fff;
 
   width: 100%;
-  height: 456px;
+  height: 425px;
 
   background-image: ${(props) => `url(${props.image})`};
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover;
+`;
+
+const Description = styled.div<{ isSmartphone: boolean }>`
+  max-width: 343px;
+  max-height: 80px;
+  overflow: auto;
 `;
 
 function ProductPage({
@@ -154,9 +160,9 @@ function ProductPage({
                   <>
                     <Title>{product.title}</Title>
                     <SizedBox height={16}></SizedBox>
-                    <div style={{ maxWidth: isSmartPhone ? 343 : 310 }}>
+                    <Description isSmartphone={isSmartPhone}>
                       <SimpleText>{product.description}</SimpleText>
-                    </div>
+                    </Description>
                     <SizedBox height={8}></SizedBox>
                     <Price
                       spaceBetween={false}

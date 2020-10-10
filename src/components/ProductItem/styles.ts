@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Colors from "../../enums/Colors";
 
 export const Item = styled.div<{ isSmartphone: boolean }>`
+  cursor: pointer;
   width: 228px;
   background-color: ${Colors.WHITE};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);

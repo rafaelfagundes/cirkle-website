@@ -184,7 +184,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
           {cartContext.cart.items.length > 0 && (
             <>
               <MainColumn isSmartPhone={isSmartPhone}>
-                <Card padding={false}>
+                <Card padding={false} shadow={false}>
                   <SizedBox height={isSmartPhone ? 32 : 16}></SizedBox>
                   <Padding horizontal={16}>
                     <Title size={18}>Sacola de Compras</Title>
@@ -219,7 +219,9 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                             ></Icon>
                           </TitleAndRemove>
                           <SizedBox height={8}></SizedBox>
-                          <Description>{item.description}</Description>
+                          <Description isSmartphone={isSmartPhone}>
+                            {item.description}
+                          </Description>
                           <SizedBox height={8}></SizedBox>
                           <MoreInfo>
                             {isSmartPhone && !showEdit && (
@@ -307,7 +309,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
               </MainColumn>
               <SizedBox width={isSmartPhone ? 0 : 16}></SizedBox>
               <SideColumn isSmartPhone={isSmartPhone}>
-                <Card>
+                <Card shadow={false}>
                   <CartFooter isSmartPhone={isSmartPhone}>
                     <Row spaceBetween>
                       <Label>Subtotal</Label>

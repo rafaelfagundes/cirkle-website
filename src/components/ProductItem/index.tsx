@@ -118,22 +118,23 @@ function ProductItem({
             <Icon type="heart-fill" size={96}></Icon>
           </motion.div>
         </AnimatedHeart>
-        <Image image={cloudinaryImage(data.image, 230)}></Image>
-        <BrandName>
-          <BrandNameText>{data.brand.name}</BrandNameText>
-        </BrandName>
-        <Description>
-          <Title>{data.title}</Title>
-          <Price price={data.price} priceWhenNew={data.priceWhenNew}></Price>
-        </Description>
-        <SizedBox height={8}></SizedBox>
+        <span onClick={() => _goToProduct(data.uid)}>
+          <Image image={cloudinaryImage(data.image, 230)}></Image>
+          <BrandName>
+            <BrandNameText>{data.brand.name}</BrandNameText>
+          </BrandName>
+          <Description>
+            <Title>{data.title}</Title>
+            <Price price={data.price} priceWhenNew={data.priceWhenNew}></Price>
+          </Description>
+          <SizedBox height={8}></SizedBox>
+        </span>
         <Padding horizontal={8}>
           <Row>
             <CustomButton
               type="secondary"
               variant="text"
               onClick={() => _goToProduct(data.uid)}
-              // icon="search"
             >
               Ver Mais
             </CustomButton>

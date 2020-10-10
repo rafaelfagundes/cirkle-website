@@ -66,8 +66,7 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
   };
 
   const _goToProduct = (id: string) => {
-    console.log("_goToProduct -> id", id);
-    return;
+    typeof window !== "undefined" && router.push("/products/" + id);
   };
 
   const getCartButton = (item: Product) => {
@@ -155,7 +154,7 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
                           <CustomButton
                             type="secondary"
                             variant="text"
-                            onClick={() => _goToProduct(item.id)}
+                            onClick={() => _goToProduct(item.uid)}
                           >
                             Ver Produto
                           </CustomButton>

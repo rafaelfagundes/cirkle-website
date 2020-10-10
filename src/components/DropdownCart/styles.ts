@@ -157,6 +157,10 @@ export const Description = styled.span`
   /* background-color: ${Colors.PRIMARY}; */
   font-size: 16px;
   max-width: 300px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 `;
 
 export const MoreInfo = styled.div`

@@ -65,9 +65,9 @@ function DropdownCart(): JSX.Element {
           vertical: "top",
           horizontal: "right",
         }}
-        PaperProps={{
-          onMouseLeave: () => setTimeout(() => setIsOpen(false), 250),
-        }}
+        // PaperProps={{
+        //   onMouseLeave: () => setTimeout(() => setIsOpen(false), 250),
+        // }}
       >
         {cartContext.cart.items.length > 0 && (
           <>

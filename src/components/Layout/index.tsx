@@ -19,7 +19,8 @@ const CustomDialog = dynamic(() => import("../CustomDialog"), {
 });
 
 const Background = styled.div`
-  background: linear-gradient(180deg, #fafafa, ${Colors.ULTRA_LIGHT_GRAY});
+  background: #fff;
+  /* background: linear-gradient(180deg, #fafafa, ${Colors.ULTRA_LIGHT_GRAY}); */
 `;
 
 interface LayoutProps {
