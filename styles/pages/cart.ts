@@ -96,7 +96,7 @@ export const CartItemImage = styled.div<{ image: string; size: number }>`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
 `;
 
-export const Description = styled.span<{ isSmartphone: boolean }>`
+export const Description = styled.span<{ isSmartphone?: boolean }>`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;

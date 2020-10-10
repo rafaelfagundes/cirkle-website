@@ -236,7 +236,7 @@ function SideMenu({
                 src={
                   auth?.user?.picture ? auth?.user?.picture : AVATAR_PLACEHOLDER
                 }
-                hasImage={auth?.user?.picture}
+                hasImage={auth?.user?.picture !== null}
               ></Avatar>
               <Column>
                 <UserName>
