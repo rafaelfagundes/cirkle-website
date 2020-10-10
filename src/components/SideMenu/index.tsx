@@ -10,6 +10,7 @@ import Center from "../Center";
 import CustomButton from "../CustomButton";
 import Icon from "../Icon";
 import LoadingAnimation from "../LoadingAnimation";
+import Padding from "../Padding";
 import SimpleText from "../SimpleText";
 import SizedBox from "../SizedBox";
 
@@ -19,12 +20,8 @@ const StyledSideMenu = styled.div`
   justify-content: space-between;
   position: relative;
   width: 300px;
-  background-color: ${Colors.WHITE};
-  height: 100%;
-`;
-
-const Padding = styled.div`
-  padding: 16px;
+  background-color: #eaeaea;
+  /* height: 100%; */
 `;
 
 const HorizontalPadding = styled.div`
@@ -42,14 +39,17 @@ const Column = styled.div`
   flex-direction: column;
 `;
 
-const UserProfile = styled.div``;
+const UserProfile = styled.div`
+  margin-top: 16px;
+`;
 
-const Avatar = styled.img`
-  width: 48px;
-  height: 48px;
+const Avatar = styled.img<{ hasImage: boolean }>`
+  width: 32px;
+  height: 32px;
   border-radius: 24px;
   margin-right: 10px;
-  border: 1px solid ${Colors.WHITE};
+  border: ${(props) =>
+    props.hasImage ? "none" : `2px solid ${Colors.LIGHT_GRAY}`};
 `;
 
 const UserName = styled.div`
@@ -94,12 +94,17 @@ const TabText = styled.span<{ active: boolean }>`
 
 const MenuContainer = styled.div<{ color: string }>`
   background-color: ${(props) => props.color};
-  padding: 10px 0;
+  padding: 10px 0 0 0;
 `;
 
-const StyledMenuItem = styled.div<{ subcategory?: boolean; lastOne?: boolean }>`
+const StyledMenuItem = styled.div<{
+  subcategory?: boolean;
+  lastOne?: boolean;
+  backgroundColor?: string;
+}>`
   height: 44px;
-  margin: ${(props) => (props.subcategory ? "0 16px 0 32px" : "0 16px")};
+  margin: ${(props) => (props.subcategory ? "0 0 0 16px" : "0")};
+  padding: 0 16px;
   display: flex;
   align-items: center;
   border-bottom-style: solid;
@@ -109,6 +114,8 @@ const StyledMenuItem = styled.div<{ subcategory?: boolean; lastOne?: boolean }>`
   flex-direction: row;
   justify-content: space-between;
   cursor: pointer;
+  background-color: ${(props) =>
+    props.backgroundColor ? props.backgroundColor : "transparent"};
 `;
 
 const MenuItemText = styled.span`
@@ -133,7 +140,7 @@ const SecondaryText = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  margin-left: 5px;
+  margin-left: 10px;
 `;
 
 const SocialFooter = styled.div`
@@ -214,21 +221,22 @@ function SideMenu({
     setMenuData(_menuData);
   }
 
-  const goToWishlist = () => {
+  const goTo = (route: string) => {
     closeMenu();
-    typeof window !== "undefined" && router.push("/wishlist");
+    typeof window !== "undefined" && router.push(route);
   };
 
   return (
     <StyledSideMenu>
       <div>
-        <Padding>
+        <Padding horizontal={16}>
           <UserProfile>
             <Row>
               <Avatar
                 src={
                   auth?.user?.picture ? auth?.user?.picture : AVATAR_PLACEHOLDER
                 }
+                hasImage={auth?.user?.picture}
               ></Avatar>
               <Column>
                 <UserName>
@@ -236,16 +244,51 @@ function SideMenu({
                     ? `Olá, ${auth.user.name}`
                     : "Olá, visitante!"}
                 </UserName>
-                {auth.user ? (
+                {/* {auth.user ? (
                   <AccountLink href="/profile">Minha Conta</AccountLink>
                 ) : (
                   <AccountLink href="/login">Entrar ou Cadastrar</AccountLink>
-                )}
+                )} */}
               </Column>
             </Row>
           </UserProfile>
         </Padding>
-        <SizedBox height={8}></SizedBox>
+        {auth.user && (
+          <SecondaryMenu>
+            <Padding horizontal={16} vertical={16}>
+              <>
+                <SecondaryItem onClick={() => goTo("/profile")}>
+                  <Icon type="person"></Icon>
+                  <SecondaryText>Minha Conta</SecondaryText>
+                </SecondaryItem>
+                <SecondaryItem onClick={() => goTo("/wishlist")}>
+                  <Icon type="heart"></Icon>
+                  <SecondaryText>Lista de Desejos</SecondaryText>
+                </SecondaryItem>
+                <SecondaryItem>
+                  <Icon type="box"></Icon>
+                  <SecondaryText>Meus Pedidos</SecondaryText>
+                </SecondaryItem>
+                <SecondaryItem>
+                  <Icon type="products"></Icon>
+                  <SecondaryText>Meus Produtos à Venda</SecondaryText>
+                </SecondaryItem>
+              </>
+            </Padding>
+          </SecondaryMenu>
+        )}
+        {!auth.user && (
+          <Padding horizontal={16}>
+            <>
+              <SizedBox height={16}></SizedBox>
+              <SecondaryItem onClick={() => goTo("/login")}>
+                <Icon type="signup"></Icon>
+                <SecondaryText>Entrar ou Cadastrar</SecondaryText>
+              </SecondaryItem>
+              <SizedBox height={16}></SizedBox>
+            </>
+          </Padding>
+        )}
         {!menuData && (
           <Column>
             <Center>
@@ -280,9 +323,9 @@ function SideMenu({
             <MenuContainer
               color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
             >
-              <Link href="/products/newin">
+              <Link href="/categories/novidades">
                 <StyledMenuItem>
-                  <MenuItemText color={Colors.WHITE}>New In</MenuItemText>
+                  <MenuItemText color={Colors.WHITE}>Novidades</MenuItemText>
                 </StyledMenuItem>
               </Link>
               {Object.keys(menuData[selectedTab].categories).map((item) => (
@@ -318,51 +361,40 @@ function SideMenu({
                 </div>
               ))}
               <Link href="/products/offers">
-                <StyledMenuItem lastOne>
-                  <MenuItemText color={Colors.MIDDLE_YELLOW}>
-                    Promoções
-                  </MenuItemText>
+                <StyledMenuItem
+                  lastOne={true}
+                  backgroundColor={
+                    selectedTab === "women"
+                      ? Colors.SECONDARY
+                      : Colors.KIDS_VIOLET
+                  }
+                >
+                  <MenuItemText>Promos</MenuItemText>
                 </StyledMenuItem>
               </Link>
             </MenuContainer>
           </>
         )}
-        {auth.user && (
-          <SecondaryMenu>
-            <Padding>
-              <SecondaryItem onClick={goToWishlist}>
-                <Icon type="heart"></Icon>
-                <SecondaryText>Lista de Desejos</SecondaryText>
-              </SecondaryItem>
-              <SecondaryItem>
-                <Icon type="box"></Icon>
-                <SecondaryText>Meus Pedidos</SecondaryText>
-              </SecondaryItem>
-              <SecondaryItem>
-                <Icon type="products"></Icon>
-                <SecondaryText>Meus Produtos à Venda</SecondaryText>
-              </SecondaryItem>
-              <br />
-              <SecondaryItem onClick={async () => await auth.signout()}>
-                <SizedBox width={3}></SizedBox>
-                <Icon size={20} type="logout"></Icon>
-                <SizedBox width={2}></SizedBox>
-                <SecondaryText>Desconectar</SecondaryText>
-              </SecondaryItem>
-            </Padding>
-          </SecondaryMenu>
-        )}
-        {!auth.user && <SizedBox height={16}></SizedBox>}
+        <SizedBox height={32}></SizedBox>
         <HorizontalPadding>
           <CustomButton
             width={300 - 32}
-            type="success"
+            type="primary"
             variant="outlined"
             onClick={null}
           >
             Quero Vender
           </CustomButton>
-          <SizedBox height={16}></SizedBox>
+          {auth.user && (
+            <>
+              <SizedBox height={32}></SizedBox>
+              <SecondaryItem onClick={() => auth.signout()}>
+                <Icon type="logout"></Icon>
+                <SecondaryText>Sair da Conta</SecondaryText>
+              </SecondaryItem>
+            </>
+          )}
+          <SizedBox height={32}></SizedBox>
         </HorizontalPadding>
       </div>
       <div>

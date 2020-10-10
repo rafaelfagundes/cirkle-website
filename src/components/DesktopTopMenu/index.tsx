@@ -188,12 +188,12 @@ const LogoHolder = styled.div`
   padding-left: 12px;
 `;
 
-const PromosDetail = styled.div`
+const PromosDetail = styled.div<{ backgroundColor: string }>`
   position: absolute;
   width: 100px;
   height: 51px;
 
-  background: #c94277;
+  background: ${(props) => props.backgroundColor};
   /* transform: matrix(0.91, 0, -0.52, 1, 0, 0); */
   transform: skew(-12deg);
 `;
@@ -333,7 +333,13 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
               <SizedBox width={6}></SizedBox>
               {menuData && (
                 <MenuItem>
-                  <PromosDetail></PromosDetail>
+                  <PromosDetail
+                    backgroundColor={
+                      selectedTab === "women"
+                        ? Colors.SECONDARY
+                        : Colors.KIDS_VIOLET
+                    }
+                  ></PromosDetail>
                   <MenuItemText color={Colors.WHITE}>Promos</MenuItemText>
                 </MenuItem>
               )}

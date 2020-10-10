@@ -40,8 +40,10 @@ const ProductImage = styled.div<{ image: string }>`
 
 const Description = styled.div<{ isSmartphone: boolean }>`
   max-width: 343px;
-  max-height: 80px;
-  overflow: auto;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
 `;
 
 function ProductPage({
@@ -169,7 +171,7 @@ function ProductPage({
                       price={product.price}
                       priceWhenNew={product.priceWhenNew}
                     ></Price>
-                    <SizedBox height={24}></SizedBox>
+                    <SizedBox height={17}></SizedBox>
                     <SelectMenu
                       title="Cor"
                       placeholder="Selecione a cor"
