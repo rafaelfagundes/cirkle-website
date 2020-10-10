@@ -124,7 +124,6 @@ function ProductPage({
   }
 
   useEffect(() => {
-    console.log("useEffect");
     // Scroll to top when page is loaded
     if (process.browser) window.scrollTo(0, 0);
 

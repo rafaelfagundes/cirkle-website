@@ -13,7 +13,6 @@ import Icon from "../Icon";
 import IconButton from "../IconButton";
 import SizedBox from "../SizedBox";
 import { TextPlaceholder } from "../TextPlaceholder";
-// import UserProfileMenuItem from "../UserProfileMenuItem";
 
 const DropdownCart = dynamic(() => import("../DropdownCart"), {
   ssr: false,

@@ -13,6 +13,7 @@ import ProductItem from "../src/components/ProductItem";
 import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
 import Colors from "../src/enums/Colors";
+import { useAuth } from "../src/hooks/auth/useAuth";
 import { useCart } from "../src/hooks/cart/useCart";
 import { useWishlist } from "../src/hooks/wishlist/useWishlist";
 import Menu from "../src/modules/menu/Menu";
@@ -56,11 +57,12 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
   const isSmartphone = useMediaQuery(theme.breakpoints.down("xs"));
   const wishlistContext = useWishlist();
   const cartContext = useCart();
+  const authContext = useAuth();
 
   const router = useRouter();
 
-  const _goToProducts = () => {
-    typeof window !== "undefined" && router.push("/products");
+  const _goTo = (route: string) => {
+    typeof window !== "undefined" && router.push(route);
   };
 
   const _goToProduct = (id: string) => {
@@ -170,13 +172,24 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
         {wishlistContext.wishlist.items.length === 0 && (
           <Column>
             <SizedBox height={72}></SizedBox>
-            <EmptyPage
-              buttonAction={_goToProducts}
-              buttonText="Explorar"
-              icon="heart"
-              title="A Lista De Desejos Está Vazia"
-              subtitle="Adicione os produtos que você não quer perder de vista."
-            ></EmptyPage>
+            {!authContext.user && (
+              <EmptyPage
+                buttonAction={() => _goTo("/login")}
+                buttonText="Entrar"
+                icon="heart"
+                title="A Lista De Desejos Está Vazia"
+                subtitle="Faça o login para sincronizar seus itens salvos."
+              ></EmptyPage>
+            )}
+            {authContext.user && (
+              <EmptyPage
+                buttonAction={() => _goTo("/")}
+                buttonText="Explorar"
+                icon="heart"
+                title="A Lista De Desejos Está Vazia"
+                subtitle="Adicione aqui os produtos que você não quer perder de vista."
+              ></EmptyPage>
+            )}
             <SizedBox height={72}></SizedBox>
           </Column>
         )}

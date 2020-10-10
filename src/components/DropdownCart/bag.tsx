@@ -1,5 +1,7 @@
+import { useMediaQuery } from "@material-ui/core";
 import { motion, useAnimation } from "framer-motion";
 import React, { LegacyRef, useEffect, useState } from "react";
+import theme from "../../theme/theme";
 import Icon from "../Icon";
 import { IconCounter, IconHolder } from "./styles";
 
@@ -13,6 +15,7 @@ const Bag = React.forwardRef(
   (props: BagProps, ref: LegacyRef<HTMLDivElement>) => {
     const controls = useAnimation();
     const [prevCounter, setprevCounter] = useState(0);
+    const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
     const bagAnimation = async () => {
       const speed = 0.3; // lower is faster
@@ -39,7 +42,7 @@ const Bag = React.forwardRef(
         <motion.div animate={controls}>
           <IconHolder
             onClick={() => props.setIsOpen(true)}
-            onMouseOver={() => props.setIsOpen(true)}
+            onMouseOver={isSmartPhone ? null : () => props.setIsOpen(true)}
           >
             <Icon
               type={props.counter > 0 ? "bag-full" : "bag"}

@@ -66,7 +66,6 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
   const auth = useAuth();
 
   async function _logOut() {
-    console.log("Desconectando...");
     await auth.signout();
   }
 
@@ -109,8 +108,9 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
           keepMounted
           onClose={() => setUserMenu(false)}
           MenuListProps={{
-            onMouseLeave: () => setUserMenu(false),
+            onMouseLeave: () => setTimeout(() => setUserMenu(false), 250),
           }}
+          transitionDuration={{ appear: 400, enter: 400, exit: 500 }}
         >
           <StyledMenuItem onClick={_goToProfile}>
             <Profile>
