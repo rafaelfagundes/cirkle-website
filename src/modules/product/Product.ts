@@ -11,7 +11,9 @@ type Product = {
   brand: Brand;
   title: string;
   description: string;
-  longDescription?: string;
+  infoColumn1?: string;
+  infoColumn2?: string;
+  infoColumn3?: string;
   qty: number;
   cartQty?: number;
   colors: Array<Color>;

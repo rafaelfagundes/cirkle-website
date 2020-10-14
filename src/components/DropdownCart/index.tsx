@@ -36,8 +36,8 @@ function DropdownCart(): JSX.Element {
   const cartContext = useCart();
   const cartButton = useRef<HTMLDivElement>(null);
 
-  const _goToProducts = () => {
-    typeof window !== "undefined" && router.push("/products");
+  const _goToHome = () => {
+    typeof window !== "undefined" && router.push("/");
   };
 
   const goToCart = () => {
@@ -168,7 +168,7 @@ function DropdownCart(): JSX.Element {
               <SizedBox height={56}></SizedBox>
               <Padding horizontal={36}>
                 <EmptyPage
-                  buttonAction={_goToProducts}
+                  buttonAction={_goToHome}
                   buttonText="Explorar"
                   icon="bag"
                   subtitle="Não perca tempo, adicione os melhores produtos."

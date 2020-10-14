@@ -23,10 +23,13 @@ const ButtonBase = styled.div<{ width: number; small: boolean }>`
   }
 `;
 
-const ButtonContained = styled(ButtonBase)<{ color?: string }>`
+const ButtonContained = styled(ButtonBase)<{
+  color?: string;
+  noPadding?: boolean;
+}>`
   position: relative;
   background-color: ${(props) => props.color};
-  padding: 0px 8px;
+  padding: ${(props) => (props.noPadding ? 0 : "0px 8px")};
   box-sizing: border-box;
   border: 2px solid ${(props) => props.color};
 `;
@@ -57,15 +60,18 @@ const ButtonText = styled.span<{ color?: string; small: boolean }>`
   text-decoration: none;
 `;
 
-const ButtonOutlined = styled(ButtonBase)<{ color?: string }>`
+const ButtonOutlined = styled(ButtonBase)<{
+  color?: string;
+  noPadding?: boolean;
+}>`
   position: relative;
-  padding: 0px 8px;
+  padding: ${(props) => (props.noPadding ? 0 : "0px 8px")};
   border: 2px solid ${(props) => props.color};
   box-sizing: border-box;
 `;
 
-const ButtonTypeText = styled(ButtonBase)`
-  padding: 8px 8px;
+const ButtonTypeText = styled(ButtonBase)<{ noPadding?: boolean }>`
+  padding: ${(props) => (props.noPadding ? 0 : "0px 8px")};
   box-sizing: border-box;
 `;
 
@@ -79,6 +85,7 @@ function CustomButton({
   onClick,
   small = false,
   icon,
+  noPadding = false,
 }: {
   id?: string;
   children?: string;
@@ -88,6 +95,7 @@ function CustomButton({
   loading?: boolean;
   small?: boolean;
   icon?: string;
+  noPadding?: boolean;
   onClick: () => void;
 }): JSX.Element {
   function getColors(): { background: string; text: string } {
@@ -136,6 +144,7 @@ function CustomButton({
           color={colors.background}
           onClick={type === "disabled" ? null : onClick}
           small={small}
+          noPadding={noPadding}
         >
           {!loading && (
             <TextIconHolder>
@@ -161,6 +170,7 @@ function CustomButton({
           color={colors.background}
           onClick={type === "disabled" ? null : onClick}
           small={small}
+          noPadding={noPadding}
         >
           {!loading && (
             <TextIconHolder>
@@ -185,6 +195,7 @@ function CustomButton({
           width={width}
           onClick={type === "disabled" ? null : onClick}
           small={small}
+          noPadding={noPadding}
         >
           {!loading && (
             <TextIconHolder>
@@ -210,6 +221,7 @@ function CustomButton({
           color={colors.background}
           onClick={type === "disabled" ? null : onClick}
           small={small}
+          noPadding={noPadding}
         >
           {!loading && (
             <TextIconHolder>

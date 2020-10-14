@@ -28,7 +28,7 @@ export const BrandName = styled.div`
   flex-direction: row;
   height: 18px;
   justify-content: center;
-  margin-bottom: 6px;
+  /* margin-bottom: 6px; */
   padding: 0 10px;
 `;
 
@@ -41,80 +41,30 @@ export const BrandNameText = styled.span`
   color: ${Colors.WHITE};
 `;
 
+export const TitleHolder = styled.div`
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  height: 40px;
+`;
+
 export const Title = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 16px;
-  line-height: 110%;
+  line-height: 120%;
   display: flex;
   align-items: flex-end;
   color: ${Colors.PRIMARY};
-  letter-spacing: -0.5px;
+  /* letter-spacing: -0.5px; */
 `;
 
 export const Description = styled.div`
-  padding: 0 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 66px;
-`;
-
-export const Price = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 4px 0;
-  border-top-width: 0px;
-  border-top-color: ${Colors.VERY_LIGHT_GRAY};
-  border-top-style: solid;
-`;
-
-export const PriceText = styled.span`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  color: ${Colors.MAGENTA};
-  letter-spacing: -0.5px;
-`;
-
-export const OldPrice = styled.span`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  font-weight: 700;
-  font-size: 11px;
-  line-height: 10px;
-  text-decoration-line: line-through;
-  color: rgba(0, 0, 0, 0.5);
-  margin-left: 3px;
-  letter-spacing: -0.5px;
-`;
-
-export const Discount = styled.div`
-  background: ${Colors.RED_CRAYOLA};
-  border-radius: 12px;
-  padding: 3px 6px;
-`;
-
-export const DiscountText = styled.span`
-  align-items: center;
-  color: ${Colors.WHITE};
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: bold;
-  line-height: 90%;
-  text-align: center;
-  display: flex;
+  padding: 6px 10px 0 10px;
 `;
 
 export const FavoriteIconHolder = styled.div`

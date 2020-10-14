@@ -113,7 +113,7 @@ describe("CustomButton", () => {
       );
       expect(wrapper.find("span")).toHaveStyleRule("color", Colors.WHITE);
     });
-    it(`disabled type should have background color of ${Colors.LIGHT_GRAY} color and font color equals to ${Colors.WHITE}`, () => {
+    it(`disabled type should have background color of ${Colors.LIGHT_GRAY} color and font color equals to #555`, () => {
       const wrapper = mount(
         <CustomButton variant="contained" type="disabled" onClick={null}>
           OK
@@ -123,9 +123,9 @@ describe("CustomButton", () => {
         "border",
         `2px solid ${Colors.LIGHT_GRAY}`
       );
-      expect(wrapper.find("span")).toHaveStyleRule("color", Colors.WHITE);
+      expect(wrapper.find("span")).toHaveStyleRule("color", "#555");
     });
-    it(`success type should have background color of ${Colors.FOREST_GREEN_CRAYOLA} color and font color equals to ${Colors.WHITE}`, () => {
+    it(`success type should have background color of ${Colors.FOREST_GREEN_CRAYOLA} color and font color equals to #555`, () => {
       const wrapper = mount(
         <CustomButton variant="contained" type="success" onClick={null}>
           OK

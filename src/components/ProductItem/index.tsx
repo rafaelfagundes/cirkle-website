@@ -12,7 +12,6 @@ import FavoriteIcon from "../FavoriteIcon";
 import Icon from "../Icon";
 import Padding from "../Padding";
 import Price from "../Price";
-import Row from "../Row";
 import SizedBox from "../SizedBox";
 import {
   AnimatedHeart,
@@ -25,6 +24,7 @@ import {
   RemoveButton,
   RemoveIconHolder,
   Title,
+  TitleHolder,
 } from "./styles";
 
 function ProductItem({
@@ -124,32 +124,28 @@ function ProductItem({
             <BrandNameText>{data.brand.name}</BrandNameText>
           </BrandName>
           <Description>
-            <Title>{data.title}</Title>
+            <TitleHolder>
+              <Title>{data.title}</Title>
+            </TitleHolder>
             <Price price={data.price} priceWhenNew={data.priceWhenNew}></Price>
           </Description>
           <SizedBox height={8}></SizedBox>
         </span>
-        <Padding horizontal={8}>
-          <Row>
-            <CustomButton
-              type="secondary"
-              variant="text"
-              onClick={() => _goToProduct(data.uid)}
-            >
-              Ver Mais
-            </CustomButton>
-            <SizedBox width={8}></SizedBox>
-            <CustomButton
-              type={isAlreadyInCart ? "disabled" : "primary"}
-              variant="contained"
-              onClick={() => _addToCart(data)}
-              icon={isAlreadyInCart ? null : "bag-plus"}
-            >
-              {isAlreadyInCart ? "Está Na Sacola" : ""}
-            </CustomButton>
-          </Row>
-        </Padding>
-        <SizedBox height={8}></SizedBox>
+        {removeButton && (
+          <>
+            <Padding horizontal={8}>
+              <CustomButton
+                type={isAlreadyInCart ? "disabled" : "primary"}
+                variant={isAlreadyInCart ? "contained" : "outlined"}
+                onClick={() => _addToCart(data)}
+                width={212}
+              >
+                {isAlreadyInCart ? "Está Na Sacola" : "Adicionar à Sacola"}
+              </CustomButton>
+            </Padding>
+            <SizedBox height={8}></SizedBox>
+          </>
+        )}
       </Item>
     </div>
   );

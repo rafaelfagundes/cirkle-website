@@ -39,7 +39,7 @@ const OldPrice = styled.span`
 `;
 
 const Discount = styled.div`
-  background: ${Colors.RED_CRAYOLA};
+  background: ${Colors.PARADISE_PINK};
   border-radius: 12px;
   padding: 3px 6px;
   margin-left: 10px;
@@ -51,7 +51,7 @@ const DiscountText = styled.span`
   font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-style: normal;
   font-weight: bold;
   line-height: 90%;

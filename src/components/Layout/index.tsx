@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
-import Colors from "../../enums/Colors";
 import { useDialog } from "../../hooks/dialog/useDialog";
 import SideMenu from "../SideMenu/index";
 import NavBarDesktop from "./navBarDesktop";
@@ -19,8 +18,7 @@ const CustomDialog = dynamic(() => import("../CustomDialog"), {
 });
 
 const Background = styled.div`
-  background: #fff;
-  /* background: linear-gradient(180deg, #fafafa, ${Colors.ULTRA_LIGHT_GRAY}); */
+  background: #fbeff7;
 `;
 
 interface LayoutProps {

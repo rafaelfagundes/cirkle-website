@@ -63,8 +63,8 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
     if (process.browser) window.scrollTo(0, 0);
   }, []);
 
-  const _goToProducts = () => {
-    typeof window !== "undefined" && router.push("/products");
+  const _goToHome = () => {
+    typeof window !== "undefined" && router.push("/");
   };
 
   const _getItemMaxQty = (qty: number) => {
@@ -519,7 +519,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
             <Column>
               <SizedBox height={72}></SizedBox>
               <EmptyPage
-                buttonAction={_goToProducts}
+                buttonAction={_goToHome}
                 buttonText="Explorar"
                 icon="bag"
                 subtitle="Não perca tempo, adicione os melhores produtos."
