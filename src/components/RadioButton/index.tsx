@@ -23,7 +23,7 @@ const Box = styled.div<{ filled: boolean }>`
   height: 16px;
   border: 2px solid ${(props) => (props.filled ? Colors.PRIMARY : "#bbb")};
   background-color: ${(props) =>
-    props.filled ? Colors.PRIMARY : "transparent"};
+    props.filled ? Colors.PRIMARY : Colors.WHITE};
   border-radius: 16px;
 
   display: flex;

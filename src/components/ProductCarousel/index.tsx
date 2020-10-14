@@ -8,11 +8,13 @@ import ProductItem from "../ProductItem";
 import SizedBox from "../SizedBox";
 import Title from "../Title";
 
-const Section = styled.div<{ isSmartphone: boolean }>`
-  padding: ${(props) => (props.isSmartphone ? "0 0 0 16px" : 0)};
-`;
+const Section = styled.div``;
 
-const ItemsHolder = styled.div<{ disableScroll?: boolean }>`
+const ItemsHolder = styled.div<{
+  disableScroll?: boolean;
+  isSmartphone: boolean;
+}>`
+  padding: ${(props) => (props.isSmartphone ? "0 0 0 16px" : 0)};
   display: flex;
   flex-wrap: ${(props) => (props.disableScroll ? "wrap" : "nowrap")};
   flex-direction: row;
@@ -47,8 +49,8 @@ function ProductCarousel({
           <SizedBox height={16}></SizedBox>
         </>
       )}
-      <Section isSmartphone={isSmartphone}>
-        <ItemsHolder disableScroll={!isSmartphone}>
+      <Section>
+        <ItemsHolder disableScroll={!isSmartphone} isSmartphone={isSmartphone}>
           {products.map((item) => (
             <ProductItem data={item} key={item.id}></ProductItem>
           ))}

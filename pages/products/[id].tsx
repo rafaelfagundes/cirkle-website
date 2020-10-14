@@ -244,58 +244,70 @@ function ProductPage({
                 </Grid>
               </Grid>
               <SizedBox height={isSmartPhone ? 48 : 48}></SizedBox>
-              <Accordion
-                square
-                expanded={moreDetails}
-                onChange={() => setMoreDetails(!moreDetails)}
-              >
-                <AccordionSummary
-                  aria-controls="panel1d-content"
-                  id="panel1d-header"
-                  expandIcon={<ExpandMoreIcon />}
-                >
-                  <Title>Informações do Produto</Title>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <div style={{ opacity: 0.8 }}>
-                    <Grid container spacing={isSmartPhone ? 0 : 4}>
-                      <>
-                        {product.infoColumn1 && (
-                          <Grid item xs={12} md={4} sm={4}>
-                            <Padding
-                              horizontal={isSmartPhone ? 16 : 0}
-                              vertical={0}
-                            >
-                              <MarkdownText>{product.infoColumn1}</MarkdownText>
-                            </Padding>
-                          </Grid>
-                        )}
-                        {product.infoColumn2 && (
-                          <Grid item xs={12} md={4} sm={4}>
-                            <Padding
-                              horizontal={isSmartPhone ? 16 : 0}
-                              vertical={0}
-                            >
-                              <MarkdownText>{product.infoColumn2}</MarkdownText>
-                            </Padding>
-                          </Grid>
-                        )}
-                        {product.infoColumn3 && (
-                          <Grid item xs={12} md={4} sm={4}>
-                            <Padding
-                              horizontal={isSmartPhone ? 16 : 0}
-                              vertical={0}
-                            >
-                              <MarkdownText>{product.infoColumn3}</MarkdownText>
-                            </Padding>
-                          </Grid>
-                        )}
-                      </>
-                    </Grid>
-                  </div>
-                </AccordionDetails>
-              </Accordion>
-              <SizedBox height={48}></SizedBox>
+              {(product.infoColumn1 ||
+                product.infoColumn2 ||
+                product.infoColumn3) && (
+                <>
+                  <Accordion
+                    square
+                    expanded={moreDetails}
+                    onChange={() => setMoreDetails(!moreDetails)}
+                  >
+                    <AccordionSummary
+                      aria-controls="panel1d-content"
+                      id="panel1d-header"
+                      expandIcon={<ExpandMoreIcon />}
+                    >
+                      <Title>Informações do Produto</Title>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <div style={{ opacity: 0.8 }}>
+                        <Grid container spacing={isSmartPhone ? 0 : 4}>
+                          <>
+                            {product.infoColumn1 && (
+                              <Grid item xs={12} md={4} sm={4}>
+                                <Padding
+                                  horizontal={isSmartPhone ? 16 : 0}
+                                  vertical={0}
+                                >
+                                  <MarkdownText>
+                                    {product.infoColumn1}
+                                  </MarkdownText>
+                                </Padding>
+                              </Grid>
+                            )}
+                            {product.infoColumn2 && (
+                              <Grid item xs={12} md={4} sm={4}>
+                                <Padding
+                                  horizontal={isSmartPhone ? 16 : 0}
+                                  vertical={0}
+                                >
+                                  <MarkdownText>
+                                    {product.infoColumn2}
+                                  </MarkdownText>
+                                </Padding>
+                              </Grid>
+                            )}
+                            {product.infoColumn3 && (
+                              <Grid item xs={12} md={4} sm={4}>
+                                <Padding
+                                  horizontal={isSmartPhone ? 16 : 0}
+                                  vertical={0}
+                                >
+                                  <MarkdownText>
+                                    {product.infoColumn3}
+                                  </MarkdownText>
+                                </Padding>
+                              </Grid>
+                            )}
+                          </>
+                        </Grid>
+                      </div>
+                    </AccordionDetails>
+                  </Accordion>
+                  <SizedBox height={48}></SizedBox>
+                </>
+              )}
               <ProductCarousel
                 title="Você também pode gostar"
                 products={products}
@@ -305,18 +317,20 @@ function ProductPage({
             <RecentlyViewed>
               <Container maxWidth="md" disableGutters>
                 <Row spaceBetween>
-                  <Title>Produtos vistos recentemente</Title>
+                  <Padding horizontal={isSmartPhone ? 16 : 0}>
+                    <Title>Vistos recentemente</Title>
+                  </Padding>
                   <CustomButton
                     onClick={null}
                     variant="text"
                     type="delete"
-                    width={103}
+                    width={isSmartPhone ? 125 : 103}
                     noPadding
                   >
                     Limpar Lista
                   </CustomButton>
                 </Row>
-                <SizedBox height={16}></SizedBox>
+                <SizedBox height={4}></SizedBox>
                 <ProductCarousel products={products}></ProductCarousel>
               </Container>
             </RecentlyViewed>
