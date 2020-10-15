@@ -113,19 +113,13 @@ function Home(props: HomeProps): JSX.Element {
     ],
   };
 
-  // const { data: banner, error: bannerError } = useSWR("/banner", {
-  //   initialData: props.banner,
-  // });
-
-  // if (bannerError) console.log("Banner loading error", bannerError);
-
   const { data: brands, error: brandsError } = useSWR("/brands", {
     initialData: props.brands,
   });
   if (brandsError) console.log("Brands loading error", brandsError);
 
   const { data: hotProducts, error: productsError } = useSWR(
-    "/products?_sort=views:DESC&_limit=8",
+    "/products?_sort=views:DESC&_limit=7",
     {
       initialData: props.products,
     }
@@ -159,43 +153,7 @@ function Home(props: HomeProps): JSX.Element {
   return (
     <Layout containerMargin={false} menu={props.menu}>
       <>
-        {/* <Hidden mdUp={true}>
-          <SearchBar placeHolder="Procure marcas, modelos e mais"></SearchBar>
-        </Hidden> */}
-
         <PromoHeroComponent data={promoHero}></PromoHeroComponent>
-
-        {/* {!cartContext.cart.freeShipping && <SizedBox height={48}></SizedBox>}
-        {cartContext.cart.freeShipping && (
-          <TopTextBanner
-            color={Colors.TRANSPARENT}
-            textColor={Colors.SECONDARY}
-          >
-            {`Frete grátis para pedidos acima de ${new Intl.NumberFormat(
-              "pt-BR",
-              {
-                style: "currency",
-                currency: "BRL",
-              }
-            ).format(cartContext.cart.freeShippingValue)}`}
-          </TopTextBanner>
-        )}
-         */}
-
-        {/* {!banner && <MainBannerLoader></MainBannerLoader>}
-        {banner && (
-          <MainBanner
-            url={banner.url}
-            primaryText={banner.primaryText}
-            secondaryText={banner.secondaryText}
-            position={banner.position}
-            primaryTextColor={banner.primaryTextColor}
-            primaryBackgroundColor={banner.primaryBackgroundColor}
-            secondaryTextColor={banner.secondaryTextColor}
-            secondaryBackgroundColor={banner.secondaryBackgroundColor}
-          ></MainBanner>
-        )} */}
-
         <Hidden smUp={true}>
           <SizedBox height={16}></SizedBox>
           <HomeCategories></HomeCategories>
@@ -212,7 +170,7 @@ function Home(props: HomeProps): JSX.Element {
         <SizedBox height={18}></SizedBox>
         <Container maxWidth="md" disableGutters>
           <Padding horizontal={isSmartPhone ? 20 : 0}>
-            <HotSectionTitle></HotSectionTitle>
+            <HotSectionTitle />
           </Padding>
           <SizedBox height={16}></SizedBox>
           {!hotProducts && <HotProductsLoader></HotProductsLoader>}
@@ -220,6 +178,7 @@ function Home(props: HomeProps): JSX.Element {
             <HotSection products={hotProducts} brands={brands}></HotSection>
           )}
         </Container>
+        <SizedBox height={32}></SizedBox>
         <Hidden only={["md", "lg", "xl"]}>
           <NewsletterSignUp></NewsletterSignUp>
         </Hidden>
@@ -261,7 +220,7 @@ export async function getStaticProps(): Promise<any> {
   const brandsUrl = `${process.env.API_ENDPOINT}/brands`;
   const highlightsUrl = `${process.env.API_ENDPOINT}/highlights`;
   const shippingUrl = `${process.env.API_ENDPOINT}/shipping`;
-  const productsUrl = `${process.env.API_ENDPOINT}/products?_sort=views:DESC&_limit=8`;
+  const productsUrl = `${process.env.API_ENDPOINT}/products?_sort=views:DESC&_limit=7`;
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
 
   const results = await Promise.all([

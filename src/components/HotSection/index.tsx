@@ -10,18 +10,19 @@ import ProductItem from "../ProductItem";
 import SizedBox from "../SizedBox";
 import Brand from "./brand";
 
-const Section = styled.div<{ isSmartphone: boolean }>`
-  padding: ${(props) =>
-    props.isSmartphone ? "0px 0 32px 16px" : "0px 0 32px 0"};
-`;
+const Section = styled.div``;
 
-const ItemsHolder = styled.div<{ disableScroll?: boolean }>`
+const ItemsHolder = styled.div<{
+  disableScroll?: boolean;
+  isSmartphone: boolean;
+}>`
+  padding: ${(props) => (props.isSmartphone ? "0 0 0 16px" : 0)};
   display: flex;
   flex-wrap: ${(props) => (props.disableScroll ? "wrap" : "nowrap")};
   flex-direction: row;
   align-items: center;
   overflow: ${(props) => (props.disableScroll ? "hidden" : "scroll")};
-  justify-content: space-between;
+  /* justify-content: space-between; */
 `;
 
 const BrandsHolder = styled.div<{ isSmartphone: boolean }>`
@@ -29,7 +30,7 @@ const BrandsHolder = styled.div<{ isSmartphone: boolean }>`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-right: ${(props) => (props.isSmartphone ? "16px" : 0)};
+  padding: ${(props) => (props.isSmartphone ? "0 16px" : 0)};
   flex-wrap: wrap;
 `;
 
@@ -57,13 +58,17 @@ function HotSection({
   randomBrands = randomBrands.slice(0, 6);
 
   return (
-    <Section isSmartphone={isSmartphone}>
-      <ItemsHolder disableScroll={!isSmartphone}>
-        {products.map((item) => (
-          <ProductItem data={item} key={item.id}></ProductItem>
+    <Section>
+      <ItemsHolder disableScroll={!isSmartphone} isSmartphone={isSmartphone}>
+        {products.map((item, index) => (
+          <>
+            <ProductItem data={item} key={item.id}></ProductItem>
+            {(index + 1) % 4 !== 0 && <SizedBox width={16}></SizedBox>}
+          </>
         ))}
         {isSmartphone ? <Spacer>-</Spacer> : null}
       </ItemsHolder>
+      <SizedBox height={12}></SizedBox>
       <Center>
         <>
           <CustomButton

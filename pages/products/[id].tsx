@@ -59,9 +59,10 @@ const Description = styled.div<{ isSmartphone: boolean }>`
 `;
 
 const RecentlyViewed = styled.div`
-  padding: 16px 0;
+  padding: 16px 0 32px 0;
   /* background-color: #eee; */
-  background-color: #e6e6e6;
+  /* background-color: #e6e6e6; */
+  background-color: rgba(0, 0, 0, 0.05);
 `;
 
 function ProductPage({
@@ -352,28 +353,31 @@ function ProductPage({
               )}
             </Container>
             {showRecentlyViewed() && (
-              <RecentlyViewed>
-                <Container maxWidth="md" disableGutters>
-                  <Row spaceBetween>
-                    <Padding horizontal={isSmartPhone ? 16 : 0}>
-                      <Title>Vistos recentemente</Title>
-                    </Padding>
-                    <CustomButton
-                      onClick={clearRecent}
-                      variant="text"
-                      type="delete"
-                      width={isSmartPhone ? 125 : 103}
-                      noPadding
-                    >
-                      Limpar Lista
-                    </CustomButton>
-                  </Row>
-                  <SizedBox height={4}></SizedBox>
-                  <RecentItemsCarousel
-                    products={getRecentItems()}
-                  ></RecentItemsCarousel>
-                </Container>
-              </RecentlyViewed>
+              <>
+                <SizedBox height={16}></SizedBox>
+                <RecentlyViewed>
+                  <Container maxWidth="md" disableGutters>
+                    <Row spaceBetween>
+                      <Padding horizontal={isSmartPhone ? 16 : 0}>
+                        <Title>Vistos recentemente</Title>
+                      </Padding>
+                      <CustomButton
+                        onClick={clearRecent}
+                        variant="text"
+                        type="delete"
+                        width={isSmartPhone ? 125 : 103}
+                        noPadding
+                      >
+                        Limpar Lista
+                      </CustomButton>
+                    </Row>
+                    <SizedBox height={4}></SizedBox>
+                    <RecentItemsCarousel
+                      products={getRecentItems()}
+                    ></RecentItemsCarousel>
+                  </Container>
+                </RecentlyViewed>
+              </>
             )}
             <SizedBox height={32}></SizedBox>
             <Center>

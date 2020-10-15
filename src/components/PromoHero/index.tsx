@@ -31,7 +31,7 @@ const PromoBackground = styled.div<{ image: string }>`
   background-color: #fff;
 
   width: 100%;
-  height: 540px;
+  height: 563px;
 
   background-image: ${(props) => `url(${props.image})`};
   background-position: center; /* Center the image */
@@ -47,13 +47,15 @@ const Content = styled.span`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  height: 563px;
+
   /* z-index: 100; */
 `;
 
 const Tint = styled.div<{ color: string }>`
   position: absolute;
   width: 100%;
-  height: 540px;
+  height: 563px;
   background-color: ${(props) => props.color};
   mix-blend-mode: color;
 `;

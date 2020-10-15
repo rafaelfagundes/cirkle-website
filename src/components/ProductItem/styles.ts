@@ -7,7 +7,7 @@ export const Item = styled.div<{ isSmartphone: boolean }>`
   background-color: ${Colors.WHITE};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
   margin-right: ${(props) => (props.isSmartphone ? "16px" : 0)};
-  margin-bottom: 28px;
+  margin-bottom: 16px;
 `;
 
 export const Image = styled.div<{ image: string }>`
@@ -28,7 +28,6 @@ export const BrandName = styled.div`
   flex-direction: row;
   height: 18px;
   justify-content: center;
-  /* margin-bottom: 6px; */
   padding: 0 10px;
 `;
 
@@ -44,7 +43,6 @@ export const BrandNameText = styled.span`
 export const TitleHolder = styled.div`
   display: flex;
   align-items: center;
-  /* justify-content: center; */
   height: 40px;
 `;
 
@@ -58,7 +56,6 @@ export const Title = styled.span`
   display: flex;
   align-items: flex-end;
   color: ${Colors.PRIMARY};
-  /* letter-spacing: -0.5px; */
 `;
 
 export const Description = styled.div`
