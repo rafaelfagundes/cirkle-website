@@ -11,12 +11,12 @@ import { SWRConfig } from "swr";
 import AuthProvider from "../src/hooks/auth/useAuth";
 import CartProvider from "../src/hooks/cart/useCart";
 import DialogProvider from "../src/hooks/dialog/useDialog";
+import RecentlyViewedProvider from "../src/hooks/recentlyViewed/useRecentlyViewed";
 import WishlistProvider from "../src/hooks/wishlist/useWishlist";
 import theme from "../src/theme/theme";
 import "../styles/datepicker.css";
 import "../styles/global.css";
 import "../styles/nprogress.css";
-
 
 NProgress.configure({ showSpinner: false });
 
@@ -158,26 +158,28 @@ export default function MyApp(props) {
         <AuthProvider>
           <WishlistProvider>
             <CartProvider>
-              <ThemeProvider theme={theme}>
-                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                <CssBaseline />
-                <SWRConfig
-                  value={{
-                    refreshInterval: 60000,
-                    refreshWhenHidden: false,
-                    refreshWhenOffline: false,
-                    revalidateOnFocus: true,
-                    revalidateOnMount: true,
-                    revalidateOnReconnect: true,
-                    dedupingInterval: 5000,
-                    focusThrottleInterval: 15000,
-                    errorRetryCount: 5,
-                    fetcher,
-                  }}
-                >
-                  <Component {...pageProps} />
-                </SWRConfig>
-              </ThemeProvider>
+              <RecentlyViewedProvider>
+                <ThemeProvider theme={theme}>
+                  {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                  <CssBaseline />
+                  <SWRConfig
+                    value={{
+                      refreshInterval: 60000,
+                      refreshWhenHidden: false,
+                      refreshWhenOffline: false,
+                      revalidateOnFocus: true,
+                      revalidateOnMount: true,
+                      revalidateOnReconnect: true,
+                      dedupingInterval: 5000,
+                      focusThrottleInterval: 15000,
+                      errorRetryCount: 5,
+                      fetcher,
+                    }}
+                  >
+                    <Component {...pageProps} />
+                  </SWRConfig>
+                </ThemeProvider>
+              </RecentlyViewedProvider>
             </CartProvider>
           </WishlistProvider>
         </AuthProvider>

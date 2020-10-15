@@ -22,6 +22,7 @@ type Product = {
   cartSize?: string;
   viewCount: number;
   enabled: true;
+  relatedItems?: Array<Product>;
 };
 
 export default Product;

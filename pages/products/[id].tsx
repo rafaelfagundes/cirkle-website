@@ -11,6 +11,7 @@ import Axios from "axios";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Center from "../../src/components/Center";
 import CustomButton from "../../src/components/CustomButton";
 import FavoriteIcon from "../../src/components/FavoriteIcon";
 import Layout from "../../src/components/Layout";
@@ -18,6 +19,7 @@ import MarkdownText from "../../src/components/MarkdownText";
 import Padding from "../../src/components/Padding";
 import Price from "../../src/components/Price";
 import ProductCarousel from "../../src/components/ProductCarousel";
+import RecentItemsCarousel from "../../src/components/RecentItemsCarousel";
 import Row from "../../src/components/Row";
 import SelectMenu, {
   AssetType,
@@ -27,6 +29,7 @@ import SimpleText from "../../src/components/SimpleText";
 import SizedBox from "../../src/components/SizedBox";
 import Title from "../../src/components/Title";
 import { useCart } from "../../src/hooks/cart/useCart";
+import { useRecentlyViewed } from "../../src/hooks/recentlyViewed/useRecentlyViewed";
 import { useWishlist } from "../../src/hooks/wishlist/useWishlist";
 import Color from "../../src/modules/color/Color";
 import Product from "../../src/modules/product/Product";
@@ -64,11 +67,9 @@ const RecentlyViewed = styled.div`
 function ProductPage({
   menu,
   product,
-  products,
 }: {
   menu: any;
   product: Product;
-  products: Array<Product>;
 }): JSX.Element {
   if (!product) return <></>;
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
@@ -83,6 +84,7 @@ function ProductPage({
 
   const cartContext = useCart();
   const wishlistContext = useWishlist();
+  const recentlyViewedContext = useRecentlyViewed();
 
   function addToCart() {
     setErrorSize("");
@@ -142,7 +144,6 @@ function ProductPage({
   }
 
   function addOrRemoveFromWishlist(isIn: boolean) {
-    console.log("addOrRemoveFromWishlist -> addOrRemoveFromWishlist");
     if (isIn) {
       wishlistContext.removeFromWishlist(product.id);
     } else {
@@ -150,10 +151,11 @@ function ProductPage({
     }
   }
 
-  useEffect(() => {
-    // Scroll to top when page is loaded
-    if (process.browser) window.scrollTo(0, 0);
+  function clearRecent() {
+    recentlyViewedContext.removeAll();
+  }
 
+  useEffect(() => {
     if (!colors) {
       getSelectColors(product.colors);
     }
@@ -162,7 +164,38 @@ function ProductPage({
     }
   }, []);
 
+  useEffect(() => {
+    // Scroll to top when page is loaded
+    if (process.browser) window.scrollTo(0, 0);
+    recentlyViewedContext.addToList(product);
+  });
+
   const isAlreadyInCart = cartContext.isItemInCart(product.id);
+
+  function showRecentlyViewed() {
+    const numItems = _.filter(
+      recentlyViewedContext.recentlyViewed.items,
+      (o: Product) => o.uid !== product.uid
+    ).length;
+
+    if (numItems > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function getRecentItems(): Array<Product> {
+    return recentlyViewedContext.recentlyViewed.items;
+    // return _.filter(
+    //   recentlyViewedContext.recentlyViewed.items,
+    //   (o: Product) => o.uid !== product.uid
+    // );
+  }
+
+  function backToTop(): void {
+    if (process.browser) window.scrollTo(0, 0);
+  }
 
   return (
     <>
@@ -226,7 +259,7 @@ function ProductPage({
                             width={isSmartPhone ? 343 : 250}
                             type="disabled"
                           >
-                            Está na Sacola
+                            Já Está na Sacola
                           </CustomButton>
                         )}
                         <SizedBox width={16}></SizedBox>
@@ -308,32 +341,52 @@ function ProductPage({
                   <SizedBox height={48}></SizedBox>
                 </>
               )}
-              <ProductCarousel
-                title="Você também pode gostar"
-                products={products}
-              ></ProductCarousel>
-              <SizedBox height={16}></SizedBox>
+              {product.relatedItems && product.relatedItems.length > 0 && (
+                <>
+                  <ProductCarousel
+                    title="Você também pode gostar"
+                    products={product.relatedItems}
+                  ></ProductCarousel>
+                  <SizedBox height={16}></SizedBox>
+                </>
+              )}
             </Container>
-            <RecentlyViewed>
-              <Container maxWidth="md" disableGutters>
-                <Row spaceBetween>
-                  <Padding horizontal={isSmartPhone ? 16 : 0}>
-                    <Title>Vistos recentemente</Title>
-                  </Padding>
-                  <CustomButton
-                    onClick={null}
-                    variant="text"
-                    type="delete"
-                    width={isSmartPhone ? 125 : 103}
-                    noPadding
-                  >
-                    Limpar Lista
-                  </CustomButton>
-                </Row>
-                <SizedBox height={4}></SizedBox>
-                <ProductCarousel products={products}></ProductCarousel>
-              </Container>
-            </RecentlyViewed>
+            {showRecentlyViewed() && (
+              <RecentlyViewed>
+                <Container maxWidth="md" disableGutters>
+                  <Row spaceBetween>
+                    <Padding horizontal={isSmartPhone ? 16 : 0}>
+                      <Title>Vistos recentemente</Title>
+                    </Padding>
+                    <CustomButton
+                      onClick={clearRecent}
+                      variant="text"
+                      type="delete"
+                      width={isSmartPhone ? 125 : 103}
+                      noPadding
+                    >
+                      Limpar Lista
+                    </CustomButton>
+                  </Row>
+                  <SizedBox height={4}></SizedBox>
+                  <RecentItemsCarousel
+                    products={getRecentItems()}
+                  ></RecentItemsCarousel>
+                </Container>
+              </RecentlyViewed>
+            )}
+            <SizedBox height={32}></SizedBox>
+            <Center>
+              <CustomButton
+                onClick={backToTop}
+                width={200}
+                variant="outlined"
+                icon="chevron-up"
+              >
+                Voltar ao Topo
+              </CustomButton>
+            </Center>
+            <SizedBox height={32}></SizedBox>
           </>
         </Layout>
       )}
@@ -367,29 +420,19 @@ export async function getStaticProps({
   function getProduct(url: string) {
     return Axios.get(url);
   }
-  function getRelatedProducts(url: string) {
-    return Axios.get(url);
-  }
 
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
   const productUrl = `${process.env.API_ENDPOINT}/products/${params.id}`;
-  const productsUrl = `${process.env.API_ENDPOINT}/products?_sort=views:DESC&_limit=4`;
 
-  const results = await Promise.all([
-    getProduct(productUrl),
-    getMenu(menuUrl),
-    getRelatedProducts(productsUrl),
-  ]);
+  const results = await Promise.all([getProduct(productUrl), getMenu(menuUrl)]);
 
   const product = results[0].data;
   const menu = results[1].data;
-  const products = results[2].data;
 
   return {
     props: {
       menu,
       product,
-      products,
     },
     revalidate: 60,
   };

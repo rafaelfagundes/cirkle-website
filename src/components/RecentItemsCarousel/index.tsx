@@ -3,8 +3,8 @@ import React from "react";
 import styled from "styled-components";
 import Product from "../../modules/product/Product";
 import theme from "../../theme/theme";
+import MiniProductItem from "../MiniProductItem";
 import Padding from "../Padding";
-import ProductItem from "../ProductItem";
 import SizedBox from "../SizedBox";
 import Title from "../Title";
 
@@ -20,6 +20,7 @@ const ItemsHolder = styled.div<{
   flex-direction: row;
   align-items: center;
   overflow: ${(props) => (props.disableScroll ? "hidden" : "scroll")};
+  // justify-content: space-between;
 `;
 
 const Spacer = styled.div`
@@ -29,7 +30,7 @@ const Spacer = styled.div`
   color: transparent;
 `;
 
-function ProductCarousel({
+function RecentItemsCarousel({
   title,
   products,
 }: {
@@ -52,7 +53,7 @@ function ProductCarousel({
         <ItemsHolder disableScroll={!isSmartphone} isSmartphone={isSmartphone}>
           {products.map((item, index) => (
             <>
-              <ProductItem data={item} key={item.id}></ProductItem>
+              <MiniProductItem data={item} key={item.id}></MiniProductItem>
               {index + 1 < products.length && <SizedBox width={16}></SizedBox>}
             </>
           ))}
@@ -63,4 +64,4 @@ function ProductCarousel({
   );
 }
 
-export default ProductCarousel;
+export default RecentItemsCarousel;
