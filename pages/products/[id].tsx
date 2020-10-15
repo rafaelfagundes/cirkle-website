@@ -187,11 +187,10 @@ function ProductPage({
   }
 
   function getRecentItems(): Array<Product> {
-    return recentlyViewedContext.recentlyViewed.items;
-    // return _.filter(
-    //   recentlyViewedContext.recentlyViewed.items,
-    //   (o: Product) => o.uid !== product.uid
-    // );
+    return _.filter(
+      recentlyViewedContext.recentlyViewed.items,
+      (o: Product) => o.uid !== product.uid
+    );
   }
 
   function backToTop(): void {
