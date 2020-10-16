@@ -10,6 +10,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Axios from "axios";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
+import ReactImageMagnify from "react-image-magnify";
 import styled from "styled-components";
 import Center from "../../src/components/Center";
 import CustomButton from "../../src/components/CustomButton";
@@ -35,20 +36,9 @@ import Color from "../../src/modules/color/Color";
 import Product from "../../src/modules/product/Product";
 import Size from "../../src/modules/size/Size";
 import theme from "../../src/theme/theme";
-import { cloudinaryImage } from "../../src/utils/image";
+import { cloudinaryProductImage } from "../../src/utils/image";
 
-const ProductImage = styled.div<{ image: string }>`
-  position: relative;
-  background-color: #fff;
-
-  width: 100%;
-  height: 425px;
-
-  background-image: ${(props) => `url(${props.image})`};
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  background-size: cover;
-`;
+const IMAGE_SIZE = 600;
 
 const Description = styled.div<{ isSmartphone: boolean }>`
   /* max-width: 343px; */
@@ -166,10 +156,13 @@ function ProductPage({
   }, []);
 
   useEffect(() => {
-    // Scroll to top when page is loaded
-    if (process.browser) window.scrollTo(0, 0);
     recentlyViewedContext.addToList(product);
   });
+
+  useEffect(() => {
+    // Scroll to top when page is loaded
+    if (process.browser) window.scrollTo(0, 0);
+  }, [product]);
 
   const isAlreadyInCart = cartContext.isItemInCart(product.id);
 
@@ -201,18 +194,36 @@ function ProductPage({
     <>
       {product && (
         <Layout menu={menu} containerMargin={false}>
-          <>
+          <span style={{ userSelect: "none" }}>
             <Container maxWidth="md" disableGutters>
               <SizedBox height={isSmartPhone ? 0 : 48}></SizedBox>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6} sm={6}>
-                  <ProductImage
+                  {/* <ProductImage
                     image={cloudinaryImage(product.image, 600)}
-                  ></ProductImage>
+                  ></ProductImage> */}
+                  <ReactImageMagnify
+                    {...{
+                      smallImage: {
+                        alt: product.title,
+                        isFluidWidth: true,
+                        src: cloudinaryProductImage(product.image, IMAGE_SIZE),
+                      },
+                      largeImage: {
+                        src: cloudinaryProductImage(
+                          product.image,
+                          IMAGE_SIZE * 2
+                        ),
+                        height: 2 * IMAGE_SIZE * 1.15,
+                        width: 2 * IMAGE_SIZE,
+                      },
+                      enlargedImagePosition: "over",
+                    }}
+                  />
                 </Grid>
                 <Grid item xs={12} md={6} sm={6}>
                   <Padding horizontal={isSmartPhone ? 16 : 0} vertical={0}>
-                    <>
+                    <span style={{ userSelect: "none" }}>
                       <Title>{product.title}</Title>
                       <SizedBox height={16}></SizedBox>
                       <Description isSmartphone={isSmartPhone}>
@@ -272,7 +283,7 @@ function ProductPage({
                           }
                         ></FavoriteIcon>
                       </Row>
-                    </>
+                    </span>
                   </Padding>
                 </Grid>
               </Grid>
@@ -390,7 +401,7 @@ function ProductPage({
               </CustomButton>
             </Center>
             <SizedBox height={32}></SizedBox>
-          </>
+          </span>
         </Layout>
       )}
     </>

@@ -12,3 +12,11 @@ export function cloudinaryImage(
 
   return newUri;
 }
+
+export function cloudinaryProductImage(uri: string, size: number): string {
+  // const options = `c_lfill,g_center,h_${size * 1.34},q_auto:eco,w_${size}/`;
+  const options = `c_lfill,g_center,h_${size * 1.15},q_auto:eco,w_${size}/`;
+  const newUri = uri.replace("upload/", "upload/" + options);
+
+  return newUri;
+}

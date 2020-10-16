@@ -16,6 +16,7 @@ const Text = styled.p<{
   ${(props) => (props.centered ? "text-align: center;" : null)};
   margin: 0;
   font-weight: ${(props) => (props.bold ? "700" : "400")};
+  user-select: none;
 `;
 
 function SimpleText({

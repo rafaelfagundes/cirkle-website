@@ -49,7 +49,7 @@ function Layout({
   if (data?.content) content = data.content;
 
   return (
-    <div style={{ overflowX: "hidden" }}>
+    <div style={{ overflowX: "hidden", userSelect: "none" }}>
       <CustomDialog
         open={dialogContext.dialog.isOpen}
         title={dialogContext.dialog.title}

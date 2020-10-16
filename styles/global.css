@@ -43,4 +43,5 @@ img {
 
 * {
   font-display: swap !important;
+  user-select: none !important;
 }

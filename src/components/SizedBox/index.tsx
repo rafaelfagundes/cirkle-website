@@ -8,7 +8,7 @@ function SizedBox({
   width?: number;
   height?: number;
 }): JSX.Element {
-  return <div style={{ width, height }}></div>;
+  return <div style={{ width, height, userSelect: "none" }}></div>;
 }
 
 SizedBox.propTypes = {

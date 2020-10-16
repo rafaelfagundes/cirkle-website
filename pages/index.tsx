@@ -119,7 +119,7 @@ function Home(props: HomeProps): JSX.Element {
   if (brandsError) console.log("Brands loading error", brandsError);
 
   const { data: hotProducts, error: productsError } = useSWR(
-    "/products?_sort=views:DESC&_limit=7",
+    "/products?_sort=views:DESC&_limit=8",
     {
       initialData: props.products,
     }
@@ -220,7 +220,7 @@ export async function getStaticProps(): Promise<any> {
   const brandsUrl = `${process.env.API_ENDPOINT}/brands`;
   const highlightsUrl = `${process.env.API_ENDPOINT}/highlights`;
   const shippingUrl = `${process.env.API_ENDPOINT}/shipping`;
-  const productsUrl = `${process.env.API_ENDPOINT}/products?_sort=views:DESC&_limit=7`;
+  const productsUrl = `${process.env.API_ENDPOINT}/products?_sort=views:DESC&_limit=8`;
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
 
   const results = await Promise.all([

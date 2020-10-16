@@ -16,7 +16,7 @@ const StyledTitle = styled.h1<{
   letter-spacing: -0.005em;
   text-transform: uppercase;
   margin: 0;
-
+  user-select: none;
   color: ${(props) => props.color};
 `;
 
