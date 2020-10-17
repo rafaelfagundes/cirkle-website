@@ -252,13 +252,31 @@ function ProductPage({
                 <Grid item xs={12} md={6} sm={6}>
                   <Padding horizontal={isSmartPhone ? 16 : 0} vertical={0}>
                     <span style={{ userSelect: "none" }}>
-                      <BrandImage
-                        src={cloudinaryImage(product.brand.image, 64)}
-                      ></BrandImage>
-                      <SizedBox height={16}></SizedBox>
-                      <Title>{product.title}</Title>
-                      <SizedBox height={4}></SizedBox>
-                      <BrandName>{product.brand.name}</BrandName>
+                      {!isSmartPhone && (
+                        <>
+                          <BrandImage
+                            src={cloudinaryImage(product.brand.image, 64)}
+                          ></BrandImage>
+                          <SizedBox height={16}></SizedBox>
+                          <Title>{product.title}</Title>
+                          <SizedBox height={4}></SizedBox>
+                          <BrandName>{product.brand.name}</BrandName>
+                        </>
+                      )}
+                      {isSmartPhone && (
+                        <>
+                          <Row spaceBetween>
+                            <div>
+                              <Title>{product.title}</Title>
+                              <SizedBox height={4}></SizedBox>
+                              <BrandName>{product.brand.name}</BrandName>
+                            </div>
+                            <BrandImage
+                              src={cloudinaryImage(product.brand.image, 64)}
+                            ></BrandImage>
+                          </Row>
+                        </>
+                      )}
                       <SizedBox height={16}></SizedBox>
                       <Description isSmartphone={isSmartPhone}>
                         <SimpleText>{product.description}</SimpleText>
