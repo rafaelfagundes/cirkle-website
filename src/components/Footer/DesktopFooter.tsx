@@ -193,7 +193,7 @@ function DesktopFooter(): JSX.Element {
           </LinksSection>
           <Hidden only="xs">
             <LinksSection>
-              <HeaderSection>Categorias</HeaderSection>
+              <HeaderSection>Mulher</HeaderSection>
               <FooterLink>
                 <TextLink href="" color={Colors.WHITE} size={16}>
                   Roupas
@@ -214,9 +214,21 @@ function DesktopFooter(): JSX.Element {
                   Acessórios
                 </TextLink>
               </FooterLink>
+              <SizedBox height={16}></SizedBox>
+              <HeaderSection>Kids</HeaderSection>
               <FooterLink>
                 <TextLink href="" color={Colors.WHITE} size={16}>
-                  Marcas
+                  Roupas
+                </TextLink>
+              </FooterLink>
+              <FooterLink>
+                <TextLink href="" color={Colors.WHITE} size={16}>
+                  Calçados
+                </TextLink>
+              </FooterLink>
+              <FooterLink>
+                <TextLink href="" color={Colors.WHITE} size={16}>
+                  Brinquedos
                 </TextLink>
               </FooterLink>
             </LinksSection>

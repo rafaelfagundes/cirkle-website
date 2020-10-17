@@ -12,6 +12,7 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import ReactImageMagnify from "react-image-magnify";
 import styled from "styled-components";
+import Breadcrumbs from "../../src/components/Breadcrumbs";
 import Center from "../../src/components/Center";
 import CustomButton from "../../src/components/CustomButton";
 import FavoriteIcon from "../../src/components/FavoriteIcon";
@@ -29,6 +30,7 @@ import SelectMenu, {
 import SimpleText from "../../src/components/SimpleText";
 import SizedBox from "../../src/components/SizedBox";
 import Title from "../../src/components/Title";
+import Colors from "../../src/enums/Colors";
 import { useCart } from "../../src/hooks/cart/useCart";
 import { useRecentlyViewed } from "../../src/hooks/recentlyViewed/useRecentlyViewed";
 import { useWishlist } from "../../src/hooks/wishlist/useWishlist";
@@ -36,7 +38,7 @@ import Color from "../../src/modules/color/Color";
 import Product from "../../src/modules/product/Product";
 import Size from "../../src/modules/size/Size";
 import theme from "../../src/theme/theme";
-import { cloudinaryProductImage } from "../../src/utils/image";
+import { cloudinaryImage, cloudinaryProductImage } from "../../src/utils/image";
 
 const IMAGE_SIZE = 600;
 
@@ -53,6 +55,20 @@ const RecentlyViewed = styled.div`
   /* background-color: #eee; */
   /* background-color: #e6e6e6; */
   background-color: rgba(0, 0, 0, 0.05);
+`;
+
+const BrandImage = styled.img`
+  width: 64px;
+`;
+
+const BrandName = styled.div`
+  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: ${Colors.SECONDARY};
 `;
 
 function ProductPage({
@@ -196,7 +212,19 @@ function ProductPage({
         <Layout menu={menu} containerMargin={false}>
           <span style={{ userSelect: "none" }}>
             <Container maxWidth="md" disableGutters>
-              <SizedBox height={isSmartPhone ? 0 : 48}></SizedBox>
+              <SizedBox height={isSmartPhone ? 0 : 16}></SizedBox>
+              {!isSmartPhone && (
+                <>
+                  <Breadcrumbs
+                    showHome
+                    root={product.subCategory.category.rootCategory}
+                    category={product.subCategory.category}
+                    subCategory={product.subCategory}
+                    product={product}
+                  ></Breadcrumbs>
+                  <SizedBox height={16}></SizedBox>
+                </>
+              )}
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6} sm={6}>
                   {/* <ProductImage
@@ -224,7 +252,13 @@ function ProductPage({
                 <Grid item xs={12} md={6} sm={6}>
                   <Padding horizontal={isSmartPhone ? 16 : 0} vertical={0}>
                     <span style={{ userSelect: "none" }}>
+                      <BrandImage
+                        src={cloudinaryImage(product.brand.image, 64)}
+                      ></BrandImage>
+                      <SizedBox height={16}></SizedBox>
                       <Title>{product.title}</Title>
+                      <SizedBox height={4}></SizedBox>
+                      <BrandName>{product.brand.name}</BrandName>
                       <SizedBox height={16}></SizedBox>
                       <Description isSmartphone={isSmartPhone}>
                         <SimpleText>{product.description}</SimpleText>
@@ -421,8 +455,6 @@ export async function getStaticPaths(): Promise<any> {
   };
 }
 
-// d4bbe03c-7253-4a0f-ad96-abd36ac25ed7
-
 export async function getStaticProps({
   params,
 }: {
@@ -441,6 +473,7 @@ export async function getStaticProps({
   const results = await Promise.all([getProduct(productUrl), getMenu(menuUrl)]);
 
   const product = results[0].data;
+  console.log("product", product);
   const menu = results[1].data;
 
   return {

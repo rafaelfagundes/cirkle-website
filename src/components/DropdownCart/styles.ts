@@ -126,12 +126,12 @@ export const CartItem = styled.div<{ showBackground: boolean }>`
 
 export const CartItemImage = styled.div<{ image: string; size: number }>`
   background-image: ${(props) => `url("${props.image}");`};
-  background-color: #cccccc;
-  height: ${(props) => props.size}px;
-  width: ${(props) => props.size * 0.75}px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-color: #cccccc;
+  height: ${(props) => props.size}px;
+  width: ${(props) => props.size * 0.75}px;
   margin-right: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
 `;

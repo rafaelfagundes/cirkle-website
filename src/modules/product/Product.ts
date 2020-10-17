@@ -2,6 +2,32 @@ import Brand from "../brand/Brand";
 import Color from "../color/Color";
 import Size from "../size/Size";
 
+export type RootCategory = {
+  title: string;
+  slug: string;
+  image: string;
+  description: string;
+  hits: number;
+};
+
+export type Category = {
+  title: string;
+  slug: string;
+  image: string;
+  description: string;
+  hits: number;
+  rootCategory: RootCategory;
+};
+
+export type SubCategory = {
+  title: string;
+  slug: string;
+  image: string;
+  description: string;
+  hits: number;
+  category: Category;
+};
+
 type Product = {
   id: string;
   uid: string;
@@ -23,6 +49,7 @@ type Product = {
   viewCount: number;
   enabled: true;
   relatedItems?: Array<Product>;
+  subCategory?: SubCategory;
 };
 
 export default Product;

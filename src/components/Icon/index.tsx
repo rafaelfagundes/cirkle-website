@@ -12,6 +12,7 @@ export const AVAILABLE_ICONS = [
   "calendar",
   "check",
   "checkmark",
+  "chevron-up",
   "close-dark",
   "close-red",
   "close",
@@ -25,6 +26,8 @@ export const AVAILABLE_ICONS = [
   "google",
   "heart-fill",
   "heart",
+  "home",
+  "house",
   "instagram-white",
   "instagram",
   "key",
@@ -54,7 +57,6 @@ export const AVAILABLE_ICONS = [
   "triangle-down",
   "whatsapp-white",
   "whatsapp",
-  "chevron-up",
 ];
 
 const StyledIcon = styled.div<{ size: number; clickable: boolean }>`
