@@ -58,10 +58,9 @@ function ProductItem({
 
     await controls.start({
       opacity: 1,
-      scale: 2,
+      scale: 160,
       transition: { duration: speed },
     });
-
     await controls.start({
       opacity: 0,
       scale: 1,
@@ -69,7 +68,7 @@ function ProductItem({
     });
     controls.start({
       opacity: 0,
-      scale: 1,
+      scale: 0,
       transition: { duration: speed },
     });
   };
@@ -83,7 +82,7 @@ function ProductItem({
   return (
     <div style={{ position: "relative" }}>
       {!removeButton && (
-        <FavoriteIconHolder>
+        <FavoriteIconHolder onClick={() => _goToProduct(data.uid)}>
           <FavoriteIcon
             active={isAlreadyInWishlist}
             setActive={
@@ -95,7 +94,7 @@ function ProductItem({
         </FavoriteIconHolder>
       )}
       {removeButton && (
-        <RemoveIconHolder>
+        <RemoveIconHolder onClick={() => _goToProduct(data.uid)}>
           <RemoveButton>
             <Icon
               type="remove"
@@ -115,7 +114,7 @@ function ProductItem({
       >
         <AnimatedHeart isSmartphone={smartphone}>
           <motion.div animate={controls} initial={{ opacity: 0, scale: 0 }}>
-            <Icon type="heart-fill" size={96}></Icon>
+            <Icon type="heart-fill" size={1}></Icon>
           </motion.div>
         </AnimatedHeart>
         <span onClick={() => _goToProduct(data.uid)}>

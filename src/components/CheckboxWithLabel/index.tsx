@@ -29,11 +29,9 @@ const Box = styled.div<{ filled: boolean }>`
   border: 2px solid ${(props) => (props.filled ? Colors.PRIMARY : "#bbb")};
   background-color: ${(props) =>
     props.filled ? Colors.PRIMARY : "transparent"};
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   margin-right: 8px;
 `;
 

@@ -107,7 +107,7 @@ export const Description = styled.span<{ isSmartphone?: boolean }>`
   max-width: ${(props) => (props.isSmartphone ? 242 : 430)}px;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 `;
 

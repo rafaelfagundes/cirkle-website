@@ -1,7 +1,8 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useCart } from "../../hooks/cart/useCart";
-import { cloudinaryImage } from "../../utils/image";
+import { cloudinaryProductImage } from "../../utils/image";
 import Column from "../Column";
 import CustomButton from "../CustomButton";
 import EmptyPage from "../EmptyPage";
@@ -17,15 +18,13 @@ import {
   CartItemImage,
   CartItems,
   CartText,
-  Color,
   Description,
   Label,
-  MoreInfo,
   Price,
   PriceAndButton,
-  Qty,
+  QtyHolder,
+  QtyText,
   Row,
-  Size,
   StyledCart,
   Value,
 } from "./styles";
@@ -65,36 +64,37 @@ function DropdownCart(): JSX.Element {
           vertical: "top",
           horizontal: "right",
         }}
-        // PaperProps={{
-        //   onMouseLeave: () => setTimeout(() => setIsOpen(false), 250),
-        // }}
+        PaperProps={{
+          onMouseLeave: () => setTimeout(() => setIsOpen(false), 125),
+        }}
       >
         {cartContext.cart.items.length > 0 && (
           <>
             <CartHeader>
               <CartHeaderText>Minha Sacola</CartHeaderText>
-              {/* <CartHeaderNumber>
-                {cartContext.cart.items.length}
-              </CartHeaderNumber> */}
             </CartHeader>
             <CartItems height={window.innerHeight}>
               {cartContext.cart.items.map((item, index) => (
                 <CartItem key={item.id} showBackground={index % 2 !== 0}>
-                  <CartItemImage
-                    image={cloudinaryImage(item.image, 120)}
-                    size={120}
-                  ></CartItemImage>
-                  <Column>
-                    <Title>{item.title}</Title>
-                    <SizedBox height={2}></SizedBox>
-                    <Description>{item.description}</Description>
-                    <SizedBox height={4}></SizedBox>
-                    <MoreInfo>
-                      <Color>Cor: {item.cartColor}</Color>
-                      <Size>Tam.: {item.cartSize}</Size>
-                      <Qty>Qtd.: {item.cartQty}</Qty>
-                    </MoreInfo>
-                    <SizedBox height={4}></SizedBox>
+                  <Link href={`/products/${item.uid}`}>
+                    <CartItemImage
+                      image={cloudinaryProductImage(item.image, 75)}
+                      size={100}
+                    >
+                      <QtyHolder>
+                        <QtyText>{item.cartQty}x</QtyText>
+                      </QtyHolder>
+                    </CartItemImage>
+                  </Link>
+                  <Column spaceBetween minHeight={100}>
+                    <Link href={`/products/${item.uid}`}>
+                      <div style={{ cursor: "pointer" }}>
+                        <SizedBox height={4}></SizedBox>
+                        <Title>{item.title}</Title>
+                        <SizedBox height={4}></SizedBox>
+                        <Description>{item.description}</Description>
+                      </div>
+                    </Link>
                     <PriceAndButton>
                       <Price>
                         {new Intl.NumberFormat("pt-BR", {
@@ -104,7 +104,7 @@ function DropdownCart(): JSX.Element {
                       </Price>
                       <Icon
                         size={16}
-                        type="remove"
+                        type="trash"
                         onClick={() => cartContext.removeFromCart(item.id)}
                       ></Icon>
                     </PriceAndButton>

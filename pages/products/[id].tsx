@@ -12,10 +12,14 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import ReactImageMagnify from "react-image-magnify";
 import styled from "styled-components";
+import useSWR from "swr";
 import Breadcrumbs from "../../src/components/Breadcrumbs";
+import Card from "../../src/components/Card";
 import Center from "../../src/components/Center";
 import CustomButton from "../../src/components/CustomButton";
 import FavoriteIcon from "../../src/components/FavoriteIcon";
+import Icon from "../../src/components/Icon";
+import ImageSelector from "../../src/components/ImageSelector";
 import Layout from "../../src/components/Layout";
 import MarkdownText from "../../src/components/MarkdownText";
 import Padding from "../../src/components/Padding";
@@ -40,7 +44,7 @@ import Size from "../../src/modules/size/Size";
 import theme from "../../src/theme/theme";
 import { cloudinaryImage, cloudinaryProductImage } from "../../src/utils/image";
 
-const IMAGE_SIZE = 600;
+const IMAGE_SIZE = 470;
 
 const Description = styled.div<{ isSmartphone: boolean }>`
   /* max-width: 343px; */
@@ -71,23 +75,40 @@ const BrandName = styled.div`
   color: ${Colors.SECONDARY};
 `;
 
+const ImagesHolder = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 function ProductPage({
   menu,
-  product,
+  initialDataProduct,
 }: {
   menu: any;
-  product: Product;
+  initialDataProduct: Product;
 }): JSX.Element {
-  if (!product) return <></>;
+  if (!initialDataProduct) return <></>;
+
+  const { data: product, error: productError } = useSWR(
+    "/products/" + initialDataProduct.uid,
+    {
+      initialData: initialDataProduct,
+    }
+  );
+  if (productError) console.log("Product loading error", productError);
+
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [colors, setColors] = useState(null);
   const [sizes, setSizes] = useState(null);
+  const [showZoomTip, setShowZoomTip] = useState(0);
 
   const [errorColor, setErrorColor] = useState("");
   const [errorSize, setErrorSize] = useState("");
 
   const [moreDetails, setMoreDetails] = useState(true);
+
+  const [imageUrl, setImageUrl] = useState(product.image ? product.image : "");
 
   const cartContext = useCart();
   const wishlistContext = useWishlist();
@@ -163,21 +184,28 @@ function ProductPage({
   }
 
   useEffect(() => {
-    if (!colors) {
-      getSelectColors(product.colors);
-    }
-    if (!sizes) {
-      getSelectSizes(product.sizes);
-    }
-  }, []);
-
-  useEffect(() => {
     recentlyViewedContext.addToList(product);
   });
 
   useEffect(() => {
     // Scroll to top when page is loaded
     if (process.browser) window.scrollTo(0, 0);
+
+    setImageUrl(product.image ? product.image : "");
+
+    if (!colors) {
+      getSelectColors(product.colors);
+    }
+    if (!sizes) {
+      getSelectSizes(product.sizes);
+    }
+
+    setTimeout(() => {
+      setShowZoomTip(1);
+    }, 2000);
+    setTimeout(() => {
+      setShowZoomTip(0);
+    }, 6000);
   }, [product]);
 
   const isAlreadyInCart = cartContext.isItemInCart(product.id);
@@ -206,6 +234,28 @@ function ProductPage({
     if (process.browser) window.scrollTo(0, 0);
   }
 
+  function getHint(text: string): JSX.Element {
+    return (
+      <span
+        style={{
+          marginTop: -52,
+          position: "absolute",
+          width: "100%",
+          opacity: 0.9,
+          transition: "1000ms opacity",
+        }}
+      >
+        <Card shadow={false}>
+          <Row>
+            <Icon type="zoom-in" size={20}></Icon>
+            <SizedBox width={8}></SizedBox>
+            <SimpleText>{text}</SimpleText>
+          </Row>
+        </Card>
+      </span>
+    );
+  }
+
   return (
     <>
       {product && (
@@ -226,30 +276,84 @@ function ProductPage({
                 </>
               )}
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6} sm={6}>
-                  {/* <ProductImage
-                    image={cloudinaryImage(product.image, 600)}
-                  ></ProductImage> */}
-                  <ReactImageMagnify
-                    {...{
-                      smallImage: {
-                        alt: product.title,
-                        isFluidWidth: true,
-                        src: cloudinaryProductImage(product.image, IMAGE_SIZE),
-                      },
-                      largeImage: {
-                        src: cloudinaryProductImage(
-                          product.image,
-                          IMAGE_SIZE * 2
-                        ),
-                        height: 2 * IMAGE_SIZE * 1.15,
-                        width: 2 * IMAGE_SIZE,
-                      },
-                      enlargedImagePosition: "over",
-                    }}
-                  />
+                <Grid
+                  item
+                  xs={12}
+                  md={product.relatedItems.length > 0 ? 7 : 6}
+                  sm={product.relatedItems.length > 0 ? 7 : 6}
+                >
+                  <ImagesHolder>
+                    {product.moreImages.length > 0 && !isSmartPhone && (
+                      <ImageSelector
+                        images={[
+                          { title: product.title, url: product.image },
+                          ...product.moreImages,
+                        ]}
+                        activeImage={imageUrl}
+                        setActive={setImageUrl}
+                      ></ImageSelector>
+                    )}
+                    <div>
+                      <ReactImageMagnify
+                        {...{
+                          enlargedImageContainerStyle: {
+                            cursor: "zoom-in",
+                          },
+                          style: {
+                            cursor: "zoom-in",
+                          },
+                          smallImage: {
+                            alt: product.title,
+                            isFluidWidth: true,
+                            src: cloudinaryProductImage(imageUrl, IMAGE_SIZE),
+                          },
+                          largeImage: {
+                            src: cloudinaryProductImage(imageUrl, IMAGE_SIZE),
+                            height: 2 * IMAGE_SIZE * 1.15,
+                            width: 2 * IMAGE_SIZE,
+                          },
+                          enlargedImagePosition: "over",
+                          isHintEnabled: true,
+                          hintComponent: () =>
+                            getHint(
+                              isSmartPhone
+                                ? "Toque e segure para ativar o zoom"
+                                : "Passe o mouse para ativar o zoom"
+                            ),
+                        }}
+                      />
+
+                      {product.moreImages.length > 0 && isSmartPhone && (
+                        <ImageSelector
+                          horizontal
+                          images={[
+                            { title: product.title, url: product.image },
+                            ...product.moreImages,
+                          ]}
+                          activeImage={imageUrl}
+                          setActive={setImageUrl}
+                        ></ImageSelector>
+                      )}
+                      {/* {!isSmartPhone && (
+                        <Card shadow={false}>
+                          <Row>
+                            <Icon type="zoom-in" size={22}></Icon>
+                            <SizedBox width={8}></SizedBox>
+                            <SimpleText>
+                              Passe o mouse para ativar o zoom
+                            </SimpleText>
+                          </Row>
+                        </Card>
+                      )} */}
+                    </div>
+                  </ImagesHolder>
                 </Grid>
-                <Grid item xs={12} md={6} sm={6}>
+                <Grid
+                  item
+                  xs={12}
+                  md={product.relatedItems.length > 0 ? 5 : 6}
+                  sm={product.relatedItems.length > 0 ? 5 : 6}
+                >
                   <Padding horizontal={isSmartPhone ? 16 : 0} vertical={0}>
                     <span style={{ userSelect: "none" }}>
                       {!isSmartPhone && (
@@ -339,7 +443,7 @@ function ProductPage({
                   </Padding>
                 </Grid>
               </Grid>
-              <SizedBox height={isSmartPhone ? 48 : 48}></SizedBox>
+              <SizedBox height={48}></SizedBox>
               {(product.infoColumn1 ||
                 product.infoColumn2 ||
                 product.infoColumn3) && (
@@ -487,17 +591,14 @@ export async function getStaticProps({
 
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
   const productUrl = `${process.env.API_ENDPOINT}/products/${params.id}`;
-
   const results = await Promise.all([getProduct(productUrl), getMenu(menuUrl)]);
-
   const product = results[0].data;
-  console.log("product", product);
   const menu = results[1].data;
 
   return {
     props: {
       menu,
-      product,
+      initialDataProduct: product,
     },
     revalidate: 60,
   };

@@ -3,7 +3,7 @@ import { useTheme } from "@material-ui/core/styles";
 import { useRouter } from "next/router";
 import React from "react";
 import Product from "../../modules/product/Product";
-import { cloudinaryImage } from "../../utils/image";
+import { cloudinaryProductImage } from "../../utils/image";
 import SizedBox from "../SizedBox";
 import { Description, Image, Item, Title, TitleHolder } from "./styles";
 
@@ -20,7 +20,7 @@ function MiniProductItem({ data }: { data: Product }): JSX.Element {
     <div style={{ position: "relative" }}>
       <Item isSmartphone={smartphone}>
         <span onClick={() => _goToProduct(data.uid)}>
-          <Image image={cloudinaryImage(data.image, 230)}></Image>
+          <Image image={cloudinaryProductImage(data.image, 110)}></Image>
           <Description>
             <TitleHolder>
               <Title>{data.title}</Title>

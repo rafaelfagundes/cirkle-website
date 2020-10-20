@@ -57,6 +57,7 @@ export const AVAILABLE_ICONS = [
   "triangle-down",
   "whatsapp-white",
   "whatsapp",
+  "zoom-in",
 ];
 
 const StyledIcon = styled.div<{ size: number; clickable: boolean }>`

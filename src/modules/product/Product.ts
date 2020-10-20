@@ -1,5 +1,6 @@
 import Brand from "../brand/Brand";
 import Color from "../color/Color";
+import Image from "../image/Image";
 import Size from "../size/Size";
 
 export type RootCategory = {
@@ -50,6 +51,7 @@ type Product = {
   enabled: true;
   relatedItems?: Array<Product>;
   subCategory?: SubCategory;
+  moreImages?: Array<Image>;
 };
 
 export default Product;

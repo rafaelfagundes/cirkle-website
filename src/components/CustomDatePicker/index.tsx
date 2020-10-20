@@ -28,7 +28,7 @@ const InputText = styled.span<{ isPlaceholder: boolean }>`
   margin-right: 8px;
   padding-top: ${(props) => (props.isPlaceholder ? "0px" : "9px")};
   width: 160px;
-  text-align: ${(props) => (props.isPlaceholder ? "left" : "left")};
+  text-align: left;
   color: ${(props) =>
     props.isPlaceholder ? Colors.LIGHT_GRAY : Colors.PRIMARY};
 `;

@@ -107,9 +107,9 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
           open={userMenu}
           keepMounted
           onClose={() => setUserMenu(false)}
-          // MenuListProps={{
-          //   onMouseLeave: () => setTimeout(() => setUserMenu(false), 250),
-          // }}
+          MenuListProps={{
+            onMouseLeave: () => setTimeout(() => setUserMenu(false), 125),
+          }}
           transitionDuration={{ appear: 400, enter: 400, exit: 500 }}
         >
           <StyledMenuItem onClick={_goToProfile}>

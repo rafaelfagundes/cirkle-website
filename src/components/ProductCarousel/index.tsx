@@ -52,7 +52,7 @@ function ProductCarousel({
         <ItemsHolder disableScroll={!isSmartphone} isSmartphone={isSmartphone}>
           {products.map((item, index) => (
             <>
-              <ProductItem data={item} key={item.id}></ProductItem>
+              <ProductItem data={item} key={item.uid}></ProductItem>
               {index + 1 < products.length && <SizedBox width={16}></SizedBox>}
             </>
           ))}

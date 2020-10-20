@@ -1,5 +1,6 @@
 import { Grid, useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Card from "../src/components/Card";
@@ -193,36 +194,44 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                   <CartItems>
                     {cartContext.cart.items.map((item, index) => (
                       <CartItem key={item.id} showBackground={index % 2 === 0}>
-                        <ImagePrice>
-                          <CartItemImage
-                            image={cloudinaryImage(item.image, 112)}
-                            size={90}
-                          ></CartItemImage>
-                          <SizedBox height={8}></SizedBox>
-                          <Price>
-                            {new Intl.NumberFormat("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            }).format(item.price)}
-                          </Price>
-                        </ImagePrice>
+                        <Link href={`/products/${item.uid}`}>
+                          <span style={{ cursor: "pointer" }}>
+                            <ImagePrice>
+                              <CartItemImage
+                                image={cloudinaryImage(item.image, 112)}
+                                size={90}
+                              ></CartItemImage>
+                              <SizedBox height={8}></SizedBox>
+                              <Price>
+                                {new Intl.NumberFormat("pt-BR", {
+                                  style: "currency",
+                                  currency: "BRL",
+                                }).format(item.price)}
+                              </Price>
+                            </ImagePrice>
+                          </span>
+                        </Link>
                         <Column>
-                          <TitleAndRemove>
-                            <Title>{item.title}</Title>
-                            <SizedBox width={16}></SizedBox>
-                            <Icon
-                              size={16}
-                              type="remove"
-                              onClick={() =>
-                                cartContext.removeFromCart(item.id)
-                              }
-                            ></Icon>
-                          </TitleAndRemove>
-                          <SizedBox height={8}></SizedBox>
-                          <Description isSmartphone={isSmartPhone}>
-                            {item.description}
-                          </Description>
-                          <SizedBox height={8}></SizedBox>
+                          <Link href={`/products/${item.uid}`}>
+                            <span style={{ cursor: "pointer" }}>
+                              <TitleAndRemove>
+                                <Title>{item.title}</Title>
+                                <SizedBox width={16}></SizedBox>
+                                <Icon
+                                  size={16}
+                                  type="remove"
+                                  onClick={() =>
+                                    cartContext.removeFromCart(item.id)
+                                  }
+                                ></Icon>
+                              </TitleAndRemove>
+                              <SizedBox height={8}></SizedBox>
+                              <Description isSmartphone={isSmartPhone}>
+                                {item.description}
+                              </Description>
+                              <SizedBox height={16}></SizedBox>
+                            </span>
+                          </Link>
                           <MoreInfo>
                             {isSmartPhone && !showEdit && (
                               <Padding horizontal={6}>
@@ -267,7 +276,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                                 <SizedBox width={8}></SizedBox>
                                 <CustomSelect
                                   items={_getItemSizes(item.sizes)}
-                                  label="Tam."
+                                  label="Tamanho"
                                   value={item.cartSize || ""}
                                   setValue={(value) =>
                                     cartContext.updateSize(item.id, value)
@@ -381,7 +390,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                     <CheckBoxWithLabel
                       value={hasCoupon}
                       onClick={() => setHasCoupon(!hasCoupon)}
-                      label="Tenho um Cupom de Desconto"
+                      label="Tenho um cupom de desconto"
                     ></CheckBoxWithLabel>
                     <SizedBox height={hasCoupon ? 8 : 0}></SizedBox>
 

@@ -77,7 +77,6 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
         type={isAlreadyInCart ? "disabled" : "success"}
         variant="contained"
         onClick={() => {
-          item.id = item.id;
           item.cartQty = 1;
           cartContext.addToCart(item);
         }}

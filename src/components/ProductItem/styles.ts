@@ -71,17 +71,20 @@ export const FavoriteIconHolder = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   padding: 5px 5px 0 0;
+  cursor: pointer;
 `;
 
 export const AnimatedHeart = styled.div<{ isSmartphone: boolean }>`
   user-select: none;
   position: absolute;
   left: ${(props) =>
-    props.isSmartphone ? "calc(50% - 56px);" : "calc(50% - 48px);"};
-  top: calc(110px - 48px);
+    props.isSmartphone ? "calc(50% - 0.5px);" : "calc(50% - 0.5px);"};
+  top: 110px;
 `;
 
-export const RemoveIconHolder = styled(FavoriteIconHolder)``;
+export const RemoveIconHolder = styled(FavoriteIconHolder)`
+  cursor: pointer;
+`;
 
 export const RemoveButton = styled.div`
   background-color: ${Colors.VERY_LIGHT_GRAY};
