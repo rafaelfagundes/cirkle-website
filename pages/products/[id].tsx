@@ -101,7 +101,6 @@ function ProductPage({
 
   const [colors, setColors] = useState(null);
   const [sizes, setSizes] = useState(null);
-  const [showZoomTip, setShowZoomTip] = useState(0);
 
   const [errorColor, setErrorColor] = useState("");
   const [errorSize, setErrorSize] = useState("");
@@ -199,13 +198,6 @@ function ProductPage({
     if (!sizes) {
       getSelectSizes(product.sizes);
     }
-
-    setTimeout(() => {
-      setShowZoomTip(1);
-    }, 2000);
-    setTimeout(() => {
-      setShowZoomTip(0);
-    }, 6000);
   }, [product]);
 
   const isAlreadyInCart = cartContext.isItemInCart(product.id);

@@ -9,11 +9,8 @@ const SelectorHolder = styled.div<{ horizontal: boolean }>`
   flex-direction: ${(props) => (props.horizontal ? "row" : "column")};
   background-color: ${(props) =>
     props.horizontal ? Colors.BLACK2 : "transparent"};
-  max-height: ${(props) => (props.horizontal ? "64px" : "540px")};
   min-width: 80px;
-  max-width: 375px;
   align-items: center;
-  flex-wrap: nowrap;
 `;
 
 const SelectorImage = styled.div<{
