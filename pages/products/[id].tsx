@@ -326,17 +326,6 @@ function ProductPage({
                           setActive={setImageUrl}
                         ></ImageSelector>
                       )}
-                      {/* {!isSmartPhone && (
-                        <Card shadow={false}>
-                          <Row>
-                            <Icon type="zoom-in" size={22}></Icon>
-                            <SizedBox width={8}></SizedBox>
-                            <SimpleText>
-                              Passe o mouse para ativar o zoom
-                            </SimpleText>
-                          </Row>
-                        </Card>
-                      )} */}
                     </div>
                   </ImagesHolder>
                 </Grid>
