@@ -16,9 +16,9 @@ const Legal = styled.div`
 
 const LegalText = styled.span`
   text-align: center;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   font-weight: 400;
   font-size: 11px;
 `;

@@ -41,9 +41,9 @@ const Truck = styled.div<{ value: number }>`
 
 const Text = styled.span<{ color: string }>`
   color: ${(props) => props.color};
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   font-size: 0.85rem;
   line-height: 2rem;
   font-weight: bold;

@@ -24,9 +24,9 @@ const MainSection = styled.div`
 `;
 
 const HeaderSection = styled.span`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   font-weight: 700;
   font-size: 14px;
   color: ${Colors.WHITE};
@@ -36,11 +36,11 @@ const HeaderSection = styled.span`
 
 const FooterLink = styled.span`
   text-align: center;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   color: ${Colors.WHITE};
   height: 32px;
   cursor: pointer;

@@ -28,32 +28,32 @@ const theme = createMuiTheme({
   },
   typography: {
     h1: {
-      fontFamily: "FuturaPT",
+      fontFamily: "Commissioner",
     },
     h2: {
-      fontFamily: "FuturaPT",
+      fontFamily: "Commissioner",
     },
     h3: {
-      fontFamily: "FuturaPT",
+      fontFamily: "Commissioner",
     },
     h4: {
-      fontFamily: "FuturaPT",
+      fontFamily: "Commissioner",
     },
     h5: {
-      fontFamily: "FuturaPT",
+      fontFamily: "Commissioner",
     },
     h6: {
-      fontFamily: "FuturaPT",
+      fontFamily: "Commissioner",
     },
     subtitle1: {
-      fontFamily: "FuturaPT",
+      fontFamily: "Commissioner",
     },
     subtitle2: {
-      fontFamily: "FuturaPT",
+      fontFamily: "Commissioner",
     },
     fontSize: 16,
     fontFamily: [
-      "FuturaPT",
+      "Commissioner",
       "-apple-system",
       "BlinkMacSystemFont",
       "Segoe UI",

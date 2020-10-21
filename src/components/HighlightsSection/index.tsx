@@ -5,6 +5,7 @@ import React from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 import { cloudinaryImage } from "../../utils/image";
+import SizedBox from "../SizedBox";
 
 const Highlights = styled.div<{ padding: boolean }>`
   display: flex;
@@ -19,6 +20,7 @@ const HighlightItem = styled.div<{ width: number }>`
   flex-direction: column;
   width: ${(props) => props.width}px;
   cursor: pointer;
+  margin-bottom: 16px;
 `;
 
 const Image = styled.div<{ image: string; width: number }>`
@@ -34,19 +36,19 @@ const Image = styled.div<{ image: string; width: number }>`
 const Title = styled.span<{ fontSize: number }>`
   text-transform: uppercase;
   color: ${Colors.PRIMARY};
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   font-size: ${(props) => props.fontSize}px;
-  font-weight: bold;
-  padding-top: 5px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+  /* text-align: center; */
 `;
 
 const Subtitle = styled.span<{ fontSize: number }>`
   text-transform: uppercase;
-  color: ${Colors.SECONDARY};
-  font-family: "FuturaPT";
+  color: ${Colors.GRAY};
+  font-family: "Commissioner";
   font-size: ${(props) => props.fontSize}px;
-  font-weight: bold;
-  padding-bottom: 16px;
+  font-weight: 700;
   /* text-align: center; */
 `;
 
@@ -91,12 +93,10 @@ function HighlightsSection({
                 image={cloudinaryImage(item.image, 230)}
                 width={widthHighlightItem}
               ></Image>
-              <Title fontSize={widthHighlightItem * 0.073170732}>
-                {item.title}
-              </Title>
-              <Subtitle fontSize={widthHighlightItem * 0.06097561}>
-                {item.subtitle}
-              </Subtitle>
+              <SizedBox height={8}></SizedBox>
+              <Title fontSize={14}>{item.title}</Title>
+              <SizedBox height={2}></SizedBox>
+              <Subtitle fontSize={12}>{item.subtitle}</Subtitle>
             </HighlightItem>
           </Link>
         ))}

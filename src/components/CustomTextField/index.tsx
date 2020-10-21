@@ -90,9 +90,9 @@ const PlaceHolder = styled.div<{ show: boolean; error: boolean }>`
 
 const PlaceHolderText = styled.span`
   color: ${Colors.WHITE};
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   font-size: 14px;
   font-weight: 400;
 `;
@@ -103,16 +103,16 @@ const IconHolder = styled.div<{ showLabel: boolean }>`
 `;
 
 const ErrorText = styled.span`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  font-size: 16px;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  font-size: 14px;
   color: ${Colors.ERROR};
 `;
 
 const useStyles = makeStyles(() => ({
   input: {
-    fontFamily: "FuturaPT",
+    fontFamily: "Commissioner",
     fontSize: 18,
   },
 }));

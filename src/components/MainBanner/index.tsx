@@ -39,7 +39,7 @@ const TextLine = styled.div<{ size: number; bgColor: string }>`
 `;
 
 const Text = styled.span<{ size: number; textColor: string }>`
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   text-transform: uppercase;
   font-weight: 700;
   font-size: ${(props) => props.size}px;

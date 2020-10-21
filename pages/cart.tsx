@@ -219,7 +219,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                                 <SizedBox width={16}></SizedBox>
                                 <Icon
                                   size={16}
-                                  type="remove"
+                                  type="trash"
                                   onClick={() =>
                                     cartContext.removeFromCart(item.id)
                                   }
@@ -515,8 +515,8 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                     </Row>
                     <SizedBox height={10}></SizedBox>
                     <SimpleText>
-                      Ao compartilhar você pode continuar em outro aparelho ou
-                      outra pessoa concluir a compra
+                      Compartilhe para continuar em outro aparelho ou outra
+                      pessoa concluir a compra
                     </SimpleText>
                   </CartFooter>
                 </Card>

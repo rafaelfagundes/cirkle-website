@@ -26,7 +26,7 @@ const Tab = styled.div<{
   color: ${(props) => (props.active ? Colors.WHITE : Colors.PRIMARY)};
   text-transform: uppercase;
   font-size: 14px;
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   display: flex;
   flex-direction: row;
   justify-content: center;

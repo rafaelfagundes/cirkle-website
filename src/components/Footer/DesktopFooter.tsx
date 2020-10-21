@@ -21,9 +21,9 @@ const LinksSection = styled.div`
 
 const HeaderSection = styled.span`
   text-align: center;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   font-weight: 700;
   font-size: 14px;
   color: ${Colors.WHITE};
@@ -77,7 +77,7 @@ const SocialData = styled.div`
 `;
 
 const SocialDataInfo = styled.span`
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   text-transform: uppercase;
   font-weight: 700;
   font-size: 14px;
@@ -85,21 +85,21 @@ const SocialDataInfo = styled.span`
 `;
 
 const NewsletterDescription = styled.p`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   color: ${Colors.WHITE};
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
   margin: 0;
 `;
 
 const StyledInputBase = styled(InputBase)`
   margin-left: 5px;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  font-size: 16px;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  font-size: 14px;
   margin-top: 3px;
 `;
 
@@ -133,8 +133,8 @@ const NLButton = styled.div`
 
 const NLButtonText = styled.span`
   color: ${Colors.WHITE};
-  font-family: "FuturaPT";
-  font-size: 16px;
+  font-family: "Commissioner";
+  font-size: 14px;
 `;
 
 function DesktopFooter(): JSX.Element {
@@ -249,7 +249,7 @@ function DesktopFooter(): JSX.Element {
               </NLButton>
             </Newsletter>
             <NewsletterDescription>
-              Receba todas as nossas novidades e promoções
+              Receba nossas novidades e promoções
             </NewsletterDescription>
             <SizedBox height={24}></SizedBox>
             <HeaderSection>Formas de Pagamento</HeaderSection>

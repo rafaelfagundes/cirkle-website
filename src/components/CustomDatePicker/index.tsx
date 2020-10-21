@@ -21,9 +21,9 @@ const StyledInput = styled.div`
 `;
 
 const InputText = styled.span<{ isPlaceholder: boolean }>`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   font-size: 1.18rem;
   margin-right: 8px;
   padding-top: ${(props) => (props.isPlaceholder ? "0px" : "9px")};
@@ -45,9 +45,9 @@ const PlaceHolder = styled.div<{ show: boolean }>`
 
 const PlaceHolderText = styled.span`
   color: ${Colors.WHITE};
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   font-size: 14px;
   font-weight: 400;
 `;

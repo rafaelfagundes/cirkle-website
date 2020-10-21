@@ -16,9 +16,9 @@ const StyledSocialLoginButton = styled.div`
 
 const SocialLoginButtonText = styled.span`
   margin-left: 5px;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   font-weight: bold;
   font-size: 14px;
   line-height: 16px;

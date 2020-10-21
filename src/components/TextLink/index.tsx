@@ -7,9 +7,9 @@ const StyledLink = styled.span<{
   color: string;
   size: number;
 }>`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   font-weight: 400;
   font-size: ${(props) => props.size}px;
   line-height: ${(props) => props.size * 1.125}px;

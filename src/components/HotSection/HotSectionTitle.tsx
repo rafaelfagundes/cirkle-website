@@ -10,7 +10,7 @@ const StyledSectionTitle = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 320px;
+  width: 375px;
   margin-left: -10px;
 `;
 
@@ -21,7 +21,7 @@ function HotSectionTitle(): JSX.Element {
       <Column>
         <Title size={18}>EM ALTA</Title>
         <SizedBox height={6}></SizedBox>
-        <Subtitle size={18}>Produtos que todo mundo está de olho</Subtitle>
+        <Subtitle size={16}>Os produtos mais desejados</Subtitle>
       </Column>
     </StyledSectionTitle>
   );

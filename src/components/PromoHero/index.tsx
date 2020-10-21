@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 import PromoHero from "../../modules/promoHero/PromoHero";
-import { cloudinaryImage } from "../../utils/image";
+import { cloudinaryHeroImage, cloudinaryImage } from "../../utils/image";
 
 const TextPromo = styled.div<{ backgroundColor: string }>`
   width: 100%;
@@ -15,7 +15,7 @@ const TextPromo = styled.div<{ backgroundColor: string }>`
 `;
 
 const TextPromoText = styled.span<{ color: string }>`
-  font-family: Poppins;
+  font-family: Commissioner;
   font-style: italic;
   font-weight: 800;
   font-size: 14px;
@@ -82,7 +82,7 @@ const StripLine = styled.div<{
 `;
 
 const LineText = styled.div<{ color: string; sizeMultiplier: number }>`
-  font-family: Poppins;
+  font-family: Commissioner;
   font-style: italic;
   font-weight: 900;
   font-size: ${(props) => props.sizeMultiplier * 32}px;
@@ -122,7 +122,7 @@ const Button = styled.div<{ backgroundColor: string }>`
 `;
 
 const ButtonText = styled.div<{ color: string }>`
-  font-family: FuturaPT;
+  font-family: Commissioner;
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
@@ -199,7 +199,7 @@ const TileTitle = styled.div`
 `;
 
 const TitleText = styled.div`
-  font-family: FuturaPT;
+  font-family: Commissioner;
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
@@ -229,27 +229,27 @@ function PromoHeroComponent({ data }: { data: PromoHero }): JSX.Element {
   let showSpacer = false;
 
   if (window.innerWidth >= 1920) {
-    backgroundImage = cloudinaryImage(data.backgroundImage, 1920);
+    backgroundImage = cloudinaryHeroImage(data.backgroundImage);
     sizeMultiplier = 1;
     titlesHolderSize = 960;
   } else if (window.innerWidth >= 1440) {
-    backgroundImage = cloudinaryImage(data.backgroundImage, 1440);
+    backgroundImage = cloudinaryHeroImage(data.backgroundImage);
     sizeMultiplier = 1;
     titlesHolderSize = 960;
   } else if (window.innerWidth >= 1280) {
-    backgroundImage = cloudinaryImage(data.backgroundImage, 1280);
+    backgroundImage = cloudinaryHeroImage(data.backgroundImage);
     sizeMultiplier = 1;
     titlesHolderSize = 960;
   } else if (window.innerWidth >= 1024) {
-    backgroundImage = cloudinaryImage(data.backgroundImage, 1024);
+    backgroundImage = cloudinaryHeroImage(data.backgroundImage);
     sizeMultiplier = 1;
     titlesHolderSize = 960;
   } else if (window.innerWidth >= 800) {
-    backgroundImage = cloudinaryImage(data.backgroundImage, 800);
+    backgroundImage = cloudinaryHeroImage(data.backgroundImage);
     sizeMultiplier = 1;
     titlesHolderSize = window.innerWidth;
   } else {
-    backgroundImage = cloudinaryImage(data.backgroundImage, 480);
+    backgroundImage = cloudinaryHeroImage(data.backgroundImage);
     sizeMultiplier = 0.6;
     titlesHolderSize = window.innerWidth;
     showSpacer = true;

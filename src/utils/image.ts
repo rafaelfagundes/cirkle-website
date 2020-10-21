@@ -22,3 +22,11 @@ export function cloudinaryProductImage(
 
   return newUri;
 }
+
+export function cloudinaryHeroImage(uri: string): string {
+  const newUri = uri.replace(
+    "upload/",
+    "upload/c_fill,e_saturation:-100,g_faces:center,h_600,q_auto:low/"
+  );
+  return newUri;
+}

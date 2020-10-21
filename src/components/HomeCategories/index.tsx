@@ -26,7 +26,7 @@ const CategoryItem = styled.div<{ last?: boolean }>`
 
 const CategoryItemText = styled.div`
   color: ${Colors.SECONDARY};
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   font-weight: 700;
   text-transform: uppercase;
   font-size: 12px;

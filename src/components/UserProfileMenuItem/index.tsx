@@ -19,7 +19,7 @@ const Profile = styled.div<{ center?: boolean }>`
 `;
 
 const UserName = styled.p`
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   font-weight: 400;
   font-size: 18px;
   margin-left: 8px;
@@ -41,9 +41,9 @@ const StyledMenuItem = styled(MenuItem)`
 `;
 
 const MenuItemText = styled.p`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   margin-left: 5px;
 `;
 
@@ -112,7 +112,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
           }}
           transitionDuration={{ appear: 400, enter: 400, exit: 500 }}
         >
-          <StyledMenuItem onClick={_goToProfile}>
+          {/* <StyledMenuItem onClick={_goToProfile}>
             <Profile>
               {auth.user.picture ? (
                 <>
@@ -131,7 +131,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
               )}
             </Profile>
           </StyledMenuItem>
-          <br />
+          <br /> */}
           <StyledMenuItem onClick={_goToProfile}>
             <Icon type="person" onClick={_goToProfile}></Icon>
             <MenuItemText>Minha Conta</MenuItemText>

@@ -59,8 +59,8 @@ const Tab = styled.div<{ active: boolean; color: string }>`
 `;
 
 const TabText = styled.span<{ active: boolean }>`
-  font-family: "FuturaPT";
-  font-size: 16px;
+  font-family: "Commissioner";
+  font-size: 14px;
   color: ${(props) => (props.active ? Colors.WHITE : Colors.GRAY)};
   text-transform: uppercase;
   font-weight: 700;
@@ -105,9 +105,9 @@ const MenuItemText = styled.span<{
   color: string;
   first?: boolean;
 }>`
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   /* opacity: ${(props) => (props.active ? 1 : 0.95)}; */
-  font-size: 17px;
+  font-size: 15px;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
   font-weight: 400;
   z-index: 100;
@@ -136,9 +136,9 @@ const SubMenuItem = styled.div`
 `;
 
 const SubMenuItemText = styled.span`
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 22px;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
   padding: 16px;
@@ -154,7 +154,7 @@ const UnderTabsContent = styled.div<{ color: string }>`
 const StyledInputBase = styled(InputBase)`
   width: 100%;
   font-size: 18px;
-  font-family: FuturaPT;
+  font-family: Commissioner;
 `;
 
 const StyledSearchBar = styled.div<{ active: boolean }>`

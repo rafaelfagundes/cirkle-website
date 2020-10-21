@@ -21,11 +21,11 @@ const Newsletter = styled.div`
 `;
 
 const NewsletterDescription = styled.p`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   color: ${Colors.WHITE};
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
   margin: 0;
 `;
@@ -33,10 +33,10 @@ const NewsletterDescription = styled.p`
 const StyledInputBase = styled(InputBase)`
   width: 100%;
   margin-left: 5px;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  font-size: 16px;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  font-size: 14px;
   margin-top: 3px;
 `;
 
@@ -63,8 +63,8 @@ const NLButton = styled.div`
 
 const NLButtonText = styled.span`
   color: ${Colors.WHITE};
-  font-family: "FuturaPT";
-  font-size: 16px;
+  font-family: "Commissioner";
+  font-size: 14px;
   text-transform: uppercase;
 `;
 
@@ -92,7 +92,7 @@ function NewsletterSignUp(): JSX.Element {
           )}
         </Row>
         <NewsletterDescription>
-          Receba todas as nossas novidades e promoções
+          Receba nossas novidades e promoções
         </NewsletterDescription>
       </Container>
     </Newsletter>

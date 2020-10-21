@@ -11,21 +11,21 @@ import styled from "styled-components";
 import Colors from "../../enums/Colors";
 
 const Title = styled.span<{ error: boolean }>`
-  font-family: "FuturaPT", sans-serif;
+  font-family: "Commissioner", sans-serif;
   color: ${(props) => (props.error ? Colors.RED_CRAYOLA : Colors.PRIMARY)};
   font-size: 18;
   text-transform: uppercase;
 `;
 
 const Description = styled.span`
-  font-family: "FuturaPT", sans-serif;
+  font-family: "Commissioner", sans-serif;
   color: ${Colors.PRIMARY};
   font-size: 16;
   opacity: 0.8;
 `;
 
 const ButtonText = styled.span`
-  font-family: "FuturaPT", sans-serif;
+  font-family: "Commissioner", sans-serif;
   color: ${Colors.PRIMARY};
   font-size: 18;
   font-weight: 700;

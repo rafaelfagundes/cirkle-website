@@ -66,9 +66,9 @@ const BrandImage = styled.img`
 `;
 
 const BrandName = styled.div`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
@@ -512,7 +512,7 @@ function ProductPage({
                         onClick={clearRecent}
                         variant="text"
                         type="delete"
-                        width={isSmartPhone ? 125 : 103}
+                        width={isSmartPhone ? 125 : 108}
                         noPadding
                       >
                         Limpar Lista

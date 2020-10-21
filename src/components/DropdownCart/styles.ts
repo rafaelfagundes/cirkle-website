@@ -14,7 +14,7 @@ export const QtyHolder = styled.div`
 `;
 
 export const QtyText = styled.span`
-  font-family: Poppins;
+  font-family: Commissioner;
   color: ${Colors.WHITE};
   font-weight: 700;
   font-size: 12px;
@@ -33,7 +33,7 @@ export const IconCounter = styled.span`
   cursor: pointer;
   position: absolute;
   color: ${Colors.WHITE};
-  font-family: FuturaPT;
+  font-family: Commissioner;
   text-transform: uppercase;
   letter-spacing: -0.25px;
   font-size: 14px;
@@ -50,10 +50,10 @@ export const CartHeader = styled.div`
   padding: 8px 8px 8px 16px;
 `;
 export const CartHeaderText = styled.span`
-  font-family: FuturaPT;
+  font-family: Commissioner;
   text-transform: uppercase;
   letter-spacing: -0.25px;
-  font-size: 16px;
+  font-size: 14px;
   color: ${Colors.WHITE};
   font-weight: 700;
 `;
@@ -62,7 +62,7 @@ export const CartHeaderNumber = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: FuturaPT;
+  font-family: Commissioner;
   text-transform: uppercase;
   letter-spacing: -0.25px;
   font-size: 14px;
@@ -74,23 +74,23 @@ export const CartHeaderNumber = styled.span`
   border-radius: 11px;
 `;
 export const Label = styled.span`
-  font-family: FuturaPT;
+  font-family: Commissioner;
   text-transform: uppercase;
   letter-spacing: -0.25px;
-  font-size: 16px;
+  font-size: 14px;
   color: ${Colors.PRIMARY};
   font-weight: 700;
 `;
 export const Value = styled.span`
-  font-family: FuturaPT;
+  font-family: Commissioner;
   text-transform: uppercase;
   letter-spacing: -0.25px;
-  font-size: 16px;
+  font-size: 14px;
   color: ${Colors.MONEY};
   font-weight: 700;
 `;
 export const CartText = styled.p`
-  font-family: FuturaPT;
+  font-family: Commissioner;
   text-transform: uppercase;
   letter-spacing: 0px;
   font-size: 12px;
@@ -136,15 +136,15 @@ export const Column = styled.div`
   flex-direction: column;
 `;
 export const Title = styled.span`
-  font-family: FuturaPT;
+  font-family: Commissioner;
   color: ${Colors.PRIMARY};
   font-size: 18px;
 `;
 export const Description = styled.span`
-  font-family: FuturaPT;
+  font-family: Commissioner;
   color: ${Colors.PRIMARY};
   /* background-color: ${Colors.PRIMARY}; */
-  font-size: 16px;
+  font-size: 14px;
   max-width: 300px;
   overflow: hidden;
   display: -webkit-box;
@@ -160,19 +160,19 @@ export const MoreInfo = styled.div`
 `;
 export const PriceAndButton = styled(MoreInfo)``;
 export const Price = styled.span`
-  font-family: FuturaPT;
+  font-family: Commissioner;
   color: ${Colors.MONEY};
   font-weight: 700;
 `;
 export const Color = styled.span`
-  font-family: FuturaPT;
+  font-family: Commissioner;
   color: ${Colors.PRIMARY};
 `;
 export const Size = styled.span`
-  font-family: FuturaPT;
+  font-family: Commissioner;
   color: ${Colors.PRIMARY};
 `;
 export const Qty = styled.span`
-  font-family: FuturaPT;
+  font-family: Commissioner;
   color: ${Colors.GRAY};
 `;

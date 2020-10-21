@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   label: {
-    fontFamily: "FuturaPT",
+    fontFamily: "Commissioner",
     color: Colors.PRIMARY,
   },
 }));

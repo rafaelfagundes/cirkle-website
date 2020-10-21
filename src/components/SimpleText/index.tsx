@@ -7,9 +7,9 @@ const Text = styled.p<{
   size: number;
   bold: boolean;
 }>`
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   color: ${(props) => props.color};
   font-size: ${(props) => props.size}rem;
   line-height: ${(props) => props.size * 1.3}rem;
@@ -17,6 +17,7 @@ const Text = styled.p<{
   margin: 0;
   font-weight: ${(props) => (props.bold ? "700" : "400")};
   user-select: none;
+  letter-spacing: -0.01px;
 `;
 
 function SimpleText({

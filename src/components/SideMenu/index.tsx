@@ -53,7 +53,7 @@ const Avatar = styled.img<{ hasImage: boolean }>`
 `;
 
 const UserName = styled.div`
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   font-weight: 700;
   font-size: 18px;
   letter-spacing: -0.5px;
@@ -61,7 +61,7 @@ const UserName = styled.div`
 `;
 
 const AccountLink = styled(Link)`
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   font-weight: 400;
   font-size: 14px;
   letter-spacing: 0.3px;
@@ -86,8 +86,8 @@ const StyledTab = styled.div<{ active: boolean; color: string }>`
 `;
 
 const TabText = styled.span<{ active: boolean }>`
-  font-family: "FuturaPT";
-  font-size: 16px;
+  font-family: "Commissioner";
+  font-size: 14px;
   color: ${(props) => (props.active ? Colors.WHITE : Colors.GRAY)};
   font-weight: 700;
 `;
@@ -119,7 +119,7 @@ const StyledMenuItem = styled.div<{
 `;
 
 const MenuItemText = styled.span`
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   font-weight: 400;
   font-size: 18px;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
@@ -136,10 +136,10 @@ const SecondaryItem = styled.div`
 
 const SecondaryText = styled.span`
   color: ${Colors.PRIMARY};
-  font-size: 16px;
-  font-family: FuturaPT, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-size: 14px;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   margin-left: 10px;
 `;
 
@@ -166,7 +166,7 @@ const SocialData = styled.div`
 `;
 
 const SocialDataTitle = styled.span`
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   text-transform: uppercase;
   font-weight: 700;
   font-size: 12px;
@@ -174,7 +174,7 @@ const SocialDataTitle = styled.span`
 `;
 
 const SocialDataInfo = styled.span`
-  font-family: "FuturaPT";
+  font-family: "Commissioner";
   text-transform: uppercase;
   font-weight: 700;
   font-size: 14px;
