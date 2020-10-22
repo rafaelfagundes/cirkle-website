@@ -65,9 +65,9 @@ export const Description = styled.div`
 `;
 
 export const FavoriteIconHolder = styled.div`
-  width: 228px;
   position: absolute;
   display: flex;
+  right: 0;
   flex-direction: row;
   justify-content: flex-end;
   padding: 5px 5px 0 0;

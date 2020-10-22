@@ -273,7 +273,7 @@ function ProductPage({
       <MetaData
         description={product.description}
         image={product.image}
-        title={product.title}
+        title={`${product.title} - ${product.brand.name}`}
         hashtag="#cirkle #modacircular #sustentabilidade"
         quote="Confira mais em nossa loja :)"
         url={`https://www.cirkle.com.br/products/${product.uid}`}
@@ -555,8 +555,9 @@ function ProductPage({
                         onClick={clearRecent}
                         variant="text"
                         type="delete"
-                        width={isSmartPhone ? 125 : 110}
+                        width={110}
                         noPadding
+                        small
                       >
                         Limpar Lista
                       </CustomButton>
@@ -574,7 +575,7 @@ function ProductPage({
               <CustomButton
                 onClick={backToTop}
                 width={200}
-                variant="outlined"
+                variant="text"
                 icon="chevron-up"
               >
                 Voltar ao Topo

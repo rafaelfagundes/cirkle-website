@@ -36,13 +36,14 @@ export const IconCounter = styled.span`
   font-family: Commissioner;
   text-transform: uppercase;
   letter-spacing: -0.25px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
-  top: 14px;
+  top: 16px;
 `;
 export const StyledCart = styled(Popover)``;
+
 export const CartHeader = styled.div`
-  background-color: ${Colors.PRIMARY};
+  background-color: ${Colors.SECONDARY};
   flex-direction: row;
   display: flex;
   justify-content: space-between;
@@ -108,7 +109,7 @@ export const Row = styled.div<{ padding?: boolean; spaceBetween?: boolean }>`
 `;
 export const CartItems = styled.div<{ height: number }>`
   max-height: ${(props) => props.height - 250}px;
-  overflow: scroll;
+  overflow-y: scroll;
 `;
 export const CartItem = styled.div<{ showBackground: boolean }>`
   padding: 16px;
@@ -129,6 +130,7 @@ export const CartItemImage = styled.div<{ image: string; size: number }>`
   margin-right: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
   cursor: pointer;
+  position: relative;
 `;
 
 export const Column = styled.div`

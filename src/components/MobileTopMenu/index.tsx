@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/auth/useAuth";
 import DropdownCart from "../DropdownCart";
+import FavoriteMenuItem from "../FavoriteMenuItem";
 import HorizontalLogo from "../HorizontalLogo/index";
 import Icon from "../Icon";
 import Row from "../Row";
@@ -53,6 +54,12 @@ const AvatarMenu = styled.div<{ image: string }>`
   overflow: hidden;
 `;
 
+const IconsHolder = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
 function MobileTopMenu({
   setDrawer,
 }: {
@@ -84,7 +91,10 @@ function MobileTopMenu({
                   <HorizontalLogo></HorizontalLogo>
                 </Link>
               </LogoHolder>
-              <DropdownCart></DropdownCart>
+              <IconsHolder>
+                <FavoriteMenuItem></FavoriteMenuItem>
+                <DropdownCart></DropdownCart>
+              </IconsHolder>
             </NavBarPadding>
           </NavBarContent>
         </Container>

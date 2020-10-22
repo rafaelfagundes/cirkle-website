@@ -2,15 +2,14 @@ import { Container, InputBase } from "@material-ui/core";
 import _ from "lodash";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
 import { useAuth } from "../../hooks/auth/useAuth";
+import FavoriteMenuItem from "../FavoriteMenuItem";
 // import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../HorizontalLogo";
 import Icon from "../Icon";
-import IconButton from "../IconButton";
 import SizedBox from "../SizedBox";
 import { TextPlaceholder } from "../TextPlaceholder";
 
@@ -205,7 +204,6 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
   const [searchBarFocused, setSearchBarFocused] = useState(false);
 
   const auth = useAuth();
-  const router = useRouter();
 
   useEffect(() => {
     if (data) {
@@ -244,10 +242,6 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
       setMenuData(_menuData);
     }
     setSelectedCategory(null);
-  }
-
-  function goTo(route: string) {
-    router.push(route);
   }
 
   return (
@@ -312,10 +306,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
             <UserProfileMenuItem
               isLogged={auth.user !== null}
             ></UserProfileMenuItem>
-            <IconButton
-              type="heart"
-              onClick={() => goTo("/wishlist")}
-            ></IconButton>
+            <FavoriteMenuItem></FavoriteMenuItem>
             <DropdownCart></DropdownCart>
           </SideIcons>
         </Top>

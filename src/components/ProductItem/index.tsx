@@ -82,7 +82,7 @@ function ProductItem({
   return (
     <div style={{ position: "relative" }}>
       {!removeButton && (
-        <FavoriteIconHolder onClick={() => _goToProduct(data.uid)}>
+        <FavoriteIconHolder>
           <FavoriteIcon
             active={isAlreadyInWishlist}
             setActive={
@@ -94,7 +94,7 @@ function ProductItem({
         </FavoriteIconHolder>
       )}
       {removeButton && (
-        <RemoveIconHolder onClick={() => _goToProduct(data.uid)}>
+        <RemoveIconHolder>
           <RemoveButton>
             <Icon
               type="remove"
@@ -139,7 +139,7 @@ function ProductItem({
                 onClick={() => _addToCart(data)}
                 width={212}
               >
-                {isAlreadyInCart ? "Está Na Sacola" : "Adicionar à Sacola"}
+                {isAlreadyInCart ? "Já Está Na Sacola" : "Adicionar à Sacola"}
               </CustomButton>
             </Padding>
             <SizedBox height={8}></SizedBox>

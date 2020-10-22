@@ -2,8 +2,9 @@ import { useMediaQuery } from "@material-ui/core";
 import { motion, useAnimation } from "framer-motion";
 import React, { LegacyRef, useEffect, useState } from "react";
 import theme from "../../theme/theme";
+import Badge, { BadgePosition } from "../Badge";
 import Icon from "../Icon";
-import { IconCounter, IconHolder } from "./styles";
+import { IconHolder } from "./styles";
 
 type BagProps = {
   counter: number;
@@ -48,7 +49,12 @@ const Bag = React.forwardRef(
               type={props.counter > 0 ? "bag-full" : "bag"}
               onClick={() => null}
             ></Icon>
-            {props.counter > 0 && <IconCounter>{props.counter}</IconCounter>}
+            {/* {props.counter > 0 && <IconCounter>{props.counter}</IconCounter>} */}
+            {props.counter > 0 && (
+              <Badge position={BadgePosition.TOP_RIGHT}>
+                {props.counter.toString()}
+              </Badge>
+            )}
           </IconHolder>
         </motion.div>
       </div>

@@ -25,7 +25,7 @@ const Tab = styled.div<{
   width: ${(props) => props.size}px;
   color: ${(props) => (props.active ? Colors.WHITE : Colors.PRIMARY)};
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: 12px;
   font-family: "Commissioner";
   display: flex;
   flex-direction: row;
@@ -35,6 +35,7 @@ const Tab = styled.div<{
   cursor: pointer;
   letter-spacing: -0.25px;
   text-align: center;
+  font-weight: 700;
 `;
 
 export interface ITab {

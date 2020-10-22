@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import Colors from "../../enums/Colors";
 import { useAuth } from "../../hooks/auth/useAuth";
 import { cloudinaryImage } from "../../utils/image";
 import Icon from "../Icon";
@@ -16,14 +15,6 @@ const Profile = styled.div<{ center?: boolean }>`
   align-items: center;
   justify-content: ${(props) => (props.center ? "center" : "flex-start")};
   height: 45px;
-`;
-
-const UserName = styled.p`
-  font-family: "Commissioner";
-  font-weight: 400;
-  font-size: 18px;
-  margin-left: 8px;
-  color: ${Colors.PRIMARY};
 `;
 
 const UserImage = styled.img`
@@ -45,6 +36,7 @@ const MenuItemText = styled.p`
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
   margin-left: 5px;
+  font-size: 14px;
 `;
 
 export const IconHolder = styled.div`
@@ -85,7 +77,6 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
           aria-haspopup="true"
           onClick={() => setUserMenu(true)}
           onMouseOver={() => setUserMenu(true)}
-          ref={userButtonMenu}
         >
           <Profile center={true}>
             {auth.user.picture ? (
@@ -101,39 +92,31 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
             )}
           </Profile>
         </UserButton>
+        <span
+          ref={userButtonMenu}
+          style={{ position: "relative", top: 28, left: 42 }}
+        ></span>
+
         <Menu
           id="user-menu"
-          anchorEl={userButtonMenu.current}
           open={userMenu}
-          keepMounted
+          anchorEl={userButtonMenu.current}
           onClose={() => setUserMenu(false)}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
           MenuListProps={{
             onMouseLeave: () => setTimeout(() => setUserMenu(false), 125),
           }}
           transitionDuration={{ appear: 400, enter: 400, exit: 500 }}
         >
-          {/* <StyledMenuItem onClick={_goToProfile}>
-            <Profile>
-              {auth.user.picture ? (
-                <>
-                  <IconHolder>
-                    <UserImage src={auth.user.picture}></UserImage>
-                  </IconHolder>
-                  <UserName>{auth.user.name}</UserName>
-                </>
-              ) : (
-                <>
-                  <IconHolder>
-                    <Icon type="person" onClick={null}></Icon>
-                  </IconHolder>
-                  <UserName>{auth.user.name}</UserName>
-                </>
-              )}
-            </Profile>
-          </StyledMenuItem>
-          <br /> */}
           <StyledMenuItem onClick={_goToProfile}>
-            <Icon type="person" onClick={_goToProfile}></Icon>
+            <Icon type="person" onClick={null}></Icon>
             <MenuItemText>Minha Conta</MenuItemText>
           </StyledMenuItem>
           <StyledMenuItem onClick={_goToWishlist}>

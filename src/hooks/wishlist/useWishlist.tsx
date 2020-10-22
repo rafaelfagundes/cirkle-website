@@ -70,7 +70,7 @@ function useWishlistProvider() {
 
   const updateWishlist = async (wishlist: Wishlist) => {
     // const result = await axios.post("/api/wishlist", { wishlist });
-    // localStorage.setItem("wishlist", JSON.stringify(result.data.wishlist));
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
   };
 
   useEffect(() => {

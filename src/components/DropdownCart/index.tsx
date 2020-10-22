@@ -22,8 +22,6 @@ import {
   Label,
   Price,
   PriceAndButton,
-  QtyHolder,
-  QtyText,
   Row,
   StyledCart,
   Value,
@@ -67,6 +65,7 @@ function DropdownCart(): JSX.Element {
         PaperProps={{
           onMouseLeave: () => setTimeout(() => setIsOpen(false), 125),
         }}
+        transitionDuration={{ appear: 400, enter: 400, exit: 500 }}
       >
         {cartContext.cart.items.length > 0 && (
           <>
@@ -79,20 +78,25 @@ function DropdownCart(): JSX.Element {
                   <Link href={`/products/${item.uid}`}>
                     <CartItemImage
                       image={cloudinaryProductImage(item.image, 75)}
-                      size={100}
+                      size={75}
                     >
-                      <QtyHolder>
-                        <QtyText>{item.cartQty}x</QtyText>
-                      </QtyHolder>
+                      {/* <Badge position={BadgePosition.LEFT}>
+                        {item.cartQty.toString()}
+                      </Badge> */}
                     </CartItemImage>
                   </Link>
-                  <Column spaceBetween minHeight={100}>
+                  <Column spaceBetween minHeight={75}>
                     <Link href={`/products/${item.uid}`}>
                       <div style={{ cursor: "pointer" }}>
                         <SizedBox height={4}></SizedBox>
-                        <Title>{item.title}</Title>
-                        <SizedBox height={4}></SizedBox>
+                        <Title size={14}>
+                          {item.cartQty > 1
+                            ? `${item.cartQty}x ${item.title}`
+                            : item.title}
+                        </Title>
+                        <SizedBox height={2}></SizedBox>
                         <Description>{item.description}</Description>
+                        <SizedBox height={2}></SizedBox>
                       </div>
                     </Link>
                     <PriceAndButton>

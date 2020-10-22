@@ -244,11 +244,6 @@ function SideMenu({
                     ? `Olá, ${auth.user.name}`
                     : "Olá, visitante!"}
                 </UserName>
-                {/* {auth.user ? (
-                  <AccountLink href="/profile">Minha Conta</AccountLink>
-                ) : (
-                  <AccountLink href="/login">Entrar ou Cadastrar</AccountLink>
-                )} */}
               </Column>
             </Row>
           </UserProfile>
