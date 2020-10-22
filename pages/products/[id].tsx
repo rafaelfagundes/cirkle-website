@@ -23,7 +23,7 @@ import Icon from "../../src/components/Icon";
 import ImageSelector from "../../src/components/ImageSelector";
 import Layout from "../../src/components/Layout";
 import MarkdownText from "../../src/components/MarkdownText";
-import MetaData from "../../src/components/MetaData";
+import MetaData, { MetaDataType } from "../../src/components/MetaData";
 import Padding from "../../src/components/Padding";
 import Price from "../../src/components/Price";
 import ProductCarousel from "../../src/components/ProductCarousel";
@@ -277,6 +277,9 @@ function ProductPage({
         hashtag="#cirkle #modacircular #sustentabilidade"
         quote="Confira mais em nossa loja :)"
         url={`https://www.cirkle.com.br/products/${product.uid}`}
+        type={MetaDataType.PRODUCT}
+        moreImages={product.moreImages}
+        price={product.price}
       ></MetaData>
       {product && (
         <Layout menu={menu} containerMargin={false}>
