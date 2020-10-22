@@ -1,12 +1,12 @@
 import { AppBar, Container, Link } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
+import Colors from "../../enums/Colors";
 import { useAuth } from "../../hooks/auth/useAuth";
 import DropdownCart from "../DropdownCart";
 import FavoriteMenuItem from "../FavoriteMenuItem";
 import HorizontalLogo from "../HorizontalLogo/index";
 import Icon from "../Icon";
-import Row from "../Row";
 
 const NavBarContent = styled.div`
   display: flex;
@@ -43,21 +43,26 @@ const LogoHolder = styled.div`
 const AvatarMenu = styled.div<{ image: string }>`
   background-image: ${(props) => `url("${props.image}");`};
   background-color: #cccccc;
-  height: 24px;
-  width: 24px;
+  height: 20px;
+  width: 20px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  margin-left: 10px;
-  margin-right: -22px;
   border-radius: 12px;
-  overflow: hidden;
+  position: absolute;
+  border: 2px solid ${Colors.WHITE};
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+  top: 0;
 `;
 
 const IconsHolder = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+`;
+
+const HamburguerMenu = styled.div`
+  position: relative;
 `;
 
 function MobileTopMenu({
@@ -75,10 +80,10 @@ function MobileTopMenu({
             <NavBarPadding>
               {auth.user && (
                 <span onClick={() => setDrawer(true)}>
-                  <Row>
+                  <HamburguerMenu>
                     <Icon type="menu"></Icon>
                     <AvatarMenu image={auth.user.picture}></AvatarMenu>
-                  </Row>
+                  </HamburguerMenu>
                 </span>
               )}
               {!auth.user && (

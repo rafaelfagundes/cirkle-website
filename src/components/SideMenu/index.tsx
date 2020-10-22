@@ -20,8 +20,6 @@ const StyledSideMenu = styled.div`
   justify-content: space-between;
   position: relative;
   width: 300px;
-  background-color: #eaeaea;
-  /* height: 100%; */
 `;
 
 const HorizontalPadding = styled.div`

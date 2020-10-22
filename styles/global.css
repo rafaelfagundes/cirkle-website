@@ -45,3 +45,7 @@ img {
   font-display: swap !important;
   user-select: none !important;
 }
+
+input {
+  user-select: initial !important;
+}
