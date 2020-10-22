@@ -66,7 +66,6 @@ const useStyles = makeStyles({
 });
 
 const Description = styled.div<{ isSmartphone: boolean }>`
-  /* max-width: 343px; */
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 6;
@@ -75,8 +74,6 @@ const Description = styled.div<{ isSmartphone: boolean }>`
 
 const RecentlyViewed = styled.div`
   padding: 16px 0 32px 0;
-  /* background-color: #eee; */
-  /* background-color: #e6e6e6; */
   background-color: rgba(0, 0, 0, 0.05);
 `;
 
