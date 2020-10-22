@@ -32,7 +32,7 @@ function MetaData(props: MetaDataProps): JSX.Element {
       <meta name="description" content={props.description} />
       <meta property="image" content={props.image} />
       <meta property="og:locale" content="pt_BR" />
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={props.type} />
       <meta property="og:title" content={props.title} />
       <meta property="og:quote" content={props.quote} />
       <meta property="og:hashtag" content={props.hashtag} />
