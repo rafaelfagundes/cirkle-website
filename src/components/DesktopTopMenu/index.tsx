@@ -153,7 +153,7 @@ const UnderTabsContent = styled.div<{ color: string }>`
 
 const StyledInputBase = styled(InputBase)`
   width: 100%;
-  font-size: 18px;
+  font-size: 16px;
   font-family: Commissioner;
 `;
 

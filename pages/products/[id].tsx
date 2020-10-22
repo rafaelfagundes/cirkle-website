@@ -6,6 +6,7 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Axios from "axios";
 import _ from "lodash";
@@ -22,6 +23,7 @@ import Icon from "../../src/components/Icon";
 import ImageSelector from "../../src/components/ImageSelector";
 import Layout from "../../src/components/Layout";
 import MarkdownText from "../../src/components/MarkdownText";
+import MetaData from "../../src/components/MetaData";
 import Padding from "../../src/components/Padding";
 import Price from "../../src/components/Price";
 import ProductCarousel from "../../src/components/ProductCarousel";
@@ -33,6 +35,8 @@ import SelectMenu, {
 } from "../../src/components/SelectMenu";
 import SimpleText from "../../src/components/SimpleText";
 import SizedBox from "../../src/components/SizedBox";
+import SocialShare from "../../src/components/SocialShare";
+import Subtitle from "../../src/components/Subtitle";
 import Title from "../../src/components/Title";
 import Colors from "../../src/enums/Colors";
 import { useCart } from "../../src/hooks/cart/useCart";
@@ -45,6 +49,21 @@ import theme from "../../src/theme/theme";
 import { cloudinaryImage, cloudinaryProductImage } from "../../src/utils/image";
 
 const IMAGE_SIZE = 470;
+
+const useStyles = makeStyles({
+  root: {
+    width: "100%",
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+  expanded: {
+    "&$expanded": {
+      margin: "0px 0",
+    },
+  },
+});
 
 const Description = styled.div<{ isSmartphone: boolean }>`
   /* max-width: 343px; */
@@ -97,6 +116,8 @@ function ProductPage({
   );
   if (productError) console.log("Product loading error", productError);
 
+  const currentUrl = `https://www.cirkle.com.br/products/${product.uid}`;
+
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [colors, setColors] = useState(null);
@@ -112,6 +133,8 @@ function ProductPage({
   const cartContext = useCart();
   const wishlistContext = useWishlist();
   const recentlyViewedContext = useRecentlyViewed();
+
+  const classes = useStyles();
 
   function addToCart() {
     setErrorSize("");
@@ -250,6 +273,14 @@ function ProductPage({
 
   return (
     <>
+      <MetaData
+        description={product.description}
+        image={product.image}
+        title={product.title}
+        hashtag="#cirkle #modacircular #sustentabilidade"
+        quote="Confira mais em nossa loja :)"
+        url={`https://www.cirkle.com.br/products/${product.uid}`}
+      ></MetaData>
       {product && (
         <Layout menu={menu} containerMargin={false}>
           <span style={{ userSelect: "none" }}>
@@ -271,8 +302,8 @@ function ProductPage({
                 <Grid
                   item
                   xs={12}
-                  md={product.relatedItems.length > 0 ? 7 : 6}
-                  sm={product.relatedItems.length > 0 ? 7 : 6}
+                  md={product.relatedItems.length > 0 ? 8 : 6}
+                  sm={product.relatedItems.length > 0 ? 8 : 6}
                 >
                   <ImagesHolder>
                     {product.moreImages.length > 0 && !isSmartPhone && (
@@ -332,8 +363,8 @@ function ProductPage({
                 <Grid
                   item
                   xs={12}
-                  md={product.relatedItems.length > 0 ? 5 : 6}
-                  sm={product.relatedItems.length > 0 ? 5 : 6}
+                  md={product.relatedItems.length > 0 ? 4 : 6}
+                  sm={product.relatedItems.length > 0 ? 4 : 6}
                 >
                   <Padding horizontal={isSmartPhone ? 16 : 0} vertical={0}>
                     <span style={{ userSelect: "none" }}>
@@ -420,11 +451,22 @@ function ProductPage({
                           }
                         ></FavoriteIcon>
                       </Row>
+                      <SizedBox height={32}></SizedBox>
+                      <Subtitle size={16} bold>
+                        Compartilhar
+                      </Subtitle>
+                      <SizedBox height={8}></SizedBox>
+                      <SocialShare
+                        url={currentUrl}
+                        buttonSize={isSmartPhone ? 44 : 36}
+                      ></SocialShare>
                     </span>
                   </Padding>
                 </Grid>
               </Grid>
-              <SizedBox height={48}></SizedBox>
+
+              <SizedBox height={isSmartPhone ? 32 : 48}></SizedBox>
+
               {(product.infoColumn1 ||
                 product.infoColumn2 ||
                 product.infoColumn3) && (
@@ -433,6 +475,7 @@ function ProductPage({
                     square
                     expanded={moreDetails}
                     onChange={() => setMoreDetails(!moreDetails)}
+                    classes={{ expanded: classes.expanded }}
                   >
                     <AccordionSummary
                       aria-controls="panel1d-content"
@@ -501,7 +544,7 @@ function ProductPage({
             </Container>
             {showRecentlyViewed() && (
               <>
-                <SizedBox height={16}></SizedBox>
+                <SizedBox height={isSmartPhone ? 0 : 16}></SizedBox>
                 <RecentlyViewed>
                   <Container maxWidth="md" disableGutters>
                     <Row spaceBetween>
@@ -512,7 +555,7 @@ function ProductPage({
                         onClick={clearRecent}
                         variant="text"
                         type="delete"
-                        width={isSmartPhone ? 125 : 108}
+                        width={isSmartPhone ? 125 : 110}
                         noPadding
                       >
                         Limpar Lista

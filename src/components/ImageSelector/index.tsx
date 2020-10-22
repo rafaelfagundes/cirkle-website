@@ -28,7 +28,7 @@ const SelectorImage = styled.div<{
   background-repeat: no-repeat;
   background-size: cover;
 
-  opacity: ${(props) => (props.active ? 1 : 0.5)};
+  opacity: ${(props) => (props.active ? 1 : 0.35)};
 
   transition: opacity 1000ms, border 1000ms;
 `;
