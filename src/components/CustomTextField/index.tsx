@@ -113,7 +113,7 @@ const ErrorText = styled.span`
 const useStyles = makeStyles(() => ({
   input: {
     fontFamily: "Commissioner",
-    fontSize: 18,
+    fontSize: 16,
   },
 }));
 

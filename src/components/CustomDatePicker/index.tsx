@@ -24,7 +24,7 @@ const InputText = styled.span<{ isPlaceholder: boolean }>`
   font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
-  font-size: 1.18rem;
+  font-size: 16px;
   margin-right: 8px;
   padding-top: ${(props) => (props.isPlaceholder ? "0px" : "9px")};
   width: 160px;

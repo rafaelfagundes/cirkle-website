@@ -20,7 +20,7 @@ function HotSectionTitle(): JSX.Element {
       <Icon type="thermometer" size={48}></Icon>
       <Column>
         <Title size={18}>EM ALTA</Title>
-        <SizedBox height={6}></SizedBox>
+        <SizedBox height={2}></SizedBox>
         <Subtitle size={16}>Os produtos mais desejados</Subtitle>
       </Column>
     </StyledSectionTitle>

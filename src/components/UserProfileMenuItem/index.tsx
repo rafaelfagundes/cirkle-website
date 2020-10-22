@@ -131,7 +131,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
             <Icon type="products"></Icon>
             <MenuItemText>Meus Produtos à Venda</MenuItemText>
           </StyledMenuItem>
-          <br />
+          <SizedBox height={8}></SizedBox>
           <StyledMenuItem onClick={_logOut}>
             <SizedBox width={3}></SizedBox>
             <Icon size={20} type="logout"></Icon>
@@ -171,7 +171,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
             <Icon type="signup" onClick={_goToProfile}></Icon>
             <MenuItemText>Entrar ou Cadastrar</MenuItemText>
           </StyledMenuItem>
-          <br />
+          <SizedBox height={8}></SizedBox>
           <StyledMenuItem onClick={_goToProfile}>
             <Icon type="person" onClick={_goToProfile}></Icon>
             <MenuItemText>Minha Conta</MenuItemText>

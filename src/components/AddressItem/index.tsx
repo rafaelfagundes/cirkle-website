@@ -76,7 +76,7 @@ function AddressItem(props: IAddressItemsProps): JSX.Element {
                 color={props.mainAddress ? Colors.WHITE : Colors.PRIMARY}
               >{`${props.street}, ${props.number}`}</SimpleText>
               {props.mainAddress && (
-                <SimpleText size={0.8} color={Colors.MIDDLE_YELLOW}>
+                <SimpleText size={0.7} color={Colors.MIDDLE_YELLOW}>
                   PADRÃO
                 </SimpleText>
               )}
