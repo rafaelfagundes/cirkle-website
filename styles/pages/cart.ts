@@ -50,7 +50,7 @@ export const Subvalue = styled.span`
   letter-spacing: -0.25px;
   font-size: 13px;
   color: ${Colors.PRIMARY};
-  font-weight: 400;
+  font-weight: 500;
 `;
 
 export const Row = styled.div<{ padding?: boolean; spaceBetween?: boolean }>`
@@ -109,6 +109,7 @@ export const Description = styled.span<{ isSmartphone?: boolean }>`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  font-weight: 500;
 `;
 
 export const MoreInfo = styled.div`

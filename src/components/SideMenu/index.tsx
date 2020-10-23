@@ -60,7 +60,7 @@ const UserName = styled.div`
 
 const AccountLink = styled(Link)`
   font-family: "Commissioner";
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   letter-spacing: 0.3px;
   color: ${Colors.SECONDARY};
@@ -118,7 +118,7 @@ const StyledMenuItem = styled.div<{
 
 const MenuItemText = styled.span`
   font-family: "Commissioner";
-  font-weight: 400;
+  font-weight: 500;
   font-size: 18px;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
 `;

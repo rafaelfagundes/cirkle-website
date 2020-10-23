@@ -49,7 +49,7 @@ function CheckBoxWithLabel(props: CheckBoxWithLabelProps): JSX.Element {
           <Icon type="checkmark" size={12} onClick={() => null}></Icon>
         )}
       </Box>
-      <SimpleText>{props.label}</SimpleText>
+      <SimpleText size={0.8}>{props.label}</SimpleText>
     </StyledCheckBox>
   );
 }

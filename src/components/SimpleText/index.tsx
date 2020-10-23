@@ -15,7 +15,7 @@ const Text = styled.p<{
   line-height: ${(props) => props.size * 1.3}rem;
   ${(props) => (props.centered ? "text-align: center;" : null)};
   margin: 0;
-  font-weight: ${(props) => (props.bold ? "700" : "400")};
+  font-weight: ${(props) => (props.bold ? "700" : "500")};
   user-select: none;
   letter-spacing: -0.01px;
 `;

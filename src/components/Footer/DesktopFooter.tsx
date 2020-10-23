@@ -92,6 +92,7 @@ const NewsletterDescription = styled.p`
   font-size: 14px;
   text-align: center;
   margin: 0;
+  font-weight: 500;
 `;
 
 const StyledInputBase = styled(InputBase)`
@@ -134,7 +135,9 @@ const NLButton = styled.div`
 const NLButtonText = styled.span`
   color: ${Colors.WHITE};
   font-family: "Commissioner";
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
 `;
 
 function DesktopFooter(): JSX.Element {
@@ -145,32 +148,32 @@ function DesktopFooter(): JSX.Element {
           <LinksSection>
             <HeaderSection>Saiba mais</HeaderSection>
             <FooterLink>
-              <TextLink href="" color={Colors.WHITE} size={16}>
+              <TextLink href="" color={Colors.WHITE} size={14}>
                 Como Funciona
               </TextLink>
             </FooterLink>
             <FooterLink>
-              <TextLink href="" color={Colors.WHITE} size={16}>
+              <TextLink href="" color={Colors.WHITE} size={14}>
                 Quero Vender
               </TextLink>
             </FooterLink>
             <FooterLink>
-              <TextLink href="" color={Colors.WHITE} size={16}>
+              <TextLink href="" color={Colors.WHITE} size={14}>
                 Quero Comprar
               </TextLink>
             </FooterLink>
             <FooterLink>
-              <TextLink href="" color={Colors.WHITE} size={16}>
+              <TextLink href="" color={Colors.WHITE} size={14}>
                 Contato
               </TextLink>
             </FooterLink>
             <FooterLink>
-              <TextLink href="" color={Colors.WHITE} size={16}>
+              <TextLink href="" color={Colors.WHITE} size={14}>
                 Devolução
               </TextLink>
             </FooterLink>
             <FooterLink>
-              <TextLink href="" color={Colors.WHITE} size={16}>
+              <TextLink href="" color={Colors.WHITE} size={14}>
                 Termos de Uso
               </TextLink>
             </FooterLink>
@@ -195,39 +198,39 @@ function DesktopFooter(): JSX.Element {
             <LinksSection>
               <HeaderSection>Mulher</HeaderSection>
               <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={16}>
+                <TextLink href="" color={Colors.WHITE} size={14}>
                   Roupas
                 </TextLink>
               </FooterLink>
               <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={16}>
+                <TextLink href="" color={Colors.WHITE} size={14}>
                   Bolsas
                 </TextLink>
               </FooterLink>
               <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={16}>
+                <TextLink href="" color={Colors.WHITE} size={14}>
                   Calçados
                 </TextLink>
               </FooterLink>
               <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={16}>
+                <TextLink href="" color={Colors.WHITE} size={14}>
                   Acessórios
                 </TextLink>
               </FooterLink>
               <SizedBox height={16}></SizedBox>
               <HeaderSection>Kids</HeaderSection>
               <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={16}>
+                <TextLink href="" color={Colors.WHITE} size={14}>
                   Roupas
                 </TextLink>
               </FooterLink>
               <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={16}>
+                <TextLink href="" color={Colors.WHITE} size={14}>
                   Calçados
                 </TextLink>
               </FooterLink>
               <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={16}>
+                <TextLink href="" color={Colors.WHITE} size={14}>
                   Brinquedos
                 </TextLink>
               </FooterLink>

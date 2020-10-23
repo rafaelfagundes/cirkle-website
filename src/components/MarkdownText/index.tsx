@@ -12,11 +12,13 @@ const StyledMarkdownText = styled.div`
   & > p {
     font-size: 14px;
     margin: 0 0 22px 0;
+    font-weight: 500;
   }
 
   & > ul {
     margin: 6px 0 22px 0;
     padding: 0 0 0 18px;
+    font-weight: 500;
   }
 
   & > ul > li {
@@ -42,7 +44,7 @@ const StyledMarkdownText = styled.div`
 
   & > h3 {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 500;
     letter-spacing: -0.005em;
     margin: 0 0 6px 0;
   }

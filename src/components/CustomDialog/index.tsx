@@ -22,6 +22,7 @@ const Description = styled.span`
   color: ${Colors.PRIMARY};
   font-size: 16;
   opacity: 0.8;
+  font-weight: 500;
 `;
 
 const ButtonText = styled.span`

@@ -94,7 +94,7 @@ const PlaceHolderText = styled.span`
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
 `;
 
 const IconHolder = styled.div<{ showLabel: boolean }>`

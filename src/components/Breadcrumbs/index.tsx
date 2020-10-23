@@ -28,7 +28,7 @@ const Separator = styled.div`
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
   font-size: 14px;
-  /* font-weight: 700; */
+
   text-transform: uppercase;
   color: ${Colors.PRIMARY};
   margin: 0 6px;
@@ -39,12 +39,9 @@ const Breadcrumb = styled.div<{ last: boolean }>`
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
   font-size: 14px;
-  /* font-weight: 700; */
-  /* text-transform: uppercase; */
   color: ${(props) => (props.last ? Colors.GRAY : Colors.PRIMARY)};
   margin: 0 8px;
   cursor: ${(props) => (props.last ? "default" : "pointer")};
-  /* font-weight: ${(props) => (props.last ? "700" : "400")}; */
 
   &:hover {
     text-decoration: ${(props) => (props.last ? "none" : "underline")};

@@ -443,6 +443,7 @@ function ProductPage({
                         )}
                         <SizedBox width={16}></SizedBox>
                         <FavoriteIcon
+                          shadow={false}
                           active={wishlistContext.isItemInWishlist(product.id)}
                           setActive={() =>
                             addOrRemoveFromWishlist(

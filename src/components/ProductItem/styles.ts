@@ -50,7 +50,7 @@ export const Title = styled.span`
   font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   line-height: 120%;
   display: flex;
@@ -62,6 +62,7 @@ export const Description = styled.div`
   display: flex;
   flex-direction: column;
   padding: 6px 10px 0 10px;
+  font-weight: 500;
 `;
 
 export const FavoriteIconHolder = styled.div`

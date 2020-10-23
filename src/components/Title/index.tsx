@@ -10,7 +10,7 @@ const StyledTitle = styled.h1<{
   font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
-  font-weight: ${(props) => (props.bold ? "700" : "400")};
+  font-weight: ${(props) => (props.bold ? "700" : "500")};
   font-size: ${(props) => props.size}px;
   line-height: ${(props) => props.size * 1.14}px;
   letter-spacing: -0.005em;

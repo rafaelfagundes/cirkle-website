@@ -42,7 +42,7 @@ const SelectBox = styled.div<{ width: number; error: boolean }>`
 
 const SelectBoxText = styled.div<{ error: boolean }>`
   font-family: Commissioner;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   line-height: 18px;
   color: ${(props) => (props.error ? Colors.ERROR : Colors.PRIMARY)};

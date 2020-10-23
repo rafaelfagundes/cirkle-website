@@ -108,7 +108,7 @@ const MenuItemText = styled.span<{
   /* opacity: ${(props) => (props.active ? 1 : 0.95)}; */
   font-size: 15px;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
-  font-weight: 400;
+  font-weight: 500;
   z-index: 100;
 `;
 
@@ -136,7 +136,7 @@ const SubMenuItem = styled.div`
 
 const SubMenuItemText = styled.span`
   font-family: "Commissioner";
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   line-height: 22px;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
@@ -154,6 +154,7 @@ const StyledInputBase = styled(InputBase)`
   width: 100%;
   font-size: 16px;
   font-family: Commissioner;
+  font-weight: 500;
 `;
 
 const StyledSearchBar = styled.div<{ active: boolean }>`
@@ -294,7 +295,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
           <StyledSearchBar active={searchBarFocused}>
             <StyledInputBase
               id="search-bar-on-menu"
-              placeholder="Procure marcas, modelos e mais"
+              placeholder="Pesquise marcas, modelos e mais"
               inputProps={{ "aria-label": "search" }}
               onFocus={() => setSearchBarFocused(true)}
               onBlur={() => setSearchBarFocused(false)}

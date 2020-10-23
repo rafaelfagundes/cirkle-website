@@ -514,9 +514,9 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                       </CustomButton>
                     </Row>
                     <SizedBox height={10}></SizedBox>
-                    <SimpleText>
-                      Compartilhe para continuar em outro aparelho ou outra
-                      pessoa concluir a compra
+                    <SimpleText size={0.8}>
+                      Compartilhe para continuar em outro aparelho ou envie para
+                      outra pessoa concluir a compra
                     </SimpleText>
                   </CartFooter>
                 </Card>

@@ -152,6 +152,7 @@ export const Description = styled.span`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  font-weight: 500;
 `;
 export const MoreInfo = styled.div`
   display: flex;

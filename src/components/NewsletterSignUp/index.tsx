@@ -28,6 +28,7 @@ const NewsletterDescription = styled.p`
   font-size: 14px;
   text-align: center;
   margin: 0;
+  font-weight: 500;
 `;
 
 const StyledInputBase = styled(InputBase)`

@@ -40,10 +40,12 @@ export const Title = styled.span`
   -webkit-box-orient: vertical;
   letter-spacing: -0.25px;
   text-align: center;
+  font-weight: 500;
 `;
 
 export const Description = styled.div`
   display: flex;
   flex-direction: column;
   padding: 6px 10px 0 10px;
+  font-weight: 500;
 `;
