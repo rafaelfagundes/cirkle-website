@@ -543,13 +543,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
   );
 }
 
-// This function gets called at build time on server-side.
-// It won't be called on client-side, so you can even do
-// direct database queries. See the "Technical details" section.
 export async function getStaticProps(): Promise<any> {
-  // Call an external API endpoint to get posts.
-  // You can use any data fetching library
-
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
   const menuResult = await Axios.get(menuUrl);
   const menu = menuResult.data;
