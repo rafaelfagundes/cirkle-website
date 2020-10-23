@@ -11,6 +11,7 @@ import theme from "../../../theme/theme";
 import { cloudinaryImage } from "../../../utils/image";
 import { capitalizeFirstLetter } from "../../../utils/string";
 import Center from "../../Center";
+import CheckBoxWithLabel from "../../CheckBoxWithLabel";
 import CustomButton from "../../CustomButton";
 import CustomDatePicker from "../../CustomDatePicker";
 import CustomTextField from "../../CustomTextField";
@@ -18,7 +19,7 @@ import FileUploadButton from "../../FileUploadButton";
 import RadioButtonWithLabel from "../../RadioButtonWithLabel";
 import Row from "../../Row";
 import SizedBox from "../../SizedBox";
-import Title from "../../Title";
+import Subtitle from "../../Subtitle";
 
 const StyledAvatar = styled(Avatar)`
   width: 128px;
@@ -34,18 +35,22 @@ const ButtonsHolder = styled.div`
 
 function ProfileTab(): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
-
   const authContext = useAuth();
   const router = useRouter();
   const dialogContext = useDialog();
-
   const phoneNumber = useRef(null);
   const displayName = useRef(null);
+
   const [gender, setGender] = useState(
     authContext.user.gender || Gender.NOT_DEFININED
   );
+
   const [dateOfBirth, setDateOfBirth] = useState(
     authContext.user.dateOfBirth ? authContext.user.dateOfBirth : null
+  );
+
+  const [isSubscribed, setIsSubscribed] = useState(
+    authContext.user.isSubscribed || false
   );
 
   const [picture, setPicture] = useState(null);
@@ -172,6 +177,7 @@ function ProfileTab(): JSX.Element {
     if (uploadedPicture) _user.picture = uploadedPicture;
     _user.gender = gender;
     _user.dateOfBirth = dateOfBirth;
+    _user.isSubscribed = isSubscribed;
 
     setLoading(true);
     const result = await authContext.updateUser(_user);
@@ -250,9 +256,8 @@ function ProfileTab(): JSX.Element {
           Nome e Sobrenome
         </CustomTextField>
       </span>
-      <SizedBox height={24}></SizedBox>
-      <Title>Sexo</Title>
-      <SizedBox height={6}></SizedBox>
+      <SizedBox height={20}></SizedBox>
+      <Subtitle bold>Sexo</Subtitle>
       <Row>
         <RadioButtonWithLabel
           value={gender === Gender.FEMALE}
@@ -272,7 +277,7 @@ function ProfileTab(): JSX.Element {
           onClick={() => setGender(Gender.NON_BINARY)}
         ></RadioButtonWithLabel>
       </Row>
-      <SizedBox height={24}></SizedBox>
+      <SizedBox height={20}></SizedBox>
       <span data-test="profile-birth">
         <CustomDatePicker
           placeholder="Data de Nascimento"
@@ -295,6 +300,12 @@ function ProfileTab(): JSX.Element {
           Celular
         </CustomTextField>
       </span>
+      <SizedBox height={16}></SizedBox>
+      <CheckBoxWithLabel
+        label="Desejo receber informações e promoções exclusivas"
+        onClick={() => setIsSubscribed(!isSubscribed)}
+        value={isSubscribed}
+      ></CheckBoxWithLabel>
 
       <SizedBox height={36}></SizedBox>
       <Center>

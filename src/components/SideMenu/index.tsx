@@ -58,14 +58,6 @@ const UserName = styled.div`
   color: ${Colors.PRIMARY};
 `;
 
-const AccountLink = styled(Link)`
-  font-family: "Commissioner";
-  font-weight: 500;
-  font-size: 14px;
-  letter-spacing: 0.3px;
-  color: ${Colors.SECONDARY};
-`;
-
 const Tabs = styled.div`
   display: flex;
   flex-direction: row;
@@ -77,7 +69,7 @@ const StyledTab = styled.div<{ active: boolean; color: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80px;
+  width: 100px;
   height: ${(props) => (props.active ? "44px" : "34px")};
   background-color: ${(props) =>
     props.active ? props.color : Colors.VERY_LIGHT_GRAY};
@@ -88,6 +80,7 @@ const TabText = styled.span<{ active: boolean }>`
   font-size: 14px;
   color: ${(props) => (props.active ? Colors.WHITE : Colors.GRAY)};
   font-weight: 700;
+  text-transform: uppercase;
 `;
 
 const MenuContainer = styled.div<{ color: string }>`
@@ -108,7 +101,7 @@ const StyledMenuItem = styled.div<{
   border-bottom-style: solid;
   border-bottom-width: ${(props) =>
     props.subcategory || props.lastOne ? 0 : "0.5px"};
-  border-bottom-color: rgba(0, 0, 0, 0.1);
+  border-bottom-color: rgba(0, 0, 0, 0.2);
   flex-direction: row;
   justify-content: space-between;
   cursor: pointer;
@@ -119,7 +112,7 @@ const StyledMenuItem = styled.div<{
 const MenuItemText = styled.span`
   font-family: "Commissioner";
   font-weight: 500;
-  font-size: 18px;
+  font-size: 14px;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
 `;
 

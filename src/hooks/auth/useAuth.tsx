@@ -334,6 +334,7 @@ function useProviderAuth() {
         picture: user.picture,
         dateOfBirth: user.dateOfBirth,
         gender: user.gender,
+        isSubscribed: user.isSubscribed,
       });
       if (response) {
         saveUserInContextAndLocalStorage(response?.data);

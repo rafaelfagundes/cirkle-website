@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Card from "../src/components/Card";
-import CheckBoxWithLabel from "../src/components/CheckboxWithLabel";
+import CheckBoxWithLabel from "../src/components/CheckBoxWithLabel";
 import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
 import CustomSelect from "../src/components/CustomSelect";

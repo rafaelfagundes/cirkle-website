@@ -41,7 +41,7 @@ const Box = styled.div<{ filled: boolean }>`
   justify-content: center;
   align-items: center;
 
-  margin-right: 8px;
+  margin-right: 5px;
 `;
 
 interface RadioButtonWithLabel {
@@ -54,7 +54,7 @@ function RadioButtonWithLabel(props: RadioButtonWithLabel): JSX.Element {
   return (
     <StyledRadioButton onClick={props.onClick}>
       <Box filled={props.value}>{props.value && <Circle></Circle>}</Box>
-      <SimpleText>{props.label}</SimpleText>
+      <SimpleText size={0.9}>{props.label}</SimpleText>
     </StyledRadioButton>
   );
 }

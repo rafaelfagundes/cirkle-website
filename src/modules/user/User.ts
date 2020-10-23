@@ -25,6 +25,7 @@ type User = {
   gender?: Gender;
   dateOfBirth?: Date;
   addresses?: Array<Address>;
+  isSubscribed?: boolean;
 };
 
 export default User;
