@@ -11,7 +11,7 @@ import theme from "../../../theme/theme";
 import { cloudinaryImage } from "../../../utils/image";
 import { capitalizeFirstLetter } from "../../../utils/string";
 import Center from "../../Center";
-import CheckBoxWithLabel from "../../CheckBoxWithLabel";
+import CheckBoxWithLabel from "../../CheckboxWithLabel";
 import CustomButton from "../../CustomButton";
 import CustomDatePicker from "../../CustomDatePicker";
 import CustomTextField from "../../CustomTextField";
