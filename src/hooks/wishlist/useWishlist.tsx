@@ -69,13 +69,14 @@ function useWishlistProvider() {
   };
 
   const updateWishlist = async (wishlist: Wishlist) => {
+    console.log("updateWishlist -> wishlist", wishlist);
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   };
 
   useEffect(() => {
     if (authContext.user) {
       const _wishlist = _.cloneDeep(wishlist);
-      _wishlist.userId = authContext.user.uid;
+      _wishlist.userId = authContext.user.id;
       updateWishlist(_wishlist);
     } else {
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
