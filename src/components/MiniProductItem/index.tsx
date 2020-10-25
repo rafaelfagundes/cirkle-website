@@ -13,7 +13,7 @@ function MiniProductItem({ data }: { data: Product }): JSX.Element {
   const router = useRouter();
 
   const _goToProduct = (id: string) => {
-    router.push(`/products/${id}`);
+    router.push(`/produtos/${id}`);
   };
 
   return (

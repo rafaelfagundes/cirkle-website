@@ -37,15 +37,15 @@ export default Menu;
 //         items: [
 //           {
 //             title: "Vestidos",
-//             link: "/products/a2bf02d1-801d-4066-a2f0-c8d4707c7586",
+//             link: "/produtos/a2bf02d1-801d-4066-a2f0-c8d4707c7586",
 //           },
 //           {
 //             title: "Saias",
-//             link: "/products/11e767cb-d2bb-476b-b358-a73e058ff6f4",
+//             link: "/produtos/11e767cb-d2bb-476b-b358-a73e058ff6f4",
 //           },
 //           {
 //             title: "Blusas",
-//             link: "/products/927d008d-f8d0-4e4f-a5ef-b390966a65d7",
+//             link: "/produtos/927d008d-f8d0-4e4f-a5ef-b390966a65d7",
 //           },
 //         ],
 //       },
@@ -56,15 +56,15 @@ export default Menu;
 //         items: [
 //           {
 //             title: "Mini",
-//             link: "/products/18f2b1df-e9ef-439f-850e-0e1dcf03dabc",
+//             link: "/produtos/18f2b1df-e9ef-439f-850e-0e1dcf03dabc",
 //           },
 //           {
 //             title: "Média",
-//             link: "/products/57dfa070-6e41-4b89-b2c0-c5eab7942491",
+//             link: "/produtos/57dfa070-6e41-4b89-b2c0-c5eab7942491",
 //           },
 //           {
 //             title: "Carteiras",
-//             link: "/products/8964979e-32c1-4e45-b64e-25cf8710c043",
+//             link: "/produtos/8964979e-32c1-4e45-b64e-25cf8710c043",
 //           },
 //         ],
 //       },
@@ -75,15 +75,15 @@ export default Menu;
 //         items: [
 //           {
 //             title: "Botas",
-//             link: "/products/6d32681a-a23c-4f51-b92e-d70b2c67b592",
+//             link: "/produtos/6d32681a-a23c-4f51-b92e-d70b2c67b592",
 //           },
 //           {
 //             title: "Sapatos",
-//             link: "/products/0e839446-a0f8-4f7f-9b87-c363127c537a",
+//             link: "/produtos/0e839446-a0f8-4f7f-9b87-c363127c537a",
 //           },
 //           {
 //             title: "Tênis",
-//             link: "/products/9a501b21-92f5-4c9d-a978-a83ed6748d25",
+//             link: "/produtos/9a501b21-92f5-4c9d-a978-a83ed6748d25",
 //           },
 //         ],
 //       },
@@ -94,27 +94,27 @@ export default Menu;
 //         items: [
 //           {
 //             title: "Acessórios para cabelo",
-//             link: "/products/acessórios",
+//             link: "/produtos/acessórios",
 //           },
-//           { title: "Anel", link: "/products/anel" },
-//           { title: "Bijoux", link: "/products/bijoux" },
-//           { title: "Brinco", link: "/products/brinco" },
-//           { title: "Cachecol", link: "/products/cachecol" },
-//           { title: "Carteiras", link: "/products/carteiras" },
-//           { title: "Chapéus", link: "/products/chapéus" },
-//           { title: "Chaveiros", link: "/products/chaveiros" },
-//           { title: "Cintos", link: "/products/cintos" },
-//           { title: "Colar", link: "/products/colar" },
-//           { title: "Conjunto", link: "/products/conjunto" },
-//           { title: "Fitness", link: "/products/fitness" },
-//           { title: "Jóias", link: "/products/jóias" },
-//           { title: "Lenços", link: "/products/lenços" },
-//           { title: "Meias calças", link: "/products/meias" },
-//           { title: "Óculos", link: "/products/óculos" },
-//           { title: "Praia", link: "/products/praia" },
-//           { title: "Pulseira", link: "/products/pulseira" },
-//           { title: "Relógios", link: "/products/relógios" },
-//           { title: "Outros", link: "/products/outros" },
+//           { title: "Anel", link: "/produtos/anel" },
+//           { title: "Bijoux", link: "/produtos/bijoux" },
+//           { title: "Brinco", link: "/produtos/brinco" },
+//           { title: "Cachecol", link: "/produtos/cachecol" },
+//           { title: "Carteiras", link: "/produtos/carteiras" },
+//           { title: "Chapéus", link: "/produtos/chapéus" },
+//           { title: "Chaveiros", link: "/produtos/chaveiros" },
+//           { title: "Cintos", link: "/produtos/cintos" },
+//           { title: "Colar", link: "/produtos/colar" },
+//           { title: "Conjunto", link: "/produtos/conjunto" },
+//           { title: "Fitness", link: "/produtos/fitness" },
+//           { title: "Jóias", link: "/produtos/jóias" },
+//           { title: "Lenços", link: "/produtos/lenços" },
+//           { title: "Meias calças", link: "/produtos/meias" },
+//           { title: "Óculos", link: "/produtos/óculos" },
+//           { title: "Praia", link: "/produtos/praia" },
+//           { title: "Pulseira", link: "/produtos/pulseira" },
+//           { title: "Relógios", link: "/produtos/relógios" },
+//           { title: "Outros", link: "/produtos/outros" },
 //         ],
 //       },
 //       brands: {
@@ -124,15 +124,15 @@ export default Menu;
 //         items: [
 //           {
 //             title: "Gucci",
-//             link: "/products/cce65414-08a3-49ae-bd4a-52d5ae26a8c2",
+//             link: "/produtos/cce65414-08a3-49ae-bd4a-52d5ae26a8c2",
 //           },
 //           {
 //             title: "Chanel",
-//             link: "/products/d0018e21-3805-47a5-8489-8c9e38e7cbba",
+//             link: "/produtos/d0018e21-3805-47a5-8489-8c9e38e7cbba",
 //           },
 //           {
 //             title: "Schutz",
-//             link: "/products/ccec1135-389d-444a-8234-dda99385a12e",
+//             link: "/produtos/ccec1135-389d-444a-8234-dda99385a12e",
 //           },
 //         ],
 //       },
@@ -149,15 +149,15 @@ export default Menu;
 //         items: [
 //           {
 //             title: "Vestidos",
-//             link: "/products/c05d7945-bbd1-45b2-80da-a613e60dc60d",
+//             link: "/produtos/c05d7945-bbd1-45b2-80da-a613e60dc60d",
 //           },
 //           {
 //             title: "Saias",
-//             link: "/products/4119c484-fde9-4191-a576-656218e3f9d7",
+//             link: "/produtos/4119c484-fde9-4191-a576-656218e3f9d7",
 //           },
 //           {
 //             title: "Blusas",
-//             link: "/products/3d2422de-736a-44ba-8fe0-ac5b19330d89",
+//             link: "/produtos/3d2422de-736a-44ba-8fe0-ac5b19330d89",
 //           },
 //         ],
 //       },
@@ -168,15 +168,15 @@ export default Menu;
 //         items: [
 //           {
 //             title: "Sandálias",
-//             link: "/products/e85fb939-c2e4-4368-848a-5b23e0f5f4ac",
+//             link: "/produtos/e85fb939-c2e4-4368-848a-5b23e0f5f4ac",
 //           },
 //           {
 //             title: "Sapatos",
-//             link: "/products/7834a69b-d4b4-4eaf-ad20-16bc39503c43",
+//             link: "/produtos/7834a69b-d4b4-4eaf-ad20-16bc39503c43",
 //           },
 //           {
 //             title: "Tênis",
-//             link: "/products/f5895cef-978a-4fce-9317-be631e5c342f",
+//             link: "/produtos/f5895cef-978a-4fce-9317-be631e5c342f",
 //           },
 //         ],
 //       },
@@ -187,15 +187,15 @@ export default Menu;
 //         items: [
 //           {
 //             title: "Óculos",
-//             link: "/products/cccb7e40-64b3-4436-8c17-8fd04b200280",
+//             link: "/produtos/cccb7e40-64b3-4436-8c17-8fd04b200280",
 //           },
 //           {
 //             title: "Relógios",
-//             link: "/products/6502794d-57a2-49dd-b70c-b9e3345f2953",
+//             link: "/produtos/6502794d-57a2-49dd-b70c-b9e3345f2953",
 //           },
 //           {
 //             title: "Brincos",
-//             link: "/products/ab343b81-1ae0-4d47-8c80-dd4230522625",
+//             link: "/produtos/ab343b81-1ae0-4d47-8c80-dd4230522625",
 //           },
 //         ],
 //       },
@@ -206,15 +206,15 @@ export default Menu;
 //         items: [
 //           {
 //             title: "Gucci",
-//             link: "/products/dc1b3ccf-54d8-417f-9c8d-9abbc75c827c",
+//             link: "/produtos/dc1b3ccf-54d8-417f-9c8d-9abbc75c827c",
 //           },
 //           {
 //             title: "Chanel",
-//             link: "/products/c7151c83-f1fd-4304-829f-2b71d3cd7c82",
+//             link: "/produtos/c7151c83-f1fd-4304-829f-2b71d3cd7c82",
 //           },
 //           {
 //             title: "Schutz",
-//             link: "/products/1ba3e928-a1c1-40e9-9ccf-9e14e44857de",
+//             link: "/produtos/1ba3e928-a1c1-40e9-9ccf-9e14e44857de",
 //           },
 //         ],
 //       },

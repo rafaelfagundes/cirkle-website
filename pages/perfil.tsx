@@ -17,7 +17,7 @@ function Profile({ menu }: { menu: Menu }): JSX.Element {
   const [activeTab, setActiveTab] = useState(router.asPath);
 
   if (!authContext.user) {
-    typeof window !== "undefined" && router.push("/login");
+    typeof window !== "undefined" && router.push("/entrar");
   }
 
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
@@ -29,15 +29,15 @@ function Profile({ menu }: { menu: Menu }): JSX.Element {
           <SizedBox height={isSmartPhone ? 32 : 72}></SizedBox>
           <FormTabs
             tabs={[
-              { id: "/profile", title: "Dados Pessoais" },
-              { id: "/address", title: "Endereços" },
+              { id: "/perfil", title: "Dados Pessoais" },
+              { id: "/enderecos", title: "Endereços" },
             ]}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           ></FormTabs>
           <SizedBox height={32}></SizedBox>
-          {activeTab === "/profile" && <ProfileTab></ProfileTab>}
-          {activeTab === "/address" && <AddressTab></AddressTab>}
+          {activeTab === "/perfil" && <ProfileTab></ProfileTab>}
+          {activeTab === "/enderecos" && <AddressTab></AddressTab>}
           <SizedBox height={72}></SizedBox>
         </Container>
       )}

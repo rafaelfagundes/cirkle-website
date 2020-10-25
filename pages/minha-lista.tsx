@@ -66,7 +66,7 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
   };
 
   const _goToProduct = (id: string) => {
-    typeof window !== "undefined" && router.push("/products/" + id);
+    typeof window !== "undefined" && router.push("/produtos/" + id);
   };
 
   const getCartButton = (item: Product) => {
@@ -172,7 +172,7 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
             <SizedBox height={72}></SizedBox>
             {!authContext.user && (
               <EmptyPage
-                buttonAction={() => _goTo("/login")}
+                buttonAction={() => _goTo("/entrar")}
                 buttonText="Entrar"
                 icon="heart"
                 title="A Lista De Desejos Está Vazia"

@@ -18,9 +18,9 @@ const StyledCheckBox = styled.div`
     margin: 0px -8px 0px -8px;
   }
 
-  &:active {
+  /* &:active {
     background-color: ${Colors.TEA_GREEN};
-  }
+  } */
 `;
 
 const Box = styled.div<{ filled: boolean }>`
@@ -28,7 +28,7 @@ const Box = styled.div<{ filled: boolean }>`
   height: 16px;
   border: 2px solid ${(props) => (props.filled ? Colors.PRIMARY : "#bbb")};
   background-color: ${(props) =>
-    props.filled ? Colors.PRIMARY : "transparent"};
+    props.filled ? Colors.PRIMARY : Colors.WHITE};
   display: flex;
   justify-content: center;
   align-items: center;

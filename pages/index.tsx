@@ -76,37 +76,37 @@ function Home(props: HomeProps): JSX.Element {
     tiles: [
       {
         title: "Vestidos",
-        url: "/products/vestidos?promo=true",
+        url: "/produtos/vestidos?promo=true",
         image:
           "https://res.cloudinary.com/cirklebr/image/upload/v1602037021/banners/0001/ussama-azam-hlg-ltdCoI0-unsplash_nhvlc5.jpg",
       },
       {
         title: "Calçados",
-        url: "/products/calcados?promo=true",
+        url: "/produtos/calcados?promo=true",
         image:
           "https://res.cloudinary.com/cirklebr/image/upload/v1602037157/banners/0001/apostolos-vamvouras-_pdbqMcNWus-unsplash_tfqalg.jpg",
       },
       {
         title: "Camisetas",
-        url: "/products/camisetas?promo=true",
+        url: "/produtos/camisetas?promo=true",
         image:
           "https://res.cloudinary.com/cirklebr/image/upload/v1602037252/banners/0001/saffu-wndL-yCL_dU-unsplash_dlx7fc.jpg",
       },
       {
         title: "Jaquetas",
-        url: "/products/jaquetas?promo=true",
+        url: "/produtos/jaquetas?promo=true",
         image:
           "https://res.cloudinary.com/cirklebr/image/upload/v1602037269/banners/0001/asiya-kiev-eV8RI-tdf9o-unsplash_j97lcw.jpg",
       },
       {
         title: "Calças",
-        url: "/products/calcas?promo=true",
+        url: "/produtos/calcas?promo=true",
         image:
           "https://res.cloudinary.com/cirklebr/image/upload/v1602037288/banners/0001/tamara-bellis-zDyJOj8ZXG0-unsplash_zsmsfv.jpg",
       },
       {
         title: "Saias",
-        url: "/products/saias?promo=true",
+        url: "/produtos/saias?promo=true",
         image:
           "https://res.cloudinary.com/cirklebr/image/upload/v1602037433/banners/0001/kelly-fournier-ooiL787Cwzc-unsplash_spzavq.jpg",
       },

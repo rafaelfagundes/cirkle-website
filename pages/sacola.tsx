@@ -194,7 +194,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                   <CartItems>
                     {cartContext.cart.items.map((item, index) => (
                       <CartItem key={item.id} showBackground={index % 2 === 0}>
-                        <Link href={`/products/${item.uid}`}>
+                        <Link href={`/produtos/${item.uid}`}>
                           <span style={{ cursor: "pointer" }}>
                             <ImagePrice>
                               <CartItemImage
@@ -212,7 +212,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                           </span>
                         </Link>
                         <Column>
-                          <Link href={`/products/${item.uid}`}>
+                          <Link href={`/produtos/${item.uid}`}>
                             <span style={{ cursor: "pointer" }}>
                               <TitleAndRemove>
                                 <Title>{item.title}</Title>

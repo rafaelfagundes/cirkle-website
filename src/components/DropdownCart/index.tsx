@@ -38,7 +38,7 @@ function DropdownCart(): JSX.Element {
   };
 
   const goToCart = () => {
-    typeof window !== "undefined" && router.push("/cart");
+    typeof window !== "undefined" && router.push("/sacola");
     setIsOpen(false);
   };
 
@@ -75,7 +75,7 @@ function DropdownCart(): JSX.Element {
             <CartItems height={window.innerHeight}>
               {cartContext.cart.items.map((item, index) => (
                 <CartItem key={item.id} showBackground={index % 2 !== 0}>
-                  <Link href={`/products/${item.uid}`}>
+                  <Link href={`/produtos/${item.uid}`}>
                     <CartItemImage
                       image={cloudinaryProductImage(item.image, 75)}
                       size={75}
@@ -86,7 +86,7 @@ function DropdownCart(): JSX.Element {
                     </CartItemImage>
                   </Link>
                   <Column spaceBetween minHeight={75}>
-                    <Link href={`/products/${item.uid}`}>
+                    <Link href={`/produtos/${item.uid}`}>
                       <div style={{ cursor: "pointer" }}>
                         <SizedBox height={4}></SizedBox>
                         <Title size={14}>

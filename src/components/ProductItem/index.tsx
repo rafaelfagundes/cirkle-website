@@ -36,14 +36,14 @@ function ProductItem({
 }): JSX.Element {
   const controls = useAnimation();
   const theme = useTheme();
-  const smartphone = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
   const cartContext = useCart();
   const wishlistContext = useWishlist();
   const isAlreadyInWishlist = wishlistContext.isItemInWishlist(data.id);
   const router = useRouter();
 
   const _goToProduct = (id: string) => {
-    router.push(`/products/${id}`);
+    router.push(`/produtos/${id}`);
   };
 
   const _addToCart = (item: Product) => {
@@ -80,7 +80,12 @@ function ProductItem({
   }, [isAlreadyInWishlist]);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div
+      style={{
+        position: "relative",
+        width: 228,
+      }}
+    >
       {!removeButton && (
         <FavoriteIconHolder>
           <FavoriteIcon
@@ -105,14 +110,14 @@ function ProductItem({
         </RemoveIconHolder>
       )}
       <Item
-        isSmartphone={smartphone}
+        isSmartphone={isSmartphone}
         onDoubleClick={
           isAlreadyInWishlist
             ? () => wishlistContext.removeFromWishlist(data.id)
             : () => wishlistContext.addToWishlist(data)
         }
       >
-        <AnimatedHeart isSmartphone={smartphone}>
+        <AnimatedHeart isSmartphone={isSmartphone}>
           <motion.div animate={controls} initial={{ opacity: 0, scale: 0 }}>
             <Icon type="heart-fill" size={1}></Icon>
           </motion.div>

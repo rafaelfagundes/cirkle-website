@@ -106,14 +106,14 @@ function ProductPage({
   if (!initialDataProduct) return <></>;
 
   const { data: product, error: productError } = useSWR(
-    "/products/" + initialDataProduct.uid,
+    "/produtos/" + initialDataProduct.uid,
     {
       initialData: initialDataProduct,
     }
   );
   if (productError) console.log("Product loading error", productError);
 
-  const currentUrl = `https://www.cirkle.com.br/products/${product.uid}`;
+  const currentUrl = `https://www.cirkle.com.br/produtos/${product.uid}`;
 
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -276,7 +276,7 @@ function ProductPage({
         title={`${product.title} - ${product.brand.name}`}
         hashtag="#cirkle #modacircular #sustentabilidade"
         quote="Confira mais em nossa loja :)"
-        url={`https://www.cirkle.com.br/products/${product.uid}`}
+        url={`https://www.cirkle.com.br/produtos/${product.uid}`}
         type={MetaDataType.PRODUCT}
         moreImages={product.moreImages}
         price={product.price}

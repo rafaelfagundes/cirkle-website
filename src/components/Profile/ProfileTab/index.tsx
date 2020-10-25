@@ -72,7 +72,7 @@ function ProfileTab(): JSX.Element {
   }, [picture]);
 
   const _goToPasswordChange = () => {
-    typeof window !== "undefined" && router.push("/password-change");
+    typeof window !== "undefined" && router.push("/alterar-senha");
   };
 
   const _validateProfile = () => {

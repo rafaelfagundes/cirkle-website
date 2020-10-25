@@ -26,13 +26,16 @@ function FavoriteMenuItem(): JSX.Element {
   return (
     <>
       {wishlistContext.wishlist.items.length === 0 && (
-        <IconButton type="heart" onClick={() => goTo("/wishlist")}></IconButton>
+        <IconButton
+          type="heart"
+          onClick={() => goTo("/minha-lista")}
+        ></IconButton>
       )}
       {wishlistContext.wishlist.items.length > 0 && (
-        <FavoriteIconHolder onClick={() => goTo("/wishlist")}>
+        <FavoriteIconHolder onClick={() => goTo("/minha-lista")}>
           <IconButton
             type="heart-fill"
-            onClick={() => goTo("/wishlist")}
+            onClick={() => goTo("/minha-lista")}
           ></IconButton>
           <Badge position={BadgePosition.TOP_RIGHT}>
             {wishlistContext.wishlist.items.length.toString()}

@@ -44,7 +44,7 @@ function PasswordChange({ menu }: { menu: Menu }): JSX.Element {
   const passwordConfirmation = useRef(null);
 
   const _goBack = () => {
-    typeof window !== "undefined" && router.push("/profile");
+    typeof window !== "undefined" && router.push("/perfil");
   };
 
   const _validate = () => {
@@ -136,7 +136,7 @@ function PasswordChange({ menu }: { menu: Menu }): JSX.Element {
         "OK",
         false
       );
-      typeof window !== "undefined" && router.push("/profile");
+      typeof window !== "undefined" && router.push("/perfil");
     } else {
       setNewPasswordLoading(false);
       dialogContext.newDialog(
@@ -225,7 +225,7 @@ function PasswordChange({ menu }: { menu: Menu }): JSX.Element {
                 variant="text"
                 width={190}
                 onClick={() =>
-                  typeof window !== "undefined" && router.push("/profile")
+                  typeof window !== "undefined" && router.push("/perfil")
                 }
               >
                 Cancelar

@@ -102,11 +102,11 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
   const tabs: Array<ITab> = [
     {
       title: "Cadastre-se",
-      id: "/signup",
+      id: "/cadastrar",
     },
     {
       title: "Já Tenho Cadastro",
-      id: "/login",
+      id: "/entrar",
     },
   ];
 
@@ -264,7 +264,7 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
               setActiveTab={_setActiveTab}
             ></FormTabs>
             <SizedBox height={16}></SizedBox>
-            {page === "/login" && (
+            {page === "/entrar" && (
               <>
                 <SizedBox height={32}></SizedBox>
                 <Center>
@@ -309,7 +309,7 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
                 </Center>
                 <SizedBox height={16}></SizedBox>
                 <Center>
-                  <TextLink href="/recover-password">
+                  <TextLink href="/recuperar-senha">
                     Esqueci Minha Senha
                   </TextLink>
                 </Center>
@@ -319,7 +319,7 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
                 <SocialLogin auth={auth}></SocialLogin>
               </>
             )}
-            {page === "/signup" && (
+            {page === "/cadastrar" && (
               <>
                 <SizedBox height={32}></SizedBox>
                 <SocialLogin auth={auth}></SocialLogin>

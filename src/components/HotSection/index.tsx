@@ -60,13 +60,44 @@ function HotSection({
   return (
     <Section>
       <ItemsHolder disableScroll={!isSmartphone} isSmartphone={isSmartphone}>
-        {products.map((item, index) => (
+        {isSmartphone && (
           <>
-            <ProductItem data={item} key={item.id}></ProductItem>
-            {(index + 1) % 4 !== 0 && <SizedBox width={16}></SizedBox>}
+            {products.map((item) => (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: 244,
+                }}
+                key={item.id}
+              >
+                <ProductItem data={item}></ProductItem>
+                <SizedBox width={16}></SizedBox>
+              </div>
+            ))}
+            <Spacer>-</Spacer>
           </>
-        ))}
-        {isSmartphone ? <Spacer>-</Spacer> : null}
+        )}
+
+        {!isSmartphone && (
+          <>
+            {products.map((item, index) => (
+              <span
+                style={{
+                  width: !isSmartphone && (index + 1) % 4 !== 0 ? 244 : 228,
+                }}
+                key={item.id}
+              >
+                <ProductItem data={item}></ProductItem>
+                {!isSmartphone && (index + 1) % 4 !== 0 && (
+                  <SizedBox width={16}></SizedBox>
+                )}
+                {isSmartphone && <SizedBox width={16}></SizedBox>}
+              </span>
+            ))}
+            <Spacer>-</Spacer>
+          </>
+        )}
       </ItemsHolder>
       <SizedBox height={12}></SizedBox>
       <Center>
