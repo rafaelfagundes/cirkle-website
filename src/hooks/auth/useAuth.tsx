@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import getConfig from "next/config";
 import React, { createContext, useContext, useState } from "react";
 import firebase from "../../config/firebase";
@@ -99,7 +100,7 @@ async function setAxiosAuthToken(user: firebase.User) {
 }
 
 async function updateToken() {
-  // console.log("updating user token", moment().format("DD/MM/yyyy HH:mm:ss"));
+  console.log("updating user token", moment().format("DD/MM/yyyy HH:mm:ss"));
   const token = await firebase.auth().currentUser?.getIdToken(true);
   if (token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
@@ -376,7 +377,7 @@ function useProviderAuth() {
     });
     const updateInterval = setInterval(() => {
       updateToken();
-    }, 300000);
+    }, 5 * 60 * 1000);
 
     return () => {
       clearInterval(updateInterval);

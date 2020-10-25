@@ -50,6 +50,7 @@ const SpaceBetweenColumn = styled.div`
   justify-content: space-between;
 
   min-height: 113px;
+  width: 100%;
 `;
 
 function Wishlist({ menu }: { menu: Menu }): JSX.Element {
@@ -65,24 +66,22 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
     typeof window !== "undefined" && router.push(route);
   };
 
-  const _goToProduct = (id: string) => {
-    typeof window !== "undefined" && router.push("/produtos/" + id);
-  };
-
   const getCartButton = (item: Product) => {
     const isAlreadyInCart = cartContext.isItemInCart(item.id);
 
     return (
       <CustomButton
         type={isAlreadyInCart ? "disabled" : "success"}
-        variant="contained"
+        variant="text"
+        small
+        width={isAlreadyInCart ? 132 : 195}
         onClick={() => {
           item.cartQty = 1;
           cartContext.addToCart(item);
         }}
-        icon={isAlreadyInCart ? null : "bag-plus"}
+        icon={isAlreadyInCart ? "" : "bag-plus-green"}
       >
-        {isAlreadyInCart ? "Está Na Sacola" : ""}
+        {isAlreadyInCart ? "Está Na Sacola" : "Adicionar à Sacola"}
       </CustomButton>
     );
   };
@@ -119,46 +118,38 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
                 {wishlistContext.wishlist.items.map(
                   (item: Product, index: number) => (
                     <CartItem key={item.id} showBackground={index % 2 === 0}>
-                      <ImagePrice>
+                      <ImagePrice
+                        onClick={() => _goTo("/produtos/" + item.uid)}
+                      >
                         <CartItemImage
                           image={cloudinaryImage(item.image, 90)}
                           size={window.innerWidth * 0.24}
                         ></CartItemImage>
-                        <SizedBox height={8}></SizedBox>
-                        <Price>
-                          {new Intl.NumberFormat("pt-BR", {
-                            style: "currency",
-                            currency: "BRL",
-                          }).format(item.price)}
-                        </Price>
                       </ImagePrice>
                       <SpaceBetweenColumn>
-                        <div>
+                        <div onClick={() => _goTo("/produtos/" + item.uid)}>
                           <TitleAndRemove>
-                            <Title>{item.title}</Title>
+                            <Title size={12}>{item.title}</Title>
                             <SizedBox width={16}></SizedBox>
                             <Icon
                               size={16}
-                              type="remove"
+                              type="trash"
                               onClick={() =>
                                 wishlistContext.removeFromWishlist(item.id)
                               }
                             ></Icon>
                           </TitleAndRemove>
-                          <SizedBox height={8}></SizedBox>
+                          <SizedBox height={4}></SizedBox>
                           <Description>{item.description}</Description>
                           <SizedBox height={8}></SizedBox>
+                          <Price>
+                            {new Intl.NumberFormat("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            }).format(item.price)}
+                          </Price>
                         </div>
-                        <MoreInfo>
-                          <CustomButton
-                            type="secondary"
-                            variant="text"
-                            onClick={() => _goToProduct(item.uid)}
-                          >
-                            Ver Produto
-                          </CustomButton>
-                          {getCartButton(item)}
-                        </MoreInfo>
+                        <MoreInfo>{getCartButton(item)}</MoreInfo>
                       </SpaceBetweenColumn>
                     </CartItem>
                   )

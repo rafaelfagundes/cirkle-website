@@ -101,7 +101,7 @@ export const Description = styled.span<{ isSmartphone?: boolean }>`
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
   color: ${Colors.PRIMARY};
-  font-size: 14px;
+  font-size: 12px;
   margin-left: 6px;
   max-height: 65px;
   max-width: ${(props) => (props.isSmartphone ? 242 : 430)}px;
@@ -115,6 +115,7 @@ export const Description = styled.span<{ isSmartphone?: boolean }>`
 export const MoreInfo = styled.div`
   display: flex;
   flex-direction: row;
+  margin-left: -2px;
 `;
 
 export const Price = styled.span`
@@ -123,6 +124,7 @@ export const Price = styled.span`
     "Helvetica Neue", sans-serif;
   color: ${Colors.MONEY};
   font-weight: 700;
+  margin-left: 6px;
 `;
 
 export const StyledColor = styled.span`
@@ -150,7 +152,7 @@ export const TitleAndRemove = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   width: calc(100% - 6px);
   margin-left: 6px;
 `;
