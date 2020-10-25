@@ -188,6 +188,7 @@ function useProviderAuth() {
   const signinWithGoogle = async () => {
     try {
       const response = await firebase.auth().signInWithPopup(googleProvider);
+      await updateToken();
       const user = await getUserDB();
 
       if (user) {
@@ -219,7 +220,9 @@ function useProviderAuth() {
   const signinWithFacebook = async () => {
     try {
       const response = await firebase.auth().signInWithPopup(facebookProvider);
+      await updateToken();
       const user = await getUserDB();
+
       if (user) {
         user.loginType = LoginType.FACEBOOK;
         saveUserInContextAndLocalStorage(user);
