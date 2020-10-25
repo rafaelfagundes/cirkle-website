@@ -71,7 +71,7 @@ const product2: Product = {
 test("should be empty", () => {
   const { result } = renderHook(() => useWishlist({ children: <span></span> }));
 
-  expect(result.current.props.value.wishlist.items.length).toEqual(0);
+  expect(result.current.props.value.wishlist.products.length).toEqual(0);
 });
 
 test("should be able to add an item to wishlist", () => {
@@ -81,7 +81,9 @@ test("should be able to add an item to wishlist", () => {
     result.current.props.value.addToWishlist(product);
   });
 
-  expect(result.current.props.value.wishlist.items[0].id).toEqual(product.id);
+  expect(result.current.props.value.wishlist.products[0].id).toEqual(
+    product.id
+  );
 });
 
 test("should be able to add two or more items to wishlist", () => {
@@ -91,13 +93,17 @@ test("should be able to add two or more items to wishlist", () => {
     result.current.props.value.addToWishlist(product);
   });
 
-  expect(result.current.props.value.wishlist.items[0].id).toEqual(product.id);
+  expect(result.current.props.value.wishlist.products[0].id).toEqual(
+    product.id
+  );
 
   act(() => {
     result.current.props.value.addToWishlist(product2);
   });
 
-  expect(result.current.props.value.wishlist.items[1].id).toEqual(product2.id);
+  expect(result.current.props.value.wishlist.products[1].id).toEqual(
+    product2.id
+  );
 });
 
 test("should be able to remove an item from wishlist", () => {
@@ -107,13 +113,15 @@ test("should be able to remove an item from wishlist", () => {
     result.current.props.value.addToWishlist(product);
   });
 
-  expect(result.current.props.value.wishlist.items[0].id).toEqual(product.id);
+  expect(result.current.props.value.wishlist.products[0].id).toEqual(
+    product.id
+  );
 
   act(() => {
     result.current.props.value.removeFromWishlist(product.id);
   });
 
-  expect(result.current.props.value.wishlist.items.length).toEqual(0);
+  expect(result.current.props.value.wishlist.products.length).toEqual(0);
 });
 
 test("should be able to check if an item is in the wishlist", () => {
@@ -123,7 +131,9 @@ test("should be able to check if an item is in the wishlist", () => {
     result.current.props.value.addToWishlist(product);
   });
 
-  expect(result.current.props.value.wishlist.items[0].id).toEqual(product.id);
+  expect(result.current.props.value.wishlist.products[0].id).toEqual(
+    product.id
+  );
   expect(result.current.props.value.isItemInWishlist(product.id)).toBeTruthy();
 });
 
@@ -134,7 +144,9 @@ test("should be able to check if an item is not in the wishlist", () => {
     result.current.props.value.addToWishlist(product);
   });
 
-  expect(result.current.props.value.wishlist.items[0].id).toEqual(product.id);
+  expect(result.current.props.value.wishlist.products[0].id).toEqual(
+    product.id
+  );
   expect(
     result.current.props.value.isItemInWishlist("SOMEOTHERID")
   ).toBeFalsy();

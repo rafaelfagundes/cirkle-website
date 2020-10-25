@@ -1,8 +1,9 @@
 import Product from "../product/Product";
 
 type Wishlist = {
-  userId?: string;
-  items: Array<Product>;
+  id?: string;
+  products: Array<Product>;
+  updated_at?: Date;
 };
 
 export default Wishlist;

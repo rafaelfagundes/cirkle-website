@@ -51,10 +51,10 @@ function ProductCarousel({
       <Section>
         <ItemsHolder disableScroll={!isSmartphone} isSmartphone={isSmartphone}>
           {products.map((item, index) => (
-            <>
+            <React.Fragment key={index}>
               <ProductItem data={item} key={item.uid}></ProductItem>
               {index + 1 < products.length && <SizedBox width={16}></SizedBox>}
-            </>
+            </React.Fragment>
           ))}
           {isSmartphone ? <Spacer>-</Spacer> : null}
         </ItemsHolder>

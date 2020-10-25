@@ -3,6 +3,7 @@ import { useTheme } from "@material-ui/core/styles";
 import { motion, useAnimation } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import { useAuth } from "../../hooks/auth/useAuth";
 import { useCart } from "../../hooks/cart/useCart";
 import { useWishlist } from "../../hooks/wishlist/useWishlist";
 import Product from "../../modules/product/Product";
@@ -41,6 +42,8 @@ function ProductItem({
   const wishlistContext = useWishlist();
   const isAlreadyInWishlist = wishlistContext.isItemInWishlist(data.id);
   const router = useRouter();
+
+  const authContext = useAuth();
 
   const _goToProduct = (id: string) => {
     router.push(`/produtos/${id}`);
@@ -86,7 +89,7 @@ function ProductItem({
         width: 228,
       }}
     >
-      {!removeButton && (
+      {!removeButton && authContext.user && (
         <FavoriteIconHolder>
           <FavoriteIcon
             active={isAlreadyInWishlist}

@@ -39,6 +39,7 @@ import SocialShare from "../../src/components/SocialShare";
 import Subtitle from "../../src/components/Subtitle";
 import Title from "../../src/components/Title";
 import Colors from "../../src/enums/Colors";
+import { useAuth } from "../../src/hooks/auth/useAuth";
 import { useCart } from "../../src/hooks/cart/useCart";
 import { useRecentlyViewed } from "../../src/hooks/recentlyViewed/useRecentlyViewed";
 import { useWishlist } from "../../src/hooks/wishlist/useWishlist";
@@ -106,7 +107,7 @@ function ProductPage({
   if (!initialDataProduct) return <></>;
 
   const { data: product, error: productError } = useSWR(
-    "/produtos/" + initialDataProduct.uid,
+    "/products/" + initialDataProduct.uid,
     {
       initialData: initialDataProduct,
     }
@@ -130,6 +131,8 @@ function ProductPage({
   const cartContext = useCart();
   const wishlistContext = useWishlist();
   const recentlyViewedContext = useRecentlyViewed();
+
+  const authContext = useAuth();
 
   const classes = useStyles();
 
@@ -426,7 +429,7 @@ function ProductPage({
                         {!isAlreadyInCart && (
                           <CustomButton
                             onClick={addToCart}
-                            width={isSmartPhone ? 343 : 250}
+                            width={400}
                             type="success"
                           >
                             Adicionar à Sacola
@@ -435,22 +438,28 @@ function ProductPage({
                         {isAlreadyInCart && (
                           <CustomButton
                             onClick={null}
-                            width={isSmartPhone ? 343 : 250}
+                            width={400}
                             type="disabled"
                           >
                             Já Está na Sacola
                           </CustomButton>
                         )}
-                        <SizedBox width={16}></SizedBox>
-                        <FavoriteIcon
-                          shadow={false}
-                          active={wishlistContext.isItemInWishlist(product.id)}
-                          setActive={() =>
-                            addOrRemoveFromWishlist(
-                              wishlistContext.isItemInWishlist(product.id)
-                            )
-                          }
-                        ></FavoriteIcon>
+                        {authContext.user && (
+                          <>
+                            <SizedBox width={16}></SizedBox>
+                            <FavoriteIcon
+                              shadow={false}
+                              active={wishlistContext.isItemInWishlist(
+                                product.id
+                              )}
+                              setActive={() =>
+                                addOrRemoveFromWishlist(
+                                  wishlistContext.isItemInWishlist(product.id)
+                                )
+                              }
+                            ></FavoriteIcon>
+                          </>
+                        )}
                       </Row>
                       <SizedBox height={32}></SizedBox>
                       <Subtitle size={16} bold>

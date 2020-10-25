@@ -52,10 +52,10 @@ function RecentItemsCarousel({
       <Section>
         <ItemsHolder disableScroll={!isSmartphone} isSmartphone={isSmartphone}>
           {products.map((item, index) => (
-            <>
-              <MiniProductItem data={item} key={item.id}></MiniProductItem>
+            <React.Fragment key={item.uid}>
+              <MiniProductItem data={item}></MiniProductItem>
               {index + 1 < products.length && <SizedBox width={16}></SizedBox>}
-            </>
+            </React.Fragment>
           ))}
           {isSmartphone ? <Spacer>-</Spacer> : null}
         </ItemsHolder>

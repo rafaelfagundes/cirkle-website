@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
+import useSWR from "swr";
 import { useWishlist } from "../../hooks/wishlist/useWishlist";
 import Badge, { BadgePosition } from "../Badge";
 import IconButton from "../IconButton";
@@ -23,25 +24,45 @@ function FavoriteMenuItem(): JSX.Element {
     router.push(route);
   }
 
+  const { data } = useSWR("/wishlists", {
+    shouldRetryOnError: true,
+    errorRetryInterval: 1000,
+    errorRetryCount: 10,
+  });
+
+  if (data) {
+    if (!wishlistContext.wishlist) {
+      wishlistContext.setWishlist(data);
+    }
+  }
+
   return (
     <>
-      {wishlistContext.wishlist.items.length === 0 && (
+      {!wishlistContext.wishlist && (
         <IconButton
           type="heart"
           onClick={() => goTo("/minha-lista")}
         ></IconButton>
       )}
-      {wishlistContext.wishlist.items.length > 0 && (
-        <FavoriteIconHolder onClick={() => goTo("/minha-lista")}>
+      {wishlistContext.wishlist &&
+        wishlistContext.wishlist.products.length === 0 && (
           <IconButton
-            type="heart-fill"
+            type="heart"
             onClick={() => goTo("/minha-lista")}
           ></IconButton>
-          <Badge position={BadgePosition.TOP_RIGHT}>
-            {wishlistContext.wishlist.items.length.toString()}
-          </Badge>
-        </FavoriteIconHolder>
-      )}
+        )}
+      {wishlistContext.wishlist &&
+        wishlistContext.wishlist.products.length > 0 && (
+          <FavoriteIconHolder onClick={() => goTo("/minha-lista")}>
+            <IconButton
+              type="heart-fill"
+              onClick={() => goTo("/minha-lista")}
+            ></IconButton>
+            <Badge position={BadgePosition.TOP_RIGHT}>
+              {wishlistContext.wishlist.products.length.toString()}
+            </Badge>
+          </FavoriteIconHolder>
+        )}
     </>
   );
 }

@@ -3,6 +3,7 @@ import Axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import useSWR from "swr";
 import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
 import EmptyPage from "../src/components/EmptyPage";
@@ -60,6 +61,10 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
   const cartContext = useCart();
   const authContext = useAuth();
 
+  const { data } = useSWR("/wishlists", {
+    initialData: { products: [] },
+  });
+
   const router = useRouter();
 
   const _goTo = (route: string) => {
@@ -94,7 +99,7 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
   return (
     <Layout menu={menu}>
       <StyledWishlist isSmartphone={isSmartphone}>
-        {wishlistContext.wishlist.items.length > 0 && (
+        {data.products.length > 0 && (
           <>
             <SizedBox height={16}></SizedBox>
             <Padding horizontal={isSmartphone ? 16 : 0}>
@@ -104,7 +109,7 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
 
             {!isSmartphone && (
               <Items>
-                {wishlistContext.wishlist.items.map((item, index) => (
+                {data.products.map((item, index) => (
                   <React.Fragment key={index}>
                     <ProductItem data={item} removeButton={true}></ProductItem>
                     {(index + 1) % 4 !== 0 && <SizedBox width={16}></SizedBox>}
@@ -115,50 +120,46 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
 
             {isSmartphone && (
               <CartItems>
-                {wishlistContext.wishlist.items.map(
-                  (item: Product, index: number) => (
-                    <CartItem key={item.id} showBackground={index % 2 === 0}>
-                      <ImagePrice
-                        onClick={() => _goTo("/produtos/" + item.uid)}
-                      >
-                        <CartItemImage
-                          image={cloudinaryImage(item.image, 90)}
-                          size={window.innerWidth * 0.24}
-                        ></CartItemImage>
-                      </ImagePrice>
-                      <SpaceBetweenColumn>
-                        <div onClick={() => _goTo("/produtos/" + item.uid)}>
-                          <TitleAndRemove>
-                            <Title size={12}>{item.title}</Title>
-                            <SizedBox width={16}></SizedBox>
-                            <Icon
-                              size={16}
-                              type="trash"
-                              onClick={() =>
-                                wishlistContext.removeFromWishlist(item.id)
-                              }
-                            ></Icon>
-                          </TitleAndRemove>
-                          <SizedBox height={4}></SizedBox>
-                          <Description>{item.description}</Description>
-                          <SizedBox height={8}></SizedBox>
-                          <Price>
-                            {new Intl.NumberFormat("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            }).format(item.price)}
-                          </Price>
-                        </div>
-                        <MoreInfo>{getCartButton(item)}</MoreInfo>
-                      </SpaceBetweenColumn>
-                    </CartItem>
-                  )
-                )}
+                {data.products.map((item: Product, index: number) => (
+                  <CartItem key={item.id} showBackground={index % 2 === 0}>
+                    <ImagePrice onClick={() => _goTo("/produtos/" + item.uid)}>
+                      <CartItemImage
+                        image={cloudinaryImage(item.image, 90)}
+                        size={window.innerWidth * 0.24}
+                      ></CartItemImage>
+                    </ImagePrice>
+                    <SpaceBetweenColumn>
+                      <div onClick={() => _goTo("/produtos/" + item.uid)}>
+                        <TitleAndRemove>
+                          <Title size={12}>{item.title}</Title>
+                          <SizedBox width={16}></SizedBox>
+                          <Icon
+                            size={16}
+                            type="trash"
+                            onClick={() =>
+                              wishlistContext.removeFromWishlist(item.id)
+                            }
+                          ></Icon>
+                        </TitleAndRemove>
+                        <SizedBox height={4}></SizedBox>
+                        <Description>{item.description}</Description>
+                        <SizedBox height={8}></SizedBox>
+                        <Price>
+                          {new Intl.NumberFormat("pt-BR", {
+                            style: "currency",
+                            currency: "BRL",
+                          }).format(item.price)}
+                        </Price>
+                      </div>
+                      <MoreInfo>{getCartButton(item)}</MoreInfo>
+                    </SpaceBetweenColumn>
+                  </CartItem>
+                ))}
               </CartItems>
             )}
           </>
         )}
-        {wishlistContext.wishlist.items.length === 0 && (
+        {data.products.length === 0 && (
           <Column>
             <SizedBox height={72}></SizedBox>
             {!authContext.user && (
