@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   label: {
     fontFamily: "Commissioner",
     color: Colors.PRIMARY,
+    fontSize: 12,
   },
 }));
 

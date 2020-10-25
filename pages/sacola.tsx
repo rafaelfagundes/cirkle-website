@@ -37,12 +37,9 @@ import {
   MoreInfo,
   OpacityAnimation,
   Price,
-  Qty,
   Row,
   SideColumn,
   StyledCartContainer,
-  StyledColor,
-  StyledSize,
   Subvalue,
   TitleAndRemove,
   Value,
@@ -53,7 +50,6 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
 
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const cartContext = useCart();
-  const [showEdit, setShowEdit] = useState(false);
   const [deliveryType, setDeliveryType] = useState(null);
 
   const [postalCode] = useState("12345678");
@@ -233,82 +229,36 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                             </span>
                           </Link>
                           <MoreInfo>
-                            {isSmartPhone && !showEdit && (
-                              <Padding horizontal={6}>
-                                <>
-                                  <Row spaceBetween>
-                                    <StyledColor>
-                                      Cor: {item.cartColor}
-                                    </StyledColor>
-                                    <SizedBox width={8}></SizedBox>
-                                    <StyledSize>
-                                      Tam.: {item.cartSize}
-                                    </StyledSize>
-                                    <SizedBox width={8}></SizedBox>
-                                    <Qty>Qtd.: {item.cartQty}</Qty>
-                                  </Row>
-                                  <SizedBox height={8}></SizedBox>
-                                  <Row spaceBetween>
-                                    <CustomButton
-                                      type="primary"
-                                      variant="outlined"
-                                      onClick={() => setShowEdit(true)}
-                                      width={200}
-                                      small
-                                    >
-                                      Editar Cor/Tam/Qtd
-                                    </CustomButton>
-                                  </Row>
-                                </>
-                              </Padding>
-                            )}
-                            {(!isSmartPhone || showEdit) && (
-                              <>
-                                <SizedBox width={8}></SizedBox>
-                                <CustomSelect
-                                  items={_getItemColors(item.colors)}
-                                  label="Cor"
-                                  value={item.cartColor || ""}
-                                  setValue={(value) =>
-                                    cartContext.updateColor(item.id, value)
-                                  }
-                                ></CustomSelect>
-                                <SizedBox width={8}></SizedBox>
-                                <CustomSelect
-                                  items={_getItemSizes(item.sizes)}
-                                  label="Tamanho"
-                                  value={item.cartSize || ""}
-                                  setValue={(value) =>
-                                    cartContext.updateSize(item.id, value)
-                                  }
-                                ></CustomSelect>
-                                <SizedBox width={8}></SizedBox>
-                                <CustomSelect
-                                  items={_getItemMaxQty(item.qty)}
-                                  label="Quantidade"
-                                  value={item.cartQty || ""}
-                                  setValue={(value) =>
-                                    cartContext.updateQuantity(item.id, value)
-                                  }
-                                ></CustomSelect>
-                              </>
-                            )}
-                          </MoreInfo>
-                          {isSmartPhone && showEdit && (
                             <>
-                              <SizedBox height={16}></SizedBox>
-                              <Padding horizontal={8}>
-                                <CustomButton
-                                  type="primary"
-                                  variant="contained"
-                                  onClick={() => setShowEdit(false)}
-                                  small
-                                >
-                                  Pronto
-                                </CustomButton>
-                              </Padding>
+                              <SizedBox width={8}></SizedBox>
+                              <CustomSelect
+                                items={_getItemColors(item.colors)}
+                                label="Cor"
+                                value={item.cartColor || ""}
+                                setValue={(value) =>
+                                  cartContext.updateColor(item.id, value)
+                                }
+                              ></CustomSelect>
+                              <SizedBox width={8}></SizedBox>
+                              <CustomSelect
+                                items={_getItemSizes(item.sizes)}
+                                label="Tamanho"
+                                value={item.cartSize || ""}
+                                setValue={(value) =>
+                                  cartContext.updateSize(item.id, value)
+                                }
+                              ></CustomSelect>
+                              <SizedBox width={8}></SizedBox>
+                              <CustomSelect
+                                items={_getItemMaxQty(item.qty)}
+                                label="Quantidade"
+                                value={item.cartQty || ""}
+                                setValue={(value) =>
+                                  cartContext.updateQuantity(item.id, value)
+                                }
+                              ></CustomSelect>
                             </>
-                          )}
+                          </MoreInfo>
                           <SizedBox height={4}></SizedBox>
                         </Column>
                       </CartItem>
