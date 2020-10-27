@@ -142,8 +142,8 @@ function ProductItem({
           <>
             <Padding horizontal={8}>
               <CustomButton
-                type={isAlreadyInCart ? "disabled" : "primary"}
-                variant={isAlreadyInCart ? "contained" : "outlined"}
+                type={isAlreadyInCart ? "disabled" : "success"}
+                variant={isAlreadyInCart ? "text" : "outlined"}
                 onClick={() => _addToCart(data)}
                 width={212}
               >

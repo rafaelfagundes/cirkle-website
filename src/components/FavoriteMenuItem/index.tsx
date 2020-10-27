@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
-import useSWR from "swr";
 import { useWishlist } from "../../hooks/wishlist/useWishlist";
+import Wishlist from "../../modules/wishlist/Wishlist";
 import Badge, { BadgePosition } from "../Badge";
 import IconButton from "../IconButton";
 
@@ -24,45 +24,35 @@ function FavoriteMenuItem(): JSX.Element {
     router.push(route);
   }
 
-  const { data } = useSWR("/wishlists", {
-    shouldRetryOnError: true,
-    errorRetryInterval: 1000,
-    errorRetryCount: 10,
-  });
-
-  if (data) {
-    if (!wishlistContext.wishlist) {
-      wishlistContext.setWishlist(data);
+  function getFavoriteCount(wishlistContext: Wishlist): number {
+    if (wishlistContext) {
+      return wishlistContext.products.length;
+    } else {
+      return 0;
     }
   }
 
+  const badgeCount = getFavoriteCount(wishlistContext.wishlist);
+
   return (
     <>
-      {!wishlistContext.wishlist && (
+      {badgeCount === 0 && (
         <IconButton
           type="heart"
           onClick={() => goTo("/minha-lista")}
         ></IconButton>
       )}
-      {wishlistContext.wishlist &&
-        wishlistContext.wishlist.products.length === 0 && (
+      {badgeCount > 0 && (
+        <FavoriteIconHolder onClick={() => goTo("/minha-lista")}>
           <IconButton
-            type="heart"
+            type="heart-fill"
             onClick={() => goTo("/minha-lista")}
           ></IconButton>
-        )}
-      {wishlistContext.wishlist &&
-        wishlistContext.wishlist.products.length > 0 && (
-          <FavoriteIconHolder onClick={() => goTo("/minha-lista")}>
-            <IconButton
-              type="heart-fill"
-              onClick={() => goTo("/minha-lista")}
-            ></IconButton>
-            <Badge position={BadgePosition.TOP_RIGHT}>
-              {wishlistContext.wishlist.products.length.toString()}
-            </Badge>
-          </FavoriteIconHolder>
-        )}
+          <Badge position={BadgePosition.TOP_RIGHT}>
+            {badgeCount.toString()}
+          </Badge>
+        </FavoriteIconHolder>
+      )}
     </>
   );
 }

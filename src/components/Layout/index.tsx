@@ -25,12 +25,14 @@ interface LayoutProps {
   children: JSX.Element;
   containerMargin?: boolean;
   menu?: any;
+  favoriteBadgeCount?: number;
 }
 
 function Layout({
   children,
   containerMargin = true,
   menu,
+  favoriteBadgeCount = 0,
 }: LayoutProps): JSX.Element {
   const [drawer, setDrawer] = useState(false);
   const dialogContext = useDialog();

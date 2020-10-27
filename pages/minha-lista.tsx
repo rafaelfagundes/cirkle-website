@@ -4,11 +4,13 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
+import Center from "../src/components/Center";
 import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
 import EmptyPage from "../src/components/EmptyPage";
 import Icon from "../src/components/Icon";
 import Layout from "../src/components/Layout";
+import LoadingAnimation from "../src/components/LoadingAnimation";
 import Padding from "../src/components/Padding";
 import ProductItem from "../src/components/ProductItem";
 import SizedBox from "../src/components/SizedBox";
@@ -61,9 +63,17 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
   const cartContext = useCart();
   const authContext = useAuth();
 
-  const { data } = useSWR("/wishlists", {
-    initialData: { products: [] },
+  const { data: dataWishlist } = useSWR("/wishlists", {
+    shouldRetryOnError: true,
+    errorRetryInterval: 500,
+    errorRetryCount: 10,
   });
+
+  if (dataWishlist) {
+    if (!wishlistContext.wishlist) {
+      setTimeout(() => wishlistContext.setWishlist(dataWishlist), 10);
+    }
+  }
 
   const router = useRouter();
 
@@ -99,67 +109,82 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
   return (
     <Layout menu={menu}>
       <StyledWishlist isSmartphone={isSmartphone}>
-        {data.products.length > 0 && (
-          <>
-            <SizedBox height={16}></SizedBox>
-            <Padding horizontal={isSmartphone ? 16 : 0}>
-              <Title size={18}>Lista de Desejos</Title>
-            </Padding>
-            <SizedBox height={16}></SizedBox>
+        {wishlistContext?.wishlist?.products &&
+          wishlistContext.wishlist.products.length > 0 && (
+            <>
+              <SizedBox height={16}></SizedBox>
+              <Padding horizontal={isSmartphone ? 16 : 0}>
+                <Title size={18}>Lista de Desejos</Title>
+              </Padding>
+              <SizedBox height={16}></SizedBox>
 
-            {!isSmartphone && (
-              <Items>
-                {data.products.map((item, index) => (
-                  <React.Fragment key={index}>
-                    <ProductItem data={item} removeButton={true}></ProductItem>
-                    {(index + 1) % 4 !== 0 && <SizedBox width={16}></SizedBox>}
-                  </React.Fragment>
-                ))}
-              </Items>
-            )}
-
-            {isSmartphone && (
-              <CartItems>
-                {data.products.map((item: Product, index: number) => (
-                  <CartItem key={item.id} showBackground={index % 2 === 0}>
-                    <ImagePrice onClick={() => _goTo("/produtos/" + item.uid)}>
-                      <CartItemImage
-                        image={cloudinaryImage(item.image, 90)}
-                        size={window.innerWidth * 0.24}
-                      ></CartItemImage>
-                    </ImagePrice>
-                    <SpaceBetweenColumn>
-                      <div onClick={() => _goTo("/produtos/" + item.uid)}>
-                        <TitleAndRemove>
-                          <Title size={12}>{item.title}</Title>
+              {!isSmartphone && (
+                <Items>
+                  {wishlistContext?.wishlist?.products &&
+                    wishlistContext.wishlist.products.map((item, index) => (
+                      <React.Fragment key={index}>
+                        <ProductItem
+                          data={item}
+                          removeButton={true}
+                        ></ProductItem>
+                        {(index + 1) % 4 !== 0 && (
                           <SizedBox width={16}></SizedBox>
-                          <Icon
-                            size={16}
-                            type="trash"
-                            onClick={() =>
-                              wishlistContext.removeFromWishlist(item.id)
-                            }
-                          ></Icon>
-                        </TitleAndRemove>
-                        <SizedBox height={4}></SizedBox>
-                        <Description>{item.description}</Description>
-                        <SizedBox height={8}></SizedBox>
-                        <Price>
-                          {new Intl.NumberFormat("pt-BR", {
-                            style: "currency",
-                            currency: "BRL",
-                          }).format(item.price)}
-                        </Price>
-                      </div>
-                      <MoreInfo>{getCartButton(item)}</MoreInfo>
-                    </SpaceBetweenColumn>
-                  </CartItem>
-                ))}
-              </CartItems>
-            )}
-          </>
-        )}
-        {data.products.length === 0 && (
+                        )}
+                      </React.Fragment>
+                    ))}
+                </Items>
+              )}
+
+              {isSmartphone && (
+                <CartItems>
+                  {wishlistContext?.wishlist?.products &&
+                    wishlistContext.wishlist.products.map(
+                      (item: Product, index: number) => (
+                        <CartItem
+                          key={item.id}
+                          showBackground={index % 2 === 0}
+                        >
+                          <ImagePrice
+                            onClick={() => _goTo("/produtos/" + item.uid)}
+                          >
+                            <CartItemImage
+                              image={cloudinaryImage(item.image, 90)}
+                              size={window.innerWidth * 0.24}
+                            ></CartItemImage>
+                          </ImagePrice>
+                          <SpaceBetweenColumn>
+                            <div onClick={() => _goTo("/produtos/" + item.uid)}>
+                              <TitleAndRemove>
+                                <Title size={12}>{item.title}</Title>
+                                <SizedBox width={16}></SizedBox>
+                                <Icon
+                                  size={16}
+                                  type="trash"
+                                  onClick={() =>
+                                    wishlistContext.removeFromWishlist(item.id)
+                                  }
+                                ></Icon>
+                              </TitleAndRemove>
+                              <SizedBox height={4}></SizedBox>
+                              <Description>{item.description}</Description>
+                              <SizedBox height={8}></SizedBox>
+                              <Price>
+                                {new Intl.NumberFormat("pt-BR", {
+                                  style: "currency",
+                                  currency: "BRL",
+                                }).format(item.price)}
+                              </Price>
+                            </div>
+                            <MoreInfo>{getCartButton(item)}</MoreInfo>
+                          </SpaceBetweenColumn>
+                        </CartItem>
+                      )
+                    )}
+                </CartItems>
+              )}
+            </>
+          )}
+        {wishlistContext?.wishlist?.products?.length === 0 && (
           <Column>
             <SizedBox height={72}></SizedBox>
             {!authContext.user && (
@@ -180,6 +205,23 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
                 subtitle="Adicione aqui os produtos que você não quer perder de vista."
               ></EmptyPage>
             )}
+            <SizedBox height={72}></SizedBox>
+          </Column>
+        )}
+        {!wishlistContext?.wishlist?.products && (
+          <Column>
+            <SizedBox height={72}></SizedBox>
+            <Center>
+              <Icon type="heart" size={128}></Icon>
+            </Center>
+            <SizedBox height={32}></SizedBox>
+            <Center>
+              <Title>Carregando Lista de Desejos</Title>
+            </Center>
+            <SizedBox height={32}></SizedBox>
+            <Center>
+              <LoadingAnimation size={72} color></LoadingAnimation>
+            </Center>
             <SizedBox height={72}></SizedBox>
           </Column>
         )}

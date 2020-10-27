@@ -36,7 +36,6 @@ export const useWishlist = (): IWishlistContextProps => {
 
 function useWishlistProvider() {
   const [wishlist, setWishlist] = useState(null);
-  console.log("useWishlistProvider -> wishlist", wishlist);
 
   const addToWishlist = (item: Product) => {
     console.log("add to wishlist");

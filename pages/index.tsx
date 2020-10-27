@@ -14,6 +14,7 @@ import PromoHeroComponent from "../src/components/PromoHero";
 import SizedBox from "../src/components/SizedBox";
 import { MainCategory } from "../src/enums/Categories";
 import { useCart } from "../src/hooks/cart/useCart";
+import { useWishlist } from "../src/hooks/wishlist/useWishlist";
 import Banner from "../src/modules/banner/Banner";
 import Brand from "../src/modules/brand/Brand";
 import Highlight from "../src/modules/highlight/Highlight";
@@ -46,6 +47,19 @@ interface HomeProps {
 function Home(props: HomeProps): JSX.Element {
   const cartContext = useCart();
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
+  const wishlistContext = useWishlist();
+
+  const { data: dataWishlist } = useSWR("/wishlists", {
+    shouldRetryOnError: true,
+    errorRetryInterval: 500,
+    errorRetryCount: 10,
+  });
+
+  if (dataWishlist) {
+    if (!wishlistContext.wishlist) {
+      setTimeout(() => wishlistContext.setWishlist(dataWishlist), 10);
+    }
+  }
 
   const promoHero: PromoHero = {
     backgroundImage:
