@@ -172,11 +172,11 @@ const StyledSearchBar = styled.div<{ active: boolean }>`
   transition: border 400ms;
 `;
 
-const SideIcons = styled.div`
+const SideIcons = styled.div<{ isLogged: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 174px;
+  width: ${(props) => (props.isLogged ? "174px" : "104px")};
 `;
 
 const LogoHolder = styled.div`
@@ -303,11 +303,11 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
             <Icon type="search"></Icon>
           </StyledSearchBar>
           <SizedBox width={22}></SizedBox>
-          <SideIcons>
+          <SideIcons isLogged={auth.user !== null}>
             <UserProfileMenuItem
               isLogged={auth.user !== null}
             ></UserProfileMenuItem>
-            <FavoriteMenuItem></FavoriteMenuItem>
+            {auth.user && <FavoriteMenuItem></FavoriteMenuItem>}
             <DropdownCart></DropdownCart>
           </SideIcons>
         </Top>

@@ -113,7 +113,9 @@ function MobileTopMenu({
                   active={searchActive}
                   onClick={setSearchActive}
                 ></MobileSearch>
-                {!searchActive && <FavoriteMenuItem></FavoriteMenuItem>}
+                {!searchActive && auth.user && (
+                  <FavoriteMenuItem></FavoriteMenuItem>
+                )}
                 <DropdownCart></DropdownCart>
               </IconsHolder>
             </NavBarPadding>
