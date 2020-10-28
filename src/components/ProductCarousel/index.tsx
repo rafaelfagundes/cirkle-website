@@ -50,12 +50,22 @@ function ProductCarousel({
       )}
       <Section>
         <ItemsHolder disableScroll={!isSmartphone} isSmartphone={isSmartphone}>
-          {products.map((item, index) => (
-            <React.Fragment key={index}>
-              <ProductItem data={item} key={item.uid}></ProductItem>
-              {index + 1 < products.length && <SizedBox width={16}></SizedBox>}
-            </React.Fragment>
-          ))}
+          {!isSmartphone &&
+            products.map((item, index) => (
+              <React.Fragment key={index}>
+                <ProductItem data={item}></ProductItem>
+                {index + 1 < products.length && (
+                  <SizedBox width={16}></SizedBox>
+                )}
+              </React.Fragment>
+            ))}
+          {isSmartphone &&
+            products.map((item, index) => (
+              <div key={index} style={{ marginRight: 16 }}>
+                <ProductItem data={item}></ProductItem>
+                <SizedBox width={16}></SizedBox>
+              </div>
+            ))}
           {isSmartphone ? <Spacer>-</Spacer> : null}
         </ItemsHolder>
       </Section>

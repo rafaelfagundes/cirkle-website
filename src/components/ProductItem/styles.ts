@@ -61,7 +61,7 @@ export const Title = styled.span`
 export const Description = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 6px 10px 0 10px;
+  padding: 6px 16px 0 16px;
   font-weight: 500;
 `;
 
@@ -91,4 +91,31 @@ export const RemoveButton = styled.div`
   background-color: ${Colors.VERY_LIGHT_GRAY};
   border-radius: 12px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+`;
+
+export const NumberPosition = styled.div`
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+`;
+
+export const NumberPositionText = styled.span`
+  font-family: "Commissioner", Lato, sans-serif;
+  color: ${Colors.WHITE};
+  font-weight: 700;
+  padding: 0 6px 0 8px;
+  z-index: 1;
+`;
+
+export const NumberPositionDetail = styled.div`
+  transform: skew(-24deg);
+  width: 48px;
+  height: 24px;
+  background-color: ${Colors.PARADISE_PINK};
+  display: flex;
+  position: absolute;
 `;

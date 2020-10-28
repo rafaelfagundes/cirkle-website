@@ -22,6 +22,9 @@ import {
   FavoriteIconHolder,
   Image,
   Item,
+  NumberPosition,
+  NumberPositionDetail,
+  NumberPositionText,
   RemoveButton,
   RemoveIconHolder,
   Title,
@@ -31,9 +34,11 @@ import {
 function ProductItem({
   data,
   removeButton = false,
+  numberPosition = 0,
 }: {
   data: Product;
   removeButton?: boolean;
+  numberPosition?: number;
 }): JSX.Element {
   const controls = useAnimation();
   const theme = useTheme();
@@ -87,6 +92,8 @@ function ProductItem({
       style={{
         position: "relative",
         width: 228,
+        minWidth: 228,
+        overflow: "hidden",
       }}
     >
       {!removeButton && authContext.user && (
@@ -154,6 +161,12 @@ function ProductItem({
           </>
         )}
       </Item>
+      {numberPosition !== 0 && (
+        <NumberPosition>
+          <NumberPositionDetail></NumberPositionDetail>
+          <NumberPositionText>#{numberPosition}</NumberPositionText>
+        </NumberPosition>
+      )}
     </div>
   );
 }

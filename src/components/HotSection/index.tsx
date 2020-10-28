@@ -62,7 +62,7 @@ function HotSection({
       <ItemsHolder disableScroll={!isSmartphone} isSmartphone={isSmartphone}>
         {isSmartphone && (
           <>
-            {products.map((item) => (
+            {products.map((item, index) => (
               <div
                 style={{
                   display: "flex",
@@ -71,7 +71,10 @@ function HotSection({
                 }}
                 key={item.id}
               >
-                <ProductItem data={item}></ProductItem>
+                <ProductItem
+                  data={item}
+                  numberPosition={index + 1}
+                ></ProductItem>
                 <SizedBox width={16}></SizedBox>
               </div>
             ))}
@@ -88,7 +91,10 @@ function HotSection({
                 }}
                 key={item.id}
               >
-                <ProductItem data={item}></ProductItem>
+                <ProductItem
+                  data={item}
+                  numberPosition={index + 1}
+                ></ProductItem>
                 {!isSmartphone && (index + 1) % 4 !== 0 && (
                   <SizedBox width={16}></SizedBox>
                 )}

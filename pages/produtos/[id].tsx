@@ -572,7 +572,7 @@ function ProductPage({
                         Limpar Lista
                       </CustomButton>
                     </Row>
-                    <SizedBox height={4}></SizedBox>
+                    <SizedBox height={12}></SizedBox>
                     <RecentItemsCarousel
                       products={getRecentItems()}
                     ></RecentItemsCarousel>
