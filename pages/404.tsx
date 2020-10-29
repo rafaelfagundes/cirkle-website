@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 import Center from "../src/components/Center";
@@ -67,6 +68,12 @@ interface Page404Props {
 }
 
 function Page404({ menu }: Page404Props): JSX.Element {
+  const router = useRouter();
+
+  const _goTo = (route: string) => {
+    router.push(route);
+  };
+
   return (
     <Layout menu={menu}>
       <Padding horizontal={16}>
@@ -83,11 +90,19 @@ function Page404({ menu }: Page404Props): JSX.Element {
             <Image src="/images/404-min.png"></Image>
           </Center>
           <Buttons>
-            <CustomButton variant="outlined" width={187}>
+            <CustomButton
+              variant="outlined"
+              width={187}
+              onClick={() => _goTo("/")}
+            >
               Voltar ao início
             </CustomButton>
             <SizedBox width={16}></SizedBox>
-            <CustomButton variant="outlined" width={187}>
+            <CustomButton
+              variant="outlined"
+              width={187}
+              onClick={() => _goTo("/contato")}
+            >
               Entre em contato
             </CustomButton>
           </Buttons>

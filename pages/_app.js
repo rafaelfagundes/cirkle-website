@@ -56,13 +56,17 @@ export default function MyApp(props) {
   return (
     <>
       <Head>
-        <noscript>
-          <center>
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html: `
+<center>
             <h1>Seu navegador não suporta Javascript.</h1>
             <h2>Por favor, utilize outro navegador.</h2>
             <h3>Ou, se for o caso, habilite o Javascript.</h3>
           </center>
-        </noscript>
+        `,
+          }}
+        ></noscript>
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta
