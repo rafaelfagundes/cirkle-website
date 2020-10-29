@@ -1,5 +1,6 @@
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import Axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
@@ -153,9 +154,11 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
                             ></CartItemImage>
                           </ImagePrice>
                           <SpaceBetweenColumn>
-                            <div onClick={() => _goTo("/produtos/" + item.uid)}>
+                            <div>
                               <TitleAndRemove>
-                                <Title size={12}>{item.title}</Title>
+                                <Link href={`/produtos/${item.uid}`}>
+                                  <Title size={12}>{item.title}</Title>
+                                </Link>
                                 <SizedBox width={16}></SizedBox>
                                 <Icon
                                   size={16}
@@ -166,14 +169,18 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
                                 ></Icon>
                               </TitleAndRemove>
                               <SizedBox height={4}></SizedBox>
-                              <Description>{item.description}</Description>
+                              <Link href={`/produtos/${item.uid}`}>
+                                <Description>{item.description}</Description>
+                              </Link>
                               <SizedBox height={8}></SizedBox>
-                              <Price>
-                                {new Intl.NumberFormat("pt-BR", {
-                                  style: "currency",
-                                  currency: "BRL",
-                                }).format(item.price)}
-                              </Price>
+                              <Link href={`/produtos/${item.uid}`}>
+                                <Price>
+                                  {new Intl.NumberFormat("pt-BR", {
+                                    style: "currency",
+                                    currency: "BRL",
+                                  }).format(item.price)}
+                                </Price>
+                              </Link>
                             </div>
                             <MoreInfo>{getCartButton(item)}</MoreInfo>
                           </SpaceBetweenColumn>

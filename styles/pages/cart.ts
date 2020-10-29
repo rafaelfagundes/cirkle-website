@@ -78,7 +78,7 @@ export const CartItem = styled.div<{ showBackground?: boolean }>`
   padding: 16px;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  /* align-items: flex-start; */
   background-color: ${(props) =>
     props.showBackground ? "rgba(0, 0, 0, 0.015)" : "transparent"};
 `;
@@ -115,7 +115,6 @@ export const Description = styled.span<{ isSmartphone?: boolean }>`
 export const MoreInfo = styled.div`
   display: flex;
   flex-direction: row;
-  margin-left: -2px;
 `;
 
 export const Price = styled.span`

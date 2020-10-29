@@ -1,9 +1,9 @@
 import { Grid, useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Card from "../src/components/Card";
+import CartItem from "../src/components/CartItem";
 import CheckBoxWithLabel from "../src/components/CheckboxWithLabel";
 import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
@@ -11,7 +11,6 @@ import CustomSelect from "../src/components/CustomSelect";
 import CustomTextField from "../src/components/CustomTextField";
 import EmptyPage from "../src/components/EmptyPage";
 import FreeDeliveryMeter from "../src/components/FreeShippingMeter";
-import Icon from "../src/components/Icon";
 import Layout from "../src/components/Layout";
 import Padding from "../src/components/Padding";
 import PaymentType from "../src/components/PaymentType";
@@ -20,28 +19,18 @@ import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
 import { useCart } from "../src/hooks/cart/useCart";
 import Shipping from "../src/modules/cart/CartShipping";
-import Color from "../src/modules/color/Color";
 import Menu from "../src/modules/menu/Menu";
-import Size from "../src/modules/size/Size";
 import theme from "../src/theme/theme";
-import { cloudinaryImage } from "../src/utils/image";
 import {
   CartFooter,
-  CartItem,
-  CartItemImage,
   CartItems,
-  Description,
-  ImagePrice,
   Label,
   MainColumn,
-  MoreInfo,
   OpacityAnimation,
-  Price,
   Row,
   SideColumn,
   StyledCartContainer,
   Subvalue,
-  TitleAndRemove,
   Value,
 } from "../styles/pages/cart";
 
@@ -50,6 +39,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
 
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const cartContext = useCart();
+
   const [deliveryType, setDeliveryType] = useState(null);
 
   const [postalCode] = useState("12345678");
@@ -62,33 +52,6 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
 
   const _goToHome = () => {
     typeof window !== "undefined" && router.push("/");
-  };
-
-  const _getItemMaxQty = (qty: number) => {
-    if (!qty) return [{ title: "1", value: 1 }];
-    const qtyList = [];
-
-    for (let index = 1; index <= qty; index++) {
-      qtyList.push({ title: index.toString(), value: index });
-    }
-
-    return qtyList;
-  };
-
-  const _getItemSizes = (sizes: Array<Size>) => {
-    if (sizes) {
-      return sizes.map((item) => ({ title: item.value, value: item.value }));
-    } else {
-      return [{ title: "N/D", value: "N/D" }];
-    }
-  };
-
-  const _getItemColors = (colors: Array<Color>) => {
-    if (!colors) {
-      return [{ title: "N/D", value: "N/D" }];
-    } else {
-      return colors.map((item) => ({ title: item.name, value: item.name }));
-    }
   };
 
   const _getDeliveryTypes = () => {
@@ -130,7 +93,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
             {new Intl.NumberFormat("pt-BR", {
               style: "currency",
               currency: "BRL",
-            }).format(cartContext.cart.freeShippingValue)}
+            }).format(cartContext.cart.shipping?.value || 0)}
           </Value>
         );
       } else {
@@ -142,7 +105,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
-          }).format(cartContext.cart.freeShippingValue)}
+          }).format(cartContext.cart.shipping?.value || 0)}
         </Value>
       );
     }
@@ -189,79 +152,11 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                   <SizedBox height={16}></SizedBox>
                   <CartItems>
                     {cartContext.cart.items.map((item, index) => (
-                      <CartItem key={item.id} showBackground={index % 2 === 0}>
-                        <Link href={`/produtos/${item.uid}`}>
-                          <span style={{ cursor: "pointer" }}>
-                            <ImagePrice>
-                              <CartItemImage
-                                image={cloudinaryImage(item.image, 112)}
-                                size={90}
-                              ></CartItemImage>
-                              <SizedBox height={8}></SizedBox>
-                              <Price>
-                                {new Intl.NumberFormat("pt-BR", {
-                                  style: "currency",
-                                  currency: "BRL",
-                                }).format(item.price)}
-                              </Price>
-                            </ImagePrice>
-                          </span>
-                        </Link>
-                        <Column>
-                          <Link href={`/produtos/${item.uid}`}>
-                            <span style={{ cursor: "pointer" }}>
-                              <TitleAndRemove>
-                                <Title>{item.title}</Title>
-                                <SizedBox width={16}></SizedBox>
-                                <Icon
-                                  size={16}
-                                  type="trash"
-                                  onClick={() =>
-                                    cartContext.removeFromCart(item.id)
-                                  }
-                                ></Icon>
-                              </TitleAndRemove>
-                              <SizedBox height={8}></SizedBox>
-                              <Description isSmartphone={isSmartPhone}>
-                                {item.description}
-                              </Description>
-                              <SizedBox height={16}></SizedBox>
-                            </span>
-                          </Link>
-                          <MoreInfo>
-                            <>
-                              <SizedBox width={8}></SizedBox>
-                              <CustomSelect
-                                items={_getItemColors(item.colors)}
-                                label="Cor"
-                                value={item.cartColor || ""}
-                                setValue={(value) =>
-                                  cartContext.updateColor(item.id, value)
-                                }
-                              ></CustomSelect>
-                              <SizedBox width={8}></SizedBox>
-                              <CustomSelect
-                                items={_getItemSizes(item.sizes)}
-                                label="Tamanho"
-                                value={item.cartSize || ""}
-                                setValue={(value) =>
-                                  cartContext.updateSize(item.id, value)
-                                }
-                              ></CustomSelect>
-                              <SizedBox width={8}></SizedBox>
-                              <CustomSelect
-                                items={_getItemMaxQty(item.qty)}
-                                label="Quantidade"
-                                value={item.cartQty || ""}
-                                setValue={(value) =>
-                                  cartContext.updateQuantity(item.id, value)
-                                }
-                              ></CustomSelect>
-                            </>
-                          </MoreInfo>
-                          <SizedBox height={4}></SizedBox>
-                        </Column>
-                      </CartItem>
+                      <CartItem
+                        key={index}
+                        item={item}
+                        showBackground={index % 2 === 0}
+                      ></CartItem>
                     ))}
                   </CartItems>
                 </Card>

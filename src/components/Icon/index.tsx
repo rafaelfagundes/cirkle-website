@@ -6,6 +6,7 @@ export const AVAILABLE_ICONS = [
   "bag-full",
   "bag-minus",
   "bag-plus-dark",
+  "bag-plus-green",
   "bag-plus",
   "bag",
   "box",

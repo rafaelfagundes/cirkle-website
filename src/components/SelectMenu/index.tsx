@@ -32,7 +32,7 @@ const SelectBox = styled.div<{ width: number; error: boolean }>`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px 0 6px;
+  padding: 0 10px 0 0px;
   min-width: ${(props) => (props.width ? `${props.width}px` : `343px`)};
   max-width: ${(props) => (props.width ? `${props.width}px` : `343px`)};
   background-color: ${Colors.WHITE};
@@ -43,7 +43,7 @@ const SelectBox = styled.div<{ width: number; error: boolean }>`
 const SelectBoxText = styled.div<{ error: boolean }>`
   font-family: Commissioner;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 0.9rem;
   line-height: 18px;
   color: ${(props) => (props.error ? Colors.ERROR : Colors.PRIMARY)};
   margin-left: 10px;
@@ -56,7 +56,7 @@ const MenuHolder = styled.div<{ width: number }>`
 
 const MenuItem = styled.div`
   cursor: pointer;
-  padding: 8px 16px;
+  padding: 8px 12px 8px 6px;
   border-bottom: 1px solid #eee;
   display: flex;
   flex-direction: row;
@@ -72,6 +72,7 @@ const MenuAssetText = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  font-size: 12px;
 `;
 
 const MenuAssetColor = styled.div<{ color: string }>`
@@ -80,6 +81,7 @@ const MenuAssetColor = styled.div<{ color: string }>`
   background-color: ${(props) => props.color};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
   margin-right: 10px;
+  margin-left: 6px;
 `;
 
 const MenuAssetImage = styled.div<{ image: string }>`
@@ -92,6 +94,7 @@ const MenuAssetImage = styled.div<{ image: string }>`
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover;
   margin-right: 10px;
+  margin-left: 6px;
 `;
 
 interface SelectMenuProps {
@@ -140,6 +143,7 @@ function SelectMenu(props: SelectMenuProps): JSX.Element {
           {getAsset(result.assetType, result.assetValue)}
           <SimpleText
             color={props.errorText !== "" ? Colors.ERROR : Colors.PRIMARY}
+            size={0.9}
           >
             {result.text}
           </SimpleText>
@@ -173,7 +177,7 @@ function SelectMenu(props: SelectMenuProps): JSX.Element {
           {props.title && (
             <>
               <Subtitle
-                size={16}
+                size={14}
                 bold
                 color={props.errorText !== "" ? Colors.ERROR : Colors.PRIMARY}
               >
@@ -201,7 +205,9 @@ function SelectMenu(props: SelectMenuProps): JSX.Element {
           {props.errorText !== "" && (
             <>
               <SizedBox height={4}></SizedBox>
-              <SimpleText color={Colors.ERROR}>{props.errorText}</SimpleText>
+              <SimpleText size={0.9} color={Colors.ERROR}>
+                {props.errorText}
+              </SimpleText>
             </>
           )}
           <Popover
@@ -221,7 +227,7 @@ function SelectMenu(props: SelectMenuProps): JSX.Element {
                   <MenuItem key={item.value} onClick={() => setSelected(item)}>
                     <MenuAssetText>
                       {getAsset(item.assetType, item.assetValue)}
-                      <SimpleText>{item.text}</SimpleText>
+                      <SimpleText size={0.9}>{item.text}</SimpleText>
                       <SizedBox width={16}></SizedBox>
                     </MenuAssetText>
                     <RadioButton

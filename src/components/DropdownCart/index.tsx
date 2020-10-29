@@ -79,17 +79,13 @@ function DropdownCart(): JSX.Element {
                     <CartItemImage
                       image={cloudinaryProductImage(item.image, 75)}
                       size={75}
-                    >
-                      {/* <Badge position={BadgePosition.LEFT}>
-                        {item.cartQty.toString()}
-                      </Badge> */}
-                    </CartItemImage>
+                    ></CartItemImage>
                   </Link>
                   <Column spaceBetween minHeight={75}>
                     <Link href={`/produtos/${item.uid}`}>
                       <div style={{ cursor: "pointer" }}>
                         <SizedBox height={4}></SizedBox>
-                        <Title size={14}>
+                        <Title size={12}>
                           {item.cartQty > 1
                             ? `${item.cartQty}x ${item.title}`
                             : item.title}
