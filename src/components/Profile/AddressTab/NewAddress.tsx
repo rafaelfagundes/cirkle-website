@@ -1,5 +1,5 @@
 import Axios from "axios";
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
 import React, { useEffect, useRef, useState } from "react";
 import validator from "validator";
 import Address from "../../../modules/address/Address";
@@ -81,7 +81,7 @@ function NewAddress({
   };
 
   const [addressErrors, setAddressErrors] = useState(
-    _.cloneDeep(addressErrorsTemplate)
+    _cloneDeep(addressErrorsTemplate)
   );
 
   const _setAddress = (address: Address) => {
@@ -147,7 +147,7 @@ function NewAddress({
   }, []);
 
   const _validate = () => {
-    const _errors = _.cloneDeep(addressErrorsTemplate);
+    const _errors = _cloneDeep(addressErrorsTemplate);
     let _errorsCount = 0;
     setAddressErrors(_errors);
 

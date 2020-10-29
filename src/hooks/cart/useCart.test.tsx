@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-hooks";
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
 import React from "react";
 import PaymentType from "../../enums/PaymentType";
 import Address from "../../modules/address/Address";
@@ -161,7 +161,7 @@ test("should update an item in the cart", () => {
   );
   expect(result.current.props.value.cart.items[0]).toMatchObject(product);
 
-  const newProduct: Product = _.cloneDeep(product);
+  const newProduct: Product = _cloneDeep(product);
   newProduct.cartColor = "Green";
   newProduct.cartQty = 2;
   newProduct.cartSize = "Normal";

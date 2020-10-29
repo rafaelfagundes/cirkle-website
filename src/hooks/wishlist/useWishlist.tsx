@@ -1,5 +1,6 @@
 import Axios from "axios";
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
+import _find from "lodash/find";
 import React, { createContext, useContext, useState } from "react";
 import firebase from "../../config/firebase";
 import Product from "../../modules/product/Product";
@@ -39,7 +40,7 @@ function useWishlistProvider() {
 
   const addToWishlist = (item: Product) => {
     console.log("add to wishlist");
-    let _wishlist = _.cloneDeep(wishlist);
+    let _wishlist = _cloneDeep(wishlist);
     if (_wishlist?.products) {
       _wishlist.products.push(item);
     } else {
@@ -52,7 +53,7 @@ function useWishlistProvider() {
 
   const removeFromWishlist = (id: string) => {
     console.log("remove from wishlist");
-    const _wishlist = _.cloneDeep(wishlist);
+    const _wishlist = _cloneDeep(wishlist);
     const _newItems = _wishlist.products.filter((o: Product) => o.id !== id);
     _wishlist.products = _newItems;
 
@@ -62,7 +63,7 @@ function useWishlistProvider() {
 
   const isItemInWishlist = (id: string): boolean => {
     if (!wishlist?.products) return false;
-    const item = _.find(wishlist.products, (o) => o.id === id);
+    const item = _find(wishlist.products, (o) => o.id === id);
 
     if (item) return true;
     else return false;

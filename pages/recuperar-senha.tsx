@@ -1,6 +1,6 @@
 import { Container } from "@material-ui/core";
 import Axios from "axios";
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import Center from "../src/components/Center";
@@ -30,14 +30,14 @@ function RecoverPassword({ menu }: { menu: Menu }): JSX.Element {
     email: null,
     password: null,
   };
-  const [errors, setErrors] = useState(_.cloneDeep(errorsTemplate));
+  const [errors, setErrors] = useState(_cloneDeep(errorsTemplate));
 
   const email = useRef(null);
 
   const _validate = () => {
     const _email = email.current?.children[0].value;
 
-    const _errors = _.cloneDeep(errorsTemplate);
+    const _errors = _cloneDeep(errorsTemplate);
     let _errorsCount = 0;
 
     // Email

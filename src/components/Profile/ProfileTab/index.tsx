@@ -1,6 +1,6 @@
 import { Avatar, useMediaQuery } from "@material-ui/core";
 import axios, { AxiosResponse } from "axios";
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
@@ -63,7 +63,7 @@ function ProfileTab(): JSX.Element {
     phoneNumber: null,
     dateOfBirth: null,
   };
-  const [errors, setErrors] = useState(_.cloneDeep(errorsTemplate));
+  const [errors, setErrors] = useState(_cloneDeep(errorsTemplate));
 
   React.useEffect(() => {
     if (picture) {
@@ -79,7 +79,7 @@ function ProfileTab(): JSX.Element {
     const _phoneNumber = phoneNumber.current?.children[0].value;
     const _displayName = displayName.current?.children[0].value;
 
-    const _errors = _.cloneDeep(errorsTemplate);
+    const _errors = _cloneDeep(errorsTemplate);
     let _errorsCount = 0;
 
     // Phone Number
@@ -171,7 +171,7 @@ function ProfileTab(): JSX.Element {
 
   const updateProfile = async () => {
     if (!_validateProfile()) return;
-    const _user = _.cloneDeep(authContext.user);
+    const _user = _cloneDeep(authContext.user);
     _user.phoneNumber = phoneNumber.current.children[0].value;
     _user.name = displayName.current.children[0].value;
     if (uploadedPicture) _user.picture = uploadedPicture;

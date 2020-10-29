@@ -9,7 +9,9 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Axios from "axios";
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
+import _filter from "lodash/filter";
+import _find from "lodash/find";
 import React, { useEffect, useState } from "react";
 import ReactImageMagnify from "react-image-magnify";
 import styled from "styled-components";
@@ -140,9 +142,9 @@ function ProductPage({
     setErrorSize("");
     setErrorColor("");
 
-    const _product = _.cloneDeep(product);
-    const color: SelectItem = _.find(colors, (o: SelectItem) => o.selected);
-    const size: SelectItem = _.find(sizes, (o: SelectItem) => o.selected);
+    const _product = _cloneDeep(product);
+    const color: SelectItem = _find(colors, (o: SelectItem) => o.selected);
+    const size: SelectItem = _find(sizes, (o: SelectItem) => o.selected);
 
     let errors = 0;
     if (!color) {
@@ -226,7 +228,7 @@ function ProductPage({
   const isAlreadyInCart = cartContext.isItemInCart(product.id);
 
   function showRecentlyViewed() {
-    const numItems = _.filter(
+    const numItems = _filter(
       recentlyViewedContext.recentlyViewed.items,
       (o: Product) => o.uid !== product.uid
     ).length;
@@ -239,7 +241,7 @@ function ProductPage({
   }
 
   function getRecentItems(): Array<Product> {
-    return _.filter(
+    return _filter(
       recentlyViewedContext.recentlyViewed.items,
       (o: Product) => o.uid !== product.uid
     );

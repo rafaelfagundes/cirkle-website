@@ -1,5 +1,6 @@
 import Popover from "@material-ui/core/Popover";
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
+import _find from "lodash/find";
 import PopupState, { bindPopover, bindTrigger } from "material-ui-popup-state";
 import React, { useEffect } from "react";
 import styled from "styled-components";
@@ -121,7 +122,7 @@ function SelectMenu(props: SelectMenuProps): JSX.Element {
   }
 
   function setSelected(item: SelectItem) {
-    const _items = _.cloneDeep(props.items);
+    const _items = _cloneDeep(props.items);
 
     _items.forEach((o: SelectItem) => {
       if (o.value === item.value) {
@@ -135,7 +136,7 @@ function SelectMenu(props: SelectMenuProps): JSX.Element {
   }
 
   function getLabel(items: Array<SelectItem>) {
-    const result = _.find(items, (o: SelectItem) => o.selected);
+    const result = _find(items, (o: SelectItem) => o.selected);
 
     if (result) {
       return (
@@ -163,7 +164,7 @@ function SelectMenu(props: SelectMenuProps): JSX.Element {
     if (props.items.length === 1) {
       // console.log("props.items.length", props.items.length);
 
-      const _items = _.cloneDeep(props.items);
+      const _items = _cloneDeep(props.items);
       _items[0].selected = true;
 
       props.setSelected(_items);

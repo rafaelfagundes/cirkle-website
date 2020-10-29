@@ -1,5 +1,5 @@
 import { Container, InputBase } from "@material-ui/core";
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -217,7 +217,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
 
   function toggleTab(tab: string) {
     setSelectedCategory(null);
-    const _menuData = _.cloneDeep(menuData);
+    const _menuData = _cloneDeep(menuData);
     Object.keys(_menuData).forEach((item) => {
       _menuData[item]["active"] = false;
     });
@@ -227,7 +227,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
   }
 
   function toggleCategory(tab: string, category: string) {
-    const _menuData = _.cloneDeep(menuData);
+    const _menuData = _cloneDeep(menuData);
     if (selectedCategory) {
       _menuData[tab].categories[selectedCategory]["active"] = false;
     }
@@ -238,7 +238,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
 
   function cleanActives(tab: string, category: string) {
     if (category) {
-      const _menuData = _.cloneDeep(menuData);
+      const _menuData = _cloneDeep(menuData);
       _menuData[tab].categories[category]["active"] = false;
       setMenuData(_menuData);
     }

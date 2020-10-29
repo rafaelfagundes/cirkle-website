@@ -1,5 +1,5 @@
 import { Link } from "@material-ui/core";
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -195,7 +195,7 @@ function SideMenu({
     "https://res.cloudinary.com/cirklebr/image/upload/v1598000887/avatar.jpg";
 
   function toggleTab(tab: string) {
-    const _menuData = _.cloneDeep(menuData);
+    const _menuData = _cloneDeep(menuData);
     Object.keys(_menuData).forEach((item) => {
       _menuData[item]["active"] = false;
     });
@@ -205,7 +205,7 @@ function SideMenu({
   }
 
   function toggleCategory(tab: string, category: string) {
-    const _menuData = _.cloneDeep(menuData);
+    const _menuData = _cloneDeep(menuData);
     _menuData[tab].categories[category]["active"] = !_menuData[tab].categories[
       category
     ]["active"];

@@ -1,5 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const withPWA = require("next-pwa");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
 
 const DEV = {
   publicRuntimeConfig: {
@@ -15,6 +17,19 @@ const PROD = withPWA({
   publicRuntimeConfig: {
     API_ENDPOINT: process.env.API_ENDPOINT,
     SHOW_CHAT: true,
+  },
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    if (process.env.ANALYZE) {
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: "server",
+          analyzerPort: isServer ? 8888 : 8889,
+          openAnalyzer: true,
+        })
+      );
+      config.plugins.push(new DuplicatePackageCheckerPlugin());
+    }
+    return config;
   },
 });
 

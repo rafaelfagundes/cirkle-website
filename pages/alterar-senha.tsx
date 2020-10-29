@@ -1,6 +1,6 @@
 import { Container, useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import Center from "../src/components/Center";
@@ -37,7 +37,7 @@ function PasswordChange({ menu }: { menu: Menu }): JSX.Element {
     newPassword: null,
     passwordConfirmation: null,
   };
-  const [errors, setErrors] = useState(_.cloneDeep(errorsTemplate));
+  const [errors, setErrors] = useState(_cloneDeep(errorsTemplate));
 
   const currentPassword = useRef(null);
   const newPassword = useRef(null);
@@ -53,7 +53,7 @@ function PasswordChange({ menu }: { menu: Menu }): JSX.Element {
     const _passwordConfirmation =
       passwordConfirmation.current?.children[0].value;
 
-    const _errors = _.cloneDeep(errorsTemplate);
+    const _errors = _cloneDeep(errorsTemplate);
     let _errorsCount = 0;
 
     // Password

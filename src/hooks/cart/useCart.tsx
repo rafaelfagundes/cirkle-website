@@ -1,4 +1,6 @@
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
+import _find from "lodash/find";
+import _findIndex from "lodash/findIndex";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Address from "../../modules/address/Address";
 import Cart from "../../modules/cart/Cart";
@@ -74,7 +76,7 @@ function useCartProvider() {
   }
 
   const addToCart = (item: Product) => {
-    const _cart = _.cloneDeep(cart);
+    const _cart = _cloneDeep(cart);
     _cart.items.push(item);
 
     const { subtotal, total } = calculateValues(_cart);
@@ -85,7 +87,7 @@ function useCartProvider() {
   };
 
   const removeFromCart = (id: string) => {
-    const _cart = _.cloneDeep(cart);
+    const _cart = _cloneDeep(cart);
     const _newItems = _cart.items.filter((o) => o.id !== id);
     _cart.items = _newItems;
 
@@ -97,21 +99,21 @@ function useCartProvider() {
   };
 
   const isItemInCart = (id: string): boolean => {
-    const item = _.find(cart.items, (o) => o.id === id);
+    const item = _find(cart.items, (o) => o.id === id);
 
     if (item) return true;
     else return false;
   };
 
   const updateItem = (item: Product) => {
-    const _cart = _.cloneDeep(cart);
-    const _index = _.findIndex(_cart.items, (o) => o.id === item.id);
+    const _cart = _cloneDeep(cart);
+    const _index = _findIndex(_cart.items, (o) => o.id === item.id);
     if (_index < 0) {
       console.log("Não encontrado");
       return;
     }
 
-    _cart.items[_index] = _.cloneDeep(item);
+    _cart.items[_index] = _cloneDeep(item);
 
     const { subtotal, total } = calculateValues(_cart);
     _cart.total = total;
@@ -121,7 +123,7 @@ function useCartProvider() {
   };
 
   const setShipping = (shipping: Shipping) => {
-    const _cart = _.cloneDeep(cart);
+    const _cart = _cloneDeep(cart);
     _cart.shipping = shipping;
 
     const { subtotal, total } = calculateValues(_cart);
@@ -132,21 +134,21 @@ function useCartProvider() {
   };
 
   const setAddress = (address: Address) => {
-    const _cart = _.cloneDeep(cart);
+    const _cart = _cloneDeep(cart);
     _cart.address = address;
 
     setCart(_cart);
   };
 
   const setPayment = (payment: Payment) => {
-    const _cart = _.cloneDeep(cart);
+    const _cart = _cloneDeep(cart);
     _cart.payment = payment;
 
     setCart(_cart);
   };
 
   const updateFreeShipping = (active: boolean, value: number) => {
-    const _cart = _.cloneDeep(cart);
+    const _cart = _cloneDeep(cart);
     _cart.freeShipping = active;
     _cart.freeShippingValue = value;
 
@@ -158,8 +160,8 @@ function useCartProvider() {
   };
 
   const updateQuantity = (id: string, qty: number) => {
-    const _cart = _.cloneDeep(cart);
-    const _item = _.find(_cart.items, (o) => o.id === id);
+    const _cart = _cloneDeep(cart);
+    const _item = _find(_cart.items, (o) => o.id === id);
     if (_item) {
       _item.cartQty = qty;
       updateItem(_item);
@@ -167,8 +169,8 @@ function useCartProvider() {
   };
 
   const updateColor = (id: string, color: string) => {
-    const _cart = _.cloneDeep(cart);
-    const _item = _.find(_cart.items, (o) => o.id === id);
+    const _cart = _cloneDeep(cart);
+    const _item = _find(_cart.items, (o) => o.id === id);
     if (_item) {
       _item.cartColor = color;
       updateItem(_item);
@@ -176,8 +178,8 @@ function useCartProvider() {
   };
 
   const updateSize = (id: string, size: string) => {
-    const _cart = _.cloneDeep(cart);
-    const _item = _.find(_cart.items, (o) => o.id === id);
+    const _cart = _cloneDeep(cart);
+    const _item = _find(_cart.items, (o) => o.id === id);
     if (_item) {
       _item.cartSize = size;
       updateItem(_item);

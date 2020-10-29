@@ -1,6 +1,6 @@
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import _ from "lodash";
+import _shuffle from "lodash/shuffle";
 import React from "react";
 import styled from "styled-components";
 import Product from "../../modules/product/Product";
@@ -54,7 +54,7 @@ function HotSection({
 }): JSX.Element {
   const theme = useTheme();
   const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
-  let randomBrands = _.shuffle(brands);
+  let randomBrands = _shuffle(brands);
   randomBrands = randomBrands.slice(0, 6);
 
   return (

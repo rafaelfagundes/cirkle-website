@@ -1,5 +1,5 @@
 import { NowResponse } from "@vercel/node";
-import _ from "lodash";
+import _findIndex from "lodash/findIndex";
 import moment from "moment";
 import firebaseAdmin from "../config/firebaseAdmin";
 
@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === "development") {
   ALLOWED_HOSTS = ["localhost", "cirkle.com.br"];
 }
 export function allowedHosts(host: string): boolean {
-  const result = _.findIndex(ALLOWED_HOSTS, function (o) {
+  const result = _findIndex(ALLOWED_HOSTS, function (o) {
     return host.includes(o);
   });
 

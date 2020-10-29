@@ -1,6 +1,6 @@
 import { Container, Hidden } from "@material-ui/core";
 import Axios from "axios";
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
@@ -93,7 +93,7 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
     email: null,
     password: null,
   };
-  const [errors, setErrors] = useState(_.cloneDeep(errorsTemplate));
+  const [errors, setErrors] = useState(_cloneDeep(errorsTemplate));
 
   const email = useRef(null);
   const password = useRef(null);
@@ -112,7 +112,7 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
 
   const _setActiveTab = (tab: string) => {
     setPage(tab);
-    setErrors(_.cloneDeep(errorsTemplate));
+    setErrors(_cloneDeep(errorsTemplate));
   };
 
   const _login = async () => {
@@ -157,7 +157,7 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
     const _password = password.current?.children[0].value;
     const _displayName = displayName.current?.children[0].value;
 
-    const _errors = _.cloneDeep(errorsTemplate);
+    const _errors = _cloneDeep(errorsTemplate);
     let _errorsCount = 0;
 
     // Email

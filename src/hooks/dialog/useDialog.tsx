@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
 import React, { createContext, useContext, useState } from "react";
 
 export interface IDialog {
@@ -67,14 +67,14 @@ function useDialogProvider() {
   };
 
   const closeDialog = () => {
-    const _dialog = _.cloneDeep(dialog);
+    const _dialog = _cloneDeep(dialog);
     _dialog.isOpen = false;
 
     setDialog(_dialog);
   };
 
   const showDialog = () => {
-    const _dialog = _.cloneDeep(dialog);
+    const _dialog = _cloneDeep(dialog);
     _dialog.isOpen = true;
 
     setDialog(_dialog);

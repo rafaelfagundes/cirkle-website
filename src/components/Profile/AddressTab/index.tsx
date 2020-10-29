@@ -1,5 +1,7 @@
 import axios from "axios";
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
+import _find from "lodash/find";
+import _orderBy from "lodash/orderBy";
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import { v4 as uuidv4 } from "uuid";
@@ -28,7 +30,7 @@ function AddressTab(): JSX.Element {
 
   useEffect(() => {
     if (data) {
-      const sorted = _.orderBy(data, ["mainAddress"], ["desc"]);
+      const sorted = _orderBy(data, ["mainAddress"], ["desc"]);
       setAddressList(sorted);
     }
   }, [data]);
@@ -58,7 +60,7 @@ function AddressTab(): JSX.Element {
       setLoading(false);
       setShowNewAddressPanel(false);
 
-      const _addressList = _.cloneDeep(addressList);
+      const _addressList = _cloneDeep(addressList);
       _addressList.push(response.data);
       setAddressList(_addressList);
     } catch (error) {
@@ -79,7 +81,7 @@ function AddressTab(): JSX.Element {
   const removeAddress = async (id: string) => {
     try {
       setLoading(true);
-      const _addressList = _.cloneDeep(addressList);
+      const _addressList = _cloneDeep(addressList);
       const result = _addressList.filter((o: Address) => o.id !== id);
 
       await axios.delete("/addresses/" + id);
@@ -98,14 +100,14 @@ function AddressTab(): JSX.Element {
   };
 
   const editAddress = (id: string) => {
-    const address: Address = _.find(addressList, (o: Address) => o.id === id);
+    const address: Address = _find(addressList, (o: Address) => o.id === id);
     setEditAddressObj(address);
     setShowNewAddressPanel(true);
   };
 
   const setMainAddress = (id: string) => {
     try {
-      const _addressList = _.cloneDeep(addressList);
+      const _addressList = _cloneDeep(addressList);
 
       let mainAddress: Address;
       const others: Array<Address> = [];
@@ -122,7 +124,7 @@ function AddressTab(): JSX.Element {
               );
             });
           item.mainAddress = true;
-          mainAddress = _.cloneDeep(item);
+          mainAddress = _cloneDeep(item);
         } else {
           axios
             .put("/addresses/" + item.id, { mainAddress: false })
@@ -151,7 +153,7 @@ function AddressTab(): JSX.Element {
 
   const updateAddress = async (address: Address) => {
     setLoading(true);
-    const _addressList = _.cloneDeep(addressList);
+    const _addressList = _cloneDeep(addressList);
 
     try {
       await axios.put("/addresses/" + address.id, {

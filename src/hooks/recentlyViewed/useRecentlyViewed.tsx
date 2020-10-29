@@ -1,4 +1,5 @@
-import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
+import _find from "lodash/find";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Product from "../../modules/product/Product";
 import RecentlyViewed from "../../modules/recentlyViewed/RecentlyViewed";
@@ -44,9 +45,9 @@ function useRecentlyViewedProvider() {
   );
 
   const addToList = (item: Product) => {
-    const _list = _.cloneDeep(recentlyViewed);
+    const _list = _cloneDeep(recentlyViewed);
 
-    const hasProductInList = _.find(
+    const hasProductInList = _find(
       _list.items,
       (o: Product) => o.uid === item.uid
     );
