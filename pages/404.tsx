@@ -2,7 +2,9 @@ import Axios from "axios";
 import React from "react";
 import styled from "styled-components";
 import Center from "../src/components/Center";
+import CustomButton from "../src/components/CustomButton";
 import Layout from "../src/components/Layout";
+import Padding from "../src/components/Padding";
 import SizedBox from "../src/components/SizedBox";
 import Colors from "../src/enums/Colors";
 import Menu from "../src/modules/menu/Menu";
@@ -38,6 +40,7 @@ const Image = styled.img`
   width: 500px;
   height: 500px;
   margin-bottom: -108px;
+  max-width: 100%;
 `;
 
 const Caption = styled.div`
@@ -52,6 +55,13 @@ const Caption = styled.div`
   color: ${Colors.PRIMARY};
 `;
 
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
 interface Page404Props {
   menu: Menu;
 }
@@ -59,26 +69,37 @@ interface Page404Props {
 function Page404({ menu }: Page404Props): JSX.Element {
   return (
     <Layout menu={menu}>
-      <>
-        <SizedBox height={30}></SizedBox>
-        <Center>
-          <Title>Oops!</Title>
-        </Center>
-        <SizedBox height={5}></SizedBox>
-        <Center>
-          <Subtitle>A página que você procura não existe.</Subtitle>
-        </Center>
-        <Center>
-          <Image src="/images/404.png"></Image>
-        </Center>
-        <Center>
-          <Caption>
-            Você pode voltar à página inicial ou entrar em contato se achar que
-            é um erro.
-          </Caption>
-        </Center>
-        <SizedBox height={72}></SizedBox>
-      </>
+      <Padding horizontal={16}>
+        <>
+          <SizedBox height={30}></SizedBox>
+          <Center>
+            <Title>Oops!</Title>
+          </Center>
+          <SizedBox height={5}></SizedBox>
+          <Center>
+            <Subtitle>A página que você procura não existe.</Subtitle>
+          </Center>
+          <Center>
+            <Image src="/images/404-min.png"></Image>
+          </Center>
+          <Buttons>
+            <CustomButton variant="outlined" width={187}>
+              Voltar ao início
+            </CustomButton>
+            <SizedBox width={16}></SizedBox>
+            <CustomButton variant="outlined" width={187}>
+              Entre em contato
+            </CustomButton>
+          </Buttons>
+          <SizedBox height={16}></SizedBox>
+          <Center>
+            <Caption>
+              Volte à página inicial ou entre em contato se achar que é um erro.
+            </Caption>
+          </Center>
+          <SizedBox height={72}></SizedBox>
+        </>
+      </Padding>
     </Layout>
   );
 }
