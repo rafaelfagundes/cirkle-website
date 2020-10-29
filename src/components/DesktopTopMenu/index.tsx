@@ -295,7 +295,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
           <StyledSearchBar active={searchBarFocused}>
             <StyledInputBase
               id="search-bar-on-menu"
-              placeholder="Pesquise marcas, modelos e mais"
+              placeholder="Procure por marcas, produtos, inspiração"
               inputProps={{ "aria-label": "search" }}
               onFocus={() => setSearchBarFocused(true)}
               onBlur={() => setSearchBarFocused(false)}
