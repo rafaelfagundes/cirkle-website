@@ -59,7 +59,7 @@ export default function MyApp(props) {
         <noscript
           dangerouslySetInnerHTML={{
             __html: `
-<center>
+          <center>
             <h1>Seu navegador não suporta Javascript.</h1>
             <h2>Por favor, utilize outro navegador.</h2>
             <h3>Ou, se for o caso, habilite o Javascript.</h3>

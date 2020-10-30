@@ -1,4 +1,5 @@
 type CartShipping = {
+  id: number;
   type: string;
   value: number;
   postalCode: string;

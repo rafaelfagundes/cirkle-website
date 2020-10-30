@@ -1,25 +1,29 @@
 import { Grid, useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
+import _orderBy from "lodash/orderBy";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Card from "../src/components/Card";
 import CartItem from "../src/components/CartItem";
 import CheckBoxWithLabel from "../src/components/CheckboxWithLabel";
 import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
-import CustomSelect from "../src/components/CustomSelect";
 import CustomTextField from "../src/components/CustomTextField";
 import EmptyPage from "../src/components/EmptyPage";
 import FreeDeliveryMeter from "../src/components/FreeShippingMeter";
 import Layout from "../src/components/Layout";
 import Padding from "../src/components/Padding";
 import PaymentType from "../src/components/PaymentType";
+import SelectMenu, {
+  AssetType,
+  SelectItem,
+} from "../src/components/SelectMenu";
 import SimpleText from "../src/components/SimpleText";
 import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
 import { useCart } from "../src/hooks/cart/useCart";
-import Shipping from "../src/modules/cart/CartShipping";
 import Menu from "../src/modules/menu/Menu";
+import ShippingData from "../src/modules/shippingData/ShippingData";
 import theme from "../src/theme/theme";
 import {
   CartFooter,
@@ -40,10 +44,11 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const cartContext = useCart();
 
-  const [deliveryType, setDeliveryType] = useState(null);
+  const postalCode = useRef(null);
 
-  const [postalCode] = useState("12345678");
   const [hasCoupon, setHasCoupon] = useState(false);
+  const [shippingList, setShippingList] = useState([]);
+  const [shippingLoading, setShippingLoading] = useState(false);
 
   // Scroll to top when page is loaded
   useEffect(() => {
@@ -54,40 +59,26 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
     typeof window !== "undefined" && router.push("/");
   };
 
-  const _getDeliveryTypes = () => {
-    return [
-      { title: "Normal (R$ 40)", value: "normal" },
-      { title: "Expresso (R$ 50)", value: "express" },
-    ];
-  };
-
-  const _updateDeliveryFee = () => {
-    if (!deliveryType) return;
-    let _shipping: Shipping = null;
-
-    switch (deliveryType) {
-      case "express":
-        _shipping = {
-          postalCode,
-          type: "express",
-          value: 50,
-        };
-        break;
-      case "normal":
-      default:
-        _shipping = {
-          postalCode,
-          type: "normal",
-          value: 40,
-        };
-        break;
-    }
-    cartContext.setShipping(_shipping);
-  };
-
   const _getShippingValue = () => {
     if (cartContext.cart.freeShipping) {
       if (cartContext.cart.subtotal < cartContext.cart.freeShippingValue) {
+        if (cartContext.cart.shipping?.value) {
+          return (
+            <Value>
+              {new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(cartContext.cart.shipping?.value)}
+            </Value>
+          );
+        } else {
+          return "";
+        }
+      } else {
+        return <Value>GRÁTIS</Value>;
+      }
+    } else {
+      if (cartContext.cart.shipping?.value) {
         return (
           <Value>
             {new Intl.NumberFormat("pt-BR", {
@@ -97,17 +88,8 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
           </Value>
         );
       } else {
-        return <Value>GRÁTIS</Value>;
+        return "";
       }
-    } else {
-      return (
-        <Value>
-          {new Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          }).format(cartContext.cart.shipping?.value || 0)}
-        </Value>
-      );
     }
   };
 
@@ -133,9 +115,69 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
     }
   };
 
+  const _calculateShipping = async () => {
+    const shippingData: ShippingData = {
+      to: {
+        postal_code: postalCode.current?.children[0].value.replace("-", ""),
+      },
+      products: [],
+    };
+
+    cartContext.cart.items.forEach((item) => {
+      shippingData.products.push({
+        height: item.pHeight,
+        id: item.uid,
+        insurance_value: item.price,
+        length: item.pLength,
+        quantity: item.cartQty,
+        weight: item.pWeight,
+        width: item.pWidth,
+      });
+    });
+
+    try {
+      setShippingLoading(true);
+      const response = await Axios.post("/shippingcalc", shippingData);
+
+      const _shippingList: Array<SelectItem> = [];
+
+      const _sortedResponse = _orderBy(response.data, ["price"], ["asc"]);
+
+      _sortedResponse.forEach((item: any) => {
+        if (!item?.error) {
+          _shippingList.push({
+            assetType: AssetType.IMAGE,
+            selected: false,
+            text: `${item?.company?.name} ${item.name} - ${item.currency} ${item.price} (${item.delivery_range.min} à ${item.delivery_range.max} dias úteis)`,
+            value: item.id,
+            assetValue: item?.company?.picture,
+          });
+        }
+      });
+
+      setShippingList(_shippingList);
+      setShippingLoading(false);
+    } catch (error) {
+      setShippingLoading(false);
+      console.log("_calculateShipping -> error", error);
+    }
+  };
+
   useEffect(() => {
-    _updateDeliveryFee();
-  }, [deliveryType]);
+    const shipping = shippingList.filter((item) => item.selected);
+
+    if (shipping.length === 1) {
+      let gambiarraPrice = shipping[0].text.split(" - R$ ")[1];
+      gambiarraPrice = Number(gambiarraPrice.split(" (")[0]);
+
+      cartContext.setShipping({
+        id: shipping[0].value,
+        postalCode: postalCode.current?.children[0].value.replace("-", ""),
+        type: shipping[0].text,
+        value: Number(gambiarraPrice),
+      });
+    }
+  }, [shippingList]);
 
   return (
     <Layout menu={menu}>
@@ -181,23 +223,48 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                     </Row>
                     {_showShippingSelect() && (
                       <>
-                        <CustomSelect
-                          value={cartContext.cart?.shipping?.type}
-                          setValue={setDeliveryType}
-                          items={_getDeliveryTypes()}
-                        ></CustomSelect>
                         <SizedBox height={16}></SizedBox>
                         <Row spaceBetween>
-                          <Subvalue>Rua Frederico Ozanan, 150</Subvalue>
-                          <CustomButton
-                            type="primary"
-                            variant="outlined"
-                            onClick={null}
-                            small
+                          <CustomTextField
+                            ref={postalCode}
+                            type="postalCode"
+                            initialValue={
+                              cartContext?.cart?.shipping?.postalCode
+                            }
                           >
-                            Alterar
+                            CEP de Destino
+                          </CustomTextField>
+                          <CustomButton
+                            onClick={_calculateShipping}
+                            loading={shippingLoading}
+                          >
+                            Calcular
                           </CustomButton>
                         </Row>
+                        {false && (
+                          <Row spaceBetween>
+                            <Subvalue>Rua Frederico Ozanan, 150</Subvalue>
+                            <CustomButton
+                              type="primary"
+                              variant="outlined"
+                              onClick={null}
+                              small
+                            >
+                              Alterar
+                            </CustomButton>
+                          </Row>
+                        )}
+                        {shippingList.length > 0 && (
+                          <>
+                            <SizedBox height={16}></SizedBox>
+                            <SelectMenu
+                              items={shippingList}
+                              setSelected={setShippingList}
+                              title="Selecione o frete"
+                              errorText=""
+                            ></SelectMenu>
+                          </>
+                        )}
                       </>
                     )}
                     <SizedBox height={16}></SizedBox>

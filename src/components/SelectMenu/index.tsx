@@ -57,12 +57,13 @@ const MenuHolder = styled.div<{ width: number }>`
 
 const MenuItem = styled.div`
   cursor: pointer;
-  padding: 8px 12px 8px 6px;
+  padding: 8px 16px 8px 6px;
   border-bottom: 1px solid #eee;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 
   &:hover {
     background-color: ${Colors.VERY_LIGHT_GRAY};
@@ -93,7 +94,7 @@ const MenuAssetImage = styled.div<{ image: string }>`
   background-image: ${(props) => `url(${props.image})`};
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
-  background-size: cover;
+  background-size: contain;
   margin-right: 10px;
   margin-left: 6px;
 `;
@@ -229,7 +230,7 @@ function SelectMenu(props: SelectMenuProps): JSX.Element {
                     <MenuAssetText>
                       {getAsset(item.assetType, item.assetValue)}
                       <SimpleText size={0.9}>{item.text}</SimpleText>
-                      <SizedBox width={16}></SizedBox>
+                      {/* <SizedBox width={16}></SizedBox> */}
                     </MenuAssetText>
                     <RadioButton
                       value={item.selected}

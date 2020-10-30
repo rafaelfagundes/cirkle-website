@@ -52,6 +52,10 @@ type Product = {
   relatedItems?: Array<Product>;
   subCategory?: SubCategory;
   moreImages?: Array<Image>;
+  pHeight: number;
+  pLength: number;
+  pWeight: number;
+  pWidth: number;
 };
 
 export default Product;
