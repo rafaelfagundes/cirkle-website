@@ -50,6 +50,8 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
   const [shippingList, setShippingList] = useState([]);
   const [shippingLoading, setShippingLoading] = useState(false);
 
+  const [initialLoading, setInitialLoading] = useState(false);
+
   // Scroll to top when page is loaded
   useEffect(() => {
     if (process.browser) window.scrollTo(0, 0);
@@ -116,9 +118,17 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
   };
 
   const _calculateShipping = async () => {
+    const _postalCode =
+      postalCode.current?.children[0].value ||
+      cartContext?.cart?.shipping?.postalCode;
+
+    if (!_postalCode) {
+      return false;
+    }
+
     const shippingData: ShippingData = {
       to: {
-        postal_code: postalCode.current?.children[0].value.replace("-", ""),
+        postal_code: _postalCode,
       },
       products: [],
     };
@@ -144,13 +154,17 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
       const _sortedResponse = _orderBy(response.data, ["price"], ["asc"]);
 
       _sortedResponse.forEach((item: any) => {
+        const selected = item.id === cartContext?.cart?.shipping?.id;
+
         if (!item?.error) {
           _shippingList.push({
             assetType: AssetType.IMAGE,
-            selected: false,
-            text: `${item?.company?.name} ${item.name} - ${item.currency} ${item.price} (${item.delivery_range.min} à ${item.delivery_range.max} dias úteis)`,
+            selected,
+            text: `${item?.company?.name} ${item.name}`,
             value: item.id,
             assetValue: item?.company?.picture,
+            secondaryText: `${item.currency} ${item.price} (${item.delivery_range.min} à ${item.delivery_range.max} dias úteis)`,
+            secondaryValue: item.price,
           });
         }
       });
@@ -167,17 +181,27 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
     const shipping = shippingList.filter((item) => item.selected);
 
     if (shipping.length === 1) {
-      let gambiarraPrice = shipping[0].text.split(" - R$ ")[1];
-      gambiarraPrice = Number(gambiarraPrice.split(" (")[0]);
-
       cartContext.setShipping({
         id: shipping[0].value,
         postalCode: postalCode.current?.children[0].value.replace("-", ""),
         type: shipping[0].text,
-        value: Number(gambiarraPrice),
+        value: shipping[0].secondaryValue,
       });
     }
   }, [shippingList]);
+
+  // useEffect(() => {
+  //   // console.log("cartcontext refresh", initialLoading);
+  //   if (cartContext?.cart?.shipping?.postalCode && !initialLoading) {
+  //     console.log("calcular inicialmente", initialLoading);
+  //     setInitialLoading(true);
+  //     _calculateShipping();
+  //   }
+  // }, [cartContext]);
+
+  useEffect(() => {
+    _calculateShipping();
+  }, [cartContext.cart.items.length]);
 
   return (
     <Layout menu={menu}>
@@ -262,6 +286,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                               setSelected={setShippingList}
                               title="Selecione o frete"
                               errorText=""
+                              radioButtonList
                             ></SelectMenu>
                           </>
                         )}

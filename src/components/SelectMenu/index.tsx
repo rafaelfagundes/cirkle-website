@@ -24,6 +24,8 @@ export type SelectItem = {
   selected: boolean;
   assetType: AssetType;
   assetValue?: string;
+  secondaryText?: string;
+  secondaryValue?: number;
 };
 
 const SelectBox = styled.div<{ width: number; error: boolean }>`
@@ -86,17 +88,36 @@ const MenuAssetColor = styled.div<{ color: string }>`
   margin-left: 6px;
 `;
 
-const MenuAssetImage = styled.div<{ image: string }>`
+const MenuAssetImage = styled.div<{ image: string; size?: number }>`
   position: relative;
   background-color: #fff;
-  width: 28px;
-  height: 28px;
+  width: ${(props) => (props.size ? props.size : 28)}px;
+  height: ${(props) => (props.size ? props.size : 28)}px;
   background-image: ${(props) => `url(${props.image})`};
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: contain;
+  background-size: 80%;
   margin-right: 10px;
   margin-left: 6px;
+`;
+
+const ShippingCheckBox = styled.div<{ selected: boolean }>`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  background-color: ${(props) => (props.selected ? "#F5F5F5" : "transparent")};
+  padding: 10px 10px 10px 4px;
+
+  transition: background 500ms;
+`;
+
+const ImageText = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 interface SelectMenuProps {
@@ -106,9 +127,18 @@ interface SelectMenuProps {
   setSelected: (value: Array<SelectItem>) => void;
   width?: number;
   errorText?: string;
+  radioButtonList?: boolean;
 }
 
-function SelectMenu(props: SelectMenuProps): JSX.Element {
+function SelectMenu({
+  title,
+  placeholder,
+  items,
+  setSelected,
+  width,
+  errorText,
+  radioButtonList = false,
+}: SelectMenuProps): JSX.Element {
   function getAsset(type: string, value: string) {
     switch (type) {
       case AssetType.COLOR:
@@ -122,8 +152,8 @@ function SelectMenu(props: SelectMenuProps): JSX.Element {
     }
   }
 
-  function setSelected(item: SelectItem) {
-    const _items = _cloneDeep(props.items);
+  function _setSelected(item: SelectItem) {
+    const _items = _cloneDeep(items);
 
     _items.forEach((o: SelectItem) => {
       if (o.value === item.value) {
@@ -133,7 +163,7 @@ function SelectMenu(props: SelectMenuProps): JSX.Element {
       }
     });
 
-    props.setSelected(_items);
+    setSelected(_items);
   }
 
   function getLabel(items: Array<SelectItem>) {
@@ -144,7 +174,7 @@ function SelectMenu(props: SelectMenuProps): JSX.Element {
         <MenuAssetText>
           {getAsset(result.assetType, result.assetValue)}
           <SimpleText
-            color={props.errorText !== "" ? Colors.ERROR : Colors.PRIMARY}
+            color={errorText !== "" ? Colors.ERROR : Colors.PRIMARY}
             size={0.9}
           >
             {result.text}
@@ -154,95 +184,140 @@ function SelectMenu(props: SelectMenuProps): JSX.Element {
       );
     } else {
       return (
-        <SelectBoxText error={props.errorText !== ""}>
-          {props.placeholder || props.title}
+        <SelectBoxText error={errorText !== ""}>
+          {placeholder || title}
         </SelectBoxText>
       );
     }
   }
 
   useEffect(() => {
-    if (props.items.length === 1) {
-      // console.log("props.items.length", props.items.length);
-
-      const _items = _cloneDeep(props.items);
+    if (items.length === 1) {
+      const _items = _cloneDeep(items);
       _items[0].selected = true;
 
-      props.setSelected(_items);
+      setSelected(_items);
     }
   }, []);
 
   return (
-    <PopupState variant="popover" popupId="demo-popup-popover">
-      {(popupState) => (
-        <div>
-          {props.title && (
-            <>
-              <Subtitle
-                size={14}
-                bold
-                color={props.errorText !== "" ? Colors.ERROR : Colors.PRIMARY}
-              >
-                {props.title}
-              </Subtitle>
-              <SizedBox height={4}></SizedBox>
-            </>
+    <>
+      {radioButtonList && (
+        <>
+          {title && (
+            <Subtitle
+              size={14}
+              bold
+              color={errorText !== "" ? Colors.ERROR : Colors.PRIMARY}
+            >
+              {title}
+            </Subtitle>
           )}
-          <SelectBox
-            {...bindTrigger(popupState)}
-            width={props.width}
-            error={props.errorText !== ""}
-          >
-            {getLabel(props.items)}
-            <Icon
-              type={
-                props.errorText !== ""
-                  ? "triangle-down-fill-red"
-                  : "triangle-down-fill-dark"
-              }
-              size={16}
-              onClick={() => null}
-            ></Icon>
-          </SelectBox>
-          {props.errorText !== "" && (
-            <>
-              <SizedBox height={4}></SizedBox>
-              <SimpleText size={0.9} color={Colors.ERROR}>
-                {props.errorText}
-              </SimpleText>
-            </>
-          )}
-          <Popover
-            {...bindPopover(popupState)}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "center",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-          >
-            <MenuHolder onClick={() => popupState.close()} width={props.width}>
-              {props.items &&
-                props.items.map((item: SelectItem) => (
-                  <MenuItem key={item.value} onClick={() => setSelected(item)}>
-                    <MenuAssetText>
-                      {getAsset(item.assetType, item.assetValue)}
-                      <SimpleText size={0.9}>{item.text}</SimpleText>
-                      {/* <SizedBox width={16}></SizedBox> */}
-                    </MenuAssetText>
-                    <RadioButton
-                      value={item.selected}
-                      onClick={null}
-                    ></RadioButton>
-                  </MenuItem>
-                ))}
-            </MenuHolder>
-          </Popover>
-        </div>
+          {items.map((item, index) => (
+            <ShippingCheckBox
+              key={index}
+              onClick={() => _setSelected(item)}
+              selected={item.selected}
+            >
+              <ImageText>
+                <MenuAssetImage
+                  image={item.assetValue}
+                  size={item.secondaryText ? 56 : 28}
+                ></MenuAssetImage>
+                <div>
+                  <SimpleText size={0.9}>{item.text}</SimpleText>
+                  {item.secondaryText && (
+                    <>
+                      <SizedBox height={2}></SizedBox>
+                      <SimpleText size={0.8}>{item.secondaryText}</SimpleText>
+                    </>
+                  )}
+                </div>
+              </ImageText>
+              <RadioButton
+                onClick={() => _setSelected(item)}
+                value={item.selected}
+              ></RadioButton>
+            </ShippingCheckBox>
+          ))}
+        </>
       )}
-    </PopupState>
+      {!radioButtonList && (
+        <PopupState variant="popover" popupId="demo-popup-popover">
+          {(popupState) => (
+            <div>
+              {title && (
+                <>
+                  <Subtitle
+                    size={14}
+                    bold
+                    color={errorText !== "" ? Colors.ERROR : Colors.PRIMARY}
+                  >
+                    {title}
+                  </Subtitle>
+                  <SizedBox height={4}></SizedBox>
+                </>
+              )}
+              <SelectBox
+                {...bindTrigger(popupState)}
+                width={width}
+                error={errorText !== ""}
+              >
+                {getLabel(items)}
+                <Icon
+                  type={
+                    errorText !== ""
+                      ? "triangle-down-fill-red"
+                      : "triangle-down-fill-dark"
+                  }
+                  size={16}
+                  onClick={() => null}
+                ></Icon>
+              </SelectBox>
+              {errorText !== "" && (
+                <>
+                  <SizedBox height={4}></SizedBox>
+                  <SimpleText size={0.9} color={Colors.ERROR}>
+                    {errorText}
+                  </SimpleText>
+                </>
+              )}
+              <Popover
+                {...bindPopover(popupState)}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+              >
+                <MenuHolder onClick={() => popupState.close()} width={width}>
+                  {items &&
+                    items.map((item: SelectItem) => (
+                      <MenuItem
+                        key={item.value}
+                        onClick={() => _setSelected(item)}
+                      >
+                        <MenuAssetText>
+                          {getAsset(item.assetType, item.assetValue)}
+                          <SimpleText size={0.9}>{item.text}</SimpleText>
+                          {/* <SizedBox width={16}></SizedBox> */}
+                        </MenuAssetText>
+                        <RadioButton
+                          value={item.selected}
+                          onClick={null}
+                        ></RadioButton>
+                      </MenuItem>
+                    ))}
+                </MenuHolder>
+              </Popover>
+            </div>
+          )}
+        </PopupState>
+      )}
+    </>
   );
 }
 
