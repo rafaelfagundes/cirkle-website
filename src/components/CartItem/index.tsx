@@ -57,6 +57,8 @@ const Description = styled.span<{ isSmartphone?: boolean }>`
 const MoreInfo = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 const Price = styled.span`
@@ -91,6 +93,26 @@ function CartItem({
 
   const [colors, setColors] = useState(getSelectColors(item.colors));
   const [sizes, setSizes] = useState(getSelectSizes(item.sizes));
+  const [qty, setQty] = useState(getSelectQty(item.qty));
+
+  function getSelectQty(qty: number) {
+    const finalItems: Array<SelectItem> = [];
+
+    const _qty = qty > 10 ? 10 : qty;
+
+    for (let index = 1; index <= _qty; index++) {
+      const selected = index === item.cartQty;
+
+      finalItems.push({
+        assetType: AssetType.NONE,
+        selected,
+        text: index.toString(),
+        value: index,
+      });
+    }
+
+    return finalItems;
+  }
 
   function getSelectColors(items: Array<Color>) {
     const finalItems: Array<SelectItem> = [];
@@ -138,6 +160,13 @@ function CartItem({
       cartContext.updateSize(item.id, size.text);
     }
   }, [sizes]);
+
+  React.useEffect(() => {
+    const _qty = qty.find((o: SelectItem) => o.selected);
+    if (_qty) {
+      cartContext.updateQuantity(item.id, _qty.value);
+    }
+  }, [qty]);
 
   return (
     <StyledCartItem key={item.id} showBackground={showBackground}>
@@ -192,16 +221,25 @@ function CartItem({
           placeholder="Cores"
           items={colors}
           setSelected={setColors}
-          width={167}
+          width={isSmartPhone ? 167 : 174}
           errorText=""
         ></SelectMenu>
-        <SizedBox width={8}></SizedBox>
+        {/* <SizedBox width={8}></SizedBox> */}
         <SelectMenu
           title="Tamanho"
-          placeholder="Tamanhos"
+          placeholder="Tam."
           items={sizes}
           setSelected={setSizes}
-          width={167}
+          width={isSmartPhone ? 80 : 174}
+          errorText=""
+        ></SelectMenu>
+        {/* <SizedBox width={8}></SizedBox> */}
+        <SelectMenu
+          title="Quantidade"
+          placeholder="Qtd."
+          items={qty}
+          setSelected={setQty}
+          width={isSmartPhone ? 80 : 174}
           errorText=""
         ></SelectMenu>
       </MoreInfo>

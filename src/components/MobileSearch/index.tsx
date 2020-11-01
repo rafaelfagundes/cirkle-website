@@ -10,18 +10,20 @@ const StyledMobileSearch = styled.div<{ active: boolean }>`
   align-items: center;
   justify-content: center;
   background-color: ${(props) => (props.active ? "#F5F5F5" : "transparent")};
-  width: ${(props) => (props.active ? "230px" : "44px")};
+  width: ${(props) => (props.active ? "268px" : "44px")};
   border-radius: 22px;
 
   ${(props) =>
-    props.active ? "transition: background 500ms, width 500ms;" : ""}
+    props.active
+      ? "transition: background 500ms, width 500ms;"
+      : "transition: background 1500ms, width 100ms;"}
 
   padding: 0 10px;
 `;
 
 const Input = styled(InputBase)`
-  font-size: 15px;
-  font-family: Commissioner;
+  font-size: 14px;
+  font-family: Commissioner, Lato, sans-serif;
   width: 100%;
   margin-left: 5px;
   font-weight: 500;

@@ -20,7 +20,7 @@ export enum AssetType {
 
 export type SelectItem = {
   text: string;
-  value: string;
+  value: any;
   selected: boolean;
   assetType: AssetType;
   assetValue?: string;
@@ -120,6 +120,11 @@ const ImageText = styled.div`
   align-items: center;
 `;
 
+const ShippingList = styled.div`
+  max-height: 350px;
+  overflow-y: scroll;
+`;
+
 interface SelectMenuProps {
   title?: string;
   placeholder?: string;
@@ -213,33 +218,35 @@ function SelectMenu({
               {title}
             </Subtitle>
           )}
-          {items.map((item, index) => (
-            <ShippingCheckBox
-              key={index}
-              onClick={() => _setSelected(item)}
-              selected={item.selected}
-            >
-              <ImageText>
-                <MenuAssetImage
-                  image={item.assetValue}
-                  size={item.secondaryText ? 56 : 28}
-                ></MenuAssetImage>
-                <div>
-                  <SimpleText size={0.9}>{item.text}</SimpleText>
-                  {item.secondaryText && (
-                    <>
-                      <SizedBox height={2}></SizedBox>
-                      <SimpleText size={0.8}>{item.secondaryText}</SimpleText>
-                    </>
-                  )}
-                </div>
-              </ImageText>
-              <RadioButton
+          <ShippingList>
+            {items.map((item, index) => (
+              <ShippingCheckBox
+                key={index}
                 onClick={() => _setSelected(item)}
-                value={item.selected}
-              ></RadioButton>
-            </ShippingCheckBox>
-          ))}
+                selected={item.selected}
+              >
+                <ImageText>
+                  <MenuAssetImage
+                    image={item.assetValue}
+                    size={item.secondaryText ? 56 : 28}
+                  ></MenuAssetImage>
+                  <div>
+                    <SimpleText size={0.9}>{item.text}</SimpleText>
+                    {item.secondaryText && (
+                      <>
+                        <SizedBox height={2}></SizedBox>
+                        <SimpleText size={0.8}>{item.secondaryText}</SimpleText>
+                      </>
+                    )}
+                  </div>
+                </ImageText>
+                <RadioButton
+                  onClick={() => _setSelected(item)}
+                  value={item.selected}
+                ></RadioButton>
+              </ShippingCheckBox>
+            ))}
+          </ShippingList>
         </>
       )}
       {!radioButtonList && (
@@ -302,7 +309,17 @@ function SelectMenu({
                       >
                         <MenuAssetText>
                           {getAsset(item.assetType, item.assetValue)}
-                          <SimpleText size={0.9}>{item.text}</SimpleText>
+                          <div>
+                            <SimpleText size={0.9}>{item.text}</SimpleText>
+                            {item.secondaryText && (
+                              <>
+                                <SizedBox height={2}></SizedBox>
+                                <SimpleText size={0.8}>
+                                  {item.secondaryText}
+                                </SimpleText>
+                              </>
+                            )}
+                          </div>
                           {/* <SizedBox width={16}></SizedBox> */}
                         </MenuAssetText>
                         <RadioButton

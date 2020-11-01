@@ -3,6 +3,7 @@ import Axios from "axios";
 import _orderBy from "lodash/orderBy";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
+import useSWR from "swr";
 import Card from "../src/components/Card";
 import CartItem from "../src/components/CartItem";
 import CheckBoxWithLabel from "../src/components/CheckboxWithLabel";
@@ -12,6 +13,7 @@ import CustomTextField from "../src/components/CustomTextField";
 import EmptyPage from "../src/components/EmptyPage";
 import FreeDeliveryMeter from "../src/components/FreeShippingMeter";
 import Layout from "../src/components/Layout";
+import LinkButton from "../src/components/LinkButton";
 import Padding from "../src/components/Padding";
 import PaymentType from "../src/components/PaymentType";
 import SelectMenu, {
@@ -21,7 +23,9 @@ import SelectMenu, {
 import SimpleText from "../src/components/SimpleText";
 import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
+import { useAuth } from "../src/hooks/auth/useAuth";
 import { useCart } from "../src/hooks/cart/useCart";
+import Address from "../src/modules/address/Address";
 import Menu from "../src/modules/menu/Menu";
 import ShippingData from "../src/modules/shippingData/ShippingData";
 import theme from "../src/theme/theme";
@@ -34,7 +38,6 @@ import {
   Row,
   SideColumn,
   StyledCartContainer,
-  Subvalue,
   Value,
 } from "../styles/pages/cart";
 
@@ -50,7 +53,15 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
   const [shippingList, setShippingList] = useState([]);
   const [shippingLoading, setShippingLoading] = useState(false);
 
-  const [initialLoading, setInitialLoading] = useState(false);
+  const [selectedSavedPostalCode, setSelectedSavedPostalCode] = useState(null);
+
+  const [showCEPField, setShowCEPField] = useState(false);
+
+  const authContext = useAuth();
+  const { data: addressData, error } = useSWR("/addresses", {
+    initialData: authContext?.user?.addresses,
+  });
+  if (error) console.log("Address loading error", error);
 
   // Scroll to top when page is loaded
   useEffect(() => {
@@ -117,10 +128,36 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
     }
   };
 
+  const _showShippingCEPField = () => {
+    return showCEPField;
+    // if (authContext?.user && authContext.user.addresses.length > 0) {
+    //   return false;
+    // } else {
+    //   return true;
+    // }
+  };
+
+  const _showAddressList = () => {
+    return !showCEPField;
+    // if (authContext.user && addressData.length > 0) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+  };
+
   const _calculateShipping = async () => {
-    const _postalCode =
+    const _savedAddress = addressData?.find(
+      (item: Address) => item.mainAddress
+    );
+
+    let _postalCode =
+      selectedSavedPostalCode ||
+      _savedAddress.postalCode ||
       postalCode.current?.children[0].value ||
       cartContext?.cart?.shipping?.postalCode;
+
+    _postalCode = _postalCode.replace("-", "");
 
     if (!_postalCode) {
       return false;
@@ -164,7 +201,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
             value: item.id,
             assetValue: item?.company?.picture,
             secondaryText: `${item.currency} ${item.price} (${item.delivery_range.min} à ${item.delivery_range.max} dias úteis)`,
-            secondaryValue: item.price,
+            secondaryValue: Number(item.price),
           });
         }
       });
@@ -177,6 +214,35 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
     }
   };
 
+  const _getUserAddresses = () => {
+    const finalItems: Array<SelectItem> = [];
+    addressData?.forEach((address: Address) => {
+      let selectedAddress = false;
+
+      if (selectedSavedPostalCode === null) {
+        selectedAddress = address.mainAddress;
+      } else {
+        selectedAddress =
+          selectedSavedPostalCode === address.postalCode.replace("-", "");
+      }
+
+      finalItems.push({
+        assetType: AssetType.NONE,
+        selected: selectedAddress,
+        text: `${address.street}, ${address.number}`,
+        value: address.postalCode,
+        secondaryText: `${address.city} - ${address.state}`,
+      });
+    });
+
+    return finalItems;
+  };
+
+  const _setPostalCode = (value: Array<SelectItem>) => {
+    const selected = value.find((item) => item.selected).value.replace("-", "");
+    setSelectedSavedPostalCode(selected);
+  };
+
   useEffect(() => {
     const shipping = shippingList.filter((item) => item.selected);
 
@@ -185,23 +251,21 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
         id: shipping[0].value,
         postalCode: postalCode.current?.children[0].value.replace("-", ""),
         type: shipping[0].text,
-        value: shipping[0].secondaryValue,
+        value: Number(shipping[0].secondaryValue),
       });
     }
   }, [shippingList]);
 
-  // useEffect(() => {
-  //   // console.log("cartcontext refresh", initialLoading);
-  //   if (cartContext?.cart?.shipping?.postalCode && !initialLoading) {
-  //     console.log("calcular inicialmente", initialLoading);
-  //     setInitialLoading(true);
-  //     _calculateShipping();
-  //   }
-  // }, [cartContext]);
-
   useEffect(() => {
     _calculateShipping();
-  }, [cartContext.cart.items.length]);
+  }, [cartContext.cart.subtotal]);
+
+  useEffect(() => {
+    console.log("selectedSavedPostalCode", selectedSavedPostalCode);
+    if (selectedSavedPostalCode) {
+      _calculateShipping();
+    }
+  }, [selectedSavedPostalCode]);
 
   return (
     <Layout menu={menu}>
@@ -245,7 +309,20 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                       <Label>Frete</Label>
                       {_getShippingValue()}
                     </Row>
-                    {_showShippingSelect() && (
+                    {_showAddressList() && (
+                      <>
+                        <SizedBox height={14}></SizedBox>
+                        <SelectMenu
+                          items={_getUserAddresses()}
+                          setSelected={_setPostalCode}
+                          title="Endereços Cadastrados"
+                          placeholder="Selecione o endereço cadastrado"
+                          errorText=""
+                        ></SelectMenu>
+                        <SizedBox height={8}></SizedBox>
+                      </>
+                    )}
+                    {_showShippingCEPField() && (
                       <>
                         <SizedBox height={16}></SizedBox>
                         <Row spaceBetween>
@@ -265,19 +342,18 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                             Calcular
                           </CustomButton>
                         </Row>
-                        {false && (
-                          <Row spaceBetween>
-                            <Subvalue>Rua Frederico Ozanan, 150</Subvalue>
-                            <CustomButton
-                              type="primary"
-                              variant="outlined"
-                              onClick={null}
-                              small
-                            >
-                              Alterar
-                            </CustomButton>
-                          </Row>
-                        )}
+                        <SizedBox height={8}></SizedBox>
+                      </>
+                    )}
+
+                    <LinkButton onClick={() => setShowCEPField(!showCEPField)}>
+                      {showCEPField
+                        ? "Mostrar endereços cadastrados"
+                        : "Calcular por CEP"}
+                    </LinkButton>
+
+                    {_showShippingSelect() && (
+                      <>
                         {shippingList.length > 0 && (
                           <>
                             <SizedBox height={16}></SizedBox>

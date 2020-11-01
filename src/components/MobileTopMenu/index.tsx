@@ -103,7 +103,7 @@ function MobileTopMenu({
                 <SizedBox width={14}></SizedBox>
                 <LogoHolder active={searchActive}>
                   <Link href="/">
-                    {searchActive && <Icon type="logo" size={34}></Icon>}
+                    {/* {searchActive && <Icon type="logo" size={34}></Icon>} */}
                     {!searchActive && <HorizontalLogo></HorizontalLogo>}
                   </Link>
                 </LogoHolder>
@@ -117,6 +117,7 @@ function MobileTopMenu({
                   <FavoriteMenuItem></FavoriteMenuItem>
                 )}
                 <DropdownCart></DropdownCart>
+                <SizedBox width={6}></SizedBox>
               </IconsHolder>
             </NavBarPadding>
           </NavBarContent>

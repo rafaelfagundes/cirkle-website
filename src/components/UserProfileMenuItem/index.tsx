@@ -1,12 +1,13 @@
-import { Menu, MenuItem } from "@material-ui/core";
+import { Menu, MenuItem, useMediaQuery } from "@material-ui/core";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/auth/useAuth";
+import theme from "../../theme/theme";
 import { cloudinaryImage } from "../../utils/image";
 import Icon from "../Icon";
-import SizedBox from "../SizedBox/index";
+import SizedBox from "../SizedBox";
 
 const Profile = styled.div<{ center?: boolean }>`
   display: flex;
@@ -55,6 +56,8 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
   const userNotLoggedInMenu = useRef(null);
   const router = useRouter();
 
+  const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
+
   const auth = useAuth();
 
   async function _logOut() {
@@ -75,8 +78,8 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
         <UserButton
           aria-controls="user-menu"
           aria-haspopup="true"
-          onClick={() => setUserMenu(true)}
-          onMouseOver={() => setUserMenu(true)}
+          onClick={isSmartPhone ? () => setUserMenu(true) : null}
+          onMouseOver={isSmartPhone ? null : () => setUserMenu(true)}
         >
           <Profile center={true}>
             {auth.user.picture ? (
@@ -94,7 +97,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
         </UserButton>
         <span
           ref={userButtonMenu}
-          style={{ position: "relative", top: 28, left: 42 }}
+          style={{ position: "relative", top: 0, left: 50 }}
         ></span>
 
         <Menu
@@ -102,6 +105,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
           open={userMenu}
           anchorEl={userButtonMenu.current}
           onClose={() => setUserMenu(false)}
+          getContentAnchorEl={null}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "center",

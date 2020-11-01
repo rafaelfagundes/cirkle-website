@@ -42,7 +42,7 @@ const Bag = React.forwardRef(
       <div ref={ref} style={{ cursor: "pointer" }}>
         <motion.div animate={controls}>
           <IconHolder
-            onClick={() => props.setIsOpen(true)}
+            onClick={isSmartPhone ? () => props.setIsOpen(true) : null}
             onMouseOver={isSmartPhone ? null : () => props.setIsOpen(true)}
           >
             <Icon
