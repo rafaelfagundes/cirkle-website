@@ -1,11 +1,11 @@
 import { Grid, useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
-import _orderBy from "lodash/orderBy";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import Card from "../src/components/Card";
 import CartItem from "../src/components/CartItem";
+import Center from "../src/components/Center";
 import CheckBoxWithLabel from "../src/components/CheckboxWithLabel";
 import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
@@ -14,6 +14,7 @@ import EmptyPage from "../src/components/EmptyPage";
 import FreeDeliveryMeter from "../src/components/FreeShippingMeter";
 import Layout from "../src/components/Layout";
 import LinkButton from "../src/components/LinkButton";
+import LoadingAnimation from "../src/components/LoadingAnimation";
 import Padding from "../src/components/Padding";
 import PaymentType from "../src/components/PaymentType";
 import SelectMenu, {
@@ -27,7 +28,6 @@ import { useAuth } from "../src/hooks/auth/useAuth";
 import { useCart } from "../src/hooks/cart/useCart";
 import Address from "../src/modules/address/Address";
 import Menu from "../src/modules/menu/Menu";
-import ShippingData from "../src/modules/shippingData/ShippingData";
 import theme from "../src/theme/theme";
 import {
   CartFooter,
@@ -50,10 +50,6 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
   const postalCode = useRef(null);
 
   const [hasCoupon, setHasCoupon] = useState(false);
-  const [shippingList, setShippingList] = useState([]);
-  const [shippingLoading, setShippingLoading] = useState(false);
-
-  const [selectedSavedPostalCode, setSelectedSavedPostalCode] = useState(null);
 
   const [showCEPField, setShowCEPField] = useState(false);
 
@@ -129,101 +125,38 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
   };
 
   const _showShippingCEPField = () => {
+    if (!authContext.user) return true;
     return showCEPField;
-    // if (authContext?.user && authContext.user.addresses.length > 0) {
-    //   return false;
-    // } else {
-    //   return true;
-    // }
   };
 
   const _showAddressList = () => {
+    if (!authContext.user) return false;
     return !showCEPField;
-    // if (authContext.user && addressData.length > 0) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
   };
 
-  const _calculateShipping = async () => {
-    const _savedAddress = addressData?.find(
-      (item: Address) => item.mainAddress
-    );
+  const setShippingList = (list: Array<SelectItem>) => {
+    cartContext.setShippingList(list);
+  };
 
-    let _postalCode =
-      selectedSavedPostalCode ||
-      _savedAddress.postalCode ||
-      postalCode.current?.children[0].value ||
-      cartContext?.cart?.shipping?.postalCode;
+  const setAddress = (items: Array<SelectItem>) => {
+    const selectedAddress = items.find((item: SelectItem) => item.selected);
 
-    _postalCode = _postalCode.replace("-", "");
+    if (selectedAddress) {
+      const address = addressData.find(
+        (item: Address) => item.postalCode === selectedAddress.value
+      );
 
-    if (!_postalCode) {
-      return false;
-    }
-
-    const shippingData: ShippingData = {
-      to: {
-        postal_code: _postalCode,
-      },
-      products: [],
-    };
-
-    cartContext.cart.items.forEach((item) => {
-      shippingData.products.push({
-        height: item.pHeight,
-        id: item.uid,
-        insurance_value: item.price,
-        length: item.pLength,
-        quantity: item.cartQty,
-        weight: item.pWeight,
-        width: item.pWidth,
-      });
-    });
-
-    try {
-      setShippingLoading(true);
-      const response = await Axios.post("/shippingcalc", shippingData);
-
-      const _shippingList: Array<SelectItem> = [];
-
-      const _sortedResponse = _orderBy(response.data, ["price"], ["asc"]);
-
-      _sortedResponse.forEach((item: any) => {
-        const selected = item.id === cartContext?.cart?.shipping?.id;
-
-        if (!item?.error) {
-          _shippingList.push({
-            assetType: AssetType.IMAGE,
-            selected,
-            text: `${item?.company?.name} ${item.name}`,
-            value: item.id,
-            assetValue: item?.company?.picture,
-            secondaryText: `${item.currency} ${item.price} (${item.delivery_range.min} à ${item.delivery_range.max} dias úteis)`,
-            secondaryValue: Number(item.price),
-          });
-        }
-      });
-
-      setShippingList(_shippingList);
-      setShippingLoading(false);
-    } catch (error) {
-      setShippingLoading(false);
-      console.log("_calculateShipping -> error", error);
+      cartContext.setAddress(address);
     }
   };
 
-  const _getUserAddresses = () => {
+  const getUserAddresses = () => {
     const finalItems: Array<SelectItem> = [];
     addressData?.forEach((address: Address) => {
       let selectedAddress = false;
 
-      if (selectedSavedPostalCode === null) {
-        selectedAddress = address.mainAddress;
-      } else {
-        selectedAddress =
-          selectedSavedPostalCode === address.postalCode.replace("-", "");
+      if (address.postalCode === cartContext.cart.address?.postalCode) {
+        selectedAddress = true;
       }
 
       finalItems.push({
@@ -238,34 +171,16 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
     return finalItems;
   };
 
-  const _setPostalCode = (value: Array<SelectItem>) => {
-    const selected = value.find((item) => item.selected).value.replace("-", "");
-    setSelectedSavedPostalCode(selected);
+  const setPostalCode = () => {
+    console.log("postalCode", postalCode.current.children[0].value);
+
+    cartContext.setShipping({
+      id: null,
+      postalCode: postalCode.current.children[0].value,
+      type: null,
+      value: null,
+    });
   };
-
-  useEffect(() => {
-    const shipping = shippingList.filter((item) => item.selected);
-
-    if (shipping.length === 1) {
-      cartContext.setShipping({
-        id: shipping[0].value,
-        postalCode: postalCode.current?.children[0].value.replace("-", ""),
-        type: shipping[0].text,
-        value: Number(shipping[0].secondaryValue),
-      });
-    }
-  }, [shippingList]);
-
-  useEffect(() => {
-    _calculateShipping();
-  }, [cartContext.cart.subtotal]);
-
-  useEffect(() => {
-    console.log("selectedSavedPostalCode", selectedSavedPostalCode);
-    if (selectedSavedPostalCode) {
-      _calculateShipping();
-    }
-  }, [selectedSavedPostalCode]);
 
   return (
     <Layout menu={menu}>
@@ -313,8 +228,8 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                       <>
                         <SizedBox height={14}></SizedBox>
                         <SelectMenu
-                          items={_getUserAddresses()}
-                          setSelected={_setPostalCode}
+                          items={getUserAddresses()}
+                          setSelected={setAddress}
                           title="Endereços Cadastrados"
                           placeholder="Selecione o endereço cadastrado"
                           errorText=""
@@ -336,8 +251,8 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                             CEP de Destino
                           </CustomTextField>
                           <CustomButton
-                            onClick={_calculateShipping}
-                            loading={shippingLoading}
+                            onClick={setPostalCode}
+                            loading={cartContext.cart.loadingShipping}
                           >
                             Calcular
                           </CustomButton>
@@ -346,24 +261,41 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                       </>
                     )}
 
-                    <LinkButton onClick={() => setShowCEPField(!showCEPField)}>
-                      {showCEPField
-                        ? "Mostrar endereços cadastrados"
-                        : "Calcular por CEP"}
-                    </LinkButton>
+                    {authContext.user && (
+                      <LinkButton
+                        onClick={() => setShowCEPField(!showCEPField)}
+                      >
+                        {showCEPField
+                          ? "Mostrar endereços cadastrados"
+                          : "Calcular por CEP"}
+                      </LinkButton>
+                    )}
 
                     {_showShippingSelect() && (
                       <>
-                        {shippingList.length > 0 && (
+                        {!cartContext.cart.loadingShipping &&
+                          cartContext?.cart?.shippingList?.length > 0 && (
+                            <>
+                              <SizedBox height={16}></SizedBox>
+                              <SelectMenu
+                                items={cartContext.cart.shippingList}
+                                setSelected={setShippingList}
+                                title="Selecione o frete"
+                                errorText=""
+                                radioButtonList
+                              ></SelectMenu>
+                            </>
+                          )}
+                        {cartContext.cart.loadingShipping && (
                           <>
                             <SizedBox height={16}></SizedBox>
-                            <SelectMenu
-                              items={shippingList}
-                              setSelected={setShippingList}
-                              title="Selecione o frete"
-                              errorText=""
-                              radioButtonList
-                            ></SelectMenu>
+                            <Center>
+                              <LoadingAnimation
+                                color
+                                size={48}
+                              ></LoadingAnimation>
+                            </Center>
+                            <SizedBox height={16}></SizedBox>
                           </>
                         )}
                       </>

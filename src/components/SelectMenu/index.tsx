@@ -122,7 +122,7 @@ const ImageText = styled.div`
 
 const ShippingList = styled.div`
   max-height: 350px;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 interface SelectMenuProps {
