@@ -244,7 +244,7 @@ function SideMenu({
             <Padding horizontal={16} vertical={16}>
               <>
                 <SecondaryItem onClick={() => goTo("/perfil")}>
-                  <Icon type="person"></Icon>
+                  <Icon type="user"></Icon>
                   <SecondaryText>Minha Conta</SecondaryText>
                 </SecondaryItem>
                 <SecondaryItem onClick={() => goTo("/minha-lista")}>
@@ -252,11 +252,11 @@ function SideMenu({
                   <SecondaryText>Lista de Desejos</SecondaryText>
                 </SecondaryItem>
                 <SecondaryItem>
-                  <Icon type="box"></Icon>
+                  <Icon type="package"></Icon>
                   <SecondaryText>Meus Pedidos</SecondaryText>
                 </SecondaryItem>
                 <SecondaryItem>
-                  <Icon type="products"></Icon>
+                  <Icon type="layers"></Icon>
                   <SecondaryText>Meus Produtos à Venda</SecondaryText>
                 </SecondaryItem>
               </>
@@ -268,7 +268,7 @@ function SideMenu({
             <>
               <SizedBox height={16}></SizedBox>
               <SecondaryItem onClick={() => goTo("/entrar")}>
-                <Icon type="signup"></Icon>
+                <Icon type="login"></Icon>
                 <SecondaryText>Entrar ou Cadastrar</SecondaryText>
               </SecondaryItem>
               <SizedBox height={16}></SizedBox>

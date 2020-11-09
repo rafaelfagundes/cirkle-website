@@ -51,7 +51,7 @@ export const AVAILABLE_ICONS = [
   "star-light",
   "star-yellow",
   "thermometer",
-  "trash",
+  "delete",
   "triangle-down-fill-dark",
   "triangle-down-fill-red",
   "triangle-down-fill",
@@ -59,6 +59,14 @@ export const AVAILABLE_ICONS = [
   "whatsapp-white",
   "whatsapp",
   "zoom-in",
+  "user",
+  "shopping-bag",
+  "package",
+  "layers",
+  "delete",
+  "login",
+  "smartphone",
+  "tag",
 ];
 
 const StyledIcon = styled.div<{ size: number; clickable: boolean }>`

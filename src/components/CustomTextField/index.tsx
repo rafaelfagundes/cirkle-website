@@ -137,11 +137,11 @@ function getConfig(type: string): { icon: string; inputType: string } {
     case "email":
       return { icon: "email", inputType: "email" };
     case "user":
-      return { icon: "person", inputType: "text" };
+      return { icon: "user", inputType: "text" };
     case "phone":
-      return { icon: "phone", inputType: "text" };
+      return { icon: "smartphone", inputType: "text" };
     case "coupon":
-      return { icon: "coupon", inputType: "text" };
+      return { icon: "tag", inputType: "text" };
     case "date":
       return { icon: "calendar", inputType: "text" };
 

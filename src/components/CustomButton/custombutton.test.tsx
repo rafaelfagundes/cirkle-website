@@ -202,12 +202,12 @@ describe("CustomButton", () => {
   });
   it("should have an person icon", () => {
     const wrapper = mount(
-      <CustomButton onClick={null} icon="person">
+      <CustomButton onClick={null} icon="user">
         OK
       </CustomButton>
     );
     expect(wrapper.find("Icon")).toBeDefined();
-    expect(wrapper.find("Icon").prop("type")).toEqual("person");
+    expect(wrapper.find("Icon").prop("type")).toEqual("user");
   });
   it("should have a loading animation", () => {
     const wrapper = mount(

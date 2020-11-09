@@ -190,7 +190,7 @@ function CartItem({
                 </Link>
                 <SizedBox width={16}></SizedBox>
                 <IconButton
-                  type="trash"
+                  type="delete"
                   onClick={() => cartContext.removeFromCart(item.id)}
                   size={16}
                 ></IconButton>

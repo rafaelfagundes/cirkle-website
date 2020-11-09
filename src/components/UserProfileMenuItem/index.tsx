@@ -50,6 +50,23 @@ export const IconHolder = styled.div`
   position: relative;
 `;
 
+const NotLoggedIn = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  cursor: pointer;
+`;
+
+const NotLoggedInText = styled.span`
+  font-family: Commissioner, sans-serif;
+  font-weight: 500;
+  margin-left: 5px;
+  font-size: 14px;
+  line-height: 14px;
+`;
+
 function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
   const [userMenu, setUserMenu] = useState(false);
   const userButtonMenu = useRef(null);
@@ -90,7 +107,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
               </IconHolder>
             ) : (
               <IconHolder>
-                <Icon type="person"></Icon>
+                <Icon type="user"></Icon>
               </IconHolder>
             )}
           </Profile>
@@ -120,7 +137,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
           transitionDuration={{ appear: 400, enter: 400, exit: 500 }}
         >
           <StyledMenuItem onClick={_goToProfile}>
-            <Icon type="person" onClick={null}></Icon>
+            <Icon type="user" onClick={null}></Icon>
             <MenuItemText>Minha Conta</MenuItemText>
           </StyledMenuItem>
           <StyledMenuItem onClick={_goToWishlist}>
@@ -128,18 +145,19 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
             <MenuItemText>Lista de Desejos</MenuItemText>
           </StyledMenuItem>
           <StyledMenuItem>
-            <Icon type="box"></Icon>
+            <Icon type="package"></Icon>
             <MenuItemText>Meus Pedidos</MenuItemText>
           </StyledMenuItem>
           <StyledMenuItem>
-            <Icon type="products"></Icon>
+            <Icon type="layers"></Icon>
             <MenuItemText>Meus Produtos à Venda</MenuItemText>
           </StyledMenuItem>
           <SizedBox height={8}></SizedBox>
           <StyledMenuItem onClick={_logOut}>
-            <SizedBox width={3}></SizedBox>
-            <Icon size={20} type="logout"></Icon>
-            <SizedBox width={2}></SizedBox>
+            {/* <SizedBox width={3}></SizedBox> */}
+            {/* <Icon size={20} type="logout"></Icon> */}
+            <Icon type="logout"></Icon>
+            {/* <SizedBox width={2}></SizedBox> */}
             <MenuItemText>Desconectar</MenuItemText>
           </StyledMenuItem>
         </Menu>
@@ -148,53 +166,61 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
   } else {
     return (
       <div>
-        <UserButton
-          aria-controls="user-menu-not-logged-in"
-          aria-haspopup="true"
-          onClick={() => setUserMenu(true)}
-          onMouseOver={() => setUserMenu(true)}
-          ref={userNotLoggedInMenu}
-        >
-          <Profile>
-            <IconHolder>
-              <Icon type="person" onClick={_goToProfile}></Icon>
-            </IconHolder>
-          </Profile>
-        </UserButton>
-        <Menu
-          id="user-menu-not-logged-in"
-          anchorEl={userNotLoggedInMenu.current}
-          keepMounted
-          open={userMenu}
-          onClose={() => setUserMenu(false)}
-          // MenuListProps={{
-          //   onMouseLeave: () => setUserMenu(false),
-          // }}
-        >
-          <StyledMenuItem onClick={_goToProfile}>
-            <Icon type="signup" onClick={_goToProfile}></Icon>
-            <MenuItemText>Entrar ou Cadastrar</MenuItemText>
-          </StyledMenuItem>
-          <SizedBox height={8}></SizedBox>
-          <StyledMenuItem onClick={_goToProfile}>
-            <Icon type="person" onClick={_goToProfile}></Icon>
-            <MenuItemText>Minha Conta</MenuItemText>
-          </StyledMenuItem>
-          <StyledMenuItem onClick={_goToWishlist}>
-            <Icon type="heart"></Icon>
-            <MenuItemText>Lista de Desejos</MenuItemText>
-          </StyledMenuItem>
-          <StyledMenuItem onClick={_goToProfile}>
-            <Icon type="box"></Icon>
-            <MenuItemText>Meus Pedidos</MenuItemText>
-          </StyledMenuItem>
-          <StyledMenuItem onClick={_goToProfile}>
-            <Icon type="products"></Icon>
-            <MenuItemText>Meus Produtos à Venda</MenuItemText>
-          </StyledMenuItem>
-        </Menu>
+        <NotLoggedIn onClick={_goToProfile}>
+          <Icon type="user" onClick={_goToProfile}></Icon>
+          <NotLoggedInText>Entrar ou Cadastrar</NotLoggedInText>
+        </NotLoggedIn>
       </div>
     );
+    // return (
+    //   <div>
+    //     <UserButton
+    //       aria-controls="user-menu-not-logged-in"
+    //       aria-haspopup="true"
+    //       onClick={() => setUserMenu(true)}
+    //       onMouseOver={() => setUserMenu(true)}
+    //       ref={userNotLoggedInMenu}
+    //     >
+    //       <Profile>
+    //         <IconHolder>
+    //           <Icon type="user" onClick={_goToProfile}></Icon>
+    //         </IconHolder>
+    //       </Profile>
+    //     </UserButton>
+    //     <Menu
+    //       id="user-menu-not-logged-in"
+    //       anchorEl={userNotLoggedInMenu.current}
+    //       keepMounted
+    //       open={userMenu}
+    //       onClose={() => setUserMenu(false)}
+    //       // MenuListProps={{
+    //       //   onMouseLeave: () => setUserMenu(false),
+    //       // }}
+    //     >
+    //       <StyledMenuItem onClick={_goToProfile}>
+    //         <Icon type="login" onClick={_goToProfile}></Icon>
+    //         <MenuItemText>Entrar ou Cadastrar</MenuItemText>
+    //       </StyledMenuItem>
+    //       <SizedBox height={8}></SizedBox>
+    //       <StyledMenuItem onClick={_goToProfile}>
+    //         <Icon type="user" onClick={_goToProfile}></Icon>
+    //         <MenuItemText>Minha Conta</MenuItemText>
+    //       </StyledMenuItem>
+    //       <StyledMenuItem onClick={_goToWishlist}>
+    //         <Icon type="heart"></Icon>
+    //         <MenuItemText>Lista de Desejos</MenuItemText>
+    //       </StyledMenuItem>
+    //       <StyledMenuItem onClick={_goToProfile}>
+    //         <Icon type="package"></Icon>
+    //         <MenuItemText>Meus Pedidos</MenuItemText>
+    //       </StyledMenuItem>
+    //       <StyledMenuItem onClick={_goToProfile}>
+    //         <Icon type="layers"></Icon>
+    //         <MenuItemText>Meus Produtos à Venda</MenuItemText>
+    //       </StyledMenuItem>
+    //     </Menu>
+    //   </div>
+    // );
   }
 }
 

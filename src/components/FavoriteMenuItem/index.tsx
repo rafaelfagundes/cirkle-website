@@ -45,7 +45,7 @@ function FavoriteMenuItem(): JSX.Element {
       {badgeCount > 0 && (
         <FavoriteIconHolder onClick={() => goTo("/minha-lista")}>
           <IconButton
-            type="heart-fill"
+            type="heart"
             onClick={() => goTo("/minha-lista")}
           ></IconButton>
           <Badge position={BadgePosition.TOP_RIGHT}>

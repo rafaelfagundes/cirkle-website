@@ -104,7 +104,7 @@ function DropdownCart(): JSX.Element {
                       </Price>
                       <Icon
                         size={16}
-                        type="trash"
+                        type="delete"
                         onClick={() => cartContext.removeFromCart(item.id)}
                       ></Icon>
                     </PriceAndButton>

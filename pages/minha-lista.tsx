@@ -162,7 +162,7 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
                                 <SizedBox width={16}></SizedBox>
                                 <Icon
                                   size={16}
-                                  type="trash"
+                                  type="delete"
                                   onClick={() =>
                                     wishlistContext.removeFromWishlist(item.id)
                                   }

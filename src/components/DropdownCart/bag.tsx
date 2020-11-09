@@ -45,10 +45,7 @@ const Bag = React.forwardRef(
             onClick={isSmartPhone ? () => props.setIsOpen(true) : null}
             onMouseOver={isSmartPhone ? null : () => props.setIsOpen(true)}
           >
-            <Icon
-              type={props.counter > 0 ? "bag-full" : "bag"}
-              onClick={() => null}
-            ></Icon>
+            <Icon type="shopping-bag" onClick={() => null}></Icon>
             {/* {props.counter > 0 && <IconCounter>{props.counter}</IconCounter>} */}
             {props.counter > 0 && (
               <Badge position={BadgePosition.TOP_RIGHT}>
