@@ -1,6 +1,6 @@
 import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Icon from "../src/components/Icon";
 import Layout from "../src/components/Layout";
@@ -64,6 +64,12 @@ const ContactItem = styled.div`
   align-items: center;
   flex-direction: row;
   cursor: pointer;
+
+  &:active {
+    padding: 22px 0 18px 4px;
+  }
+
+  transition: padding 200ms;
 `;
 
 const ContactIconHolder = styled.div`
@@ -108,11 +114,11 @@ const contactItems = [
       : null,
   },
   {
-    icon: "facebook-dark",
-    title: "Facebook",
-    description: "Chama a gente no Face",
+    icon: "whatsapp-dark",
+    title: "WhatsApp",
+    description: "Chama no Zap",
     action: process.browser
-      ? () => window.open("https://facebook.com/cirklebr")
+      ? () => window.open("https://instagram.com/cirklebr")
       : null,
   },
   {
@@ -123,10 +129,23 @@ const contactItems = [
       ? () => window.open("https://instagram.com/cirklebr")
       : null,
   },
+  {
+    icon: "facebook-dark",
+    title: "Facebook",
+    description: "Mensagem no Face",
+    action: process.browser
+      ? () => window.open("https://facebook.com/cirklebr")
+      : null,
+  },
 ];
 
 function Contato({ menu }: { menu: Menu }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // Scroll to top when page is loaded
+  useEffect(() => {
+    if (process.browser) window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
@@ -144,7 +163,11 @@ function Contato({ menu }: { menu: Menu }): JSX.Element {
                 <>
                   <ContactItem key={item.title} onClick={item.action}>
                     <ContactIconHolder>
-                      <Icon size={32} type={item.icon}></Icon>
+                      <Icon
+                        size={32}
+                        type={item.icon}
+                        onClick={item.action}
+                      ></Icon>
                     </ContactIconHolder>
                     <ContactDescription>{item.description}</ContactDescription>
                   </ContactItem>

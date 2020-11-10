@@ -1,4 +1,5 @@
 import { Container, Grid } from "@material-ui/core";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 import Colors from "../../enums/Colors";
@@ -41,9 +42,9 @@ const FooterLink = styled.span`
     "Helvetica Neue", sans-serif;
   font-weight: 500;
   font-size: 14px;
-  color: ${Colors.WHITE};
   height: 32px;
   cursor: pointer;
+  color: ${Colors.WHITE};
 `;
 
 const Columns = styled.div`
@@ -68,6 +69,12 @@ const Badge = styled.img<{ size: number }>`
 `;
 
 function MobileFooter(): JSX.Element {
+  const router = useRouter();
+
+  const _goTo = (route: string) => {
+    router.push(route);
+  };
+
   return (
     <FooterLinks>
       <Container maxWidth="xs">
@@ -75,14 +82,14 @@ function MobileFooter(): JSX.Element {
           <HeaderSection>Cirkle</HeaderSection>
           <MainSection>
             <LinksSection>
-              <FooterLink>Como Funciona</FooterLink>
-              <FooterLink>Quero Vender</FooterLink>
-              <FooterLink>Quero Comprar</FooterLink>
+              <FooterLink onClick={() => _goTo("")}>Como Funciona</FooterLink>
+              <FooterLink onClick={() => _goTo("")}>Quero Vender</FooterLink>
+              <FooterLink onClick={() => _goTo("")}>Quero Comprar</FooterLink>
             </LinksSection>
             <LinksSection>
-              <FooterLink>Contato</FooterLink>
-              <FooterLink>Devolução</FooterLink>
-              <FooterLink>Termos de Uso</FooterLink>
+              <FooterLink onClick={() => _goTo("/contato")}>Contato</FooterLink>
+              <FooterLink onClick={() => _goTo("")}>Devolução</FooterLink>
+              <FooterLink onClick={() => _goTo("")}>Termos de Uso</FooterLink>
             </LinksSection>
           </MainSection>
           <SizedBox height={32}></SizedBox>

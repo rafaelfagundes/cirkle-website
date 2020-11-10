@@ -163,7 +163,7 @@ function DesktopFooter(): JSX.Element {
               </TextLink>
             </FooterLink>
             <FooterLink>
-              <TextLink href="" color={Colors.WHITE} size={14}>
+              <TextLink href="/contato" color={Colors.WHITE} size={14}>
                 Contato
               </TextLink>
             </FooterLink>
