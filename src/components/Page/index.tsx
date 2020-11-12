@@ -8,12 +8,12 @@ import theme from "../../theme/theme";
 import Layout from "../Layout";
 import SizedBox from "../SizedBox";
 
-const BackgroundBanner = styled.div<{ bgImage: string }>`
+const BackgroundBanner = styled.div<{ bgImage: string; mobile: boolean }>`
   background-image: url(${(props) => props.bgImage});
   background-position: center;
   background-size: cover;
   width: 100%;
-  height: 35vh;
+  height: ${(props) => (props.mobile ? "25vh" : "35vh")};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,7 +21,7 @@ const BackgroundBanner = styled.div<{ bgImage: string }>`
 `;
 
 const BannerText = styled.div<{ mobile: boolean }>`
-  font-size: 36px;
+  font-size: ${(props) => (props.mobile ? 24 : 36)}px;
   color: ${Colors.WHITE};
   font-weight: 700;
   text-transform: uppercase;
@@ -32,9 +32,9 @@ const BannerText = styled.div<{ mobile: boolean }>`
   margin-top: ${(props) => (props.mobile ? 0 : -64)}px;
 `;
 
-const BannerTint = styled.div`
+const BannerTint = styled.div<{ mobile: boolean }>`
   width: 100%;
-  height: 35vh;
+  height: ${(props) => (props.mobile ? "25vh" : "35vh")};
   position: absolute;
   background-color: ${Colors.PRIMARY};
   opacity: 0.75;
@@ -47,26 +47,28 @@ const PanelHolder = styled.div`
   flex-direction: row;
 `;
 
-const Panel = styled.div<{ mobile: boolean }>`
+const Panel = styled.div<{ mobile: boolean; noPadding: boolean }>`
   width: 100%;
   max-width: 960px;
   background-color: ${Colors.WHITE};
   z-index: 2;
-  padding: 0 20px;
+  padding: ${(props) => (props.noPadding ? 0 : "0 20px")};
   margin-top: ${(props) => (props.mobile ? 0 : -64)}px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
 `;
 
-function StaticPage({
+function Page({
   menu,
   title,
   image,
   children,
+  noPadding = false,
 }: {
   menu?: Menu;
   title: string;
   image: string;
   children: any;
+  noPadding?: boolean;
 }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -78,12 +80,14 @@ function StaticPage({
   return (
     <Layout containerMargin={false} menu={menu}>
       <>
-        <BackgroundBanner bgImage={image}>
-          <BannerTint></BannerTint>
+        <BackgroundBanner bgImage={image} mobile={isSmartPhone}>
+          <BannerTint mobile={isSmartPhone}></BannerTint>
           <BannerText mobile={isSmartPhone}>{title}</BannerText>
         </BackgroundBanner>
         <PanelHolder>
-          <Panel mobile={isSmartPhone}>{children}</Panel>
+          <Panel noPadding={noPadding} mobile={isSmartPhone}>
+            {children}
+          </Panel>
         </PanelHolder>
         <SizedBox height={isSmartPhone ? 16 : 72}></SizedBox>
       </>
@@ -104,4 +108,4 @@ export async function getStaticProps(): Promise<any> {
   };
 }
 
-export default StaticPage;
+export default Page;

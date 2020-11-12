@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Icon from "../src/components/Icon";
-import StaticPage from "../src/components/StaticPage";
+import Page from "../src/components/Page";
 import Colors from "../src/enums/Colors";
 
 const ContactItem = styled.div`
@@ -94,7 +94,7 @@ const contactItems = [
 
 function Contato(): JSX.Element {
   return (
-    <StaticPage title="precisa falar com a gente?" image="images/contact.jpg">
+    <Page title="precisa falar com a gente?" image="images/contact.jpg">
       {contactItems.map((item, index) => (
         <>
           <ContactItem key={item.title} onClick={item.action}>
@@ -106,7 +106,7 @@ function Contato(): JSX.Element {
           {index + 1 < contactItems.length && <HorizontalLine></HorizontalLine>}
         </>
       ))}
-    </StaticPage>
+    </Page>
   );
 }
 

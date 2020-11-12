@@ -1,12 +1,12 @@
 import React from "react";
+import Page from "../src/components/Page";
 import Paragraph from "../src/components/Paragraph";
 import SizedBox from "../src/components/SizedBox";
-import StaticPage from "../src/components/StaticPage";
 import Title from "../src/components/Title";
 
 function QueroVender(): JSX.Element {
   return (
-    <StaticPage title="quero vender" image="images/wanna-sell.jpg">
+    <Page title="quero vender" image="images/wanna-sell.jpg">
       <SizedBox height={40}></SizedBox>
       <Title>Duis vitae convallis sem</Title>
       <SizedBox height={20}></SizedBox>
@@ -64,7 +64,7 @@ function QueroVender(): JSX.Element {
         dictum consequat.
       </Paragraph>
       <SizedBox height={20}></SizedBox>
-    </StaticPage>
+    </Page>
   );
 }
 

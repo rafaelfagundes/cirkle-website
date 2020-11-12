@@ -10,10 +10,8 @@ import Column from "../src/components/Column";
 import CustomButton from "../src/components/CustomButton";
 import EmptyPage from "../src/components/EmptyPage";
 import Icon from "../src/components/Icon";
-import Layout from "../src/components/Layout";
 import LoadingAnimation from "../src/components/LoadingAnimation";
-import Padding from "../src/components/Padding";
-import ProductItem from "../src/components/ProductItem";
+import Page from "../src/components/Page";
 import SizedBox from "../src/components/SizedBox";
 import Title from "../src/components/Title";
 import Colors from "../src/enums/Colors";
@@ -37,15 +35,6 @@ import {
 const StyledWishlist = styled.div<{ isSmartphone: boolean }>`
   background-color: ${(props) =>
     props.isSmartphone ? Colors.WHITE : Colors.TRANSPARENT};
-  padding: ${(props) => (props.isSmartphone ? "16px 0" : "32px 0")};
-`;
-
-const Items = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0 px;
-  flex-wrap: wrap;
 `;
 
 const SpaceBetweenColumn = styled.div`
@@ -108,18 +97,17 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
   }, []);
 
   return (
-    <Layout menu={menu}>
+    <Page
+      menu={menu}
+      title="Lista de Desejos"
+      image="images/wishlist.jpg"
+      noPadding
+    >
       <StyledWishlist isSmartphone={isSmartphone}>
         {wishlistContext?.wishlist?.products &&
           wishlistContext.wishlist.products.length > 0 && (
             <>
-              <SizedBox height={16}></SizedBox>
-              <Padding horizontal={isSmartphone ? 16 : 0}>
-                <Title size={18}>Lista de Desejos</Title>
-              </Padding>
-              <SizedBox height={16}></SizedBox>
-
-              {!isSmartphone && (
+              {/* {!isSmartphone && (
                 <Items>
                   {wishlistContext?.wishlist?.products &&
                     wishlistContext.wishlist.products.map((item, index) => (
@@ -134,6 +122,72 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
                       </React.Fragment>
                     ))}
                 </Items>
+              )} */}
+
+              {!isSmartphone && (
+                <CartItems>
+                  {wishlistContext?.wishlist?.products &&
+                    wishlistContext.wishlist.products.map(
+                      (item: Product, index: number) => (
+                        <CartItem
+                          key={item.id}
+                          showBackground={index % 2 === 0}
+                        >
+                          <ImagePrice
+                            onClick={() => _goTo("/produtos/" + item.uid)}
+                          >
+                            <CartItemImage
+                              image={cloudinaryImage(item.image, 90)}
+                              size={window.innerWidth * 0.07}
+                            ></CartItemImage>
+                          </ImagePrice>
+                          <SpaceBetweenColumn>
+                            <div>
+                              <TitleAndRemove>
+                                <Link href={`/produtos/${item.uid}`}>
+                                  <Title size={14}>{item.title}</Title>
+                                </Link>
+                                <SizedBox width={16}></SizedBox>
+                                {/* <Icon
+                                  size={16}
+                                  type="delete"
+                                  onClick={() =>
+                                    wishlistContext.removeFromWishlist(item.id)
+                                  }
+                                ></Icon> */}
+                                <CustomButton
+                                  width={70}
+                                  type="delete"
+                                  variant="text"
+                                  noPadding={true}
+                                  small
+                                  onClick={() =>
+                                    wishlistContext.removeFromWishlist(item.id)
+                                  }
+                                >
+                                  Remover
+                                </CustomButton>
+                              </TitleAndRemove>
+                              <Link href={`/produtos/${item.uid}`}>
+                                <Description>{item.description}</Description>
+                              </Link>
+                              <SizedBox height={8}></SizedBox>
+                              <Link href={`/produtos/${item.uid}`}>
+                                <Price>
+                                  {new Intl.NumberFormat("pt-BR", {
+                                    style: "currency",
+                                    currency: "BRL",
+                                  }).format(item.price)}
+                                </Price>
+                              </Link>
+                              <SizedBox height={8}></SizedBox>
+                            </div>
+                            <MoreInfo>{getCartButton(item)}</MoreInfo>
+                          </SpaceBetweenColumn>
+                        </CartItem>
+                      )
+                    )}
+                </CartItems>
               )}
 
               {isSmartphone && (
@@ -233,7 +287,7 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
           </Column>
         )}
       </StyledWishlist>
-    </Layout>
+    </Page>
   );
 }
 
