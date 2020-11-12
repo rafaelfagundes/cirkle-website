@@ -82,14 +82,24 @@ function MobileFooter(): JSX.Element {
           <HeaderSection>Cirkle</HeaderSection>
           <MainSection>
             <LinksSection>
-              <FooterLink onClick={() => _goTo("")}>Como Funciona</FooterLink>
-              <FooterLink onClick={() => _goTo("")}>Quero Vender</FooterLink>
-              <FooterLink onClick={() => _goTo("")}>Quero Comprar</FooterLink>
+              <FooterLink onClick={() => _goTo("/como-funciona")}>
+                Como Funciona
+              </FooterLink>
+              <FooterLink onClick={() => _goTo("/quero-vender")}>
+                Quero Vender
+              </FooterLink>
+              <FooterLink onClick={() => _goTo("/quero-comprar")}>
+                Quero Comprar
+              </FooterLink>
             </LinksSection>
             <LinksSection>
               <FooterLink onClick={() => _goTo("/contato")}>Contato</FooterLink>
-              <FooterLink onClick={() => _goTo("")}>Devolução</FooterLink>
-              <FooterLink onClick={() => _goTo("")}>Termos de Uso</FooterLink>
+              <FooterLink onClick={() => _goTo("/devolucao")}>
+                Devolução
+              </FooterLink>
+              <FooterLink onClick={() => _goTo("/termos-de-uso")}>
+                Termos de Uso
+              </FooterLink>
             </LinksSection>
           </MainSection>
           <SizedBox height={32}></SizedBox>

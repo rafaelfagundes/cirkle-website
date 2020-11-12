@@ -1,62 +1,8 @@
-import { useMediaQuery } from "@material-ui/core";
-import Axios from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import Icon from "../src/components/Icon";
-import Layout from "../src/components/Layout";
-import SizedBox from "../src/components/SizedBox";
+import StaticPage from "../src/components/StaticPage";
 import Colors from "../src/enums/Colors";
-import Menu from "../src/modules/menu/Menu";
-import theme from "../src/theme/theme";
-
-const BackgroundBanner = styled.div`
-  background-image: url("images/contact.jpg");
-  background-position: center;
-  background-size: cover;
-  width: 100%;
-  height: 35vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-`;
-
-const BannerText = styled.div<{ mobile: boolean }>`
-  font-size: 36px;
-  color: ${Colors.WHITE};
-  font-weight: 700;
-  text-transform: uppercase;
-  font-family: Commissioner, sans-serif;
-  z-index: 1;
-  text-align: center;
-  padding: 20px;
-  margin-top: ${(props) => (props.mobile ? 0 : -64)}px;
-`;
-
-const BannerTint = styled.div`
-  width: 100%;
-  height: 35vh;
-  position: absolute;
-  background-color: ${Colors.PRIMARY};
-  opacity: 0.75;
-`;
-
-const PanelHolder = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-`;
-
-const Panel = styled.div<{ mobile: boolean }>`
-  width: 100%;
-  max-width: 960px;
-  background-color: ${Colors.WHITE};
-  z-index: 2;
-  padding: 0 20px;
-  margin-top: ${(props) => (props.mobile ? 0 : -64)}px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
-`;
 
 const ContactItem = styled.div`
   padding: 20px 0;
@@ -67,6 +13,9 @@ const ContactItem = styled.div`
 
   &:active {
     padding: 22px 0 18px 4px;
+  }
+  &:hover {
+    text-decoration: underline;
   }
 
   transition: padding 200ms;
@@ -86,6 +35,10 @@ const ContactDescription = styled.div`
   font-weight: 500;
   font-family: Commissioner, sans-serif;
   margin-left: 5px;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const HorizontalLine = styled.div`
@@ -118,7 +71,7 @@ const contactItems = [
     title: "WhatsApp",
     description: "Chama no Zap",
     action: process.browser
-      ? () => window.open("https://instagram.com/cirklebr")
+      ? () => window.open("https://web.whatsapp.com")
       : null,
   },
   {
@@ -139,63 +92,22 @@ const contactItems = [
   },
 ];
 
-function Contato({ menu }: { menu: Menu }): JSX.Element {
-  const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
-
-  // Scroll to top when page is loaded
-  useEffect(() => {
-    if (process.browser) window.scrollTo(0, 0);
-  }, []);
-
+function Contato(): JSX.Element {
   return (
-    <>
-      <Layout containerMargin={false} menu={menu}>
+    <StaticPage title="precisa falar com a gente?" image="images/contact.jpg">
+      {contactItems.map((item, index) => (
         <>
-          <BackgroundBanner>
-            <BannerTint></BannerTint>
-            <BannerText mobile={isSmartPhone}>
-              precisa falar com a gente?
-            </BannerText>
-          </BackgroundBanner>
-          <PanelHolder>
-            <Panel mobile={isSmartPhone}>
-              {contactItems.map((item, index) => (
-                <>
-                  <ContactItem key={item.title} onClick={item.action}>
-                    <ContactIconHolder>
-                      <Icon
-                        size={32}
-                        type={item.icon}
-                        onClick={item.action}
-                      ></Icon>
-                    </ContactIconHolder>
-                    <ContactDescription>{item.description}</ContactDescription>
-                  </ContactItem>
-                  {index + 1 < contactItems.length && (
-                    <HorizontalLine></HorizontalLine>
-                  )}
-                </>
-              ))}
-            </Panel>
-          </PanelHolder>
-          <SizedBox height={isSmartPhone ? 16 : 72}></SizedBox>
+          <ContactItem key={item.title} onClick={item.action}>
+            <ContactIconHolder>
+              <Icon size={32} type={item.icon} onClick={item.action}></Icon>
+            </ContactIconHolder>
+            <ContactDescription>{item.description}</ContactDescription>
+          </ContactItem>
+          {index + 1 < contactItems.length && <HorizontalLine></HorizontalLine>}
         </>
-      </Layout>
-    </>
+      ))}
+    </StaticPage>
   );
-}
-
-export async function getStaticProps(): Promise<any> {
-  const menuUrl = `${process.env.API_ENDPOINT}/menu`;
-  const menuResult = await Axios.get(menuUrl);
-  const menu = menuResult.data;
-
-  return {
-    props: {
-      menu,
-    },
-    revalidate: 60,
-  };
 }
 
 export default Contato;

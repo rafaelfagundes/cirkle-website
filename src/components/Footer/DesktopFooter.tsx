@@ -148,17 +148,17 @@ function DesktopFooter(): JSX.Element {
           <LinksSection>
             <HeaderSection>Saiba mais</HeaderSection>
             <FooterLink>
-              <TextLink href="" color={Colors.WHITE} size={14}>
+              <TextLink href="/como-funciona" color={Colors.WHITE} size={14}>
                 Como Funciona
               </TextLink>
             </FooterLink>
             <FooterLink>
-              <TextLink href="" color={Colors.WHITE} size={14}>
+              <TextLink href="/quero-vender" color={Colors.WHITE} size={14}>
                 Quero Vender
               </TextLink>
             </FooterLink>
             <FooterLink>
-              <TextLink href="" color={Colors.WHITE} size={14}>
+              <TextLink href="/quero-comprar" color={Colors.WHITE} size={14}>
                 Quero Comprar
               </TextLink>
             </FooterLink>
@@ -168,12 +168,12 @@ function DesktopFooter(): JSX.Element {
               </TextLink>
             </FooterLink>
             <FooterLink>
-              <TextLink href="" color={Colors.WHITE} size={14}>
+              <TextLink href="/devolucao" color={Colors.WHITE} size={14}>
                 Devolução
               </TextLink>
             </FooterLink>
             <FooterLink>
-              <TextLink href="" color={Colors.WHITE} size={14}>
+              <TextLink href="/termos-de-uso" color={Colors.WHITE} size={14}>
                 Termos de Uso
               </TextLink>
             </FooterLink>
