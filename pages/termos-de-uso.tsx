@@ -1,8 +1,8 @@
 import React from "react";
-import Page from "../src/components/Page";
-import Paragraph from "../src/components/Paragraph";
-import SizedBox from "../src/components/SizedBox";
-import Title from "../src/components/Title";
+import Paragraph from "../src/components/Atoms/Paragraph";
+import SizedBox from "../src/components/Atoms/SizedBox";
+import Title from "../src/components/Atoms/Title";
+import Page from "../src/components/Templates/Page";
 
 function TermosDeUso(): JSX.Element {
   return (

@@ -1,7 +1,7 @@
 import Address from "../address/Address";
 import Payment from "../payment/Payment";
 import Product from "../product/Product";
-import { SelectItem } from "./../../components/SelectMenu";
+import { SelectItem } from "./../../components/Atoms/SelectMenu";
 import Shipping from "./CartShipping";
 
 export type Company = {

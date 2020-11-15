@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Icon from "../src/components/Icon";
-import Page from "../src/components/Page";
+import Icon from "../src/components/Atoms/Icon";
+import Page from "../src/components/Templates/Page";
 import Colors from "../src/enums/Colors";
 
 const ContactItem = styled.div`

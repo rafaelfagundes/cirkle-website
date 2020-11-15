@@ -2,11 +2,11 @@ import Axios from "axios";
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
-import Center from "../src/components/Center";
-import CustomButton from "../src/components/CustomButton";
-import Layout from "../src/components/Layout";
-import Padding from "../src/components/Padding";
-import SizedBox from "../src/components/SizedBox";
+import Center from "../src/components/Atoms/Center";
+import CustomButton from "../src/components/Atoms/CustomButton";
+import Padding from "../src/components/Atoms/Padding";
+import SizedBox from "../src/components/Atoms/SizedBox";
+import Layout from "../src/components/Templates/Layout";
 import Colors from "../src/enums/Colors";
 import Menu from "../src/modules/menu/Menu";
 

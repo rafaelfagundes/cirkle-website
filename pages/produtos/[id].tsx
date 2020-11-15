@@ -16,30 +16,32 @@ import React, { useEffect, useState } from "react";
 import ReactImageMagnify from "react-image-magnify";
 import styled from "styled-components";
 import useSWR from "swr";
-import Breadcrumbs from "../../src/components/Breadcrumbs";
-import Card from "../../src/components/Card";
-import Center from "../../src/components/Center";
-import CustomButton from "../../src/components/CustomButton";
-import FavoriteIcon from "../../src/components/FavoriteIcon";
-import Icon from "../../src/components/Icon";
-import ImageSelector from "../../src/components/ImageSelector";
-import Layout from "../../src/components/Layout";
-import MarkdownText from "../../src/components/MarkdownText";
-import MetaData, { MetaDataType } from "../../src/components/MetaData";
-import Padding from "../../src/components/Padding";
-import Price from "../../src/components/Price";
-import ProductCarousel from "../../src/components/ProductCarousel";
-import RecentItemsCarousel from "../../src/components/RecentItemsCarousel";
-import Row from "../../src/components/Row";
+import Card from "../../src/components/Atoms/Card";
+import Center from "../../src/components/Atoms/Center";
+import CustomButton from "../../src/components/Atoms/CustomButton";
+import FavoriteIcon from "../../src/components/Atoms/FavoriteIcon";
+import Icon from "../../src/components/Atoms/Icon";
+import ImageSelector from "../../src/components/Atoms/ImageSelector";
+import MarkdownText from "../../src/components/Atoms/MarkdownText";
+import Padding from "../../src/components/Atoms/Padding";
+import Price from "../../src/components/Atoms/Price";
+import Row from "../../src/components/Atoms/Row";
 import SelectMenu, {
   AssetType,
   SelectItem,
-} from "../../src/components/SelectMenu";
-import SimpleText from "../../src/components/SimpleText";
-import SizedBox from "../../src/components/SizedBox";
-import SocialShare from "../../src/components/SocialShare";
-import Subtitle from "../../src/components/Subtitle";
-import Title from "../../src/components/Title";
+} from "../../src/components/Atoms/SelectMenu";
+import SimpleText from "../../src/components/Atoms/SimpleText";
+import SizedBox from "../../src/components/Atoms/SizedBox";
+import Subtitle from "../../src/components/Atoms/Subtitle";
+import Title from "../../src/components/Atoms/Title";
+import Breadcrumbs from "../../src/components/Molecules/Breadcrumbs";
+import SocialShare from "../../src/components/Molecules/SocialShare";
+import ProductCarousel from "../../src/components/Organisms/ProductCarousel";
+import RecentItemsCarousel from "../../src/components/Organisms/RecentItemsCarousel";
+import Layout from "../../src/components/Templates/Layout";
+import MetaData, {
+  MetaDataType,
+} from "../../src/components/Templates/MetaData";
 import Colors from "../../src/enums/Colors";
 import { useAuth } from "../../src/hooks/auth/useAuth";
 import { useCart } from "../../src/hooks/cart/useCart";

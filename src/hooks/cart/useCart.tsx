@@ -4,7 +4,7 @@ import _find from "lodash/find";
 import _findIndex from "lodash/findIndex";
 import _orderBy from "lodash/orderBy";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { AssetType, SelectItem } from "../../components/SelectMenu";
+import { AssetType, SelectItem } from "../../components/Atoms/SelectMenu";
 import Address from "../../modules/address/Address";
 import Cart from "../../modules/cart/Cart";
 import Shipping from "../../modules/cart/CartShipping";

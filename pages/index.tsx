@@ -3,15 +3,15 @@ import Axios from "axios";
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import useSWR from "swr";
-import HighlightsSection from "../src/components/HighlightsSection";
-import HomeCategories from "../src/components/HomeCategories";
-import HotSectionTitle from "../src/components/HotSection/HotSectionTitle";
-import Layout from "../src/components/Layout";
-import HighlightsLoader from "../src/components/Loaders/Highlights";
-import HotProductsLoader from "../src/components/Loaders/HotProducts";
-import Padding from "../src/components/Padding";
-import PromoHeroComponent from "../src/components/PromoHero";
-import SizedBox from "../src/components/SizedBox";
+import HighlightsLoader from "../src/components/Atoms/Loaders/Highlights";
+import HotProductsLoader from "../src/components/Atoms/Loaders/HotProducts";
+import Padding from "../src/components/Atoms/Padding";
+import SizedBox from "../src/components/Atoms/SizedBox";
+import HighlightsSection from "../src/components/Organisms/HighlightsSection";
+import HomeCategories from "../src/components/Organisms/HomeCategories";
+import HotSectionTitle from "../src/components/Organisms/HotSection/HotSectionTitle";
+import PromoHeroComponent from "../src/components/Organisms/PromoHero";
+import Layout from "../src/components/Templates/Layout";
 import { MainCategory } from "../src/enums/Categories";
 import { useCart } from "../src/hooks/cart/useCart";
 import { useWishlist } from "../src/hooks/wishlist/useWishlist";
@@ -24,12 +24,15 @@ import PromoHero from "../src/modules/promoHero/PromoHero";
 import Shipping from "../src/modules/shipping/Shipping";
 import theme from "../src/theme/theme";
 
-const HotSection = dynamic(() => import("../src/components/HotSection/"), {
-  ssr: false,
-});
+const HotSection = dynamic(
+  () => import("../src/components/Organisms/HotSection"),
+  {
+    ssr: false,
+  }
+);
 
 const NewsletterSignUp = dynamic(
-  () => import("../src/components/NewsletterSignUp/"),
+  () => import("../src/components/Organisms/NewsletterSignUp"),
   {
     ssr: false,
   }
