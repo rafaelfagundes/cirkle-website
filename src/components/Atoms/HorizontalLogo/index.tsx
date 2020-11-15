@@ -9,12 +9,14 @@ const Logo = styled.img<{ width: number }>`
 function HorizontalLogo({
   light,
   width = 96,
+  ...props
 }: {
   light?: boolean;
   width?: number;
 }): JSX.Element {
   return (
     <Logo
+      {...props}
       width={width}
       src={light ? "/images/light_logo.svg" : "/images/logo.svg"}
     ></Logo>

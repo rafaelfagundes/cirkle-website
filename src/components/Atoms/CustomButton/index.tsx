@@ -86,6 +86,7 @@ function CustomButton({
   small = false,
   icon,
   noPadding = false,
+  ...props
 }: {
   id?: string;
   children?: string;
@@ -145,6 +146,7 @@ function CustomButton({
           onClick={type === "disabled" ? null : onClick}
           small={small}
           noPadding={noPadding}
+          {...props}
         >
           {!loading && (
             <TextIconHolder>
@@ -171,6 +173,7 @@ function CustomButton({
           onClick={type === "disabled" ? null : onClick}
           small={small}
           noPadding={noPadding}
+          {...props}
         >
           {!loading && (
             <TextIconHolder>
@@ -196,6 +199,7 @@ function CustomButton({
           onClick={type === "disabled" ? null : onClick}
           small={small}
           noPadding={noPadding}
+          {...props}
         >
           {!loading && (
             <TextIconHolder>
@@ -222,6 +226,7 @@ function CustomButton({
           onClick={type === "disabled" ? null : onClick}
           small={small}
           noPadding={noPadding}
+          {...props}
         >
           {!loading && (
             <TextIconHolder>
