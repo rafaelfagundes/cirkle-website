@@ -102,6 +102,7 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
       title="Lista de Desejos"
       image="images/wishlist.jpg"
       noPadding
+      maxWidth={640}
     >
       <StyledWishlist isSmartphone={isSmartphone}>
         {wishlistContext?.wishlist?.products &&

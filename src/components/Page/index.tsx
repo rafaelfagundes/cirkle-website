@@ -47,9 +47,13 @@ const PanelHolder = styled.div`
   flex-direction: row;
 `;
 
-const Panel = styled.div<{ mobile: boolean; noPadding: boolean }>`
+const Panel = styled.div<{
+  mobile: boolean;
+  noPadding: boolean;
+  maxWidth: number;
+}>`
   width: 100%;
-  max-width: 960px;
+  max-width: ${(props) => props.maxWidth}px;
   background-color: ${Colors.WHITE};
   z-index: 2;
   padding: ${(props) => (props.noPadding ? 0 : "0 20px")};
@@ -63,12 +67,14 @@ function Page({
   image,
   children,
   noPadding = false,
+  maxWidth = 960,
 }: {
   menu?: Menu;
   title: string;
   image: string;
   children: any;
   noPadding?: boolean;
+  maxWidth?: number;
 }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -85,7 +91,11 @@ function Page({
           <BannerText mobile={isSmartPhone}>{title}</BannerText>
         </BackgroundBanner>
         <PanelHolder>
-          <Panel noPadding={noPadding} mobile={isSmartPhone}>
+          <Panel
+            noPadding={noPadding}
+            mobile={isSmartPhone}
+            maxWidth={maxWidth}
+          >
             {children}
           </Panel>
         </PanelHolder>
