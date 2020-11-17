@@ -1,11 +1,21 @@
-import { useMediaQuery } from "@material-ui/core";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  makeStyles,
+  useMediaQuery,
+} from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Axios from "axios";
+import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
+import Center from "../src/components/Atoms/Center";
 import Column from "../src/components/Atoms/Column";
 import Icon from "../src/components/Atoms/Icon";
 import Row from "../src/components/Atoms/Row";
 import SizedBox from "../src/components/Atoms/SizedBox";
+import Title from "../src/components/Atoms/Title";
 import DoDontCard from "../src/components/Molecules/DoDontCard";
 import PageSection from "../src/components/Molecules/PageSection";
 import StepCard from "../src/components/Molecules/StepCard";
@@ -52,8 +62,59 @@ const Cell = styled.td<{ featured?: boolean; odd?: boolean }>`
   font-size: 16px;
 `;
 
+const CTAButton = styled.div`
+  width: 575px;
+  height: 150px;
+  background: linear-gradient(180deg, #f2653c 0%, #ea4110 100%);
+  box-shadow: 0px 0px 32px rgba(242, 101, 60, 0.35);
+  border-radius: 8px;
+  padding: 32px;
+  cursor: pointer;
+`;
+
+const ButtonPrimaryText = styled.div`
+  font-family: Commissioner, sans-serif;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 43px;
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: ${Colors.WHITE};
+  text-align: center;
+`;
+
+const ButtonSecondaryText = styled.div`
+  font-family: Commissioner, sans-serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 43px;
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: ${Colors.WHITE};
+  text-align: center;
+`;
+
 function QueroVender({ menu }: { menu: Menu }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const useStyles = makeStyles({
+    root: {
+      width: "100%",
+    },
+    heading: {
+      fontSize: theme.typography.pxToRem(15),
+      fontWeight: theme.typography.fontWeightRegular,
+    },
+    expanded: {
+      "&$expanded": {
+        margin: "0px 0",
+      },
+    },
+  });
+
+  const classes = useStyles();
 
   return (
     <Layout menu={menu} containerMargin={false}>
@@ -192,6 +253,191 @@ function QueroVender({ menu }: { menu: Menu }): JSX.Element {
               </tr>
             </tbody>
           </PriceTable>
+        </PageSection>
+        <PageSection headline="" subheadline="">
+          <Column>
+            <Center>
+              <Image
+                src="/images/wanna-sell-image.png"
+                width={484}
+                height={408}
+              ></Image>
+            </Center>
+            <CTAButton onClick={null}>
+              <Column>
+                <ButtonPrimaryText>Quero Vender</ButtonPrimaryText>
+                <ButtonSecondaryText>
+                  Mostre-me os próximos passos
+                </ButtonSecondaryText>
+              </Column>
+            </CTAButton>
+          </Column>
+        </PageSection>
+        <PageSection
+          odd
+          headline="Ainda tem dúvidas?"
+          subheadline="Sem problemas! Listamos aqui as dúvidas mais frequentes e que talvez seja a sua também"
+        >
+          <Accordion
+            square
+            expanded={true}
+            onChange={() => null}
+            classes={{ expanded: classes.expanded }}
+          >
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <Title>Amet minim mollit non deserunt ullamco est sit...</Title>
+            </AccordionSummary>
+            <AccordionDetails style={{ maxWidth: 640 }}>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Corrupti neque accusamus tempora quae, molestias necessitatibus
+                porro mollitia illo voluptatem error aliquid dolorem non sed
+                officiis sequi voluptate minus cumque deserunt!
+              </p>
+            </AccordionDetails>
+          </Accordion>
+          <SizedBox height={20}></SizedBox>
+          <Accordion
+            square
+            expanded={false}
+            onChange={() => null}
+            // classes={{ expanded: classes.expanded }}
+          >
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <Title>Amet minim mollit non deserunt ullamco est sit...</Title>
+            </AccordionSummary>
+            <AccordionDetails style={{ maxWidth: 640 }}>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Corrupti neque accusamus tempora quae, molestias necessitatibus
+                porro mollitia illo voluptatem error aliquid dolorem non sed
+                officiis sequi voluptate minus cumque deserunt!
+              </p>
+            </AccordionDetails>
+          </Accordion>
+          <SizedBox height={20}></SizedBox>
+          <Accordion
+            square
+            expanded={false}
+            onChange={() => null}
+            // classes={{ expanded: classes.expanded }}
+          >
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <Title>Amet minim mollit non deserunt ullamco est sit...</Title>
+            </AccordionSummary>
+            <AccordionDetails style={{ maxWidth: 640 }}>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Corrupti neque accusamus tempora quae, molestias necessitatibus
+                porro mollitia illo voluptatem error aliquid dolorem non sed
+                officiis sequi voluptate minus cumque deserunt!
+              </p>
+            </AccordionDetails>
+          </Accordion>
+          <SizedBox height={20}></SizedBox>
+          <Accordion
+            square
+            expanded={false}
+            onChange={() => null}
+            // classes={{ expanded: classes.expanded }}
+          >
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <Title>Amet minim mollit non deserunt ullamco est sit...</Title>
+            </AccordionSummary>
+            <AccordionDetails style={{ maxWidth: 640 }}>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Corrupti neque accusamus tempora quae, molestias necessitatibus
+                porro mollitia illo voluptatem error aliquid dolorem non sed
+                officiis sequi voluptate minus cumque deserunt!
+              </p>
+            </AccordionDetails>
+          </Accordion>
+          <SizedBox height={20}></SizedBox>
+          <Accordion
+            square
+            expanded={false}
+            onChange={() => null}
+            // classes={{ expanded: classes.expanded }}
+          >
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <Title>Amet minim mollit non deserunt ullamco est sit...</Title>
+            </AccordionSummary>
+            <AccordionDetails style={{ maxWidth: 640 }}>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Corrupti neque accusamus tempora quae, molestias necessitatibus
+                porro mollitia illo voluptatem error aliquid dolorem non sed
+                officiis sequi voluptate minus cumque deserunt!
+              </p>
+            </AccordionDetails>
+          </Accordion>
+          <SizedBox height={20}></SizedBox>
+          <Accordion
+            square
+            expanded={false}
+            onChange={() => null}
+            // classes={{ expanded: classes.expanded }}
+          >
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <Title>Amet minim mollit non deserunt ullamco est sit...</Title>
+            </AccordionSummary>
+            <AccordionDetails style={{ maxWidth: 640 }}>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Corrupti neque accusamus tempora quae, molestias necessitatibus
+                porro mollitia illo voluptatem error aliquid dolorem non sed
+                officiis sequi voluptate minus cumque deserunt!
+              </p>
+            </AccordionDetails>
+          </Accordion>
+          <SizedBox height={20}></SizedBox>
+          <Accordion
+            square
+            expanded={false}
+            onChange={() => null}
+            // classes={{ expanded: classes.expanded }}
+          >
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+              expandIcon={<ExpandMoreIcon />}
+            >
+              <Title>Amet minim mollit non deserunt ullamco est sit...</Title>
+            </AccordionSummary>
+            <AccordionDetails style={{ maxWidth: 640 }}>
+              <p>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Corrupti neque accusamus tempora quae, molestias necessitatibus
+                porro mollitia illo voluptatem error aliquid dolorem non sed
+                officiis sequi voluptate minus cumque deserunt!
+              </p>
+            </AccordionDetails>
+          </Accordion>
         </PageSection>
       </>
     </Layout>
