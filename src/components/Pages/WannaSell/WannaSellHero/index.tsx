@@ -17,7 +17,6 @@ const Headlines = styled.div`
   position: absolute;
   top: 20%;
   right: 0;
-  /* background-color: #f00; */
   width: 45%;
   height: 55%;
 `;
@@ -43,7 +42,6 @@ const StyledHorizontalLogo = styled(HorizontalLogo)`
 
 const Headline1 = styled.div`
   position: absolute;
-  /* top: 10vh; */
   margin-top: 20%;
   font-family: Commissioner;
   font-style: normal;
@@ -96,36 +94,38 @@ function WannaSellHero(): JSX.Element {
   };
 
   return (
-    <Hero>
-      <HeroBackground
-        src="/images/wanna-sell-hero-bg.jpg"
-        alt="Background Image"
-        width={1920}
-        height={1080}
-        quality={100}
-      ></HeroBackground>
-      <Headlines>
-        <HeadlinesContent>
-          <StyledHorizontalLogo width={getLogo()}></StyledHorizontalLogo>
-          <Headline1>UMA NOVA HISTÓRIA</Headline1>
-          <Headline2>PARA SUAS ROUPAS</Headline2>
-          <Subheadline>
-            Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-            sint. Velit officia consequat duis enim velit mollit. Exercitation
-            veniam consequat sunt nostrud amet.
-          </Subheadline>
-          <StyledCustomButton
-            variant="contained"
-            type="success"
-            onClick={null}
-            width={200}
-          >
-            Quero Vender
-          </StyledCustomButton>
-        </HeadlinesContent>
-        <HeadlineBg></HeadlineBg>
-      </Headlines>
-    </Hero>
+    <>
+      <Hero>
+        <HeroBackground
+          src="/images/wanna-sell-hero-bg.jpg"
+          alt="Background Image"
+          width={1920}
+          height={1080}
+          quality={100}
+        ></HeroBackground>
+        <Headlines>
+          <HeadlinesContent>
+            <StyledHorizontalLogo width={getLogo()}></StyledHorizontalLogo>
+            <Headline1>UMA NOVA HISTÓRIA</Headline1>
+            <Headline2>PARA SUAS ROUPAS</Headline2>
+            <Subheadline>
+              Amet minim mollit non deserunt ullamco est sit aliqua dolor do
+              amet sint. Velit officia consequat duis enim velit mollit.
+              Exercitation veniam consequat sunt nostrud amet.
+            </Subheadline>
+            <StyledCustomButton
+              variant="contained"
+              type="success"
+              onClick={null}
+              width={200}
+            >
+              Quero Vender
+            </StyledCustomButton>
+          </HeadlinesContent>
+          <HeadlineBg></HeadlineBg>
+        </Headlines>
+      </Hero>
+    </>
   );
 }
 

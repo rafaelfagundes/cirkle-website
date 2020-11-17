@@ -13,11 +13,16 @@ const StyledRow = styled.div<{ spaceBetween: boolean }>`
 function Row({
   children,
   spaceBetween = false,
+  ...props
 }: {
   children: Array<JSX.Element>;
   spaceBetween?: boolean;
 }): JSX.Element {
-  return <StyledRow spaceBetween={spaceBetween}>{children}</StyledRow>;
+  return (
+    <StyledRow {...props} spaceBetween={spaceBetween}>
+      {children}
+    </StyledRow>
+  );
 }
 
 export default Row;
