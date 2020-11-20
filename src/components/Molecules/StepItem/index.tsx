@@ -21,6 +21,7 @@ const StepItemBg = styled.div`
   height: 110px;
   background-color: ${Colors.WHITE};
   transform: matrix(0.96, 0, -0.31, 1, 0, 0);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
 `;
 
 const Title = styled.h3`

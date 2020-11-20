@@ -3,7 +3,6 @@ import React from "react";
 import styled from "styled-components";
 import Colors from "../../../../enums/Colors";
 import CustomButton from "../../../Atoms/CustomButton";
-import HorizontalLogo from "../../../Atoms/HorizontalLogo";
 
 const Hero = styled.div`
   position: relative;
@@ -15,84 +14,92 @@ const HeroBackground = styled(Image)`
 
 const Headlines = styled.div`
   position: absolute;
-  top: 20%;
+  top: 0;
   right: 0;
-  width: 45%;
-  height: 55%;
+  width: 55%;
+  height: 100%;
+  margin-right: -30px;
 `;
 
 const HeadlinesContent = styled.div`
   position: relative;
-  padding: 0 3vw;
+  padding: 0 5vw;
 `;
 
 const HeadlineBg = styled.div`
   width: 100%;
   height: 100%;
-  background: #fff;
-  transform: matrix(-1, 0.12, 0, 0.99, 0, 0);
-`;
-
-const StyledHorizontalLogo = styled(HorizontalLogo)`
-  position: absolute;
-  top: 20px;
-  right: 40px;
-  z-index: 1;
+  background: rgba(255, 255, 255, 0.9);
+  transform: matrix(-0.99, 0, -0.12, 1, 0, 0);
 `;
 
 const Headline1 = styled.div`
   position: absolute;
-  margin-top: 20%;
+  margin-top: 15px;
   font-family: Commissioner;
   font-style: normal;
   font-weight: 700;
-  font-size: 3.3vw;
+  font-size: 6vw;
   line-height: 45px;
   text-transform: capitalize;
   color: ${Colors.PRIMARY};
   z-index: 1;
+  margin-left: 12px;
 `;
 
 const Headline2 = styled.div`
   position: absolute;
-  margin-top: 28%;
+  margin-top: 40px;
   font-family: Commissioner, sans-serif;
   font-style: normal;
   font-weight: 700;
-  font-size: 3.3vw;
+  font-size: 6vw;
+
   line-height: 45px;
   text-transform: capitalize;
   color: ${Colors.PRIMARY};
   z-index: 1;
+  margin-left: 9px;
 `;
 
-const Subheadline = styled.div`
+const Headline3 = styled.div`
   position: absolute;
+  margin-top: 65px;
   font-family: Commissioner, sans-serif;
-  font-weight: bold;
-  font-size: 1.3vw;
-  line-height: 142%;
-  color: ${Colors.SECONDARY};
-  margin-top: 38%;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 6vw;
+
+  line-height: 45px;
+  text-transform: capitalize;
+  color: ${Colors.PRIMARY};
   z-index: 1;
-  padding-right: 20px;
+  margin-left: 6px;
+`;
+
+const Headline4 = styled.div`
+  position: absolute;
+  margin-top: 90px;
+  font-family: Commissioner, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 6vw;
+
+  line-height: 45px;
+  text-transform: capitalize;
+  color: ${Colors.PRIMARY};
+  z-index: 1;
+  margin-left: 3px;
 `;
 
 const StyledCustomButton = styled(CustomButton)`
   position: absolute;
-  margin-top: 54%;
+  margin-top: 145px;
+  margin-left: -7px;
   z-index: 1;
 `;
 
-function WannaSellHero(): JSX.Element {
-  const getLogo = () => {
-    if (process.browser) {
-      return window.innerWidth * 0.140625;
-    } else {
-      return 180;
-    }
-  };
-
+function WannaSellMobileHero(): JSX.Element {
   return (
     <>
       <Hero>
@@ -101,23 +108,19 @@ function WannaSellHero(): JSX.Element {
           alt="Background Image"
           width={1920}
           height={1080}
-          quality={100}
+          quality={75}
         ></HeroBackground>
         <Headlines>
           <HeadlinesContent>
-            <StyledHorizontalLogo width={getLogo()}></StyledHorizontalLogo>
-            <Headline1>UMA NOVA HISTÓRIA</Headline1>
-            <Headline2>PARA SUAS ROUPAS</Headline2>
-            <Subheadline>
-              Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-              amet sint. Velit officia consequat duis enim velit mollit.
-              Exercitation veniam consequat sunt nostrud amet.
-            </Subheadline>
+            <Headline1>UMA NOVA</Headline1>
+            <Headline2>HISTÓRIA</Headline2>
+            <Headline3>PARA SUAS</Headline3>
+            <Headline4>ROUPAS</Headline4>
             <StyledCustomButton
               variant="contained"
               type="success"
               onClick={null}
-              width={200}
+              width={150}
             >
               Quero Vender
             </StyledCustomButton>
@@ -129,4 +132,4 @@ function WannaSellHero(): JSX.Element {
   );
 }
 
-export default WannaSellHero;
+export default WannaSellMobileHero;

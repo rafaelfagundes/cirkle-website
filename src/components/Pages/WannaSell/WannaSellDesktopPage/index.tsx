@@ -3,7 +3,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   makeStyles,
-  useMediaQuery,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Image from "next/image";
@@ -21,7 +20,7 @@ import DoDontCard from "../../../Molecules/DoDontCard";
 import PageSection from "../../../Molecules/PageSection";
 import StepCard from "../../../Molecules/StepCard";
 import StepItem from "../../../Molecules/StepItem";
-import WannaSellHero from "../WannaSellHero";
+import WannaSellDesktopHero from "../WannaSellDesktopHero";
 
 const PriceTable = styled.table`
   background-color: ${Colors.WHITE};
@@ -93,9 +92,7 @@ const ButtonSecondaryText = styled.div`
   text-align: center;
 `;
 
-function WannaSell(): JSX.Element {
-  const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
-
+function WannaSellDesktop(): JSX.Element {
   const useStyles = makeStyles({
     root: {
       width: "100%",
@@ -115,7 +112,7 @@ function WannaSell(): JSX.Element {
 
   return (
     <>
-      <>{!isSmartPhone && <WannaSellHero></WannaSellHero>}</>
+      <WannaSellDesktopHero></WannaSellDesktopHero>
       <PageSection
         headline="Como Funciona"
         subheadline="Veja como é simples fazer a moda circular"
@@ -208,7 +205,7 @@ function WannaSell(): JSX.Element {
       </PageSection>
       <PageSection
         headline="Quanto eu posso receber?"
-        subheadline="Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit"
+        subheadline="Confira o valor da comissão e quanto você recebe"
         odd
       >
         <PriceTable>
@@ -245,7 +242,10 @@ function WannaSell(): JSX.Element {
           </tbody>
         </PriceTable>
       </PageSection>
-      <PageSection headline="" subheadline="">
+      <PageSection
+        headline="Agora virei expert"
+        subheadline="E quero vender tudo que não uso mais"
+      >
         <Column>
           <Center>
             <Image
@@ -434,4 +434,4 @@ function WannaSell(): JSX.Element {
   );
 }
 
-export default WannaSell;
+export default WannaSellDesktop;

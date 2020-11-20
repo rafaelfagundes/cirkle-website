@@ -1,13 +1,21 @@
+import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
 import React from "react";
-import WannaSell from "../src/components/Pages/WannaSell/WannaSellPage";
+import WannaSellDesktop from "../src/components/Pages/WannaSell/WannaSellDesktopPage";
+import WannaSellMobile from "../src/components/Pages/WannaSell/WannaSellMobilePage";
 import Layout from "../src/components/Templates/Layout";
 import Menu from "../src/modules/menu/Menu";
+import theme from "../src/theme/theme";
 
 function QueroVender({ menu }: { menu: Menu }): JSX.Element {
+  const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Layout menu={menu} containerMargin={false}>
-      <WannaSell></WannaSell>
+      <>
+        {!isSmartPhone && <WannaSellDesktop></WannaSellDesktop>}
+        {isSmartPhone && <WannaSellMobile></WannaSellMobile>}
+      </>
     </Layout>
   );
 }
