@@ -108,23 +108,6 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
         {wishlistContext?.wishlist?.products &&
           wishlistContext.wishlist.products.length > 0 && (
             <>
-              {/* {!isSmartphone && (
-                <Items>
-                  {wishlistContext?.wishlist?.products &&
-                    wishlistContext.wishlist.products.map((item, index) => (
-                      <React.Fragment key={index}>
-                        <ProductItem
-                          data={item}
-                          removeButton={true}
-                        ></ProductItem>
-                        {(index + 1) % 4 !== 0 && (
-                          <SizedBox width={16}></SizedBox>
-                        )}
-                      </React.Fragment>
-                    ))}
-                </Items>
-              )} */}
-
               {!isSmartphone && (
                 <CartItems>
                   {wishlistContext?.wishlist?.products &&
@@ -149,13 +132,6 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
                                   <Title size={14}>{item.title}</Title>
                                 </Link>
                                 <SizedBox width={16}></SizedBox>
-                                {/* <Icon
-                                  size={16}
-                                  type="delete"
-                                  onClick={() =>
-                                    wishlistContext.removeFromWishlist(item.id)
-                                  }
-                                ></Icon> */}
                                 <CustomButton
                                   width={70}
                                   type="delete"
