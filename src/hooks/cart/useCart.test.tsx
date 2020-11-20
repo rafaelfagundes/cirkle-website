@@ -38,7 +38,6 @@ const product: Product = {
   cartColor: "Gray",
   cartQty: 1,
   cartSize: "Max",
-  _id: "bc2c40e1843d42c09463c6b2e532d834",
 };
 
 const product2: Product = {
@@ -71,7 +70,6 @@ const product2: Product = {
   cartColor: "White",
   cartQty: 1,
   cartSize: "Normal",
-  _id: "c0155ff2d60d47189cc2e08369e05bb5",
 };
 
 test("should add an item to cart", () => {
