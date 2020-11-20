@@ -13,7 +13,7 @@ const BackgroundBanner = styled.div<{ bgImage: string; mobile: boolean }>`
   background-position: center;
   background-size: cover;
   width: 100%;
-  height: ${(props) => (props.mobile ? "25vh" : "35vh")};
+  height: ${(props) => (props.mobile ? 20 : 25)}vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,7 +34,7 @@ const BannerText = styled.div<{ mobile: boolean }>`
 
 const BannerTint = styled.div<{ mobile: boolean }>`
   width: 100%;
-  height: ${(props) => (props.mobile ? "25vh" : "35vh")};
+  height: ${(props) => (props.mobile ? 20 : 25)}vh;
   position: absolute;
   background-color: ${Colors.PRIMARY};
   opacity: 0.75;
