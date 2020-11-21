@@ -53,11 +53,14 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
   const cartContext = useCart();
   const authContext = useAuth();
 
-  const { data: dataWishlist } = useSWR("/wishlists", {
-    shouldRetryOnError: true,
-    errorRetryInterval: 500,
-    errorRetryCount: 10,
-  });
+  const { data: dataWishlist } = useSWR(
+    authContext.user ? "/wishlists" : null,
+    {
+      shouldRetryOnError: true,
+      errorRetryInterval: 500,
+      errorRetryCount: 10,
+    }
+  );
 
   if (dataWishlist) {
     if (!wishlistContext.wishlist) {

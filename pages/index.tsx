@@ -13,6 +13,7 @@ import HotSectionTitle from "../src/components/Organisms/HotSection/HotSectionTi
 import PromoHeroComponent from "../src/components/Organisms/PromoHero";
 import Layout from "../src/components/Templates/Layout";
 import { MainCategory } from "../src/enums/Categories";
+import { useAuth } from "../src/hooks/auth/useAuth";
 import { useCart } from "../src/hooks/cart/useCart";
 import { useWishlist } from "../src/hooks/wishlist/useWishlist";
 import Banner from "../src/modules/banner/Banner";
@@ -51,12 +52,16 @@ function Home(props: HomeProps): JSX.Element {
   const cartContext = useCart();
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const wishlistContext = useWishlist();
+  const authContext = useAuth();
 
-  const { data: dataWishlist } = useSWR("/wishlists", {
-    shouldRetryOnError: true,
-    errorRetryInterval: 500,
-    errorRetryCount: 10,
-  });
+  const { data: dataWishlist } = useSWR(
+    authContext.user ? "/wishlists" : null,
+    {
+      shouldRetryOnError: true,
+      errorRetryInterval: 500,
+      errorRetryCount: 10,
+    }
+  );
 
   if (dataWishlist) {
     if (!wishlistContext.wishlist) {
