@@ -2,31 +2,23 @@ import { Grid, useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import useSWR from "swr";
 import Card from "../src/components/Atoms/Card";
-import Center from "../src/components/Atoms/Center";
 import CheckBoxWithLabel from "../src/components/Atoms/CheckboxWithLabel";
 import Column from "../src/components/Atoms/Column";
 import CustomButton from "../src/components/Atoms/CustomButton";
 import CustomTextField from "../src/components/Atoms/CustomTextField";
-import LinkButton from "../src/components/Atoms/LinkButton";
-import LoadingAnimation from "../src/components/Atoms/LoadingAnimation";
 import Padding from "../src/components/Atoms/Padding";
 import PaymentType from "../src/components/Atoms/PaymentType";
-import SelectMenu, {
-  AssetType,
-  SelectItem,
-} from "../src/components/Atoms/SelectMenu";
+import SelectMenu, { SelectItem } from "../src/components/Atoms/SelectMenu";
 import SimpleText from "../src/components/Atoms/SimpleText";
 import SizedBox from "../src/components/Atoms/SizedBox";
+import Subtitle from "../src/components/Atoms/Subtitle";
 import Title from "../src/components/Atoms/Title";
 import CartItem from "../src/components/Molecules/CartItem";
 import FreeDeliveryMeter from "../src/components/Molecules/FreeShippingMeter";
 import EmptyPage from "../src/components/Templates/EmptyPage";
 import Layout from "../src/components/Templates/Layout";
-import { useAuth } from "../src/hooks/auth/useAuth";
 import { useCart } from "../src/hooks/cart/useCart";
-import Address from "../src/modules/address/Address";
 import Menu from "../src/modules/menu/Menu";
 import theme from "../src/theme/theme";
 import {
@@ -51,14 +43,6 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
 
   const [hasCoupon, setHasCoupon] = useState(false);
 
-  const [showCEPField, setShowCEPField] = useState(false);
-
-  const authContext = useAuth();
-  const { data: addressData, error } = useSWR("/addresses", {
-    initialData: authContext?.user?.addresses,
-  });
-  if (error) console.log("Address loading error", error);
-
   // Scroll to top when page is loaded
   useEffect(() => {
     if (process.browser) window.scrollTo(0, 0);
@@ -69,15 +53,19 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
   };
 
   const _getShippingValue = () => {
+    const shippingValue = cartContext.cart.shippingList.filter(
+      (item) => item.selected
+    )[0]?.secondaryValue;
+
     if (cartContext.cart.freeShipping) {
       if (cartContext.cart.subtotal < cartContext.cart.freeShippingValue) {
-        if (cartContext.cart.shipping?.value) {
+        if (shippingValue) {
           return (
             <Value>
               {new Intl.NumberFormat("pt-BR", {
                 style: "currency",
                 currency: "BRL",
-              }).format(cartContext.cart.shipping?.value)}
+              }).format(shippingValue)}
             </Value>
           );
         } else {
@@ -87,13 +75,13 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
         return <Value>GRÁTIS</Value>;
       }
     } else {
-      if (cartContext.cart.shipping?.value) {
+      if (shippingValue) {
         return (
           <Value>
             {new Intl.NumberFormat("pt-BR", {
               style: "currency",
               currency: "BRL",
-            }).format(cartContext.cart.shipping?.value || 0)}
+            }).format(shippingValue)}
           </Value>
         );
       } else {
@@ -113,7 +101,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
     }
   };
 
-  const _showFreeDeliveryMeter = () => {
+  const _isShippingPaid = () => {
     if (cartContext.cart.freeShipping) {
       if (cartContext.cart.subtotal < cartContext.cart.freeShippingValue) {
         return true;
@@ -124,56 +112,11 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
     }
   };
 
-  const _showShippingCEPField = () => {
-    if (!authContext.user) return true;
-    return showCEPField;
-  };
-
-  const _showAddressList = () => {
-    if (!authContext.user) return false;
-    return !showCEPField;
-  };
-
   const setShippingList = (list: Array<SelectItem>) => {
     cartContext.setShippingList(list);
   };
 
-  const setAddress = (items: Array<SelectItem>) => {
-    const selectedAddress = items.find((item: SelectItem) => item.selected);
-
-    if (selectedAddress) {
-      const address = addressData.find(
-        (item: Address) => item.postalCode === selectedAddress.value
-      );
-
-      cartContext.setAddress(address);
-    }
-  };
-
-  const getUserAddresses = () => {
-    const finalItems: Array<SelectItem> = [];
-    addressData?.forEach((address: Address) => {
-      let selectedAddress = false;
-
-      if (address.postalCode === cartContext.cart.address?.postalCode) {
-        selectedAddress = true;
-      }
-
-      finalItems.push({
-        assetType: AssetType.NONE,
-        selected: selectedAddress,
-        text: `${address.street}, ${address.number}`,
-        value: address.postalCode,
-        secondaryText: `${address.city} - ${address.state}`,
-      });
-    });
-
-    return finalItems;
-  };
-
   const setPostalCode = () => {
-    console.log("postalCode", postalCode.current.children[0].value);
-
     cartContext.setShipping({
       id: null,
       postalCode: postalCode.current.children[0].value,
@@ -224,21 +167,12 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                       <Label>Frete</Label>
                       {_getShippingValue()}
                     </Row>
-                    {_showAddressList() && (
+                    {_isShippingPaid() && (
                       <>
-                        <SizedBox height={14}></SizedBox>
-                        <SelectMenu
-                          items={getUserAddresses()}
-                          setSelected={setAddress}
-                          title="Endereços Cadastrados"
-                          placeholder="Selecione o endereço cadastrado"
-                          errorText=""
-                        ></SelectMenu>
-                        <SizedBox height={8}></SizedBox>
-                      </>
-                    )}
-                    {_showShippingCEPField() && (
-                      <>
+                        <SizedBox height={16}></SizedBox>
+                        <Subtitle size={14} bold>
+                          Simular Frete
+                        </Subtitle>
                         <SizedBox height={16}></SizedBox>
                         <Row spaceBetween>
                           <CustomTextField
@@ -261,16 +195,6 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                       </>
                     )}
 
-                    {authContext.user && (
-                      <LinkButton
-                        onClick={() => setShowCEPField(!showCEPField)}
-                      >
-                        {showCEPField
-                          ? "Mostrar endereços cadastrados"
-                          : "Calcular por CEP"}
-                      </LinkButton>
-                    )}
-
                     {_showShippingSelect() && (
                       <>
                         {!cartContext.cart.loadingShipping &&
@@ -286,22 +210,10 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                               ></SelectMenu>
                             </>
                           )}
-                        {cartContext.cart.loadingShipping && (
-                          <>
-                            <SizedBox height={16}></SizedBox>
-                            <Center>
-                              <LoadingAnimation
-                                color
-                                size={48}
-                              ></LoadingAnimation>
-                            </Center>
-                            <SizedBox height={16}></SizedBox>
-                          </>
-                        )}
                       </>
                     )}
                     <SizedBox height={16}></SizedBox>
-                    {_showFreeDeliveryMeter() && (
+                    {_isShippingPaid() && (
                       <>
                         <FreeDeliveryMeter
                           current={cartContext.cart.subtotal}

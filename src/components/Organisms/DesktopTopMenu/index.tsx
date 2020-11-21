@@ -179,7 +179,7 @@ const SideIcons = styled.div<{ isLogged: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: ${(props) => (props.isLogged ? "174px" : "104px")};
+  width: ${(props) => (props.isLogged ? "174px" : "148px")};
 `;
 
 const LogoHolder = styled.div`
@@ -207,7 +207,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchBarFocused, setSearchBarFocused] = useState(false);
 
-  const auth = useAuth();
+  const authContext = useAuth();
 
   useEffect(() => {
     if (data) {
@@ -306,11 +306,11 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
             <Icon type="search"></Icon>
           </StyledSearchBar>
           <SizedBox width={22}></SizedBox>
-          <SideIcons isLogged={auth.user !== null}>
+          <SideIcons isLogged={authContext.user !== null}>
             <UserProfileMenuItem
-              isLogged={auth.user !== null}
+              isLogged={authContext.user !== null}
             ></UserProfileMenuItem>
-            {auth.user && <FavoriteMenuItem></FavoriteMenuItem>}
+            {authContext.user && <FavoriteMenuItem></FavoriteMenuItem>}
             <DropdownCart></DropdownCart>
           </SideIcons>
         </Top>

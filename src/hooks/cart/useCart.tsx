@@ -66,7 +66,9 @@ function useCartProvider() {
     const subtotal = newCart.items.reduce((sum, item) => {
       return sum + item.price * item.cartQty;
     }, 0);
-    const shippingValue = newCart?.shipping ? newCart?.shipping.value : 0;
+
+    const shippingValue =
+      newCart.shippingList.filter((o) => o.selected)[0]?.secondaryValue || 0;
 
     let total = 0;
     if (newCart.freeShipping) {
@@ -130,18 +132,9 @@ function useCartProvider() {
   };
 
   const setShipping = (shipping: Shipping) => {
-    console.log("setShipping -> setShipping", shipping);
     const _cart = _cloneDeep(cart);
-    _cart.address = {
-      city: "",
-      id: "",
-      neighborhood: "",
-      number: 0,
-      state: "",
-      street: "",
-      mainAddress: true,
-      postalCode: shipping.postalCode,
-    };
+
+    _cart.shipping = shipping;
 
     const { subtotal, total } = calculateValues(_cart);
     _cart.total = total;
@@ -218,6 +211,11 @@ function useCartProvider() {
   const updateShipping = async (value: string) => {
     console.log("-> Atualizando fretes:", value);
 
+    if (!Axios.defaults.headers.common["Authorization"]) {
+      console.error("Não tem token de autorização");
+      return;
+    }
+
     const _cart = _cloneDeep(cart);
     _cart.loadingShipping = true;
     setCart(_cart);
@@ -227,8 +225,8 @@ function useCartProvider() {
     }
 
     let postalCode = null;
-    if (cart?.address?.postalCode) {
-      postalCode = cart?.address?.postalCode.replace("-", "");
+    if (cart?.shipping?.postalCode) {
+      postalCode = cart?.shipping?.postalCode.replace("-", "");
     } else {
       return;
     }
@@ -277,7 +275,7 @@ function useCartProvider() {
 
       setShippingList(_shippingList);
     } catch (error) {
-      console.log("_calculateShipping -> error", error);
+      console.dir(error);
     }
   };
 
@@ -286,10 +284,10 @@ function useCartProvider() {
   }, [cart]);
 
   useEffect(() => {
-    if (cart?.address?.postalCode) {
+    if (cart?.shipping?.postalCode) {
       updateShipping("postalcode");
     }
-  }, [cart.address?.postalCode]);
+  }, [cart.shipping?.postalCode]);
 
   useEffect(() => {
     if (cart?.items?.length > 0) {
