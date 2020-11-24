@@ -125,7 +125,7 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
                           >
                             <CartItemImage
                               image={cloudinaryImage(item.image, 90)}
-                              size={window.innerWidth * 0.07}
+                              size={90}
                             ></CartItemImage>
                           </ImagePrice>
                           <SpaceBetweenColumn>

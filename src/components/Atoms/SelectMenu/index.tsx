@@ -102,10 +102,11 @@ const MenuAssetImage = styled.div<{ image: string; size?: number }>`
   margin-left: 6px;
 `;
 
-const ShippingCheckBox = styled.div<{ selected: boolean }>`
+const ShippingCheckBox = styled.div<{ selected: boolean; hasImage: boolean }>`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: ${(props) =>
+    props.hasImage ? "space-between" : "flex-start"};
   width: 100%;
   cursor: pointer;
   background-color: ${(props) => (props.selected ? "#F5F5F5" : "transparent")};
@@ -223,13 +224,23 @@ function SelectMenu({
               <ShippingCheckBox
                 key={index}
                 onClick={() => _setSelected(item)}
+                hasImage={item.assetValue !== undefined}
                 selected={item.selected}
               >
+                {!item.assetValue && (
+                  <RadioButton
+                    onClick={() => _setSelected(item)}
+                    value={item.selected}
+                  ></RadioButton>
+                )}
                 <ImageText>
-                  <MenuAssetImage
-                    image={item.assetValue}
-                    size={item.secondaryText ? 56 : 28}
-                  ></MenuAssetImage>
+                  {!item.assetValue && <SizedBox width={10}></SizedBox>}
+                  {item.assetValue && (
+                    <MenuAssetImage
+                      image={item.assetValue}
+                      size={item.secondaryText ? 56 : 28}
+                    ></MenuAssetImage>
+                  )}
                   <div>
                     <SimpleText size={0.9}>{item.text}</SimpleText>
                     {item.secondaryText && (
@@ -240,10 +251,12 @@ function SelectMenu({
                     )}
                   </div>
                 </ImageText>
-                <RadioButton
-                  onClick={() => _setSelected(item)}
-                  value={item.selected}
-                ></RadioButton>
+                {item.assetValue && (
+                  <RadioButton
+                    onClick={() => _setSelected(item)}
+                    value={item.selected}
+                  ></RadioButton>
+                )}
               </ShippingCheckBox>
             ))}
           </ShippingList>

@@ -52,6 +52,10 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
     typeof window !== "undefined" && router.push("/");
   };
 
+  const _goTo = (route: string) => {
+    typeof window !== "undefined" && router.push(route);
+  };
+
   const _getShippingValue = () => {
     const shippingValue = cartContext.cart.shippingList.filter(
       (item) => item.selected
@@ -237,7 +241,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                         width={340}
                         variant="contained"
                         type="success"
-                        onClick={null}
+                        onClick={() => _goTo("/comprar/envio")}
                       >
                         Comprar
                       </CustomButton>
