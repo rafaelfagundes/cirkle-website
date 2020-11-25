@@ -102,7 +102,7 @@ function AddressAndShipping(): JSX.Element {
       const _addresses: Array<SelectItem> = data.map((item: Address) => ({
         text: `${item.street}, ${item.number} - ${item.neighborhood}`,
         value: item.id,
-        selected: false,
+        selected: item.mainAddress,
         assetType: AssetType.NONE,
         secondaryValue: item.postalCode,
         secondaryText: `${item.city} - ${item.state}`,
@@ -215,6 +215,7 @@ function AddressAndShipping(): JSX.Element {
     <LastMilePage breadcrumbs={breadcrumbs}>
       <ColumnsOrNot>
         <AddressCol isDesktop={!isSmartPhone}>
+          <SizedBox height={10}></SizedBox>
           <Title>Endereço de Entrega</Title>
           {addresses && addresses.length > 0 && (
             <>
@@ -311,6 +312,7 @@ function AddressAndShipping(): JSX.Element {
           )}
         </AddressCol>
         <ShippingCol isDesktop={!isSmartPhone}>
+          <SizedBox height={10}></SizedBox>
           <Title>Frete</Title>
           <SizedBox height={20}></SizedBox>
 

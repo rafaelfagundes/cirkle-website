@@ -3226,6 +3226,13 @@
     "@types/react" "*"
     "@types/reactcss" "*"
 
+"@types/react-credit-cards@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@types/react-credit-cards/-/react-credit-cards-0.8.0.tgz#f09cc54ffe60715aedae25a79bd56d2f13cdad8d"
+  integrity sha512-PqDipPUMDf8LEqjsoFAxPNrkk9xIEoKL/qCWmvdldgsjMVS2uQjbkyv9cEavdumxsSswP5Uo5Mb1OxyeV5udjQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-datepicker@^3.1.1":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@types/react-datepicker/-/react-datepicker-3.1.1.tgz#bbb5e4561f657ca8e3d6829dd99b91a98c0bb74c"
@@ -3267,6 +3274,13 @@
   version "16.9.3"
   resolved "https://registry.yarnpkg.com/@types/react-test-renderer/-/react-test-renderer-16.9.3.tgz#96bab1860904366f4e848b739ba0e2f67bcae87e"
   integrity sha512-wJ7IlN5NI82XMLOyHSa+cNN4Z0I+8/YaLl04uDgcZ+W+ExWCmCiVTLT/7fRNqzy4OhStZcUwIqLNF7q+AdW43Q==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-text-mask@^5.4.6":
+  version "5.4.6"
+  resolved "https://registry.yarnpkg.com/@types/react-text-mask/-/react-text-mask-5.4.6.tgz#3a81e9de472beb939038e78cb16d737ae94ba14a"
+  integrity sha512-0KkER9oXZY/v1x8aoMTHwANlWnKT5tnmV7Zz+g81gBvcHRtcIHotcpY4KgWRwx0T5JMcsYmEh7wGOz0lwdONew==
   dependencies:
     "@types/react" "*"
 
@@ -12568,6 +12582,13 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
+payment@^2.3.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/payment/-/payment-2.4.0.tgz#e9d81de364fa919633bae71829808ac1236da9f8"
+  integrity sha512-FjVkqu1GW0epmWRuA7853cfEdjZx61z1vKagcvfvKWeXwEuUlOKr2nkdrCjue5qJWNSzj235pidaK3GsCbY84A==
+  dependencies:
+    qj "~2.0.0"
+
 pbkdf2@^3.0.3:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/pbkdf2/-/pbkdf2-3.1.1.tgz#cb8724b0fada984596856d1a6ebafd3584654b94"
@@ -13136,6 +13157,11 @@ q@^1.1.2:
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
+qj@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/qj/-/qj-2.0.0.tgz#054dd3b75ce018728d23a0605f030dfda0bd158a"
+  integrity sha1-BU3Tt1zgGHKNI6BgXwMN/aC9FYo=
+
 qs@6.7.0:
   version "6.7.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
@@ -13283,6 +13309,13 @@ react-content-loader@^5.1.0:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/react-content-loader/-/react-content-loader-5.1.2.tgz#75dcff30f2651c166c21433484081e7e70b44b6a"
   integrity sha512-Kr4wWisiL0qcdbzVWZx/puyCfTP1PiTTtR7N4B7mikTeY2wf5TMgMykUQyaEUW422IDUU9VJWfewSm9hIRwTiw==
+
+react-credit-cards@^0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/react-credit-cards/-/react-credit-cards-0.8.3.tgz#608a8ee8bf3a88857fc83023ffba1ad536ba8c7e"
+  integrity sha512-88XJErkkdDjeFevOxfWYV2dUs4ddNNXJMIgutqTlUH2pYfcaDeFv9MXNGCcJKvBv4+6GEnxbCToymNRNbEt/uw==
+  dependencies:
+    payment "^2.3.0"
 
 react-cursor-position@2.5.3:
   version "2.5.3"

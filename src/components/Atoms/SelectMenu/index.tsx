@@ -228,10 +228,13 @@ function SelectMenu({
                 selected={item.selected}
               >
                 {!item.assetValue && (
-                  <RadioButton
-                    onClick={() => _setSelected(item)}
-                    value={item.selected}
-                  ></RadioButton>
+                  <>
+                    <SizedBox width={10}></SizedBox>
+                    <RadioButton
+                      onClick={() => _setSelected(item)}
+                      value={item.selected}
+                    ></RadioButton>
+                  </>
                 )}
                 <ImageText>
                   {!item.assetValue && <SizedBox width={10}></SizedBox>}
