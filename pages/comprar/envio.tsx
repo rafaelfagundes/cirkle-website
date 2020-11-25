@@ -1,6 +1,7 @@
 import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
 import _cloneDeep from "lodash/cloneDeep";
+import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
@@ -43,6 +44,12 @@ const ShippingCol = styled.div<{ isDesktop: boolean }>`
 `;
 
 function AddressAndShipping(): JSX.Element {
+  const router = useRouter();
+
+  const goToPaymentInfo = (): void => {
+    router.push("/comprar/pagamento");
+  };
+
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const breadcrumbs = [
@@ -338,7 +345,7 @@ function AddressAndShipping(): JSX.Element {
         buttons={[
           {
             text: "Ir para pagamento",
-            onClick: null,
+            onClick: goToPaymentInfo,
             type: "success",
             width: 200,
           },

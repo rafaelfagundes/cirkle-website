@@ -109,6 +109,8 @@ const Button = styled.div<{ backgroundColor: string }>`
 
   background-color: ${(props) => props.backgroundColor};
 
+  border-radius: 4px;
+
   cursor: pointer;
 
   filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.15));
@@ -151,6 +153,7 @@ const Tile = styled.div<{ size: number }>`
   margin-right: ${(props) => (props.size < 960 ? "20px" : 0)};
   user-select: none;
   background-color: #fff;
+  overflow: hidden;
 
   position: static;
   width: 143px;
@@ -160,14 +163,14 @@ const Tile = styled.div<{ size: number }>`
 
   filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.05));
 
-  /* Inside Auto Layout */
-
   flex: none;
   order: 0;
   align-self: center;
   flex-grow: 0;
 
   cursor: pointer;
+
+  border-radius: 4px;
 
   &:hover {
     filter: saturate(120%) contrast(120%);
@@ -180,7 +183,7 @@ const Tile = styled.div<{ size: number }>`
 `;
 
 const TileImage = styled.div<{ image: string }>`
-  background-color: ${Colors.LIGHT_GRAY};
+  background-color: ${Colors.BLACK3};
   width: 143px;
   height: 186px;
 

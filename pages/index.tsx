@@ -188,12 +188,12 @@ function Home(props: HomeProps): JSX.Element {
         {highlights && (
           <HighlightsSection data={highlights}></HighlightsSection>
         )}
-        <SizedBox height={28}></SizedBox>
+        <SizedBox height={32}></SizedBox>
         <Container maxWidth="md" disableGutters>
           <Padding horizontal={isSmartPhone ? 20 : 0}>
             <HotSectionTitle />
           </Padding>
-          <SizedBox height={16}></SizedBox>
+          <SizedBox height={32}></SizedBox>
           {!hotProducts && <HotProductsLoader></HotProductsLoader>}
           {hotProducts && brands && (
             <HotSection products={hotProducts} brands={brands}></HotSection>

@@ -95,6 +95,10 @@ function WannaSellMobile(): JSX.Element {
   const useStyles = makeStyles({
     root: {
       width: "100%",
+      borderRadius: "4px",
+      overflow: "hidden",
+      border: "none",
+      boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.05)",
     },
     heading: {
       fontSize: theme.typography.pxToRem(15),
@@ -286,7 +290,7 @@ function WannaSellMobile(): JSX.Element {
           square
           expanded={true}
           onChange={() => null}
-          classes={{ expanded: classes.expanded }}
+          classes={{ expanded: classes.expanded, root: classes.root }}
         >
           <AccordionSummary
             aria-controls="panel1d-content"
@@ -309,7 +313,7 @@ function WannaSellMobile(): JSX.Element {
           square
           expanded={false}
           onChange={() => null}
-          classes={{ expanded: classes.expanded }}
+          classes={{ expanded: classes.expanded, root: classes.root }}
         >
           <AccordionSummary
             aria-controls="panel1d-content"
@@ -332,7 +336,7 @@ function WannaSellMobile(): JSX.Element {
           square
           expanded={false}
           onChange={() => null}
-          classes={{ expanded: classes.expanded }}
+          classes={{ expanded: classes.expanded, root: classes.root }}
         >
           <AccordionSummary
             aria-controls="panel1d-content"
@@ -355,7 +359,7 @@ function WannaSellMobile(): JSX.Element {
           square
           expanded={false}
           onChange={() => null}
-          classes={{ expanded: classes.expanded }}
+          classes={{ expanded: classes.expanded, root: classes.root }}
         >
           <AccordionSummary
             aria-controls="panel1d-content"
@@ -378,7 +382,7 @@ function WannaSellMobile(): JSX.Element {
           square
           expanded={false}
           onChange={() => null}
-          classes={{ expanded: classes.expanded }}
+          classes={{ expanded: classes.expanded, root: classes.root }}
         >
           <AccordionSummary
             aria-controls="panel1d-content"
@@ -401,7 +405,7 @@ function WannaSellMobile(): JSX.Element {
           square
           expanded={false}
           onChange={() => null}
-          classes={{ expanded: classes.expanded }}
+          classes={{ expanded: classes.expanded, root: classes.root }}
         >
           <AccordionSummary
             aria-controls="panel1d-content"
@@ -424,7 +428,7 @@ function WannaSellMobile(): JSX.Element {
           square
           expanded={false}
           onChange={() => null}
-          classes={{ expanded: classes.expanded }}
+          classes={{ expanded: classes.expanded, root: classes.root }}
         >
           <AccordionSummary
             aria-controls="panel1d-content"

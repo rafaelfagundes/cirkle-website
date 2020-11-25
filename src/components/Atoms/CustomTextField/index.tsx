@@ -72,6 +72,7 @@ const StyledInput = styled.div<{
   transition: 250ms padding;
   max-width: ${(props) => (props.width ? props.width + "px" : "100%")};
   background-color: ${Colors.WHITE};
+  border-radius: 4px;
 `;
 
 const StyledInputBase = styled(InputBase)`
@@ -86,6 +87,7 @@ const PlaceHolder = styled.div<{ show: boolean; error: boolean }>`
   padding: 0 8px;
   opacity: ${(props) => (props.show ? 1 : 0)};
   transition: 500ms opacity;
+  border-radius: 4px;
 `;
 
 const PlaceHolderText = styled.span`

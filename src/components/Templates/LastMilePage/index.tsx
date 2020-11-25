@@ -1,8 +1,11 @@
 import { AppBar, Container, useMediaQuery } from "@material-ui/core";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
+import { useDialog } from "../../../hooks/dialog/useDialog";
 import theme from "../../../theme/theme";
+import CustomDialog from "../../Atoms/CustomDialog";
 import HorizontalLogo from "../../Atoms/HorizontalLogo";
 import Icon from "../../Atoms/Icon";
 import Padding from "../../Atoms/Padding";
@@ -27,6 +30,7 @@ const Frame = styled.div`
   width: 100%;
   height: 100%;
   padding: 20px;
+  border-radius: 4px;
 `;
 
 const Badge = styled.img``;
@@ -89,65 +93,101 @@ interface LastMilePageProps {
 
 function LastMilePage(props: LastMilePageProps): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
+  const router = useRouter();
+
+  const dialogContext = useDialog();
+
+  const showDialogGoHome = () => {
+    dialogContext.newDialog(
+      true,
+      "Indo Para Página Inicial",
+      "Você irá voltar à página inicial, mas não se preocupe, suas informações (exceto financeiras) estão salvas e você pode continuar depois.",
+      "OK"
+    );
+  };
+
+  const goHome = () => {
+    router.push("/");
+  };
 
   return (
-    <Background>
-      <AppBar position="static" color="transparent" elevation={0}>
-        <BarBackground>
-          <Container maxWidth="lg">
-            <Padding vertical={10}>
-              <Row spaceBetween>
-                {!isSmartPhone && <HorizontalLogo></HorizontalLogo>}
-                {isSmartPhone && <Icon size={36} type="icon_isolated"></Icon>}
-                <BreadCrumbs>
-                  {props.breadcrumbs.map((item, index) => (
-                    <>
-                      <BreadCrumb
-                        isSmartPhone={isSmartPhone}
-                        active={item.active}
-                      >
-                        <NumberHolder
-                          active={item.active}
+    <>
+      <CustomDialog
+        open={dialogContext.dialog.isOpen}
+        title={dialogContext.dialog.title}
+        buttonText={dialogContext.dialog.buttonText}
+        error={dialogContext.dialog.isError}
+        onClose={dialogContext.closeDialog}
+        callback={goHome}
+      >
+        {dialogContext.dialog.description}
+      </CustomDialog>
+      <Background>
+        <AppBar position="static" color="transparent" elevation={0}>
+          <BarBackground>
+            <Container maxWidth="lg">
+              <Padding vertical={10}>
+                <Row spaceBetween>
+                  {!isSmartPhone && (
+                    <HorizontalLogo onClick={showDialogGoHome}></HorizontalLogo>
+                  )}
+                  {isSmartPhone && (
+                    <Icon
+                      size={36}
+                      type="icon_isolated"
+                      onClick={showDialogGoHome}
+                    ></Icon>
+                  )}
+                  <BreadCrumbs>
+                    {props.breadcrumbs.map((item, index) => (
+                      <React.Fragment key={item.position}>
+                        <BreadCrumb
                           isSmartPhone={isSmartPhone}
+                          active={item.active}
                         >
-                          <BreadCrumbNumber isSmartPhone={isSmartPhone}>
-                            {item.position}
-                          </BreadCrumbNumber>
-                        </NumberHolder>
-                        {!isSmartPhone && (
-                          <Text
+                          <NumberHolder
                             active={item.active}
                             isSmartPhone={isSmartPhone}
                           >
-                            {item.desc}
-                          </Text>
-                        )}
-                        {isSmartPhone && item.active && (
-                          <Text
-                            active={item.active}
-                            isSmartPhone={isSmartPhone}
-                          >
-                            {item.desc}
-                          </Text>
-                        )}
-                      </BreadCrumb>
-                      {index !== props.breadcrumbs.length - 1 &&
-                        !isSmartPhone && <Line></Line>}
-                    </>
-                  ))}
-                </BreadCrumbs>
-                <Badge src="/images/security_badge_green.svg"></Badge>
-              </Row>
-            </Padding>
-          </Container>
-        </BarBackground>
-      </AppBar>
-      <SizedBox height={isSmartPhone ? 16 : 48}></SizedBox>
-      <Container disableGutters={true} maxWidth="md">
-        <Frame>{props.children}</Frame>
-      </Container>
-      <SizedBox height={isSmartPhone ? 32 : 72}></SizedBox>
-    </Background>
+                            <BreadCrumbNumber isSmartPhone={isSmartPhone}>
+                              {item.position}
+                            </BreadCrumbNumber>
+                          </NumberHolder>
+                          {!isSmartPhone && (
+                            <Text
+                              active={item.active}
+                              isSmartPhone={isSmartPhone}
+                            >
+                              {item.desc}
+                            </Text>
+                          )}
+                          {isSmartPhone && item.active && (
+                            <Text
+                              active={item.active}
+                              isSmartPhone={isSmartPhone}
+                            >
+                              {item.desc}
+                            </Text>
+                          )}
+                        </BreadCrumb>
+                        {index !== props.breadcrumbs.length - 1 &&
+                          !isSmartPhone && <Line></Line>}
+                      </React.Fragment>
+                    ))}
+                  </BreadCrumbs>
+                  <Badge src="/images/security_badge_green.svg"></Badge>
+                </Row>
+              </Padding>
+            </Container>
+          </BarBackground>
+        </AppBar>
+        <SizedBox height={isSmartPhone ? 16 : 48}></SizedBox>
+        <Container disableGutters={true} maxWidth="md">
+          <Frame>{props.children}</Frame>
+        </Container>
+        <SizedBox height={isSmartPhone ? 32 : 72}></SizedBox>
+      </Background>
+    </>
   );
 }
 

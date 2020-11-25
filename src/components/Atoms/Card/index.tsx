@@ -14,6 +14,8 @@ const StyledCard = styled.div<{
   background-color: ${(props) => props.bgColor};
   box-shadow: ${(props) =>
     props.shadow ? "0px 4px 8px rgba(0, 0, 0, 0.05)" : "none"};
+  border-radius: 4px;
+  overflow: hidden;
 `;
 
 type CardProps = {

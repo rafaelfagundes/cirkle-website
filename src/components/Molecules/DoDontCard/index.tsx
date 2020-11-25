@@ -9,7 +9,8 @@ const StyledCard = styled.div<{ mobile: boolean }>`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
   background-color: ${Colors.WHITE};
   padding: 20px;
-  ${(props) => (props.mobile ? "" : "min-width: 440px; min-height: 713px;")}
+  ${(props) => (props.mobile ? "" : "min-width: 440px; min-height: 720px;")}
+  border-radius: 4px;
 `;
 
 const Title = styled.div<{ positive: boolean; mobile: boolean }>`

@@ -73,6 +73,9 @@ const StyledTab = styled.div<{ active: boolean; color: string }>`
   height: ${(props) => (props.active ? "44px" : "34px")};
   background-color: ${(props) =>
     props.active ? props.color : Colors.VERY_LIGHT_GRAY};
+
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 `;
 
 const TabText = styled.span<{ active: boolean }>`

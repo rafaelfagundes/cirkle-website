@@ -5,6 +5,7 @@ import React from "react";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
 import { cloudinaryImage } from "../../../utils/image";
+import Padding from "../../Atoms/Padding";
 import SizedBox from "../../Atoms/SizedBox";
 
 const Highlights = styled.div<{ padding: boolean }>`
@@ -31,6 +32,7 @@ const Image = styled.div<{ image: string; width: number }>`
   background-size: cover;
   height: ${(props) => props.width * 1.158536585}px;
   width: ${(props) => props.width}px;
+  border-radius: 4px;
 `;
 
 const Title = styled.span<{ fontSize: number }>`
@@ -94,9 +96,11 @@ function HighlightsSection({
                 width={widthHighlightItem}
               ></Image>
               <SizedBox height={8}></SizedBox>
-              <Title fontSize={14}>{item.title}</Title>
-              <SizedBox height={2}></SizedBox>
-              <Subtitle fontSize={12}>{item.subtitle}</Subtitle>
+              <Padding horizontal={8}>
+                <Title fontSize={14}>{item.title}</Title>
+                <SizedBox height={2}></SizedBox>
+                <Subtitle fontSize={12}>{item.subtitle}</Subtitle>
+              </Padding>
             </HighlightItem>
           </Link>
         ))}

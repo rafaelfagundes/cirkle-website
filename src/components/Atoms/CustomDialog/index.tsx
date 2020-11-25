@@ -39,6 +39,7 @@ function CustomDialog({
   children,
   error = true,
   onClose,
+  callback = null,
 }: {
   open: boolean;
   title: string;
@@ -46,7 +47,13 @@ function CustomDialog({
   children: string;
   error?: boolean;
   onClose: () => void;
+  callback?: () => void;
 }): JSX.Element {
+  const action = () => {
+    onClose();
+    if (callback) callback();
+  };
+
   return (
     <Dialog fullScreen={false} open={open} onClose={onClose} maxWidth="xs">
       <DialogTitle>
@@ -58,7 +65,7 @@ function CustomDialog({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary" autoFocus>
+        <Button onClick={action} color="primary" autoFocus>
           <ButtonText>{buttonText}</ButtonText>
         </Button>
       </DialogActions>

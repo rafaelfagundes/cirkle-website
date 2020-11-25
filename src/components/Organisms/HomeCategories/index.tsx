@@ -22,6 +22,7 @@ const CategoryItem = styled.div<{ last?: boolean }>`
   justify-content: center;
   align-items: center;
   margin-right: ${(props) => (props.last ? 0 : 16)}px;
+  border-radius: 4px;
 `;
 
 const CategoryItemText = styled.div`

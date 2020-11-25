@@ -41,6 +41,7 @@ const SelectBox = styled.div<{ width: number; error: boolean }>`
   background-color: ${Colors.WHITE};
   user-select: none;
   cursor: pointer;
+  border-radius: 4px;
 `;
 
 const SelectBoxText = styled.div<{ error: boolean }>`

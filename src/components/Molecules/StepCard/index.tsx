@@ -10,6 +10,7 @@ const StyledStepCard = styled.div<{ mobile: boolean }>`
   justify-content: center;
   align-items: center;
   width: ${(props) => (props.mobile ? "" : "600px")};
+  border-radius: 4px;
 `;
 
 const NumberHolder = styled.div<{ mobile: boolean }>`

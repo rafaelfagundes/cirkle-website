@@ -131,6 +131,8 @@ export const CartItemImage = styled.div<{ image: string; size: number }>`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   position: relative;
+  border-radius: 4px;
+  overflow: hidden;
 `;
 
 export const Column = styled.div`

@@ -5,9 +5,11 @@ export const Item = styled.div<{ isSmartphone: boolean }>`
   cursor: pointer;
   width: 228px;
   background-color: ${Colors.WHITE};
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05); */
   margin-right: ${(props) => (props.isSmartphone ? "16px" : 0)};
-  margin-bottom: 16px;
+  margin-bottom: 32px;
+  border-radius: 4px;
+  overflow: hidden;
 `;
 
 export const Image = styled.div<{ image: string }>`
@@ -19,6 +21,8 @@ export const Image = styled.div<{ image: string }>`
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 900000000;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
 `;
 
 export const BrandName = styled.div`
@@ -50,18 +54,23 @@ export const Title = styled.span`
   font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 120%;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 125%;
   display: flex;
   align-items: flex-end;
   color: ${Colors.PRIMARY};
+
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `;
 
 export const Description = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 6px 16px 0 16px;
+  padding: 6px 16px 2px 16px;
   font-weight: 500;
 `;
 
@@ -94,6 +103,7 @@ export const RemoveButton = styled.div`
 `;
 
 export const NumberPosition = styled.div`
+  padding: 4px;
   display: flex;
   position: absolute;
   top: 0;
@@ -101,6 +111,11 @@ export const NumberPosition = styled.div`
   justify-content: center;
   align-items: center;
   height: 24px;
+  /* margin-top: 16px; */
+  border-top-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  overflow: hidden;
+  background-color: ${Colors.PARADISE_PINK};
 `;
 
 export const NumberPositionText = styled.span`

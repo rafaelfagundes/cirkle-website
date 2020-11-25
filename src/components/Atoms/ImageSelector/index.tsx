@@ -31,6 +31,7 @@ const SelectorImage = styled.div<{
   opacity: ${(props) => (props.active ? 1 : 0.35)};
 
   transition: opacity 1000ms, border 1000ms;
+  border-radius: 4px;
 `;
 
 interface ImageSelectorProps {

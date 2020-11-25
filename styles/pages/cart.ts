@@ -93,6 +93,8 @@ export const CartItemImage = styled.div<{ image: string; size: number }>`
   background-repeat: no-repeat;
   background-size: cover;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  overflow: hidden;
 `;
 
 export const Description = styled.span<{ isSmartphone?: boolean }>`

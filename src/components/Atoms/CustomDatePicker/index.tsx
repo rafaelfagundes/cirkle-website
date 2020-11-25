@@ -18,6 +18,7 @@ const StyledInput = styled.div`
   justify-content: space-between;
   cursor: pointer;
   background-color: ${Colors.WHITE};
+  border-radius: 4px;
 `;
 
 const InputText = styled.span<{ isPlaceholder: boolean }>`
@@ -41,6 +42,7 @@ const PlaceHolder = styled.div<{ show: boolean }>`
   padding: 0 8px;
   opacity: ${(props) => (props.show ? 1 : 0)};
   transition: 500ms opacity;
+  border-radius: 4px;
 `;
 
 const PlaceHolderText = styled.span`

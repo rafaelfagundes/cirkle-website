@@ -10,7 +10,7 @@ const Holder = styled.div`
 `;
 
 export type Button = {
-  onClick: () => null;
+  onClick: () => void;
   text: string;
   type?: string;
   width?: number;

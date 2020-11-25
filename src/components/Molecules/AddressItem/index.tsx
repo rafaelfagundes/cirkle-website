@@ -29,6 +29,7 @@ interface IAddressItemsProps {
 const StyledAddressItem = styled.div`
   position: relative;
   /* width: 375px; */
+  border-radius: 4px;
 `;
 
 const CloseButtonHolder = styled.div<{ loading: boolean }>`
@@ -102,23 +103,28 @@ function AddressItem(props: IAddressItemsProps): JSX.Element {
             </Row>
           </>
         </Padding>
-        <Row spaceBetween>
-          <CustomButton
-            type="edit"
-            onClick={() => props.editAddress(props.id)}
-            width={400}
-          >
-            Editar
-          </CustomButton>
-          {!props.mainAddress && (
+        <Padding horizontal={10} vertical={10}>
+          <Row spaceBetween>
             <CustomButton
-              onClick={() => props.setMainAddress(props.id)}
-              width={400}
+              type="edit"
+              onClick={() => props.editAddress(props.id)}
+              width={380}
             >
-              Definir Padrão
+              Editar
             </CustomButton>
-          )}
-        </Row>
+            {!props.mainAddress && (
+              <>
+                <SizedBox width={20}></SizedBox>
+                <CustomButton
+                  onClick={() => props.setMainAddress(props.id)}
+                  width={340}
+                >
+                  Definir Padrão
+                </CustomButton>
+              </>
+            )}
+          </Row>
+        </Padding>
       </Card>
     </StyledAddressItem>
   );

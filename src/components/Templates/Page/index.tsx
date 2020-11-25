@@ -59,6 +59,7 @@ const Panel = styled.div<{
   padding: ${(props) => (props.noPadding ? 0 : "0 20px")};
   margin-top: ${(props) => (props.mobile ? 0 : -64)}px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
 `;
 
 function Page({

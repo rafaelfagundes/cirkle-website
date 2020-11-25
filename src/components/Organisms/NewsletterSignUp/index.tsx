@@ -49,6 +49,7 @@ const NewsletterInput = styled.div`
   background-color: ${Colors.WHITE};
   height: 45px;
   padding: 8px 12px;
+  border-radius: 4px;
 `;
 
 const NLButton = styled.div`

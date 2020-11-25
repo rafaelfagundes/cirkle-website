@@ -31,6 +31,8 @@ const HeadlineBg = styled.div`
   height: 100%;
   background: #fff;
   transform: matrix(-1, 0.12, 0, 0.99, 0, 0);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 `;
 
 const StyledHorizontalLogo = styled(HorizontalLogo)`

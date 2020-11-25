@@ -14,6 +14,7 @@ const ButtonBase = styled.div<{ width: number; small: boolean }>`
   justify-content: center;
   cursor: pointer;
   height: ${(props) => (props.small ? "28px" : "44px")};
+  border-radius: 4px;
 
   &:hover {
     filter: saturate(200%);

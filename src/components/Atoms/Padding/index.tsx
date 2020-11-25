@@ -16,7 +16,7 @@ function Padding({
   horizontal = 0,
   vertical = 0,
 }: {
-  children: JSX.Element;
+  children: JSX.Element | Array<JSX.Element>;
   horizontal?: number;
   vertical?: number;
 }): JSX.Element {

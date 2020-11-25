@@ -24,8 +24,8 @@ const StyledCheckBox = styled.div`
 `;
 
 const Box = styled.div<{ filled: boolean }>`
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border: 2px solid ${(props) => (props.filled ? Colors.PRIMARY : "#bbb")};
   background-color: ${(props) =>
     props.filled ? Colors.PRIMARY : Colors.WHITE};
@@ -33,6 +33,7 @@ const Box = styled.div<{ filled: boolean }>`
   justify-content: center;
   align-items: center;
   margin-right: 8px;
+  border-radius: 4px;
 `;
 
 interface CheckBoxWithLabelProps {

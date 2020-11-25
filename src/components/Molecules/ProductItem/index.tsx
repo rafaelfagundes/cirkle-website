@@ -23,7 +23,6 @@ import {
   Image,
   Item,
   NumberPosition,
-  NumberPositionDetail,
   NumberPositionText,
   RemoveButton,
   RemoveIconHolder,
@@ -163,8 +162,8 @@ function ProductItem({
       </Item>
       {numberPosition !== 0 && (
         <NumberPosition>
-          <NumberPositionDetail></NumberPositionDetail>
-          <NumberPositionText>#{numberPosition}</NumberPositionText>
+          {/* <NumberPositionDetail></NumberPositionDetail> */}
+          <NumberPositionText>{numberPosition}º</NumberPositionText>
         </NumberPosition>
       )}
     </div>

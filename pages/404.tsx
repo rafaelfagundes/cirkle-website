@@ -91,7 +91,7 @@ function Page404({ menu }: Page404Props): JSX.Element {
           </Center>
           <Buttons>
             <CustomButton
-              variant="outlined"
+              variant="contained"
               width={187}
               onClick={() => _goTo("/")}
             >

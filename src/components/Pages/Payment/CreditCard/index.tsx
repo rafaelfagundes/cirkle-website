@@ -19,6 +19,7 @@ const InputFrame = styled.div`
   padding: 10px;
   border: 2px solid ${Colors.PRIMARY};
   max-width: 310px;
+  border-radius: 4px;
 `;
 
 const CardNumber = styled(MaskedInput)`
@@ -28,6 +29,7 @@ const CardNumber = styled(MaskedInput)`
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
+  width: 100%;
 `;
 
 const CardHolder = styled(MaskedInput)`
@@ -37,6 +39,7 @@ const CardHolder = styled(MaskedInput)`
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
+  width: 100%;
 `;
 
 const ExpirationDate = styled(MaskedInput)`
@@ -77,6 +80,8 @@ function CreditCard(): JSX.Element {
           focused={focused}
           name={name}
           number={number}
+          locale={{ valid: "Validade" }}
+          placeholders={{ name: "SEU NOME" }}
         />
         <SizedBox width={20}></SizedBox>
         <Column>
@@ -94,7 +99,7 @@ function CreditCard(): JSX.Element {
             <CardHolder
               type="text"
               name="name"
-              placeholder="Seu Nome Aqui"
+              placeholder="Seu Nome Como No Cartão"
               onChange={(e) => setName(e.target.value)}
               onFocus={(e) => setFocused(e.target.name)}
             />

@@ -35,6 +35,7 @@ const CartItemImage = styled.div<{ image: string; size: number }>`
   background-size: cover;
 
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
 `;
 
 const Description = styled.span<{ isSmartphone?: boolean }>`

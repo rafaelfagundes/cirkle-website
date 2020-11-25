@@ -120,6 +120,8 @@ const NewsletterInput = styled.div`
   height: 45px;
   padding: 8px 12px;
   width: 100%;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 `;
 
 const NLButton = styled.div`
@@ -130,6 +132,8 @@ const NLButton = styled.div`
   background-color: ${Colors.PRIMARY};
   padding: 0 16px;
   cursor: pointer;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 `;
 
 const NLButtonText = styled.span`

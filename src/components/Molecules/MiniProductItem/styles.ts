@@ -7,6 +7,7 @@ export const Item = styled.div<{ isSmartphone: boolean }>`
   background-color: ${Colors.WHITE};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
   margin-right: ${(props) => (props.isSmartphone ? "16px" : 0)};
+  border-radius: 4px;
 `;
 
 export const Image = styled.div<{ image: string }>`
@@ -18,6 +19,8 @@ export const Image = styled.div<{ image: string }>`
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 900000000;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 `;
 
 export const TitleHolder = styled.div`

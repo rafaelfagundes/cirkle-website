@@ -58,6 +58,10 @@ const IMAGE_SIZE = 470;
 const useStyles = makeStyles({
   root: {
     width: "100%",
+    borderRadius: "4px",
+    overflow: "hidden",
+    border: "none",
+    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.05)",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -331,6 +335,8 @@ function ProductPage({
                           },
                           style: {
                             cursor: "zoom-in",
+                            borderRadius: 4,
+                            overflow: "hidden",
                           },
                           smallImage: {
                             alt: product.title,
@@ -433,7 +439,7 @@ function ProductPage({
                         {!isAlreadyInCart && (
                           <CustomButton
                             onClick={addToCart}
-                            width={400}
+                            width={250}
                             type="success"
                           >
                             Adicionar à Sacola
@@ -442,7 +448,7 @@ function ProductPage({
                         {isAlreadyInCart && (
                           <CustomButton
                             onClick={null}
-                            width={400}
+                            width={250}
                             type="disabled"
                           >
                             Já Está na Sacola
@@ -489,7 +495,8 @@ function ProductPage({
                     square
                     expanded={moreDetails}
                     onChange={() => setMoreDetails(!moreDetails)}
-                    classes={{ expanded: classes.expanded }}
+                    classes={{ expanded: classes.expanded, root: classes.root }}
+                    elevation={0}
                   >
                     <AccordionSummary
                       aria-controls="panel1d-content"

@@ -11,12 +11,13 @@ const StyledBrand = styled.div<{ width: number }>`
   width: ${(props) => props.width}px;
   height: ${(props) => props.width}px;
   background-color: ${Colors.WHITE};
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05); */
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
   cursor: pointer;
+  border-radius: 4px;
 `;
 
 const BrandImage = styled.div<{ image: string; width: number }>`

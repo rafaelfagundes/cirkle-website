@@ -105,13 +105,13 @@ function HotSection({
           </>
         )}
       </ItemsHolder>
-      <SizedBox height={12}></SizedBox>
+      {/* <SizedBox height={10}></SizedBox> */}
       <Center>
         <>
           <CustomButton
             width={250}
             type="secondary"
-            variant="outlined"
+            variant="text"
             onClick={null}
           >
             VER MAIS PRODUTOS
@@ -125,13 +125,13 @@ function HotSection({
           <Brand key={item.image} data={item}></Brand>
         ))}
       </BrandsHolder>
-      <SizedBox height={12}></SizedBox>
+      <SizedBox height={10}></SizedBox>
       <Center>
         <>
           <CustomButton
             width={250}
             type="secondary"
-            variant="outlined"
+            variant="text"
             onClick={null}
           >
             VER TODAS MARCAS

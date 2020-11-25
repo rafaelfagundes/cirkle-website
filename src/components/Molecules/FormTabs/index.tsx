@@ -36,6 +36,8 @@ const Tab = styled.div<{
   letter-spacing: -0.25px;
   text-align: center;
   font-weight: 700;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 `;
 
 export interface ITab {
