@@ -306,9 +306,9 @@ function NewAddress({
       </span>
 
       <SizedBox height={36}></SizedBox>
-      <Row>
+      <Row spaceBetween>
         <CustomButton
-          width={300}
+          width={100}
           type="delete"
           variant="text"
           onClick={cancelAddAddress}
@@ -317,7 +317,7 @@ function NewAddress({
         </CustomButton>
         <SizedBox width={20}></SizedBox>
         <CustomButton
-          width={300}
+          width={200}
           type="primary"
           variant="contained"
           onClick={editAddressObj ? _edit : _add}

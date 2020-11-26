@@ -30,6 +30,7 @@ const StyledAddressItem = styled.div`
   position: relative;
   /* width: 375px; */
   border-radius: 4px;
+  border: 1px solid #eee;
 `;
 
 const CloseButtonHolder = styled.div<{ loading: boolean }>`
@@ -108,7 +109,6 @@ function AddressItem(props: IAddressItemsProps): JSX.Element {
             <CustomButton
               type="edit"
               onClick={() => props.editAddress(props.id)}
-              width={380}
             >
               Editar
             </CustomButton>
@@ -117,7 +117,7 @@ function AddressItem(props: IAddressItemsProps): JSX.Element {
                 <SizedBox width={20}></SizedBox>
                 <CustomButton
                   onClick={() => props.setMainAddress(props.id)}
-                  width={340}
+                  width={175}
                 >
                   Definir Padrão
                 </CustomButton>

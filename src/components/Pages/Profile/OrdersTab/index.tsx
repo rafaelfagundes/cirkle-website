@@ -1,58 +1,15 @@
-import { useMediaQuery } from "@material-ui/core";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React from "react";
-import SizedBox from "../src/components/Atoms/SizedBox";
-import OrdersDesktop from "../src/components/Pages/Orders/OrdersDesktop";
-import OrdersMobile from "../src/components/Pages/Orders/OrdersMobile";
-import EmptyPage from "../src/components/Templates/EmptyPage";
-import Page from "../src/components/Templates/Page";
 import Order, {
   OrderStatus,
   PaymentStatus,
   PaymentType,
-} from "../src/modules/order/Order";
-import theme from "../src/theme/theme";
+} from "../../../../modules/order/Order";
+import EmptyPage from "../../../Templates/EmptyPage";
+import OrdersDesktop from "../../Orders/OrdersDesktop";
 
-function Orders({ orders }: { orders: Array<Order> }): JSX.Element {
-  const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
-  const router = useRouter();
-
-  const _goTo = (route: string) => {
-    router.push(route);
-  };
-
-  return (
-    <Page
-      image="/images/orders.jpg"
-      title="Meus Pedidos"
-      noPadding={isSmartPhone}
-    >
-      <SizedBox height={20}></SizedBox>
-      {orders.length === 0 && (
-        <>
-          <SizedBox height={isSmartPhone ? 48 : 72}></SizedBox>
-          <EmptyPage
-            buttonAction={() => _goTo("/")}
-            buttonText="Explorar"
-            icon="package"
-            title="Nenhum Pedido"
-            subtitle="Não perca tempo e explore toda nossa loja"
-          ></EmptyPage>
-          <SizedBox height={isSmartPhone ? 48 : 72}></SizedBox>
-        </>
-      )}
-      {orders.length > 0 && isSmartPhone && (
-        <OrdersMobile orders={orders}></OrdersMobile>
-      )}
-      {orders.length > 0 && !isSmartPhone && (
-        <OrdersDesktop orders={orders}></OrdersDesktop>
-      )}
-    </Page>
-  );
-}
-
-export async function getStaticProps(): Promise<any> {
+function OrdersTab(): JSX.Element {
   const order1: Order = {
     date: moment().toISOString(),
     id: "D7CED3BA",
@@ -233,14 +190,29 @@ export async function getStaticProps(): Promise<any> {
   };
 
   const orders: Array<Order> = [order1, order2, order3];
-  // const orders: Array<Order> = [];
 
-  return {
-    props: {
-      orders,
-    },
-    revalidate: 60,
+  const router = useRouter();
+
+  const _goTo = (route: string) => {
+    router.push(route);
   };
+
+  return (
+    <>
+      {orders.length === 0 && (
+        <>
+          <EmptyPage
+            buttonAction={() => _goTo("/")}
+            buttonText="Explorar"
+            icon="package"
+            title="Nenhum Pedido"
+            subtitle="Não perca tempo e explore toda nossa loja"
+          ></EmptyPage>
+        </>
+      )}
+      {orders.length > 0 && <OrdersDesktop orders={orders}></OrdersDesktop>}
+    </>
+  );
 }
 
-export default Orders;
+export default OrdersTab;

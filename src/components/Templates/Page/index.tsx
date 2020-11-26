@@ -32,11 +32,11 @@ const BannerText = styled.div<{ mobile: boolean }>`
   margin-top: ${(props) => (props.mobile ? 0 : -64)}px;
 `;
 
-const BannerTint = styled.div<{ mobile: boolean }>`
+const BannerTint = styled.div<{ mobile: boolean; tint: string }>`
   width: 100%;
   height: ${(props) => (props.mobile ? 20 : 25)}vh;
   position: absolute;
-  background-color: ${Colors.PRIMARY};
+  background-color: ${(props) => props.tint};
   opacity: 0.75;
 `;
 
@@ -69,6 +69,7 @@ function Page({
   children,
   noPadding = false,
   maxWidth = 960,
+  tintColor = Colors.PRIMARY,
 }: {
   menu?: Menu;
   title: string;
@@ -76,6 +77,8 @@ function Page({
   children: any;
   noPadding?: boolean;
   maxWidth?: number;
+  tintColor?: string;
+  doNotAutoScroll?: boolean;
 }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -88,7 +91,7 @@ function Page({
     <Layout containerMargin={false} menu={menu}>
       <>
         <BackgroundBanner bgImage={image} mobile={isSmartPhone}>
-          <BannerTint mobile={isSmartPhone}></BannerTint>
+          <BannerTint mobile={isSmartPhone} tint={tintColor}></BannerTint>
           <BannerText mobile={isSmartPhone}>{title}</BannerText>
         </BackgroundBanner>
         <PanelHolder>

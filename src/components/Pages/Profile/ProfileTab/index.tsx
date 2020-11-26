@@ -1,4 +1,4 @@
-import { Avatar, useMediaQuery } from "@material-ui/core";
+import { Avatar, Container, useMediaQuery } from "@material-ui/core";
 import axios, { AxiosResponse } from "axios";
 import _cloneDeep from "lodash/cloneDeep";
 import { useRouter } from "next/router";
@@ -222,7 +222,7 @@ function ProfileTab(): JSX.Element {
       <ButtonsHolder>
         <FileUploadButton
           type="primary"
-          variant="outlined"
+          variant="text"
           width={166}
           onChange={setPicture}
           loading={userAvatarLoading}
@@ -235,7 +235,7 @@ function ProfileTab(): JSX.Element {
             <CustomButton
               onClick={_goToPasswordChange}
               type="delete"
-              variant="outlined"
+              variant="text"
               width={166}
             >
               Alterar Senha
@@ -244,68 +244,71 @@ function ProfileTab(): JSX.Element {
         )}
       </ButtonsHolder>
 
-      <SizedBox height={36}></SizedBox>
-      <span data-test="profile-name">
-        <CustomTextField
-          type="user"
-          ref={displayName}
-          error={errors.displayName}
-          initialValue={authContext.user.name}
-          showIcon
-        >
-          Nome e Sobrenome
-        </CustomTextField>
-      </span>
-      <SizedBox height={20}></SizedBox>
-      <Subtitle bold>Sexo</Subtitle>
-      <Row>
-        <RadioButtonWithLabel
-          value={gender === Gender.FEMALE}
-          label="Feminino"
-          onClick={() => setGender(Gender.FEMALE)}
-        ></RadioButtonWithLabel>
-        <SizedBox width={16}></SizedBox>
-        <RadioButtonWithLabel
-          value={gender === Gender.MALE}
-          label="Masculino"
-          onClick={() => setGender(Gender.MALE)}
-        ></RadioButtonWithLabel>
-        <SizedBox width={16}></SizedBox>
-        <RadioButtonWithLabel
-          value={gender === Gender.NON_BINARY}
-          label="Não-Binário"
-          onClick={() => setGender(Gender.NON_BINARY)}
-        ></RadioButtonWithLabel>
-      </Row>
-      <SizedBox height={20}></SizedBox>
-      <span data-test="profile-birth">
-        <CustomDatePicker
-          placeholder="Data de Nascimento"
-          setDate={setDateOfBirth}
-          value={dateOfBirth}
-          showYearDropdown
-          withPortal={isSmartPhone}
-        ></CustomDatePicker>
-      </span>
-      <SizedBox height={20}></SizedBox>
-      <span data-test="profile-phone">
-        <CustomTextField
-          type="phone"
-          ref={phoneNumber}
-          error={errors.phoneNumber}
-          initialValue={authContext.user.phoneNumber}
-          showIcon
-          width={216}
-        >
-          Celular
-        </CustomTextField>
-      </span>
-      <SizedBox height={16}></SizedBox>
-      <CheckBoxWithLabel
-        label="Desejo receber informações e promoções exclusivas"
-        onClick={() => setIsSubscribed(!isSubscribed)}
-        value={isSubscribed}
-      ></CheckBoxWithLabel>
+      <Container maxWidth="xs">
+        <SizedBox height={36}></SizedBox>
+        <span data-test="profile-name">
+          <CustomTextField
+            type="user"
+            ref={displayName}
+            error={errors.displayName}
+            initialValue={authContext.user.name}
+            showIcon
+            width={450}
+          >
+            Nome e Sobrenome
+          </CustomTextField>
+        </span>
+        <SizedBox height={20}></SizedBox>
+        <Subtitle bold>Sexo</Subtitle>
+        <Row>
+          <RadioButtonWithLabel
+            value={gender === Gender.FEMALE}
+            label="Feminino"
+            onClick={() => setGender(Gender.FEMALE)}
+          ></RadioButtonWithLabel>
+          <SizedBox width={16}></SizedBox>
+          <RadioButtonWithLabel
+            value={gender === Gender.MALE}
+            label="Masculino"
+            onClick={() => setGender(Gender.MALE)}
+          ></RadioButtonWithLabel>
+          <SizedBox width={16}></SizedBox>
+          <RadioButtonWithLabel
+            value={gender === Gender.NON_BINARY}
+            label="Não-Binário"
+            onClick={() => setGender(Gender.NON_BINARY)}
+          ></RadioButtonWithLabel>
+        </Row>
+        <SizedBox height={20}></SizedBox>
+        <span data-test="profile-birth">
+          <CustomDatePicker
+            placeholder="Data de Nascimento"
+            setDate={setDateOfBirth}
+            value={dateOfBirth}
+            showYearDropdown
+            withPortal={isSmartPhone}
+          ></CustomDatePicker>
+        </span>
+        <SizedBox height={20}></SizedBox>
+        <span data-test="profile-phone">
+          <CustomTextField
+            type="phone"
+            ref={phoneNumber}
+            error={errors.phoneNumber}
+            initialValue={authContext.user.phoneNumber}
+            showIcon
+            width={216}
+          >
+            Celular
+          </CustomTextField>
+        </span>
+        <SizedBox height={16}></SizedBox>
+        <CheckBoxWithLabel
+          label="Desejo receber informações e promoções exclusivas"
+          onClick={() => setIsSubscribed(!isSubscribed)}
+          value={isSubscribed}
+        ></CheckBoxWithLabel>
+      </Container>
 
       <SizedBox height={36}></SizedBox>
       <Center>

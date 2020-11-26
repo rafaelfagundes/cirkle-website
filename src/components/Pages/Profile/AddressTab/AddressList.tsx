@@ -54,12 +54,12 @@ function AddressList(props: IAddressList): JSX.Element {
       <SizedBox height={16}></SizedBox>
       <Center>
         <CustomButton
-          width={300}
+          width={180}
           type="primary"
           variant="outlined"
           onClick={() => props.setShowNewAddressPanel(true)}
         >
-          Adicionar Endereço
+          + Adicionar Endereço
         </CustomButton>
       </Center>
     </>

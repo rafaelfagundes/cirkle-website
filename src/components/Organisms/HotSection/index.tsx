@@ -111,10 +111,10 @@ function HotSection({
           <CustomButton
             width={250}
             type="secondary"
-            variant="text"
+            variant="outlined"
             onClick={null}
           >
-            VER MAIS PRODUTOS
+            Ver Mais Produtos
           </CustomButton>
           {isSmartphone ? <SizedBox width={16}></SizedBox> : null}
         </>
@@ -125,16 +125,16 @@ function HotSection({
           <Brand key={item.image} data={item}></Brand>
         ))}
       </BrandsHolder>
-      <SizedBox height={10}></SizedBox>
+      <SizedBox height={15}></SizedBox>
       <Center>
         <>
           <CustomButton
             width={250}
             type="secondary"
-            variant="text"
+            variant="outlined"
             onClick={null}
           >
-            VER TODAS MARCAS
+            Ver Todas as Marcas
           </CustomButton>
           {isSmartphone ? <SizedBox width={16}></SizedBox> : null}
         </>

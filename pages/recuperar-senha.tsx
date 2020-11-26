@@ -131,7 +131,7 @@ function RecoverPassword({ menu }: { menu: Menu }): JSX.Element {
                   variant="contained"
                   onClick={_goHome}
                 >
-                  OK, Voltar para o início
+                  OK, Voltar para o Início
                 </CustomButton>
               </Center>
             </Container>

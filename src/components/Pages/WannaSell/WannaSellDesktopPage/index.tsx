@@ -89,7 +89,7 @@ const ButtonSecondaryText = styled.div`
   line-height: 43px;
   text-align: center;
   letter-spacing: 1px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   color: ${Colors.WHITE};
   text-align: center;
 `;

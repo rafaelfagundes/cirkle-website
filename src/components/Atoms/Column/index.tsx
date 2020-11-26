@@ -17,7 +17,7 @@ function Column({
   spaceBetween,
   minHeight,
 }: {
-  children: Array<JSX.Element>;
+  children: JSX.Element | Array<JSX.Element>;
   spaceBetween?: boolean;
   minHeight?: number;
 }): JSX.Element {

@@ -95,7 +95,7 @@ function Page404({ menu }: Page404Props): JSX.Element {
               width={187}
               onClick={() => _goTo("/")}
             >
-              Voltar ao início
+              Voltar ao Início
             </CustomButton>
             <SizedBox width={16}></SizedBox>
             <CustomButton
@@ -103,7 +103,7 @@ function Page404({ menu }: Page404Props): JSX.Element {
               width={187}
               onClick={() => _goTo("/contato")}
             >
-              Entre em contato
+              Entre em Contato
             </CustomButton>
           </Buttons>
           <SizedBox height={16}></SizedBox>

@@ -47,14 +47,14 @@ const ButtonText = styled.span<{ color?: string; small: boolean }>`
   font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-weight: 500;
+  /* text-transform: uppercase; */
   font-size: ${(props) => (props.small ? "12px" : "14px")};
   user-select: none;
 
   border: none;
   cursor: pointer;
-  letter-spacing: 0.0857142857em;
+  /* letter-spacing: 0.0857142857em; */
   line-height: 1em;
   margin: 0 auto;
   text-align: center;

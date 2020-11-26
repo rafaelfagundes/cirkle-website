@@ -46,8 +46,8 @@ const Title = styled.span<{ fontSize: number }>`
 `;
 
 const Subtitle = styled.span<{ fontSize: number }>`
-  text-transform: uppercase;
-  color: ${Colors.GRAY};
+  /* text-transform: uppercase; */
+  color: ${Colors.SECONDARY};
   font-family: "Commissioner";
   font-size: ${(props) => props.fontSize}px;
   font-weight: 700;
@@ -99,7 +99,7 @@ function HighlightsSection({
               <Padding horizontal={8}>
                 <Title fontSize={14}>{item.title}</Title>
                 <SizedBox height={2}></SizedBox>
-                <Subtitle fontSize={12}>{item.subtitle}</Subtitle>
+                <Subtitle fontSize={14}>{item.subtitle}</Subtitle>
               </Padding>
             </HighlightItem>
           </Link>

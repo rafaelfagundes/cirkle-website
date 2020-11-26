@@ -139,9 +139,8 @@ const NLButton = styled.div`
 const NLButtonText = styled.span`
   color: ${Colors.WHITE};
   font-family: "Commissioner";
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
 `;
 
 function DesktopFooter(): JSX.Element {

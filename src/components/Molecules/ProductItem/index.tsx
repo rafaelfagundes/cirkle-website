@@ -153,7 +153,7 @@ function ProductItem({
                 onClick={() => _addToCart(data)}
                 width={212}
               >
-                {isAlreadyInCart ? "Já Está Na Sacola" : "Adicionar à Sacola"}
+                {isAlreadyInCart ? "Já Está na Sacola" : "Adicionar à Sacola"}
               </CustomButton>
             </Padding>
             <SizedBox height={8}></SizedBox>

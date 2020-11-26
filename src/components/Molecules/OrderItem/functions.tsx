@@ -25,6 +25,7 @@ const StatusText = styled.div`
   color: ${Colors.WHITE};
   font-weight: 700;
   text-align: center;
+  font-size: 12px;
 `;
 
 const MobileText = styled.div<{ color: string }>`

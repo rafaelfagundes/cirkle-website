@@ -1,6 +1,5 @@
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import Axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
@@ -12,6 +11,7 @@ import Icon from "../src/components/Atoms/Icon";
 import LoadingAnimation from "../src/components/Atoms/LoadingAnimation";
 import SizedBox from "../src/components/Atoms/SizedBox";
 import Title from "../src/components/Atoms/Title";
+import WishlistItem from "../src/components/Molecules/WishlistItem";
 import EmptyPage from "../src/components/Templates/EmptyPage";
 import Page from "../src/components/Templates/Page";
 import Colors from "../src/enums/Colors";
@@ -20,17 +20,7 @@ import { useCart } from "../src/hooks/cart/useCart";
 import { useWishlist } from "../src/hooks/wishlist/useWishlist";
 import Menu from "../src/modules/menu/Menu";
 import Product from "../src/modules/product/Product";
-import { cloudinaryImage } from "../src/utils/image";
-import {
-  CartItem,
-  CartItemImage,
-  CartItems,
-  Description,
-  ImagePrice,
-  MoreInfo,
-  Price,
-  TitleAndRemove,
-} from "../styles/pages/cart";
+import { CartItems } from "../styles/pages/cart";
 
 const StyledWishlist = styled.div<{ isSmartphone: boolean }>`
   background-color: ${(props) =>
@@ -89,7 +79,7 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
         }}
         icon={isAlreadyInCart ? "" : "bag-plus-green"}
       >
-        {isAlreadyInCart ? "Está Na Sacola" : "Adicionar à Sacola"}
+        {isAlreadyInCart ? "Está na Sacola" : "Adicionar à Sacola"}
       </CustomButton>
     );
   };
@@ -114,113 +104,18 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
               {!isSmartphone && (
                 <CartItems>
                   {wishlistContext?.wishlist?.products &&
-                    wishlistContext.wishlist.products.map(
-                      (item: Product, index: number) => (
-                        <CartItem
-                          key={item.id}
-                          showBackground={index % 2 === 0}
-                        >
-                          <ImagePrice
-                            onClick={() => _goTo("/produtos/" + item.uid)}
-                          >
-                            <CartItemImage
-                              image={cloudinaryImage(item.image, 90)}
-                              size={90}
-                            ></CartItemImage>
-                          </ImagePrice>
-                          <SpaceBetweenColumn>
-                            <div>
-                              <TitleAndRemove>
-                                <Link href={`/produtos/${item.uid}`}>
-                                  <Title size={14}>{item.title}</Title>
-                                </Link>
-                                <SizedBox width={16}></SizedBox>
-                                <CustomButton
-                                  width={70}
-                                  type="delete"
-                                  variant="text"
-                                  noPadding={true}
-                                  small
-                                  onClick={() =>
-                                    wishlistContext.removeFromWishlist(item.id)
-                                  }
-                                >
-                                  Remover
-                                </CustomButton>
-                              </TitleAndRemove>
-                              <Link href={`/produtos/${item.uid}`}>
-                                <Description>{item.description}</Description>
-                              </Link>
-                              <SizedBox height={8}></SizedBox>
-                              <Link href={`/produtos/${item.uid}`}>
-                                <Price>
-                                  {new Intl.NumberFormat("pt-BR", {
-                                    style: "currency",
-                                    currency: "BRL",
-                                  }).format(item.price)}
-                                </Price>
-                              </Link>
-                              <SizedBox height={8}></SizedBox>
-                            </div>
-                            <MoreInfo>{getCartButton(item)}</MoreInfo>
-                          </SpaceBetweenColumn>
-                        </CartItem>
-                      )
-                    )}
+                    wishlistContext.wishlist.products.map((item: Product) => (
+                      <WishlistItem key={item.id} item={item}></WishlistItem>
+                    ))}
                 </CartItems>
               )}
 
               {isSmartphone && (
                 <CartItems>
                   {wishlistContext?.wishlist?.products &&
-                    wishlistContext.wishlist.products.map(
-                      (item: Product, index: number) => (
-                        <CartItem
-                          key={item.id}
-                          showBackground={index % 2 === 0}
-                        >
-                          <ImagePrice
-                            onClick={() => _goTo("/produtos/" + item.uid)}
-                          >
-                            <CartItemImage
-                              image={cloudinaryImage(item.image, 90)}
-                              size={window.innerWidth * 0.24}
-                            ></CartItemImage>
-                          </ImagePrice>
-                          <SpaceBetweenColumn>
-                            <div>
-                              <TitleAndRemove>
-                                <Link href={`/produtos/${item.uid}`}>
-                                  <Title size={12}>{item.title}</Title>
-                                </Link>
-                                <SizedBox width={16}></SizedBox>
-                                <Icon
-                                  size={16}
-                                  type="delete"
-                                  onClick={() =>
-                                    wishlistContext.removeFromWishlist(item.id)
-                                  }
-                                ></Icon>
-                              </TitleAndRemove>
-                              <SizedBox height={4}></SizedBox>
-                              <Link href={`/produtos/${item.uid}`}>
-                                <Description>{item.description}</Description>
-                              </Link>
-                              <SizedBox height={8}></SizedBox>
-                              <Link href={`/produtos/${item.uid}`}>
-                                <Price>
-                                  {new Intl.NumberFormat("pt-BR", {
-                                    style: "currency",
-                                    currency: "BRL",
-                                  }).format(item.price)}
-                                </Price>
-                              </Link>
-                            </div>
-                            <MoreInfo>{getCartButton(item)}</MoreInfo>
-                          </SpaceBetweenColumn>
-                        </CartItem>
-                      )
-                    )}
+                    wishlistContext.wishlist.products.map((item: Product) => (
+                      <WishlistItem key={item.id} item={item}></WishlistItem>
+                    ))}
                 </CartItems>
               )}
             </>

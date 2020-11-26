@@ -81,7 +81,7 @@ function Home(props: HomeProps): JSX.Element {
     },
     cta: {
       backgroundColor: "#fff",
-      text: "ver tudo",
+      text: "Ver Tudo",
       textColor: "#561643",
       url: "/promo/women",
     },

@@ -131,7 +131,7 @@ const ButtonText = styled.div<{ color: string }>`
   line-height: 19px;
   text-align: center;
   letter-spacing: 1.5px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   color: ${(props) => props.color};
 `;
 
@@ -209,7 +209,7 @@ const TitleText = styled.div`
   line-height: 18px;
   text-align: center;
   letter-spacing: 1px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 
   color: ${Colors.PRIMARY};
 `;

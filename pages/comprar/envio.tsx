@@ -344,7 +344,7 @@ function AddressAndShipping(): JSX.Element {
       <CartFooterButtons
         buttons={[
           {
-            text: "Ir para pagamento",
+            text: "Ir Para Pagamento",
             onClick: goToPaymentInfo,
             type: "success",
             width: 200,

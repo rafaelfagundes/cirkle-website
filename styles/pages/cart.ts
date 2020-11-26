@@ -21,6 +21,27 @@ export const StyledCartContainer = styled.div`
   justify-content: center;
 `;
 
+export const ProductTitle = styled.h2`
+  margin: 0;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: ${Colors.PRIMARY};
+`;
+
+export const ProductBrand = styled.h2`
+  margin: 0;
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #838383;
+  text-transform: uppercase;
+`;
+
 export const Label = styled.span`
   font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
@@ -86,7 +107,7 @@ export const CartItem = styled.div<{ showBackground?: boolean }>`
 export const CartItemImage = styled.div<{ image: string; size: number }>`
   background-image: ${(props) => `url("${props.image}");`};
   background-color: #cccccc;
-  height: ${(props) => props.size * 1.25}px;
+  height: ${(props) => props.size * 1.5}px;
   width: ${(props) => props.size}px;
   min-width: 90px;
   background-position: center;
@@ -103,7 +124,7 @@ export const Description = styled.span<{ isSmartphone?: boolean }>`
     "Helvetica Neue", sans-serif;
   color: ${Colors.PRIMARY};
   font-size: 12px;
-  margin-left: 6px;
+  margin-left: 10px;
   max-height: 65px;
   max-width: ${(props) => (props.isSmartphone ? 242 : 430)}px;
   overflow: hidden;
@@ -116,15 +137,29 @@ export const Description = styled.span<{ isSmartphone?: boolean }>`
 export const MoreInfo = styled.div`
   display: flex;
   flex-direction: row;
+  margin-left: 10px;
+  justify-content: space-between;
 `;
 
 export const Price = styled.span`
   font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
-  color: ${Colors.MONEY};
+  color: ${Colors.SECONDARY};
   font-weight: 700;
-  margin-left: 6px;
+  margin-left: 10px;
+`;
+
+export const OldPrice = styled.span`
+  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  color: ${Colors.SECONDARY};
+  font-weight: 700;
+  margin-left: 10px;
+  font-size: 12px;
+  opacity: 0.5;
+  text-decoration: line-through;
 `;
 
 export const StyledColor = styled.span`
@@ -150,11 +185,11 @@ export const Qty = styled.span`
 
 export const TitleAndRemove = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: calc(100% - 6px);
-  margin-left: 6px;
+  flex-direction: column;
+  /* justify-content: space-between;
+  align-items: center; */
+  width: calc(100% - 10px);
+  margin-left: 10px;
 `;
 
 export const ImagePrice = styled.div`

@@ -90,7 +90,7 @@ function MobileOrdemItem({ order }: { order: Order }): JSX.Element {
           variant="outlined"
           icon="search"
         >
-          ver
+          Ver
         </CustomButton>
       </OrderContent>
     </OrderItem>
