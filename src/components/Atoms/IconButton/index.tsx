@@ -5,8 +5,9 @@ import Icon from "../Icon";
 
 const StyledIconButton = styled.div<{
   size: number;
+  filled: boolean;
   border: boolean;
-  borderColor: string;
+  color: string;
 }>`
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
@@ -14,8 +15,9 @@ const StyledIconButton = styled.div<{
   justify-content: center;
   align-items: center;
   border: ${(props) =>
-    props.border ? `2px solid ${props.borderColor || Colors.PRIMARY}` : "none"};
+    props.border ? `2px solid ${props.color || Colors.PRIMARY}` : "none"};
   border-radius: 4px;
+  background-color: ${(props) => (props.filled ? props.color : "transparent")};
 `;
 
 interface IconButtonProps {
@@ -25,7 +27,8 @@ interface IconButtonProps {
   size?: number;
   onClick: () => void;
   border?: boolean;
-  borderColor?: string;
+  color?: string;
+  filled?: boolean;
 }
 
 function IconButton(props: IconButtonProps): JSX.Element {
@@ -34,7 +37,8 @@ function IconButton(props: IconButtonProps): JSX.Element {
       onClick={props.onClick}
       size={props.size ? props.size * 1.375 : 44}
       border={props.border}
-      borderColor={props.borderColor}
+      filled={props.filled}
+      color={props.color}
     >
       <Icon
         type={props.type}

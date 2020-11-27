@@ -3,31 +3,30 @@ import { useTheme } from "@material-ui/core/styles";
 import { motion, useAnimation } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import Colors from "../../../enums/Colors";
 import { useAuth } from "../../../hooks/auth/useAuth";
 import { useCart } from "../../../hooks/cart/useCart";
 import { useWishlist } from "../../../hooks/wishlist/useWishlist";
 import Product from "../../../modules/product/Product";
 import { cloudinaryImage } from "../../../utils/image";
 import CustomButton from "../../Atoms/CustomButton";
-import FavoriteIcon from "../../Atoms/FavoriteIcon";
 import Icon from "../../Atoms/Icon";
-import Padding from "../../Atoms/Padding";
-import Price from "../../Atoms/Price";
-import SizedBox from "../../Atoms/SizedBox";
+import IconButton from "../../Atoms/IconButton";
+import Row from "../../Atoms/Row";
 import {
   AnimatedHeart,
-  BrandName,
   BrandNameText,
+  Content,
   Description,
-  FavoriteIconHolder,
   Image,
   Item,
   NumberPosition,
   NumberPositionText,
-  RemoveButton,
-  RemoveIconHolder,
+  OldPrice,
+  Price,
+  Size,
+  SizeHolder,
   Title,
-  TitleHolder,
 } from "./styles";
 
 function ProductItem({
@@ -95,29 +94,6 @@ function ProductItem({
         overflow: "hidden",
       }}
     >
-      {!removeButton && authContext.user && (
-        <FavoriteIconHolder>
-          <FavoriteIcon
-            active={isAlreadyInWishlist}
-            setActive={
-              isAlreadyInWishlist
-                ? () => wishlistContext.removeFromWishlist(data.id)
-                : () => wishlistContext.addToWishlist(data)
-            }
-          ></FavoriteIcon>
-        </FavoriteIconHolder>
-      )}
-      {removeButton && (
-        <RemoveIconHolder>
-          <RemoveButton>
-            <Icon
-              type="remove"
-              alt="Remover da Lista de Favoritos"
-              onClick={() => wishlistContext.removeFromWishlist(data.id)}
-            ></Icon>
-          </RemoveButton>
-        </RemoveIconHolder>
-      )}
       <Item
         isSmartphone={isSmartphone}
         onDoubleClick={
@@ -131,34 +107,61 @@ function ProductItem({
             <Icon type="heart-fill" size={1}></Icon>
           </motion.div>
         </AnimatedHeart>
-        <span onClick={() => _goToProduct(data.uid)}>
+        <span
+          onClick={() => _goToProduct(data.uid)}
+          style={{ position: "relative" }}
+        >
+          <SizeHolder>
+            <Size>{data.sizes.length === 1 ? data.sizes[0].value : "+"}</Size>
+          </SizeHolder>
           <Image image={cloudinaryImage(data.image, 230)}></Image>
-          <BrandName>
-            <BrandNameText>{data.brand.name}</BrandNameText>
-          </BrandName>
-          <Description>
-            <TitleHolder>
-              <Title>{data.title}</Title>
-            </TitleHolder>
-            <Price price={data.price} priceWhenNew={data.priceWhenNew}></Price>
-          </Description>
-          <SizedBox height={8}></SizedBox>
         </span>
-        {removeButton && (
-          <>
-            <Padding horizontal={8}>
-              <CustomButton
-                type={isAlreadyInCart ? "disabled" : "success"}
-                variant={isAlreadyInCart ? "text" : "outlined"}
-                onClick={() => _addToCart(data)}
-                width={212}
-              >
-                {isAlreadyInCart ? "Já Está na Sacola" : "Adicionar à Sacola"}
-              </CustomButton>
-            </Padding>
-            <SizedBox height={8}></SizedBox>
-          </>
-        )}
+        <Content>
+          <span onClick={() => _goToProduct(data.uid)}>
+            <Description>
+              <BrandNameText>{data.brand.name}</BrandNameText>
+              <Title>{data.title}</Title>
+              <Row>
+                <Price>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(data.price)}
+                </Price>
+                <OldPrice>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(data.priceWhenNew)}
+                </OldPrice>
+              </Row>
+            </Description>
+          </span>
+          <Row spaceBetween>
+            <CustomButton
+              width={143}
+              type={isAlreadyInCart ? "disabled" : "default"}
+              variant="contained"
+              onClick={() => {
+                data.cartQty = 1;
+                cartContext.addToCart(data);
+              }}
+            >
+              {isAlreadyInCart ? "Está na Sacola" : "Adicionar à Sacola"}
+            </CustomButton>
+            <IconButton
+              type={isAlreadyInWishlist ? "heart-white" : "heart"}
+              border={!isAlreadyInWishlist}
+              filled={isAlreadyInWishlist}
+              color={isAlreadyInWishlist ? Colors.SECONDARY : Colors.PRIMARY}
+              onClick={
+                isAlreadyInWishlist
+                  ? () => wishlistContext.removeFromWishlist(data.id)
+                  : () => wishlistContext.addToWishlist(data)
+              }
+            ></IconButton>
+          </Row>
+        </Content>
       </Item>
       {numberPosition !== 0 && (
         <NumberPosition>

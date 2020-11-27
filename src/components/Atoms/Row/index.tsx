@@ -15,7 +15,7 @@ function Row({
   spaceBetween = false,
   ...props
 }: {
-  children: Array<JSX.Element>;
+  children: JSX.Element | Array<JSX.Element>;
   spaceBetween?: boolean;
 }): JSX.Element {
   return (

@@ -25,9 +25,13 @@ export const Image = styled.div<{ image: string }>`
   border-top-left-radius: 4px;
 `;
 
+export const Content = styled.div`
+  padding: 16px;
+  height: 168px;
+`;
+
 export const BrandName = styled.div`
   align-items: center;
-  background-color: ${Colors.SECONDARY};
   display: flex;
   flex-direction: row;
   height: 18px;
@@ -41,13 +45,9 @@ export const BrandNameText = styled.span`
     "Helvetica Neue", sans-serif;
   font-weight: bold;
   font-size: 12px;
-  color: ${Colors.WHITE};
-`;
-
-export const TitleHolder = styled.div`
-  display: flex;
-  align-items: center;
-  height: 40px;
+  color: #838383;
+  text-transform: uppercase;
+  margin-bottom: 3px;
 `;
 
 export const Title = styled.span`
@@ -56,7 +56,7 @@ export const Title = styled.span`
     "Helvetica Neue", sans-serif;
   font-weight: 700;
   font-size: 16px;
-  line-height: 125%;
+  line-height: 130%;
   display: flex;
   align-items: flex-end;
   color: ${Colors.PRIMARY};
@@ -70,8 +70,8 @@ export const Title = styled.span`
 export const Description = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 6px 16px 2px 16px;
   font-weight: 500;
+  height: 92px;
 `;
 
 export const FavoriteIconHolder = styled.div`
@@ -133,4 +133,48 @@ export const NumberPositionDetail = styled.div`
   background-color: ${Colors.PARADISE_PINK};
   display: flex;
   position: absolute;
+`;
+
+export const Price = styled.span`
+  margin: 0;
+  font-family: "Commissioner", Lato, sans-serif;
+  color: ${Colors.SECONDARY};
+  font-weight: 700;
+  font-size: 16px;
+  margin-right: 6px;
+`;
+
+export const OldPrice = styled.span`
+  margin: 0;
+  font-family: "Commissioner", Lato, sans-serif;
+  color: ${Colors.SECONDARY};
+  font-weight: 700;
+  font-size: 12px;
+  margin-right: 6px;
+  text-decoration: line-through;
+  opacity: 0.5;
+`;
+
+export const SizeHolder = styled.div`
+  position: absolute;
+  background-color: ${Colors.WHITE};
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid ${Colors.SECONDARY};
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  top: 190px;
+  left: 198px;
+
+  z-index: 3;
+`;
+
+export const Size = styled.span`
+  color: ${Colors.SECONDARY};
+  margin: 0;
+  font-family: "Commissioner", Lato, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
 `;
