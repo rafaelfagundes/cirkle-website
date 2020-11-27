@@ -11,10 +11,12 @@ import HighlightsSection from "../src/components/Organisms/HighlightsSection";
 import HomeCategories from "../src/components/Organisms/HomeCategories";
 import HotSectionTitle from "../src/components/Organisms/HotSection/HotSectionTitle";
 import PromoHeroComponent from "../src/components/Organisms/PromoHero";
+import RecentlyViewed from "../src/components/Organisms/RecentlyViewed";
 import Layout from "../src/components/Templates/Layout";
 import { MainCategory } from "../src/enums/Categories";
 import { useAuth } from "../src/hooks/auth/useAuth";
 import { useCart } from "../src/hooks/cart/useCart";
+import { useRecentlyViewed } from "../src/hooks/recentlyViewed/useRecentlyViewed";
 import { useWishlist } from "../src/hooks/wishlist/useWishlist";
 import Banner from "../src/modules/banner/Banner";
 import Brand from "../src/modules/brand/Brand";
@@ -53,6 +55,7 @@ function Home(props: HomeProps): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const wishlistContext = useWishlist();
   const authContext = useAuth();
+  const recentlyViewedContext = useRecentlyViewed();
 
   const { data: dataWishlist } = useSWR(
     authContext.user ? "/wishlists" : null,
@@ -200,11 +203,14 @@ function Home(props: HomeProps): JSX.Element {
           )}
         </Container>
         <SizedBox height={32}></SizedBox>
+        {recentlyViewedContext.recentlyViewed.items.length > 0 && (
+          <RecentlyViewed
+            items={recentlyViewedContext.recentlyViewed.items}
+            backgroundColor="rgba(0, 0, 0, 0.05)"
+          ></RecentlyViewed>
+        )}
         <Hidden only={["md", "lg", "xl"]}>
           <NewsletterSignUp></NewsletterSignUp>
-        </Hidden>
-        <Hidden only={["xs", "sm"]}>
-          <SizedBox height={16}></SizedBox>
         </Hidden>
       </>
     </Layout>

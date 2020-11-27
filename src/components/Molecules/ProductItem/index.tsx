@@ -4,7 +4,6 @@ import { motion, useAnimation } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Colors from "../../../enums/Colors";
-import { useAuth } from "../../../hooks/auth/useAuth";
 import { useCart } from "../../../hooks/cart/useCart";
 import { useWishlist } from "../../../hooks/wishlist/useWishlist";
 import Product from "../../../modules/product/Product";
@@ -25,6 +24,7 @@ import {
   OldPrice,
   Price,
   Size,
+  SizeContainer,
   SizeHolder,
   Title,
 } from "./styles";
@@ -45,8 +45,6 @@ function ProductItem({
   const wishlistContext = useWishlist();
   const isAlreadyInWishlist = wishlistContext.isItemInWishlist(data.id);
   const router = useRouter();
-
-  const authContext = useAuth();
 
   const _goToProduct = (id: string) => {
     router.push(`/produtos/${id}`);
@@ -111,9 +109,13 @@ function ProductItem({
           onClick={() => _goToProduct(data.uid)}
           style={{ position: "relative" }}
         >
-          <SizeHolder>
-            <Size>{data.sizes.length === 1 ? data.sizes[0].value : "+"}</Size>
-          </SizeHolder>
+          <SizeContainer>
+            {data?.sizes?.map((size) => (
+              <SizeHolder key={size.id}>
+                <Size>{size.value}</Size>
+              </SizeHolder>
+            ))}
+          </SizeContainer>
           <Image image={cloudinaryImage(data.image, 230)}></Image>
         </span>
         <Content>
@@ -142,15 +144,12 @@ function ProductItem({
               width={143}
               type={isAlreadyInCart ? "disabled" : "default"}
               variant="contained"
-              onClick={() => {
-                data.cartQty = 1;
-                cartContext.addToCart(data);
-              }}
+              onClick={() => _addToCart(data)}
             >
               {isAlreadyInCart ? "Está na Sacola" : "Adicionar à Sacola"}
             </CustomButton>
             <IconButton
-              type={isAlreadyInWishlist ? "heart-white" : "heart"}
+              type={isAlreadyInWishlist ? "heart-white-fill" : "heart"}
               border={!isAlreadyInWishlist}
               filled={isAlreadyInWishlist}
               color={isAlreadyInWishlist ? Colors.SECONDARY : Colors.PRIMARY}

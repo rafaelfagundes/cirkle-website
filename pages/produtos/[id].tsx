@@ -37,7 +37,7 @@ import Title from "../../src/components/Atoms/Title";
 import Breadcrumbs from "../../src/components/Molecules/Breadcrumbs";
 import SocialShare from "../../src/components/Molecules/SocialShare";
 import ProductCarousel from "../../src/components/Organisms/ProductCarousel";
-import RecentItemsCarousel from "../../src/components/Organisms/RecentItemsCarousel";
+import RecentlyViewed from "../../src/components/Organisms/RecentlyViewed";
 import Layout from "../../src/components/Templates/Layout";
 import MetaData, {
   MetaDataType,
@@ -79,11 +79,6 @@ const Description = styled.div<{ isSmartphone: boolean }>`
   display: -webkit-box;
   -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
-`;
-
-const RecentlyViewed = styled.div`
-  padding: 16px 0 32px 0;
-  background-color: rgba(0, 0, 0, 0.05);
 `;
 
 const BrandImage = styled.img`
@@ -207,10 +202,6 @@ function ProductPage({
     } else {
       wishlistContext.addToWishlist(product);
     }
-  }
-
-  function clearRecent() {
-    recentlyViewedContext.removeAll();
   }
 
   useEffect(() => {
@@ -566,29 +557,10 @@ function ProductPage({
             {showRecentlyViewed() && (
               <>
                 <SizedBox height={isSmartPhone ? 0 : 16}></SizedBox>
-                <RecentlyViewed>
-                  <Container maxWidth="md" disableGutters>
-                    <Row spaceBetween>
-                      <Padding horizontal={isSmartPhone ? 16 : 0}>
-                        <Title>Vistos recentemente</Title>
-                      </Padding>
-                      <CustomButton
-                        onClick={clearRecent}
-                        variant="text"
-                        type="delete"
-                        width={110}
-                        noPadding
-                        small
-                      >
-                        Limpar Lista
-                      </CustomButton>
-                    </Row>
-                    <SizedBox height={12}></SizedBox>
-                    <RecentItemsCarousel
-                      products={getRecentItems()}
-                    ></RecentItemsCarousel>
-                  </Container>
-                </RecentlyViewed>
+                <RecentlyViewed
+                  items={getRecentItems()}
+                  backgroundColor="rgba(0, 0, 0, 0.05)"
+                ></RecentlyViewed>
               </>
             )}
             <SizedBox height={32}></SizedBox>

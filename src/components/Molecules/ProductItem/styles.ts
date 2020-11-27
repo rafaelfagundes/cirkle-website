@@ -155,24 +155,33 @@ export const OldPrice = styled.span`
   opacity: 0.5;
 `;
 
-export const SizeHolder = styled.div`
+export const SizeContainer = styled.div`
   position: absolute;
-  background-color: ${Colors.WHITE};
-  width: 20px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  top: 190px;
+  left: 16px;
+`;
+
+export const SizeHolder = styled.div`
+  background-color: rgba(255, 255, 255, 0.8);
   height: 20px;
+  min-width: 20px;
+  padding: 0 3px;
   border-radius: 4px;
   border: 1px solid ${Colors.SECONDARY};
   justify-content: center;
   align-items: center;
   display: flex;
-  top: 190px;
-  left: 198px;
+  margin-right: 5px;
 
   z-index: 3;
 `;
 
 export const Size = styled.span`
-  color: ${Colors.SECONDARY};
+  color: ${Colors.PRIMARY};
   margin: 0;
   font-family: "Commissioner", Lato, sans-serif;
   font-weight: 700;

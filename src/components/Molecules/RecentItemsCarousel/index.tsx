@@ -6,7 +6,7 @@ import theme from "../../../theme/theme";
 import Padding from "../../Atoms/Padding";
 import SizedBox from "../../Atoms/SizedBox";
 import Title from "../../Atoms/Title";
-import MiniProductItem from "../../Molecules/MiniProductItem";
+import MiniProductItem from "../MiniProductItem";
 
 const Section = styled.div``;
 
@@ -20,7 +20,6 @@ const ItemsHolder = styled.div<{
   flex-direction: row;
   align-items: center;
   overflow: ${(props) => (props.disableScroll ? "hidden" : "scroll")};
-  // justify-content: space-between;
 `;
 
 const Spacer = styled.div`
