@@ -96,7 +96,6 @@ export const CouponCheckboxRow = styled.div<{
 export const CartItems = styled.div``;
 
 export const CartItem = styled.div<{ showBackground?: boolean }>`
-  padding: 16px;
   display: flex;
   flex-direction: row;
   /* align-items: flex-start; */

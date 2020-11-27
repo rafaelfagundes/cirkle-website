@@ -48,9 +48,16 @@ function WishlistTab(): JSX.Element {
         wishlistContext.wishlist.products.length > 0 && (
           <CartItems>
             {wishlistContext?.wishlist?.products &&
-              wishlistContext.wishlist.products.map((item: Product) => (
-                <WishlistItem key={item.id} item={item}></WishlistItem>
-              ))}
+              wishlistContext.wishlist.products.map(
+                (item: Product, index: number) => (
+                  <>
+                    <WishlistItem key={item.id} item={item}></WishlistItem>
+                    {wishlistContext.wishlist.products.length !== index + 1 && (
+                      <SizedBox height={20}></SizedBox>
+                    )}
+                  </>
+                )
+              )}
           </CartItems>
         )}
       {wishlistContext?.wishlist?.products?.length === 0 && (

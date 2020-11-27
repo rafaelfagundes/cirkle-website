@@ -6,7 +6,6 @@ import styled from "styled-components";
 import useSWR from "swr";
 import Center from "../src/components/Atoms/Center";
 import Column from "../src/components/Atoms/Column";
-import CustomButton from "../src/components/Atoms/CustomButton";
 import Icon from "../src/components/Atoms/Icon";
 import LoadingAnimation from "../src/components/Atoms/LoadingAnimation";
 import SizedBox from "../src/components/Atoms/SizedBox";
@@ -16,7 +15,6 @@ import EmptyPage from "../src/components/Templates/EmptyPage";
 import Page from "../src/components/Templates/Page";
 import Colors from "../src/enums/Colors";
 import { useAuth } from "../src/hooks/auth/useAuth";
-import { useCart } from "../src/hooks/cart/useCart";
 import { useWishlist } from "../src/hooks/wishlist/useWishlist";
 import Menu from "../src/modules/menu/Menu";
 import Product from "../src/modules/product/Product";
@@ -27,20 +25,10 @@ const StyledWishlist = styled.div<{ isSmartphone: boolean }>`
     props.isSmartphone ? Colors.WHITE : Colors.TRANSPARENT};
 `;
 
-const SpaceBetweenColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  min-height: 113px;
-  width: 100%;
-`;
-
 function Wishlist({ menu }: { menu: Menu }): JSX.Element {
   const theme = useTheme();
   const isSmartphone = useMediaQuery(theme.breakpoints.down("xs"));
   const wishlistContext = useWishlist();
-  const cartContext = useCart();
   const authContext = useAuth();
 
   const { data: dataWishlist } = useSWR(
@@ -64,26 +52,6 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
     typeof window !== "undefined" && router.push(route);
   };
 
-  const getCartButton = (item: Product) => {
-    const isAlreadyInCart = cartContext.isItemInCart(item.id);
-
-    return (
-      <CustomButton
-        type={isAlreadyInCart ? "disabled" : "success"}
-        variant="text"
-        small
-        width={isAlreadyInCart ? 132 : 195}
-        onClick={() => {
-          item.cartQty = 1;
-          cartContext.addToCart(item);
-        }}
-        icon={isAlreadyInCart ? "" : "bag-plus-green"}
-      >
-        {isAlreadyInCart ? "Está na Sacola" : "Adicionar à Sacola"}
-      </CustomButton>
-    );
-  };
-
   // Scroll to top when page is loaded
   useEffect(() => {
     if (process.browser) window.scrollTo(0, 0);
@@ -94,9 +62,9 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
       menu={menu}
       title="Lista de Desejos"
       image="images/wishlist.jpg"
-      noPadding
       maxWidth={640}
     >
+      <SizedBox height={20}></SizedBox>
       <StyledWishlist isSmartphone={isSmartphone}>
         {wishlistContext?.wishlist?.products &&
           wishlistContext.wishlist.products.length > 0 && (
@@ -104,18 +72,36 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
               {!isSmartphone && (
                 <CartItems>
                   {wishlistContext?.wishlist?.products &&
-                    wishlistContext.wishlist.products.map((item: Product) => (
-                      <WishlistItem key={item.id} item={item}></WishlistItem>
-                    ))}
+                    wishlistContext.wishlist.products.map(
+                      (item: Product, index: number) => (
+                        <>
+                          <WishlistItem
+                            key={item.id}
+                            item={item}
+                          ></WishlistItem>
+                          {wishlistContext.wishlist.products.length !==
+                            index + 1 && <SizedBox height={20}></SizedBox>}
+                        </>
+                      )
+                    )}
                 </CartItems>
               )}
 
               {isSmartphone && (
                 <CartItems>
                   {wishlistContext?.wishlist?.products &&
-                    wishlistContext.wishlist.products.map((item: Product) => (
-                      <WishlistItem key={item.id} item={item}></WishlistItem>
-                    ))}
+                    wishlistContext.wishlist.products.map(
+                      (item: Product, index: number) => (
+                        <>
+                          <WishlistItem
+                            key={item.id}
+                            item={item}
+                          ></WishlistItem>
+                          {wishlistContext.wishlist.products.length !==
+                            index + 1 && <SizedBox height={20}></SizedBox>}
+                        </>
+                      )
+                    )}
                 </CartItems>
               )}
             </>
@@ -162,6 +148,7 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
           </Column>
         )}
       </StyledWishlist>
+      <SizedBox height={20}></SizedBox>
     </Page>
   );
 }

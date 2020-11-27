@@ -12,7 +12,7 @@ import { calcTotal, getPayment, getStatus } from "./functions";
 const OrderItem = styled.div<{ last: boolean }>`
   display: flex;
   flex-direction: column;
-  height: 120px;
+  /* height: 120px; */
   /* border: ${(props) => (props.last ? "none" : "1px solid #e4e4e4")}; */
   border: 1px solid #eee;
   width: 100%;
@@ -28,7 +28,7 @@ const BasicInfo = styled.div`
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   background-color: #eee;
-  padding: 10px 20px;
+  padding: 10px 16px;
 `;
 
 function DesktopOrderItem({
