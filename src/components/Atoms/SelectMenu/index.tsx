@@ -373,7 +373,7 @@ function SelectMenu({
         )}
       </>
     );
-  } else {
+  } else if (items.length === 1) {
     return (
       <Column>
         {title && (
@@ -412,6 +412,8 @@ function SelectMenu({
         </SingleItem>
       </Column>
     );
+  } else {
+    return <div></div>;
   }
 }
 

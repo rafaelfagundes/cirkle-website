@@ -133,7 +133,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
     <Layout menu={menu}>
       <>
         <StyledCartContainer>
-          {cartContext.cart.items.length > 0 && (
+          {cartContext?.cart?.items?.length > 0 && (
             <>
               <MainColumn isSmartPhone={isSmartPhone}>
                 <Card padding={false} shadow={false}>
@@ -143,11 +143,12 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                   </Padding>
                   <SizedBox height={16}></SizedBox>
                   <CartItems>
-                    {cartContext.cart.items.map((item, index) => (
+                    {cartContext?.cart?.items.map((item, index) => (
                       <CartItem
                         key={index}
                         item={item}
                         showBackground={index % 2 === 0}
+                        showSelects
                       ></CartItem>
                     ))}
                   </CartItems>
@@ -201,7 +202,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
 
                     {_showShippingSelect() && (
                       <>
-                        {!cartContext.cart.loadingShipping &&
+                        {!cartContext?.cart?.loadingShipping &&
                           cartContext?.cart?.shippingList?.length > 0 && (
                             <>
                               <SizedBox height={16}></SizedBox>
@@ -385,7 +386,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
             </>
           )}
 
-          {cartContext.cart.items.length === 0 && (
+          {cartContext?.cart?.items?.length === 0 && (
             <Column>
               <SizedBox height={72}></SizedBox>
               <EmptyPage
