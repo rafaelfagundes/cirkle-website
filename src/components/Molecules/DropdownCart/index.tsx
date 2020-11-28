@@ -1,27 +1,19 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useCart } from "../../../hooks/cart/useCart";
-import { cloudinaryProductImage } from "../../../utils/image";
 import Column from "../../Atoms/Column";
 import CustomButton from "../../Atoms/CustomButton";
-import Icon from "../../Atoms/Icon";
 import Padding from "../../Atoms/Padding";
 import SizedBox from "../../Atoms/SizedBox";
-import Title from "../../Atoms/Title";
 import EmptyPage from "../../Templates/EmptyPage";
+import CartItem from "../CartItem";
 import Bag from "./bag";
 import {
   CartHeader,
   CartHeaderText,
-  CartItem,
-  CartItemImage,
   CartItems,
   CartText,
-  Description,
   Label,
-  Price,
-  PriceAndButton,
   Row,
   StyledCart,
   Value,
@@ -68,48 +60,18 @@ function DropdownCart(): JSX.Element {
         transitionDuration={{ appear: 400, enter: 400, exit: 500 }}
       >
         {cartContext.cart.items.length > 0 && (
-          <>
+          <div style={{ maxWidth: 450 }}>
             <CartHeader>
               <CartHeaderText>Minha Sacola</CartHeaderText>
             </CartHeader>
             <CartItems height={window.innerHeight}>
               {cartContext.cart.items.map((item, index) => (
-                <CartItem key={item.id} showBackground={index % 2 !== 0}>
-                  <Link href={`/produtos/${item.uid}`}>
-                    <CartItemImage
-                      image={cloudinaryProductImage(item.image, 75)}
-                      size={75}
-                    ></CartItemImage>
-                  </Link>
-                  <Column spaceBetween minHeight={75}>
-                    <Link href={`/produtos/${item.uid}`}>
-                      <div style={{ cursor: "pointer" }}>
-                        <SizedBox height={4}></SizedBox>
-                        <Title size={12}>
-                          {item.cartQty > 1
-                            ? `${item.cartQty}x ${item.title}`
-                            : item.title}
-                        </Title>
-                        <SizedBox height={2}></SizedBox>
-                        <Description>{item.description}</Description>
-                        <SizedBox height={2}></SizedBox>
-                      </div>
-                    </Link>
-                    <PriceAndButton>
-                      <Price>
-                        {new Intl.NumberFormat("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        }).format(item.price)}
-                      </Price>
-                      <Icon
-                        size={16}
-                        type="delete"
-                        onClick={() => cartContext.removeFromCart(item.id)}
-                      ></Icon>
-                    </PriceAndButton>
-                  </Column>
-                </CartItem>
+                <CartItem
+                  key={item.id}
+                  showBackground={index % 2 !== 0}
+                  item={item}
+                  showSelects={false}
+                ></CartItem>
               ))}
             </CartItems>
             <SizedBox height={16}></SizedBox>
@@ -160,7 +122,7 @@ function DropdownCart(): JSX.Element {
                 </Row>
               </>
             )}
-          </>
+          </div>
         )}
         {cartContext.cart.items.length === 0 && (
           <>

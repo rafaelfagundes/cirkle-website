@@ -98,9 +98,15 @@ export const CartItems = styled.div``;
 export const CartItem = styled.div<{ showBackground?: boolean }>`
   display: flex;
   flex-direction: row;
-  /* align-items: flex-start; */
   background-color: ${(props) =>
     props.showBackground ? "rgba(0, 0, 0, 0.015)" : "transparent"};
+`;
+
+export const StyledCartItem = styled.div<{ showBackground?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  background-color: ${(props) =>
+    props.showBackground ? "rgba(0, 0, 0, 0.03)" : "transparent"};
 `;
 
 export const CartItemImage = styled.div<{ image: string; size: number }>`
@@ -136,8 +142,8 @@ export const Description = styled.span<{ isSmartphone?: boolean }>`
 export const MoreInfo = styled.div`
   display: flex;
   flex-direction: row;
-  margin-left: 10px;
   justify-content: space-between;
+  margin-left: 10px;
 `;
 
 export const Price = styled.span`
@@ -211,4 +217,19 @@ export const OpacityAnimation = styled.div<{ animate: boolean }>`
   height: ${(props) => (props.animate ? "44px" : 0)};
   opacity: ${(props) => (props.animate ? 1 : 0)};
   transition: 250ms opacity ease-in, 250ms height ease-in;
+`;
+
+export const SpaceBetweenColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 113px;
+  width: 100%;
+`;
+
+export const TopAlignedRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
 `;

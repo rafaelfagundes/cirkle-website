@@ -51,8 +51,10 @@ const Text = styled.span<{ color: string }>`
 
 const StyledLinearProgress = styled.div<{ value: number; color: string }>`
   background-color: ${Colors.LIGHT_GRAY};
+  border-radius: 8px;
 
   & > div {
+    border-radius: 8px;
     transition: width 1s;
     background-color: ${(props) => props.color};
     width: ${(props) => props.value}%;

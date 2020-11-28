@@ -2,7 +2,6 @@ import { useMediaQuery } from "@material-ui/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import styled from "styled-components";
 import {
   CartItem,
   CartItemImage,
@@ -12,6 +11,7 @@ import {
   Price,
   ProductBrand,
   ProductTitle,
+  SpaceBetweenColumn,
   TitleAndRemove,
 } from "../../../../styles/pages/cart";
 import { useCart } from "../../../hooks/cart/useCart";
@@ -23,14 +23,6 @@ import CustomButton from "../../Atoms/CustomButton";
 import IconButton from "../../Atoms/IconButton";
 import Row from "../../Atoms/Row";
 import SizedBox from "../../Atoms/SizedBox";
-
-const SpaceBetweenColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 113px;
-  width: 100%;
-`;
 
 interface WishlistItemProps {
   item: Product;

@@ -9,6 +9,7 @@ import RadioButton from "../../Atoms/RadioButton";
 import SimpleText from "../../Atoms/SimpleText";
 import SizedBox from "../../Atoms/SizedBox";
 import Subtitle from "../../Atoms/Subtitle";
+import Column from "../Column";
 import Icon from "../Icon";
 
 export enum AssetType {
@@ -58,6 +59,8 @@ const MenuHolder = styled.div<{ width: number }>`
   max-width: ${(props) => (props.width ? `${props.width}px` : `343px`)};
 `;
 
+const SingleItem = styled.div``;
+
 const MenuItem = styled.div`
   cursor: pointer;
   padding: 8px 16px 8px 6px;
@@ -80,16 +83,20 @@ const MenuAssetText = styled.div`
   font-size: 12px;
 `;
 
-const MenuAssetColor = styled.div<{ color: string }>`
+const MenuAssetColor = styled.div<{ color: string; marginLeft: boolean }>`
   width: 28px;
   height: 28px;
   background-color: ${(props) => props.color};
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
   margin-right: 10px;
-  margin-left: 6px;
+  margin-left: ${(props) => (props.marginLeft ? 6 : 0)}px;
 `;
 
-const MenuAssetImage = styled.div<{ image: string; size?: number }>`
+const MenuAssetImage = styled.div<{
+  image: string;
+  size?: number;
+  marginLeft: boolean;
+}>`
   position: relative;
   background-color: #fff;
   width: ${(props) => (props.size ? props.size : 28)}px;
@@ -100,7 +107,7 @@ const MenuAssetImage = styled.div<{ image: string; size?: number }>`
   background-size: contain;
   background-size: 80%;
   margin-right: 10px;
-  margin-left: 6px;
+  margin-left: ${(props) => (props.marginLeft ? 6 : 0)}px;
 `;
 
 const ShippingCheckBox = styled.div<{ selected: boolean; hasImage: boolean }>`
@@ -146,12 +153,22 @@ function SelectMenu({
   errorText,
   radioButtonList = false,
 }: SelectMenuProps): JSX.Element {
-  function getAsset(type: string, value: string) {
+  function getAsset(type: string, value: string, marginLeft: boolean) {
     switch (type) {
       case AssetType.COLOR:
-        return <MenuAssetColor color={value}></MenuAssetColor>;
+        return (
+          <MenuAssetColor
+            marginLeft={marginLeft}
+            color={value}
+          ></MenuAssetColor>
+        );
       case AssetType.IMAGE:
-        return <MenuAssetImage image={value}></MenuAssetImage>;
+        return (
+          <MenuAssetImage
+            marginLeft={marginLeft}
+            image={value}
+          ></MenuAssetImage>
+        );
       case AssetType.ICON:
         return <Icon type={value}></Icon>;
       default:
@@ -179,7 +196,7 @@ function SelectMenu({
     if (result) {
       return (
         <MenuAssetText>
-          {getAsset(result.assetType, result.assetValue)}
+          {getAsset(result.assetType, result.assetValue, true)}
           <SimpleText
             color={errorText !== "" ? Colors.ERROR : Colors.PRIMARY}
             size={0.9}
@@ -207,11 +224,160 @@ function SelectMenu({
     }
   }, []);
 
-  return (
-    <>
-      {radioButtonList && (
-        <>
-          {title && (
+  if (items.length > 1) {
+    return (
+      <>
+        {radioButtonList && (
+          <>
+            {title && (
+              <Subtitle
+                size={14}
+                bold
+                color={errorText !== "" ? Colors.ERROR : Colors.PRIMARY}
+              >
+                {title}
+              </Subtitle>
+            )}
+            <ShippingList>
+              {items.map((item, index) => (
+                <ShippingCheckBox
+                  key={index}
+                  onClick={() => _setSelected(item)}
+                  hasImage={item.assetValue !== undefined}
+                  selected={item.selected}
+                >
+                  {!item.assetValue && (
+                    <>
+                      <SizedBox width={10}></SizedBox>
+                      <RadioButton
+                        onClick={() => _setSelected(item)}
+                        value={item.selected}
+                      ></RadioButton>
+                    </>
+                  )}
+                  <ImageText>
+                    {!item.assetValue && <SizedBox width={10}></SizedBox>}
+                    {item.assetValue && (
+                      <MenuAssetImage
+                        image={item.assetValue}
+                        size={item.secondaryText ? 56 : 28}
+                        marginLeft
+                      ></MenuAssetImage>
+                    )}
+                    <div>
+                      <SimpleText size={0.9}>{item.text}</SimpleText>
+                      {item.secondaryText && (
+                        <>
+                          <SizedBox height={2}></SizedBox>
+                          <SimpleText size={0.8}>
+                            {item.secondaryText}
+                          </SimpleText>
+                        </>
+                      )}
+                    </div>
+                  </ImageText>
+                  {item.assetValue && (
+                    <RadioButton
+                      onClick={() => _setSelected(item)}
+                      value={item.selected}
+                    ></RadioButton>
+                  )}
+                </ShippingCheckBox>
+              ))}
+            </ShippingList>
+          </>
+        )}
+        {!radioButtonList && (
+          <PopupState variant="popover" popupId="demo-popup-popover">
+            {(popupState) => (
+              <div>
+                {title && (
+                  <>
+                    <Subtitle
+                      size={14}
+                      bold
+                      color={errorText !== "" ? Colors.ERROR : Colors.PRIMARY}
+                    >
+                      {title}
+                    </Subtitle>
+                    <SizedBox height={4}></SizedBox>
+                  </>
+                )}
+                <SelectBox
+                  {...bindTrigger(popupState)}
+                  width={width}
+                  error={errorText !== ""}
+                >
+                  {getLabel(items)}
+                  <Icon
+                    type={
+                      errorText !== ""
+                        ? "triangle-down-fill-red"
+                        : "triangle-down-fill-dark"
+                    }
+                    size={16}
+                    onClick={() => null}
+                  ></Icon>
+                </SelectBox>
+                {errorText !== "" && (
+                  <>
+                    <SizedBox height={4}></SizedBox>
+                    <SimpleText size={0.9} color={Colors.ERROR}>
+                      {errorText}
+                    </SimpleText>
+                  </>
+                )}
+                <Popover
+                  {...bindPopover(popupState)}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+                >
+                  <MenuHolder onClick={() => popupState.close()} width={width}>
+                    {items &&
+                      items.map((item: SelectItem) => (
+                        <MenuItem
+                          key={item.value}
+                          onClick={() => _setSelected(item)}
+                        >
+                          <MenuAssetText>
+                            {getAsset(item.assetType, item.assetValue, true)}
+                            <div>
+                              <SimpleText size={0.9}>{item.text}</SimpleText>
+                              {item.secondaryText && (
+                                <>
+                                  <SizedBox height={2}></SizedBox>
+                                  <SimpleText size={0.8}>
+                                    {item.secondaryText}
+                                  </SimpleText>
+                                </>
+                              )}
+                            </div>
+                          </MenuAssetText>
+                          <RadioButton
+                            value={item.selected}
+                            onClick={null}
+                          ></RadioButton>
+                        </MenuItem>
+                      ))}
+                  </MenuHolder>
+                </Popover>
+              </div>
+            )}
+          </PopupState>
+        )}
+      </>
+    );
+  } else {
+    return (
+      <Column>
+        {title && (
+          <>
             <Subtitle
               size={14}
               bold
@@ -219,140 +385,34 @@ function SelectMenu({
             >
               {title}
             </Subtitle>
-          )}
-          <ShippingList>
-            {items.map((item, index) => (
-              <ShippingCheckBox
-                key={index}
-                onClick={() => _setSelected(item)}
-                hasImage={item.assetValue !== undefined}
-                selected={item.selected}
-              >
-                {!item.assetValue && (
-                  <>
-                    <SizedBox width={10}></SizedBox>
-                    <RadioButton
-                      onClick={() => _setSelected(item)}
-                      value={item.selected}
-                    ></RadioButton>
-                  </>
-                )}
-                <ImageText>
-                  {!item.assetValue && <SizedBox width={10}></SizedBox>}
-                  {item.assetValue && (
-                    <MenuAssetImage
-                      image={item.assetValue}
-                      size={item.secondaryText ? 56 : 28}
-                    ></MenuAssetImage>
-                  )}
-                  <div>
-                    <SimpleText size={0.9}>{item.text}</SimpleText>
-                    {item.secondaryText && (
-                      <>
-                        <SizedBox height={2}></SizedBox>
-                        <SimpleText size={0.8}>{item.secondaryText}</SimpleText>
-                      </>
-                    )}
-                  </div>
-                </ImageText>
-                {item.assetValue && (
-                  <RadioButton
-                    onClick={() => _setSelected(item)}
-                    value={item.selected}
-                  ></RadioButton>
-                )}
-              </ShippingCheckBox>
-            ))}
-          </ShippingList>
-        </>
-      )}
-      {!radioButtonList && (
-        <PopupState variant="popover" popupId="demo-popup-popover">
-          {(popupState) => (
-            <div>
-              {title && (
-                <>
-                  <Subtitle
-                    size={14}
-                    bold
-                    color={errorText !== "" ? Colors.ERROR : Colors.PRIMARY}
-                  >
-                    {title}
-                  </Subtitle>
-                  <SizedBox height={4}></SizedBox>
-                </>
-              )}
-              <SelectBox
-                {...bindTrigger(popupState)}
-                width={width}
-                error={errorText !== ""}
-              >
-                {getLabel(items)}
-                <Icon
-                  type={
-                    errorText !== ""
-                      ? "triangle-down-fill-red"
-                      : "triangle-down-fill-dark"
-                  }
-                  size={16}
-                  onClick={() => null}
-                ></Icon>
-              </SelectBox>
-              {errorText !== "" && (
-                <>
-                  <SizedBox height={4}></SizedBox>
-                  <SimpleText size={0.9} color={Colors.ERROR}>
-                    {errorText}
-                  </SimpleText>
-                </>
-              )}
-              <Popover
-                {...bindPopover(popupState)}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "center",
-                }}
-              >
-                <MenuHolder onClick={() => popupState.close()} width={width}>
-                  {items &&
-                    items.map((item: SelectItem) => (
-                      <MenuItem
-                        key={item.value}
-                        onClick={() => _setSelected(item)}
-                      >
-                        <MenuAssetText>
-                          {getAsset(item.assetType, item.assetValue)}
-                          <div>
-                            <SimpleText size={0.9}>{item.text}</SimpleText>
-                            {item.secondaryText && (
-                              <>
-                                <SizedBox height={2}></SizedBox>
-                                <SimpleText size={0.8}>
-                                  {item.secondaryText}
-                                </SimpleText>
-                              </>
-                            )}
-                          </div>
-                          {/* <SizedBox width={16}></SizedBox> */}
-                        </MenuAssetText>
-                        <RadioButton
-                          value={item.selected}
-                          onClick={null}
-                        ></RadioButton>
-                      </MenuItem>
-                    ))}
-                </MenuHolder>
-              </Popover>
+            <SizedBox height={4}></SizedBox>
+          </>
+        )}
+        <SingleItem>
+          <MenuAssetText>
+            <div
+              style={{
+                minHeight: 43,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {getAsset(items[0].assetType, items[0].assetValue, false)}
             </div>
-          )}
-        </PopupState>
-      )}
-    </>
-  );
+            <div>
+              <SimpleText size={0.9}>{items[0].text}</SimpleText>
+              {items[0].secondaryText && (
+                <>
+                  <SizedBox height={2}></SizedBox>
+                  <SimpleText size={0.8}>{items[0].secondaryText}</SimpleText>
+                </>
+              )}
+            </div>
+          </MenuAssetText>
+        </SingleItem>
+      </Column>
+    );
+  }
 }
 
 export default SelectMenu;

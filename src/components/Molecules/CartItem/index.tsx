@@ -1,95 +1,47 @@
 import { useMediaQuery } from "@material-ui/core";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
-import styled from "styled-components";
-import Colors from "../../../enums/Colors";
+import {
+  CartItemImage,
+  ImagePrice,
+  OldPrice,
+  Price,
+  ProductBrand,
+  ProductTitle,
+  SpaceBetweenColumn,
+  StyledCartItem,
+  TitleAndRemove,
+  TopAlignedRow,
+} from "../../../../styles/pages/cart";
 import { useCart } from "../../../hooks/cart/useCart";
 import Color from "../../../modules/color/Color";
 import Product from "../../../modules/product/Product";
 import Size from "../../../modules/size/Size";
 import theme from "../../../theme/theme";
 import { cloudinaryImage } from "../../../utils/image";
-import Column from "../../Atoms/Column";
+import CustomButton from "../../Atoms/CustomButton";
+import HorizontalLine from "../../Atoms/HorizontalLine";
 import IconButton from "../../Atoms/IconButton";
+import Padding from "../../Atoms/Padding";
 import Row from "../../Atoms/Row";
 import SelectMenu, { AssetType, SelectItem } from "../../Atoms/SelectMenu";
 import SizedBox from "../../Atoms/SizedBox";
-import Title from "../../Atoms/Title";
-
-const StyledCartItem = styled.div<{ showBackground?: boolean }>`
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  background-color: ${(props) =>
-    props.showBackground ? "rgba(0, 0, 0, 0.015)" : "transparent"};
-`;
-
-const CartItemImage = styled.div<{ image: string; size: number }>`
-  background-image: ${(props) => `url("${props.image}");`};
-  background-color: #cccccc;
-  height: ${(props) => props.size * 1.25}px;
-  width: ${(props) => props.size}px;
-  min-width: 90px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-`;
-
-const Description = styled.span<{ isSmartphone?: boolean }>`
-  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
-  color: ${Colors.PRIMARY};
-  font-size: 14px;
-  margin-left: 6px;
-  max-height: 65px;
-  max-width: ${(props) => (props.isSmartphone ? 242 : 430)}px;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  font-weight: 500;
-  letter-spacing: -0.5px;
-`;
-
-const MoreInfo = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-const Price = styled.span`
-  font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
-  color: ${Colors.MONEY};
-  font-weight: 700;
-  margin-left: 6px;
-`;
-
-const TitleAndRemove = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: calc(100% - 6px);
-  margin-left: 6px;
-`;
 
 interface CartItemsProps {
   showBackground: boolean;
+  showSelects: boolean;
   item: Product;
 }
 
 function CartItem({
   showBackground = false,
   item,
+  showSelects = true,
 }: CartItemsProps): JSX.Element {
   const cartContext = useCart();
+  const router = useRouter();
+
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [colors, setColors] = useState(getSelectColors(item.colors));
@@ -169,81 +121,104 @@ function CartItem({
     }
   }, [qty]);
 
+  const _goTo = (route: string) => {
+    typeof window !== "undefined" && router.push(route);
+  };
+
   return (
     <StyledCartItem key={item.id} showBackground={showBackground}>
-      <Row>
-        <span style={{ cursor: "pointer" }}>
-          <Link href={`/produtos/${item.uid}`}>
+      <Padding horizontal={16} vertical={16}>
+        <Row>
+          <ImagePrice onClick={() => _goTo("/produtos/" + item.uid)}>
             <CartItemImage
-              image={cloudinaryImage(item.image, 75)}
-              size={90}
+              image={cloudinaryImage(item.image, 90)}
+              size={65}
             ></CartItemImage>
-          </Link>
-        </span>
-        <span style={{ marginLeft: 6, width: "100%" }}>
-          <Column spaceBetween minHeight={112}>
-            <div style={{ cursor: "pointer" }}>
+          </ImagePrice>
+          <SpaceBetweenColumn>
+            <Row>
               <TitleAndRemove>
                 <Link href={`/produtos/${item.uid}`}>
-                  <span>
-                    <Title size={12}>{item.title}</Title>
-                  </span>
+                  <ProductBrand>{item.brand.name}</ProductBrand>
+                </Link>
+                <Link href={`/produtos/${item.uid}`}>
+                  <ProductTitle>{item.title}</ProductTitle>
                 </Link>
                 <SizedBox width={16}></SizedBox>
-                <IconButton
-                  type="delete"
-                  onClick={() => cartContext.removeFromCart(item.id)}
-                  size={16}
-                ></IconButton>
               </TitleAndRemove>
-              <SizedBox height={4}></SizedBox>
-              <Link href={`/produtos/${item.uid}`}>
-                <Description isSmartphone={isSmartPhone}>
-                  {item.description}
-                </Description>
-              </Link>
-              <SizedBox height={8}></SizedBox>
-            </div>
-            <div>
-              <Price>
-                {new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(item.price)}
-              </Price>
-            </div>
-          </Column>
-        </span>
-      </Row>
-      <SizedBox height={16}></SizedBox>
-      <MoreInfo>
-        <SelectMenu
-          title="Cor"
-          placeholder="Cores"
-          items={colors}
-          setSelected={setColors}
-          width={isSmartPhone ? 167 : 174}
-          errorText=""
-        ></SelectMenu>
-        {/* <SizedBox width={8}></SizedBox> */}
-        <SelectMenu
-          title="Tamanho"
-          placeholder="Tam."
-          items={sizes}
-          setSelected={setSizes}
-          width={isSmartPhone ? 80 : 174}
-          errorText=""
-        ></SelectMenu>
-        {/* <SizedBox width={8}></SizedBox> */}
-        <SelectMenu
-          title="Quantidade"
-          placeholder="Qtd."
-          items={qty}
-          setSelected={setQty}
-          width={isSmartPhone ? 80 : 174}
-          errorText=""
-        ></SelectMenu>
-      </MoreInfo>
+              {isSmartPhone && (
+                <IconButton
+                  // border
+                  // color={Colors.ERROR}
+                  type="trash-red"
+                  onClick={() => cartContext.removeFromCart(item.id)}
+                ></IconButton>
+              )}
+              {!isSmartPhone && (
+                <CustomButton
+                  width={120}
+                  variant="text"
+                  type="delete"
+                  icon="trash-red"
+                  onClick={() => cartContext.removeFromCart(item.id)}
+                >
+                  Remover
+                </CustomButton>
+              )}
+            </Row>
+            <SizedBox height={8}></SizedBox>
+            <Link href={`/produtos/${item.uid}`}>
+              <Row>
+                <Price>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(item.price)}
+                </Price>
+                <OldPrice>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(item.priceWhenNew)}
+                </OldPrice>
+              </Row>
+            </Link>
+          </SpaceBetweenColumn>
+        </Row>
+        {showSelects && (
+          <>
+            <SizedBox height={16}></SizedBox>
+            <HorizontalLine />
+            <SizedBox height={10}></SizedBox>
+            <TopAlignedRow>
+              <SelectMenu
+                title="Cor"
+                placeholder="Cores"
+                items={colors}
+                setSelected={setColors}
+                width={isSmartPhone ? 167 : 174}
+                errorText=""
+              ></SelectMenu>
+              <SelectMenu
+                title="Tamanho"
+                placeholder="Tam."
+                items={sizes}
+                setSelected={setSizes}
+                width={isSmartPhone ? 80 : 174}
+                errorText=""
+              ></SelectMenu>
+              <SelectMenu
+                title="Quantidade"
+                placeholder="Qtd."
+                items={qty}
+                setSelected={setQty}
+                width={isSmartPhone ? 80 : 174}
+                errorText=""
+              ></SelectMenu>
+            </TopAlignedRow>
+          </>
+        )}
+      </Padding>
     </StyledCartItem>
   );
 }
