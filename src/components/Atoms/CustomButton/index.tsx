@@ -74,6 +74,11 @@ const ButtonOutlined = styled(ButtonBase)<{
 const ButtonTypeText = styled(ButtonBase)<{ noPadding?: boolean }>`
   padding: ${(props) => (props.noPadding ? 0 : "0px 8px")};
   box-sizing: border-box;
+
+  &:hover {
+    border: 2px solid ${(props) => props.color};
+    border-radius: 4px;
+  }
 `;
 
 function CustomButton({
@@ -200,6 +205,7 @@ function CustomButton({
           onClick={type === "disabled" ? null : onClick}
           small={small}
           noPadding={noPadding}
+          color={colors.background}
           {...props}
         >
           {!loading && (

@@ -1,6 +1,6 @@
 import { Avatar, useMediaQuery } from "@material-ui/core";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Row from "../src/components/Atoms/Row";
 import SimpleText from "../src/components/Atoms/SimpleText";
@@ -58,7 +58,14 @@ const UserName = styled.span`
 function Profile(): JSX.Element {
   const authContext = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState(router.asPath);
+  const [activeTab, setActiveTab] = useState(
+    "/" + router.query.aba || "/perfil"
+  );
+
+  useEffect(() => {
+    console.log("router.query", router.query.aba);
+    setActiveTab(router.query.aba ? "/" + router.query.aba : "/perfil");
+  }, [router.query.aba]);
 
   if (!authContext.user) {
     typeof window !== "undefined" && router.push("/entrar");

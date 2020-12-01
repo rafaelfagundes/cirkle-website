@@ -135,15 +135,15 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
             <Icon type="user" onClick={null}></Icon>
             <MenuItemText>Minha Conta</MenuItemText>
           </StyledMenuItem>
-          <StyledMenuItem onClick={() => _goTo("/minha-lista")}>
+          <StyledMenuItem onClick={() => _goTo("/perfil?aba=minha-lista")}>
             <Icon type="heart"></Icon>
             <MenuItemText>Lista de Desejos</MenuItemText>
           </StyledMenuItem>
-          <StyledMenuItem onClick={() => _goTo("/meus-pedidos")}>
+          <StyledMenuItem onClick={() => _goTo("/perfil?aba=meus-pedidos")}>
             <Icon type="package"></Icon>
             <MenuItemText>Meus Pedidos</MenuItemText>
           </StyledMenuItem>
-          <StyledMenuItem onClick={() => _goTo("/minhas-vendas")}>
+          <StyledMenuItem onClick={() => _goTo("/perfil?aba=minhas-vendas")}>
             <Icon type="layers"></Icon>
             <MenuItemText>Meus Produtos à Venda</MenuItemText>
           </StyledMenuItem>
