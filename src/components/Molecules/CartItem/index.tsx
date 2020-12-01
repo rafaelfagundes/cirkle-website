@@ -156,7 +156,7 @@ function CartItem({
               )}
               {!isSmartPhone && (
                 <CustomButton
-                  width={120}
+                  width={160}
                   variant="text"
                   type="delete"
                   icon="trash-red"

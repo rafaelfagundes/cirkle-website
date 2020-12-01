@@ -1,7 +1,7 @@
+import Cleave from "cleave.js/react";
 import React, { useState } from "react";
 import Cards from "react-credit-cards";
 import "react-credit-cards/es/styles-compiled.css";
-import MaskedInput from "react-text-mask";
 import styled from "styled-components";
 import Colors from "../../../../enums/Colors";
 import Column from "../../../Atoms/Column";
@@ -22,7 +22,7 @@ const InputFrame = styled.div`
   border-radius: 4px;
 `;
 
-const CardNumber = styled(MaskedInput)`
+const CardNumber = styled(Cleave)`
   border: none;
   outline: none;
   font-family: Commissioner, sans-serif;
@@ -32,7 +32,7 @@ const CardNumber = styled(MaskedInput)`
   width: 100%;
 `;
 
-const CardHolder = styled(MaskedInput)`
+const CardHolder = styled.input`
   border: none;
   outline: none;
   font-family: Commissioner, sans-serif;
@@ -42,7 +42,7 @@ const CardHolder = styled(MaskedInput)`
   width: 100%;
 `;
 
-const ExpirationDate = styled(MaskedInput)`
+const ExpirationDate = styled(Cleave)`
   border: none;
   outline: none;
   font-family: Commissioner, sans-serif;
@@ -52,7 +52,7 @@ const ExpirationDate = styled(MaskedInput)`
   max-width: 120px;
 `;
 
-const CVC = styled(MaskedInput)`
+const CVC = styled.input`
   border: none;
   outline: none;
   font-family: Commissioner, sans-serif;
@@ -87,11 +87,13 @@ function CreditCard(): JSX.Element {
         <Column>
           <InputFrame>
             <CardNumber
-              type="tel"
+              options={{ creditCard: true }}
               name="number"
               placeholder="Número Do Cartão"
-              onChange={(e) => setNumber(e.target.value)}
-              onFocus={(e) => setFocused(e.target.name)}
+              value={number}
+              onChange={(e: any) => setNumber(e.target.value)}
+              onFocus={(e: any) => setFocused(e.target.name)}
+              maxLength={19}
             />
           </InputFrame>
           <SizedBox height={20}></SizedBox>
@@ -108,6 +110,7 @@ function CreditCard(): JSX.Element {
           <Row>
             <InputFrame>
               <ExpirationDate
+                options={{ date: true, datePattern: ["m", "y"] }}
                 type="tel"
                 name="expiry"
                 placeholder="Validade"
@@ -123,6 +126,7 @@ function CreditCard(): JSX.Element {
                 placeholder="CVC"
                 onChange={(e) => setCvc(e.target.value)}
                 onFocus={(e) => setFocused(e.target.name)}
+                maxLength={4}
               />
             </InputFrame>
           </Row>
