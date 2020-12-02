@@ -13,14 +13,11 @@ const StyledCheckBox = styled.div`
   height: 38px;
 
   &:hover {
-    background-color: #eee;
+    background-color: #fbeff7;
     padding: 0 8px 0 8px;
     margin: 0px -8px 0px -8px;
+    border-radius: 8px;
   }
-
-  /* &:active {
-    background-color: ${Colors.TEA_GREEN};
-  } */
 `;
 
 const Box = styled.div<{ filled: boolean }>`

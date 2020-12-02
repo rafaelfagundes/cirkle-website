@@ -27,10 +27,12 @@ import Padding from "../../Atoms/Padding";
 import Row from "../../Atoms/Row";
 import SelectMenu, { AssetType, SelectItem } from "../../Atoms/SelectMenu";
 import SizedBox from "../../Atoms/SizedBox";
+import TitleAndData from "../../Atoms/TitleAndData";
 
 interface CartItemsProps {
   showBackground: boolean;
   showSelects: boolean;
+  isImmutable?: boolean;
   item: Product;
 }
 
@@ -38,6 +40,7 @@ function CartItem({
   showBackground = false,
   item,
   showSelects = true,
+  isImmutable = false,
 }: CartItemsProps): JSX.Element {
   const cartContext = useCart();
   const router = useRouter();
@@ -127,65 +130,106 @@ function CartItem({
 
   return (
     <StyledCartItem key={item.id} showBackground={showBackground}>
-      <Padding horizontal={16} vertical={16}>
+      <Padding
+        horizontal={isImmutable ? 0 : 16}
+        vertical={isImmutable ? 0 : 16}
+      >
         <Row>
           <ImagePrice onClick={() => _goTo("/produtos/" + item.uid)}>
             <CartItemImage
-              image={cloudinaryImage(item.image, 90)}
-              size={65}
+              image={cloudinaryImage(item.image, isImmutable ? 100 : 90)}
+              size={isImmutable ? 75 : 65}
             ></CartItemImage>
           </ImagePrice>
           <SpaceBetweenColumn>
             <Row>
               <TitleAndRemove>
-                <Link href={`/produtos/${item.uid}`}>
+                <Link href={isImmutable ? "" : `/produtos/${item.uid}`}>
                   <ProductBrand>{item.brand.name}</ProductBrand>
                 </Link>
-                <Link href={`/produtos/${item.uid}`}>
+                <Link href={isImmutable ? "" : `/produtos/${item.uid}`}>
                   <ProductTitle>{item.title}</ProductTitle>
                 </Link>
                 <SizedBox width={16}></SizedBox>
               </TitleAndRemove>
-              {isSmartPhone && (
-                <IconButton
-                  // border
-                  // color={Colors.ERROR}
-                  type="trash-red"
-                  onClick={() => cartContext.removeFromCart(item.id)}
-                ></IconButton>
-              )}
-              {!isSmartPhone && (
-                <CustomButton
-                  width={160}
-                  variant="text"
-                  type="delete"
-                  icon="trash-red"
-                  onClick={() => cartContext.removeFromCart(item.id)}
-                >
-                  Remover
-                </CustomButton>
+              {!isImmutable && (
+                <>
+                  {isSmartPhone && (
+                    <IconButton
+                      // border
+                      // color={Colors.ERROR}
+                      type="trash-red"
+                      onClick={() => cartContext.removeFromCart(item.id)}
+                    ></IconButton>
+                  )}
+                  {!isSmartPhone && (
+                    <CustomButton
+                      width={160}
+                      variant="text"
+                      type="delete"
+                      icon="trash-red"
+                      onClick={() => cartContext.removeFromCart(item.id)}
+                    >
+                      Remover
+                    </CustomButton>
+                  )}
+                </>
               )}
             </Row>
-            <SizedBox height={8}></SizedBox>
             <Link href={`/produtos/${item.uid}`}>
-              <Row>
-                <Price>
-                  {new Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(item.price)}
-                </Price>
-                <OldPrice>
-                  {new Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(item.priceWhenNew)}
-                </OldPrice>
-              </Row>
+              <>
+                {!isImmutable && (
+                  <Row>
+                    <Price>
+                      {new Intl.NumberFormat("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      }).format(item.price)}
+                    </Price>
+                    <OldPrice>
+                      {new Intl.NumberFormat("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      }).format(item.priceWhenNew)}
+                    </OldPrice>
+                  </Row>
+                )}
+                {isImmutable && (
+                  <Padding horizontal={10}>
+                    <Row>
+                      <TitleAndData title="Tamanho">
+                        {item.cartSize}
+                      </TitleAndData>
+                      <SizedBox width={20}></SizedBox>
+                      <TitleAndData title="Cor">{item.cartColor}</TitleAndData>
+                      <SizedBox width={20}></SizedBox>
+                      <TitleAndData title="Quantidade">
+                        {item.cartQty.toString()}
+                      </TitleAndData>
+                    </Row>
+                  </Padding>
+                )}
+              </>
             </Link>
           </SpaceBetweenColumn>
+          {isImmutable && (
+            <Row>
+              <OldPrice>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(item.priceWhenNew)}
+              </OldPrice>
+              <Price>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(item.price)}
+              </Price>
+            </Row>
+          )}
         </Row>
-        {showSelects && (
+        {!isImmutable && showSelects && (
           <>
             <SizedBox height={16}></SizedBox>
             <HorizontalLine />

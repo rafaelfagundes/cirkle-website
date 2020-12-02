@@ -132,6 +132,11 @@ function CustomButton({
           background: Colors.RED_CRAYOLA,
           text: Colors.WHITE,
         };
+      case "cta":
+        return {
+          background: Colors.ORANGE_PANTONE,
+          text: Colors.WHITE,
+        };
       default:
         return {
           background: Colors.PRIMARY,

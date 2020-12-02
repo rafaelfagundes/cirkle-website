@@ -5,7 +5,7 @@ const StyledHorizontalLine = styled.div`
   padding: 0;
   margin: 0;
   height: 1px;
-  background-color: #e3e3e3;
+  background-color: #fbeff7;
   width: 100%;
 `;
 

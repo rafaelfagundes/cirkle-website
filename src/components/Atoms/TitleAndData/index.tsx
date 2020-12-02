@@ -9,7 +9,6 @@ const StyledTitleAndData = styled.div<{ minWidth: number }>`
 const Title = styled.div<{ titleCentered: boolean }>`
   font-family: Commissioner, sans-serif;
   font-style: normal;
-  font-weight: bold;
   font-size: 12px;
   line-height: 14px;
   color: ${Colors.SECONDARY};
@@ -19,6 +18,7 @@ const Title = styled.div<{ titleCentered: boolean }>`
 `;
 
 const Data = styled.div<{ dataCentered: boolean }>`
+  font-weight: 500;
   text-align: ${(props) => (props.dataCentered ? "center" : "left")};
   font-family: Commissioner, sans-serif;
   font-size: 14px;

@@ -1,5 +1,7 @@
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
+import HorizontalLine from "../../src/components/Atoms/HorizontalLine";
 import Row from "../../src/components/Atoms/Row";
 import SizedBox from "../../src/components/Atoms/SizedBox";
 import Title from "../../src/components/Atoms/Title";
@@ -43,6 +45,16 @@ function Pagamento(): JSX.Element {
 
   const [option, setOption] = useState("cc");
 
+  const router = useRouter();
+
+  const goToFinishPage = (): void => {
+    router.push("/comprar/concluir");
+  };
+
+  const goToAddressPage = (): void => {
+    router.push("/comprar/envio");
+  };
+
   return (
     <LastMilePage breadcrumbs={breadcrumbs}>
       <SizedBox height={10}></SizedBox>
@@ -57,7 +69,9 @@ function Pagamento(): JSX.Element {
       </Row>
       <SizedBox height={32}></SizedBox>
       <PaymentOptions option={option} setOption={setOption}></PaymentOptions>
-      <SizedBox height={40}></SizedBox>
+      <SizedBox height={36}></SizedBox>
+      <HorizontalLine></HorizontalLine>
+      <SizedBox height={20}></SizedBox>
       {option === "cc" && <CreditCard></CreditCard>}
       {option === "barcode" && <Barcode></Barcode>}
       {option === "pix" && <Pix></Pix>}
@@ -65,14 +79,14 @@ function Pagamento(): JSX.Element {
         buttons={[
           {
             text: "Alterar Endereço",
-            onClick: null,
+            onClick: goToAddressPage,
             type: "text",
             width: 180,
             isBackButton: true,
           },
           {
             text: "Revisar e Concluir",
-            onClick: null,
+            onClick: goToFinishPage,
             type: "success",
             width: 200,
           },

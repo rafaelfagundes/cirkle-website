@@ -191,8 +191,7 @@ export const Qty = styled.span`
 export const TitleAndRemove = styled.div`
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between;
-  align-items: center; */
+  justify-content: space-between;
   width: calc(100% - 10px);
   margin-left: 10px;
 `;
@@ -223,7 +222,8 @@ export const SpaceBetweenColumn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 113px;
+  /* align-items: flex-start; */
+  min-height: 100px;
   width: 100%;
 `;
 
