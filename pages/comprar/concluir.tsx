@@ -50,9 +50,9 @@ function FinishPage(): JSX.Element {
       <Row spaceBetween>
         <CartHeaderDataItem
           icon="user"
-          line1={authContext.user.name}
-          line2={authContext.user.phoneNumber}
-          line3={authContext.user.email}
+          line1={authContext?.user?.name}
+          line2={authContext?.user?.phoneNumber}
+          line3={authContext?.user?.email}
         ></CartHeaderDataItem>
         <CartHeaderDataItem
           icon="map-pin"

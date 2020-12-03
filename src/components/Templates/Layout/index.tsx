@@ -22,7 +22,7 @@ const Background = styled.div`
 `;
 
 interface LayoutProps {
-  children: JSX.Element | Array<JSX.Element>;
+  children: Array<JSX.Element> | JSX.Element;
   containerMargin?: boolean;
   menu?: any;
 }
