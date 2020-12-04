@@ -1,40 +1,43 @@
+import { useMediaQuery } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
+import theme from "../../../theme/theme";
 import Icon from "../../Atoms/Icon";
 import RadioButton from "../../Atoms/RadioButton";
 import Row from "../../Atoms/Row";
+import SimpleText from "../../Atoms/SimpleText";
 
-const PaymentItem = styled.div`
+const PaymentItem = styled.div<{ isSmartPhone: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   cursor: pointer;
-  margin-right: 30px;
+  margin-right: ${(props) => (props.isSmartPhone ? 10 : 30)}px;
 `;
 
-const Button = styled.div<{ active: boolean }>`
+const Button = styled.div<{ active: boolean; isSmartPhone: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* border: ${(props) => (props.active ? "none" : "1px solid #d2d2d2")}; */
   background-color: ${(props) => (props.active ? "#FBEFF7" : "transparent")};
   box-sizing: border-box;
-  width: 160px;
-  height: 150px;
-  padding: 20px;
-  margin-left: 10px;
-  border-radius: 20px;
+  width: ${(props) => (props.isSmartPhone ? 103 : 160)}px;
+  height: ${(props) => (props.isSmartPhone ? 103 : 160)}px;
+  padding: ${(props) => (props.isSmartPhone ? 6 : 20)}px;
+  margin-left: ${(props) => (props.isSmartPhone ? 2 : 10)}px;
+  border-radius: 8px;
 `;
 
-const PaymentText = styled.div`
-  text-align: center;
-  margin-top: 10px;
-  font-family: Commissioner, sans-serif;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 17px;
+const IconHolder = styled.div<{ size: number }>`
+  width: ${(props) => props.size}px;
+  height: ${(props) => props.size}px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const TextHolder = styled.div`
+  height: 20px;
 `;
 
 interface PaymentOptionsProps {
@@ -64,21 +67,35 @@ const payments = [
 ];
 
 function PaymentOptions(props: PaymentOptionsProps): JSX.Element {
+  const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Row>
       {payments.map((item) => (
-        <PaymentItem key={item.id} onClick={() => props.setOption(item.id)}>
-          <RadioButton
-            onClick={() => props.setOption(item.id)}
-            value={props.option === item.id}
-          ></RadioButton>
-          <Button active={props.option === item.id}>
-            <Icon
-              size={item.size}
-              type={item.icon}
+        <PaymentItem
+          key={item.id}
+          onClick={() => props.setOption(item.id)}
+          isSmartPhone={isSmartPhone}
+        >
+          {!isSmartPhone && (
+            <RadioButton
               onClick={() => props.setOption(item.id)}
-            ></Icon>
-            <PaymentText>{item.desc}</PaymentText>
+              value={props.option === item.id}
+            ></RadioButton>
+          )}
+          <Button active={props.option === item.id} isSmartPhone={isSmartPhone}>
+            <IconHolder size={isSmartPhone ? 52 : 78}>
+              <Icon
+                size={isSmartPhone ? item.size / 1.5 : item.size}
+                type={item.icon}
+                onClick={() => props.setOption(item.id)}
+              ></Icon>
+            </IconHolder>
+            <TextHolder>
+              <SimpleText bold centered size={isSmartPhone ? 0.7 : 0.9}>
+                {item.desc}
+              </SimpleText>
+            </TextHolder>
           </Button>
         </PaymentItem>
       ))}

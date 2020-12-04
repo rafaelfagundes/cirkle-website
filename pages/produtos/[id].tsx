@@ -164,7 +164,7 @@ function ProductPage({
     _product.cartColor = color.text;
     _product.cartSize = size.text;
     _product.cartQty = 1;
-    cartContext.addToCart(_product);
+    cartContext?.addToCart(_product);
   }
 
   function getSelectColors(items: Array<any>) {
@@ -222,7 +222,7 @@ function ProductPage({
     }
   }, [product]);
 
-  const isAlreadyInCart = cartContext.isItemInCart(product.id);
+  const isAlreadyInCart = cartContext?.isItemInCart(product.id);
 
   function showRecentlyViewed() {
     const numItems = _filter(

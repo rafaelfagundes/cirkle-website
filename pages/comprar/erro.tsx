@@ -9,13 +9,11 @@ import SizedBox from "../../src/components/Atoms/SizedBox";
 import Title from "../../src/components/Atoms/Title";
 import Layout from "../../src/components/Templates/Layout";
 import Colors from "../../src/enums/Colors";
-import { useAuth } from "../../src/hooks/auth/useAuth";
 import Menu from "../../src/modules/menu/Menu";
 import theme from "../../src/theme/theme";
 
 function PurchaseError({ menu }: { menu: Menu }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
-  const authContext = useAuth();
 
   return (
     <Layout menu={menu}>

@@ -1,5 +1,7 @@
+import { useMediaQuery } from "@material-ui/core";
 import { useRouter } from "next/router";
 import React from "react";
+import styled from "styled-components";
 import CartDescItem from "../../src/components/Atoms/CartDescItem";
 import CartHeaderDataItem from "../../src/components/Atoms/CartHeaderDataItem";
 import CartTotal from "../../src/components/Atoms/CartTotal";
@@ -13,8 +15,13 @@ import LastMilePage from "../../src/components/Templates/LastMilePage";
 import Colors from "../../src/enums/Colors";
 import { useAuth } from "../../src/hooks/auth/useAuth";
 import { useCart } from "../../src/hooks/cart/useCart";
+import theme from "../../src/theme/theme";
+
+const WrapRow = styled.div``;
 
 function FinishPage(): JSX.Element {
+  const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
+
   const breadcrumbs = [
     {
       active: false,
@@ -47,26 +54,52 @@ function FinishPage(): JSX.Element {
       <SizedBox height={10}></SizedBox>
       <Title>Revise seu Pedido</Title>
       <SizedBox height={32}></SizedBox>
-      <Row spaceBetween>
-        <CartHeaderDataItem
-          icon="user"
-          line1={authContext?.user?.name}
-          line2={authContext?.user?.phoneNumber}
-          line3={authContext?.user?.email}
-        ></CartHeaderDataItem>
-        <CartHeaderDataItem
-          icon="map-pin"
-          line1="Av. Borges de Medeiros, 997"
-          line2="Gávea, Rio de Janeiro - RJ"
-          line3="22430-041"
-        ></CartHeaderDataItem>
-        <CartHeaderDataItem
-          icon="payment-cc"
-          line1="Forma de Pagamento"
-          line2="À Vista"
-          line3="PIX"
-        ></CartHeaderDataItem>
-      </Row>
+      {!isSmartPhone && (
+        <Row spaceBetween>
+          <CartHeaderDataItem
+            icon="user"
+            line1={authContext?.user?.name}
+            line2={authContext?.user?.phoneNumber}
+            line3={authContext?.user?.email}
+          ></CartHeaderDataItem>
+          <CartHeaderDataItem
+            icon="map-pin"
+            line1="Av. Borges de Medeiros, 997"
+            line2="Gávea, Rio de Janeiro - RJ"
+            line3="22430-041"
+          ></CartHeaderDataItem>
+          <CartHeaderDataItem
+            icon="payment-cc"
+            line1="Forma de Pagamento"
+            line2="À Vista"
+            line3="PIX"
+          ></CartHeaderDataItem>
+        </Row>
+      )}
+      {isSmartPhone && (
+        <WrapRow>
+          <CartHeaderDataItem
+            icon="user"
+            line1={authContext?.user?.name}
+            line2={authContext?.user?.phoneNumber}
+            line3={authContext?.user?.email}
+          ></CartHeaderDataItem>
+          <SizedBox height={20}></SizedBox>
+          <CartHeaderDataItem
+            icon="map-pin"
+            line1="Av. Borges de Medeiros, 997"
+            line2="Gávea, Rio de Janeiro - RJ"
+            line3="22430-041"
+          ></CartHeaderDataItem>
+          <SizedBox height={20}></SizedBox>
+          <CartHeaderDataItem
+            icon="payment-cc"
+            line1="Forma de Pagamento"
+            line2="À Vista"
+            line3="PIX"
+          ></CartHeaderDataItem>
+        </WrapRow>
+      )}
       <SizedBox height={48}></SizedBox>
       <Subtitle color={Colors.SECONDARY}>{`${cartContext.cart.items.length} ${
         cartContext.cart.items.length === 1 ? "ITEM" : "ITENS"

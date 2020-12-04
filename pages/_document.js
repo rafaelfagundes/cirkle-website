@@ -44,6 +44,7 @@ s0.parentNode.insertBefore(s1,s0);
               />
             </>
           )}
+          <script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>
         </body>
       </Html>
     );

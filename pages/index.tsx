@@ -203,7 +203,7 @@ function Home(props: HomeProps): JSX.Element {
           )}
         </Container>
         <SizedBox height={32}></SizedBox>
-        {recentlyViewedContext.recentlyViewed.items.length > 0 && (
+        {recentlyViewedContext?.recentlyViewed?.items?.length > 0 && (
           <RecentlyViewed
             items={recentlyViewedContext.recentlyViewed.items}
             backgroundColor="rgba(0, 0, 0, 0.05)"

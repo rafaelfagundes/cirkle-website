@@ -51,13 +51,13 @@ function Layout({
   return (
     <div style={{ overflowX: "hidden", userSelect: "none" }}>
       <CustomDialog
-        open={dialogContext.dialog.isOpen}
-        title={dialogContext.dialog.title}
-        buttonText={dialogContext.dialog.buttonText}
-        error={dialogContext.dialog.isError}
-        onClose={dialogContext.closeDialog}
+        open={dialogContext?.dialog?.isOpen}
+        title={dialogContext?.dialog?.title}
+        buttonText={dialogContext?.dialog?.buttonText}
+        error={dialogContext?.dialog?.isError}
+        onClose={dialogContext?.closeDialog}
       >
-        {dialogContext.dialog.description}
+        {dialogContext?.dialog?.description}
       </CustomDialog>
 
       {/* Desktop */}
