@@ -85,7 +85,7 @@ function Pagamento(): JSX.Element {
             isBackButton: true,
           },
           {
-            text: "Revisar e Concluir",
+            text: "Revisar Pedido",
             onClick: goToFinishPage,
             type: "success",
             width: 200,

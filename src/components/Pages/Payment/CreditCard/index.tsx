@@ -7,11 +7,13 @@ import Cards from "react-credit-cards";
 import "react-credit-cards/es/styles-compiled.css";
 import styled from "styled-components";
 import Colors from "../../../../enums/Colors";
+import { useAuth } from "../../../../hooks/auth/useAuth";
 import { useCart } from "../../../../hooks/cart/useCart";
 import Address from "../../../../modules/address/Address";
 import theme from "../../../../theme/theme";
 import CheckBoxWithLabel from "../../../Atoms/CheckboxWithLabel";
 import Column from "../../../Atoms/Column";
+import CustomButton from "../../../Atoms/CustomButton";
 import CustomTextField from "../../../Atoms/CustomTextField";
 import LoadingAnimation from "../../../Atoms/LoadingAnimation";
 import RadioButton from "../../../Atoms/RadioButton";
@@ -113,6 +115,7 @@ function CreditCard(): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const cartContext = useCart();
+  const authContext = useAuth();
 
   const [name, setName] = useState("");
   const [cvc, setCvc] = useState("");
@@ -195,6 +198,25 @@ function CreditCard(): JSX.Element {
 
   const setIssuers = (status: number, response: any) => {
     if (status === 200) {
+      const issuerSelect = document.getElementById("issuer");
+      issuerSelect.innerHTML = "";
+
+      response.forEach(
+        (issuer: {
+          id: string;
+          merchant_account_id: string;
+          name: string;
+          processing_mode: string;
+          secure_thumbnail: string;
+          thumbnail: string;
+        }) => {
+          const opt = document.createElement("option");
+          opt.text = issuer.name;
+          opt.value = issuer.id;
+          issuerSelect.appendChild(opt);
+        }
+      );
+
       let issuerId = response[0].id;
 
       if (response.length > 1) {
@@ -204,11 +226,21 @@ function CreditCard(): JSX.Element {
       if (cardData?.id) {
         getInstallments(cardData.id, cartContext.cart.total, issuerId);
       }
+
+      issuerSelect["value"] = issuerId;
     }
   };
 
   function setInstallments(status: number, response: any) {
     if (status === 200) {
+      document.getElementById("installments")["options"].length = 0;
+      response[0].payer_costs.forEach((payerCost: any) => {
+        const opt = document.createElement("option");
+        opt.text = payerCost.recommended_message;
+        opt.value = payerCost.installments;
+        document.getElementById("installments").appendChild(opt);
+      });
+
       const _installments: Array<SelectItem> = [];
 
       response[0].payer_costs.forEach((installment: any, index: number) => {
@@ -242,11 +274,13 @@ function CreditCard(): JSX.Element {
 
       cardData = card;
       getIssuers(card.id);
+
+      document.getElementById("paymentMethodId")["value"] = response[0].id;
     }
   }
 
   async function initCreditCard() {
-    const pubkey = "TEST-c70a3ca7-6fc5-4378-b21c-50bed0944d17";
+    const pubkey = "TEST-36a3608a-da17-4d66-8aec-c35409112b98";
 
     window["Mercadopago"].setPublishableKey(pubkey);
 
@@ -293,6 +327,44 @@ function CreditCard(): JSX.Element {
     });
 
     setDocuments(_documents);
+  };
+
+  const getCardToken = async () => {
+    const form = document.getElementById("paymentForm");
+
+    window["Mercadopago"].createToken(
+      form,
+      async (status: number, response: any) => {
+        console.log("response", response);
+
+        const form = document.getElementById("paymentForm");
+        const card = document.createElement("input");
+        card.setAttribute("name", "token");
+        card.setAttribute("type", "hidden");
+        card.setAttribute("value", response.id);
+        form.appendChild(card);
+
+        console.log("form", form);
+
+        const obj = {};
+        const formData = new FormData(form);
+        for (const key of formData.keys()) {
+          obj[key] = formData.get(key);
+        }
+
+        console.log("obj", obj);
+
+        try {
+          const response = await Axios.post("/orders", {
+            payment: obj,
+          });
+
+          console.log("response.data", response.data);
+        } catch (error) {
+          console.log("error", error);
+        }
+      }
+    );
   };
 
   useEffect(() => {
@@ -350,7 +422,7 @@ function CreditCard(): JSX.Element {
 
   useEffect(() => {
     if (cardNumber.length > 6) {
-      const bin = cardNumber.replaceAll(" ", "");
+      const bin = cardNumber?.replaceAll(" ", "");
       window["Mercadopago"].getPaymentMethod(
         {
           bin,
@@ -364,213 +436,366 @@ function CreditCard(): JSX.Element {
   }, [cardNumber]);
 
   return (
-    <div>
-      <Subtitle color={Colors.SECONDARY}>CARTÃO DE CRÉDITO OU DÉBITO</Subtitle>
-      <SizedBox height={20}></SizedBox>
-      <CardAndForm>
-        <CardContainer>
-          <Cards
-            cvc={cvc}
-            expiry={expiry}
-            focused={focused}
-            name={name}
-            number={cardNumber}
-            locale={{ valid: "Validade" }}
-            placeholders={{ name: "SEU NOME" }}
-          />
-        </CardContainer>
-        <PaymentForm>
-          <Column>
-            <SizedBox height={isSmartPhone ? 26 : 0}></SizedBox>
-            <InputFrame>
-              <CardNumber
-                options={{ creditCard: true }}
-                name="number"
-                placeholder="Número Do Cartão"
-                value={cardNumber}
-                onChange={(e: any) => setCardNumber(e.target.value)}
-                onFocus={(e: any) => setFocused(e.target.name)}
-                maxLength={19}
-              />
-            </InputFrame>
-            <SizedBox height={20}></SizedBox>
-            <InputFrame>
-              <CardHolder
-                type="text"
-                name="name"
-                placeholder="Seu Nome Como No Cartão"
-                onChange={(e) => setName(e.target.value)}
-                onFocus={(e) => setFocused(e.target.name)}
-              />
-            </InputFrame>
+    <>
+      <div>
+        <Subtitle color={Colors.SECONDARY}>
+          CARTÃO DE CRÉDITO OU DÉBITO
+        </Subtitle>
+        <SizedBox height={20}></SizedBox>
+        <CardAndForm>
+          <CardContainer>
+            <Cards
+              cvc={cvc}
+              expiry={expiry}
+              focused={focused}
+              name={name}
+              number={cardNumber}
+              locale={{ valid: "Validade" }}
+              placeholders={{ name: "SEU NOME" }}
+            />
+          </CardContainer>
+          <PaymentForm>
+            <Column>
+              <SizedBox height={isSmartPhone ? 26 : 0}></SizedBox>
+              <InputFrame>
+                <CardNumber
+                  options={{ creditCard: true }}
+                  name="number"
+                  placeholder="Número Do Cartão"
+                  value={cardNumber}
+                  onChange={(e: any) => setCardNumber(e.target.value)}
+                  onFocus={(e: any) => setFocused(e.target.name)}
+                  maxLength={19}
+                  type="tel"
+                />
+              </InputFrame>
+              <SizedBox height={20}></SizedBox>
+              <InputFrame>
+                <CardHolder
+                  type="text"
+                  name="name"
+                  placeholder="Seu Nome Como No Cartão"
+                  onChange={(e) => setName(e.target.value)}
+                  onFocus={(e) => setFocused(e.target.name)}
+                />
+              </InputFrame>
+              <SizedBox height={20}></SizedBox>
+              <Row>
+                <InputFrame>
+                  <ExpirationDate
+                    options={{ date: true, datePattern: ["m", "y"] }}
+                    type="tel"
+                    name="expiry"
+                    placeholder="Validade"
+                    onChange={(e) => setExpiry(e.target.value)}
+                    onFocus={(e) => setFocused(e.target.name)}
+                  />
+                </InputFrame>
+                <SizedBox width={20}></SizedBox>
+                <InputFrame>
+                  <CVC
+                    type="tel"
+                    name="cvc"
+                    placeholder="CVC"
+                    onChange={(e) => setCvc(e.target.value)}
+                    onFocus={(e) => setFocused(e.target.name)}
+                    maxLength={4}
+                  />
+                </InputFrame>
+              </Row>
+            </Column>
+          </PaymentForm>
+        </CardAndForm>
+        <SizedBox height={32}></SizedBox>
+        <Subtitle>Documento de Identidade</Subtitle>
+        <SizedBox height={10}></SizedBox>
+        <Row>
+          {documents.map((doc) => (
+            <React.Fragment key={doc.id}>
+              <span
+                onClick={() => setDocument(doc.id)}
+                style={{ cursor: "pointer" }}
+              >
+                <Row>
+                  <RadioButton
+                    onClick={null}
+                    value={doc.selected}
+                  ></RadioButton>
+                  <SizedBox width={5}></SizedBox>
+                  <SimpleText>{doc.name}</SimpleText>
+                </Row>
+              </span>
+              <SizedBox width={20}></SizedBox>
+            </React.Fragment>
+          ))}
+        </Row>
+        <SizedBox height={5}></SizedBox>
+        <>
+          {documents.map((doc, index) => (
+            <React.Fragment key={index}>
+              {doc.selected && doc.id === "CPF" && (
+                <InputFrame>
+                  <CPF
+                    options={{
+                      delimiters: [".", ".", "-"],
+                      blocks: [3, 3, 3, 2],
+                      uppercase: true,
+                    }}
+                    type="tel"
+                    name="cpf"
+                    placeholder="CPF"
+                    value={doc.value}
+                    onChange={(e) => setDocument(doc.id, e.target.value)}
+                  ></CPF>
+                </InputFrame>
+              )}
+              {doc.selected && doc.id === "CNPJ" && (
+                <InputFrame>
+                  <CNPJ
+                    options={{
+                      delimiters: [".", ".", "/", "-"],
+                      blocks: [2, 3, 3, 4, 2],
+                      uppercase: true,
+                    }}
+                    type="tel"
+                    name="cnpj"
+                    placeholder="CNPJ"
+                    value={doc.value}
+                    onChange={(e) => setDocument(doc.id, e.target.value)}
+                  ></CNPJ>
+                </InputFrame>
+              )}
+            </React.Fragment>
+          ))}
+        </>
+        <SizedBox height={32}></SizedBox>
+        <SelectMenu
+          items={installmentsSelect}
+          setSelected={setInstallmentsSelect}
+          title="Parcelamento"
+          errorText=""
+          width={290}
+        ></SelectMenu>
+        <SizedBox height={20}></SizedBox>
+        <CheckBoxWithLabel
+          value={billingAddressIsDifferent}
+          onClick={() =>
+            setBillingAddressIsDifferent(!billingAddressIsDifferent)
+          }
+          label="O endereço de faturamento é diferente do endereço de entrega"
+        ></CheckBoxWithLabel>
+        <SizedBox height={20}></SizedBox>
+        {billingAddressIsDifferent && (
+          <BillingAddress>
+            <Subtitle color={Colors.SECONDARY}>
+              Preencha o endereço de cobrança
+            </Subtitle>
             <SizedBox height={20}></SizedBox>
             <Row>
-              <InputFrame>
-                <ExpirationDate
-                  options={{ date: true, datePattern: ["m", "y"] }}
-                  type="tel"
-                  name="expiry"
-                  placeholder="Validade"
-                  onChange={(e) => setExpiry(e.target.value)}
-                  onFocus={(e) => setFocused(e.target.name)}
-                />
-              </InputFrame>
-              <SizedBox width={20}></SizedBox>
-              <InputFrame>
-                <CVC
-                  type="tel"
-                  name="cvc"
-                  placeholder="CVC"
-                  onChange={(e) => setCvc(e.target.value)}
-                  onFocus={(e) => setFocused(e.target.name)}
-                  maxLength={4}
-                />
-              </InputFrame>
+              <span data-test="address-postalCode">
+                <CustomTextField
+                  type="postalCode"
+                  ref={postalCode}
+                  error={addressErrors.postalCode}
+                  width={120}
+                >
+                  CEP*
+                </CustomTextField>
+              </span>
+              <SizedBox width={8}></SizedBox>
+              {loadingPostalCode && (
+                <LoadingAnimation size={36} color={true}></LoadingAnimation>
+              )}
             </Row>
-          </Column>
-        </PaymentForm>
-      </CardAndForm>
-      <SizedBox height={32}></SizedBox>
-      <Subtitle>Documento de Identidade</Subtitle>
-      <SizedBox height={10}></SizedBox>
-      <Row>
-        {documents.map((doc) => (
-          <React.Fragment key={doc.id}>
-            <span
-              onClick={() => setDocument(doc.id)}
-              style={{ cursor: "pointer" }}
-            >
-              <Row>
-                <RadioButton onClick={null} value={doc.selected}></RadioButton>
-                <SizedBox width={5}></SizedBox>
-                <SimpleText>{doc.name}</SimpleText>
-              </Row>
-            </span>
-            <SizedBox width={20}></SizedBox>
-          </React.Fragment>
-        ))}
-      </Row>
-      <SizedBox height={5}></SizedBox>
-      <>
-        {documents.map((doc, index) => (
-          <>
-            {doc.selected && doc.id === "CPF" && (
-              <InputFrame key={index}>
-                <CPF
-                  options={{
-                    delimiters: [".", ".", "-"],
-                    blocks: [3, 3, 3, 2],
-                    uppercase: true,
-                  }}
-                  type="tel"
-                  name="cpf"
-                  placeholder="CPF"
-                  value={doc.value}
-                  onChange={(e) => setDocument(doc.id, e.target.value)}
-                ></CPF>
-              </InputFrame>
-            )}
-            {doc.selected && doc.id === "CNPJ" && (
-              <InputFrame key={index}>
-                <CNPJ
-                  options={{
-                    delimiters: [".", ".", "/", "-"],
-                    blocks: [2, 3, 3, 4, 2],
-                    uppercase: true,
-                  }}
-                  type="tel"
-                  name="cnpj"
-                  placeholder="CNPJ"
-                  value={doc.value}
-                  onChange={(e) => setDocument(doc.id, e.target.value)}
-                ></CNPJ>
-              </InputFrame>
-            )}
-          </>
-        ))}
-      </>
-      <SizedBox height={32}></SizedBox>
-      <SelectMenu
-        items={installmentsSelect}
-        setSelected={setInstallmentsSelect}
-        title="Parcelamento"
-        errorText=""
-        width={290}
-      ></SelectMenu>
-      <SizedBox height={20}></SizedBox>
-      <CheckBoxWithLabel
-        value={billingAddressIsDifferent}
-        onClick={() => setBillingAddressIsDifferent(!billingAddressIsDifferent)}
-        label="O endereço de faturamento é diferente do endereço de entrega"
-      ></CheckBoxWithLabel>
-      <SizedBox height={20}></SizedBox>
-      {billingAddressIsDifferent && (
-        <BillingAddress>
-          <Subtitle color={Colors.SECONDARY}>
-            Preencha o endereço de cobrança
-          </Subtitle>
-          <SizedBox height={20}></SizedBox>
-          <Row>
-            <span data-test="address-postalCode">
-              <CustomTextField
-                type="postalCode"
-                ref={postalCode}
-                error={addressErrors.postalCode}
-                width={120}
-              >
-                CEP*
+            <SizedBox height={20}></SizedBox>
+            <span data-test="address-street">
+              <CustomTextField ref={street} error={addressErrors.street}>
+                Logradouro (Rua, Avenida, Alameda, etc)*
               </CustomTextField>
             </span>
-            <SizedBox width={8}></SizedBox>
-            {loadingPostalCode && (
-              <LoadingAnimation size={36} color={true}></LoadingAnimation>
-            )}
-          </Row>
-          <SizedBox height={20}></SizedBox>
-          <span data-test="address-street">
-            <CustomTextField ref={street} error={addressErrors.street}>
-              Logradouro (Rua, Avenida, Alameda, etc)*
-            </CustomTextField>
-          </span>
-          <SizedBox height={20}></SizedBox>
-          <span data-test="address-number">
-            <CustomTextField
-              ref={number}
-              error={addressErrors.number}
-              width={100}
-            >
-              Número*
-            </CustomTextField>
-          </span>
-          <SizedBox height={20}></SizedBox>
-          <span data-test="address-complement">
-            <CustomTextField ref={complement}>Complemento</CustomTextField>
-          </span>
-          <SizedBox height={20}></SizedBox>
-          <span data-test="address-neighborhood">
-            <CustomTextField
-              ref={neighborhood}
-              error={addressErrors.neighborhood}
-            >
-              Bairro*
-            </CustomTextField>
-          </span>
-          <SizedBox height={20}></SizedBox>
-          <span data-test="address-city">
-            <CustomTextField ref={city} error={addressErrors.city}>
-              Cidade*
-            </CustomTextField>
-          </span>
-          <SizedBox height={20}></SizedBox>
-          <span data-test="address-state">
-            <CustomTextField ref={state} error={addressErrors.state}>
-              Sigla do Estado*
-            </CustomTextField>
-          </span>
-          <SizedBox height={20}></SizedBox>
-        </BillingAddress>
-      )}
-    </div>
+            <SizedBox height={20}></SizedBox>
+            <span data-test="address-number">
+              <CustomTextField
+                ref={number}
+                error={addressErrors.number}
+                width={100}
+              >
+                Número*
+              </CustomTextField>
+            </span>
+            <SizedBox height={20}></SizedBox>
+            <span data-test="address-complement">
+              <CustomTextField ref={complement}>Complemento</CustomTextField>
+            </span>
+            <SizedBox height={20}></SizedBox>
+            <span data-test="address-neighborhood">
+              <CustomTextField
+                ref={neighborhood}
+                error={addressErrors.neighborhood}
+              >
+                Bairro*
+              </CustomTextField>
+            </span>
+            <SizedBox height={20}></SizedBox>
+            <span data-test="address-city">
+              <CustomTextField ref={city} error={addressErrors.city}>
+                Cidade*
+              </CustomTextField>
+            </span>
+            <SizedBox height={20}></SizedBox>
+            <span data-test="address-state">
+              <CustomTextField ref={state} error={addressErrors.state}>
+                Sigla do Estado*
+              </CustomTextField>
+            </span>
+            <SizedBox height={20}></SizedBox>
+          </BillingAddress>
+        )}
+      </div>
+      <span style={{ display: "block" }}>
+        <form action="/process-payment" method="post" id="paymentForm">
+          <h3>Detalhe do comprador</h3>
+          <div>
+            <div>
+              <label htmlFor="email">E-mail</label>
+              <input
+                id="email"
+                name="email"
+                type="text"
+                // value={authContext?.user?.email || ""}
+                value="test_user_37176104@testuser.com"
+              />
+            </div>
+            <div>
+              <label htmlFor="docType">Tipo de documento</label>
+              <select
+                id="docType"
+                name="docType"
+                data-checkout="docType"
+                value={documents.filter((o) => o.selected)[0]?.name}
+              ></select>
+            </div>
+            <div>
+              <label htmlFor="docNumber">Número do documento</label>
+              <input
+                id="docNumber"
+                name="docNumber"
+                data-checkout="docNumber"
+                type="text"
+                value={documents
+                  .filter((o) => o.selected)[0]
+                  ?.value?.replaceAll(".", "")
+                  ?.replaceAll("-", "")
+                  ?.replaceAll("/", "")}
+              />
+            </div>
+          </div>
+          <h3>Detalhes do cartão</h3>
+          <div>
+            <div>
+              <label htmlFor="cardholderName">Titular do cartão</label>
+              <input
+                id="cardholderName"
+                data-checkout="cardholderName"
+                type="text"
+                value={name}
+              />
+            </div>
+            <div>
+              <label htmlFor="">Data de vencimento</label>
+              <div>
+                <input
+                  type="text"
+                  placeholder="MM"
+                  id="cardExpirationMonth"
+                  data-checkout="cardExpirationMonth"
+                  onPaste={null}
+                  onCopy={null}
+                  onCut={null}
+                  onDrag={null}
+                  onDrop={null}
+                  autoComplete="off"
+                  value={expiry.split("/")[0]}
+                />
+                <span className="date-separator">/</span>
+                <input
+                  type="text"
+                  placeholder="YY"
+                  id="cardExpirationYear"
+                  data-checkout="cardExpirationYear"
+                  onPaste={null}
+                  onCopy={null}
+                  onCut={null}
+                  onDrag={null}
+                  onDrop={null}
+                  autoComplete="off"
+                  value={expiry.split("/")[1]}
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="cardNumber">Número do cartão</label>
+              <input
+                type="text"
+                id="cardNumber"
+                data-checkout="cardNumber"
+                onPaste={null}
+                onCopy={null}
+                onCut={null}
+                onDrag={null}
+                onDrop={null}
+                autoComplete="off"
+                value={cardNumber?.replaceAll(" ", "")}
+              />
+            </div>
+            <div>
+              <label htmlFor="securityCode">Código de segurança</label>
+              <input
+                id="securityCode"
+                data-checkout="securityCode"
+                type="text"
+                onPaste={null}
+                onCopy={null}
+                onCut={null}
+                onDrag={null}
+                onDrop={null}
+                autoComplete="off"
+                value={cvc}
+              />
+            </div>
+            <div id="issuerInput">
+              <label htmlFor="issuer">Banco emissor</label>
+              <select id="issuer" name="issuer" data-checkout="issuer"></select>
+            </div>
+            <div>
+              <label htmlFor="installments">Parcelas</label>
+              <select
+                id="installments"
+                name="installments"
+                value={installmentsSelect.filter((o) => o.selected)[0]?.value}
+              ></select>
+            </div>
+            <div>
+              <input
+                type="hidden"
+                name="transactionAmount"
+                id="transactionAmount"
+                value={cartContext.cart.total}
+              />
+              <input
+                type="hidden"
+                name="paymentMethodId"
+                id="paymentMethodId"
+              />
+              <input type="hidden" name="description" id="description" />
+            </div>
+          </div>
+        </form>
+      </span>
+      <CustomButton onClick={getCardToken} width={220}>
+        GetTokenAndPay
+      </CustomButton>
+    </>
   );
 }
 
