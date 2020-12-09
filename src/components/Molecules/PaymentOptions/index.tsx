@@ -2,43 +2,36 @@ import { useMediaQuery } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import theme from "../../../theme/theme";
-import Icon from "../../Atoms/Icon";
 import RadioButton from "../../Atoms/RadioButton";
-import Row from "../../Atoms/Row";
 import SimpleText from "../../Atoms/SimpleText";
 
-const PaymentItem = styled.div<{ isSmartPhone: boolean }>`
+const OptionsHolder = styled.div<{ isSmartPhone: boolean }>`
   display: flex;
+  flex-direction: ${(props) => (props.isSmartPhone ? "column" : "row")};
+`;
+
+const PaymentItem = styled.div<{ active: boolean; isSmartPhone: boolean }>`
+  display: flex;
+  flex: ${(props) => (props.isSmartPhone ? "1" : "none")};
   flex-direction: row;
   align-items: center;
   cursor: pointer;
-  margin-right: ${(props) => (props.isSmartPhone ? 10 : 30)}px;
+  background-color: ${(props) => (props.active ? "#CAE4FB" : "transparent")};
+  border-radius: 8px;
+  padding-left: ${(props) => (props.isSmartPhone ? 12 : 16)}px;
+  padding-right: ${(props) => (props.isSmartPhone ? 12 : 16)}px;
 `;
 
-const Button = styled.div<{ active: boolean; isSmartPhone: boolean }>`
+const Button = styled.div<{ isSmartPhone: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => (props.active ? "#FBEFF7" : "transparent")};
   box-sizing: border-box;
-  width: ${(props) => (props.isSmartPhone ? 103 : 160)}px;
-  height: ${(props) => (props.isSmartPhone ? 103 : 160)}px;
-  padding: ${(props) => (props.isSmartPhone ? 6 : 20)}px;
-  margin-left: ${(props) => (props.isSmartPhone ? 2 : 10)}px;
-  border-radius: 8px;
+  margin-left: 10px;
 `;
 
-const IconHolder = styled.div<{ size: number }>`
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const TextHolder = styled.div`
-  height: 20px;
-`;
+const TextHolder = styled.div``;
 
 interface PaymentOptionsProps {
   option: string;
@@ -59,10 +52,10 @@ const payments = [
     size: 78,
   },
   {
-    id: "pix",
-    desc: "PIX",
-    icon: "payment-pix",
-    size: 62,
+    id: "loterica",
+    desc: "Pagar na Lotérica",
+    icon: "banker",
+    size: 78,
   },
 ];
 
@@ -70,36 +63,36 @@ function PaymentOptions(props: PaymentOptionsProps): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <Row>
+    <OptionsHolder isSmartPhone={isSmartPhone}>
       {payments.map((item) => (
         <PaymentItem
           key={item.id}
           onClick={() => props.setOption(item.id)}
           isSmartPhone={isSmartPhone}
+          active={props.option === item.id}
         >
-          {!isSmartPhone && (
-            <RadioButton
-              onClick={() => props.setOption(item.id)}
-              value={props.option === item.id}
-            ></RadioButton>
-          )}
-          <Button active={props.option === item.id} isSmartPhone={isSmartPhone}>
-            <IconHolder size={isSmartPhone ? 52 : 78}>
+          <RadioButton
+            onClick={() => props.setOption(item.id)}
+            value={props.option === item.id}
+          ></RadioButton>
+
+          <Button isSmartPhone={isSmartPhone}>
+            {/* <IconHolder size={isSmartPhone ? 52 : 78}>
               <Icon
                 size={isSmartPhone ? item.size / 1.5 : item.size}
                 type={item.icon}
                 onClick={() => props.setOption(item.id)}
               ></Icon>
-            </IconHolder>
+            </IconHolder> */}
             <TextHolder>
-              <SimpleText bold centered size={isSmartPhone ? 0.7 : 0.9}>
+              <SimpleText centered={isSmartPhone} size={0.9}>
                 {item.desc}
               </SimpleText>
             </TextHolder>
           </Button>
         </PaymentItem>
       ))}
-    </Row>
+    </OptionsHolder>
   );
 }
 

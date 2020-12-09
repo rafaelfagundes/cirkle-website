@@ -68,7 +68,7 @@ function useCartProvider() {
     }, 0);
 
     const shippingValue =
-      newCart.shippingList.filter((o) => o.selected)[0]?.secondaryValue || 0;
+      newCart?.shippingList?.filter((o) => o.selected)[0]?.secondaryValue || 0;
 
     let total = 0;
     if (newCart.freeShipping) {

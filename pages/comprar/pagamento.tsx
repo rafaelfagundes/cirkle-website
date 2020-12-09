@@ -1,3 +1,4 @@
+import { useMediaQuery } from "@material-ui/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -7,12 +8,14 @@ import SizedBox from "../../src/components/Atoms/SizedBox";
 import Title from "../../src/components/Atoms/Title";
 import CartFooterButtons from "../../src/components/Molecules/CartFooterButtons";
 import PaymentOptions from "../../src/components/Molecules/PaymentOptions";
-import Barcode from "../../src/components/Pages/Payment/Barcode";
+import Barcode, {
+  MercadoPagoPaymentType,
+} from "../../src/components/Pages/Payment/Barcode";
 import CreditCard from "../../src/components/Pages/Payment/CreditCard";
-import Pix from "../../src/components/Pages/Payment/Pix";
 import LastMilePage from "../../src/components/Templates/LastMilePage";
 import Colors from "../../src/enums/Colors";
 import { useCart } from "../../src/hooks/cart/useCart";
+import theme from "../../src/theme/theme";
 
 const Price = styled.p`
   margin: 0;
@@ -23,6 +26,8 @@ const Price = styled.p`
 `;
 
 function Pagamento(): JSX.Element {
+  const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
+
   const breadcrumbs = [
     {
       active: false,
@@ -67,14 +72,26 @@ function Pagamento(): JSX.Element {
           }).format(cartContext.cart.total)}
         </Price>
       </Row>
-      <SizedBox height={32}></SizedBox>
+      <SizedBox height={isSmartPhone ? 20 : 24}></SizedBox>
       <PaymentOptions option={option} setOption={setOption}></PaymentOptions>
-      <SizedBox height={36}></SizedBox>
+      <SizedBox height={isSmartPhone ? 10 : 24}></SizedBox>
       <HorizontalLine></HorizontalLine>
       <SizedBox height={20}></SizedBox>
       {option === "cc" && <CreditCard></CreditCard>}
-      {option === "barcode" && <Barcode></Barcode>}
-      {option === "pix" && <Pix></Pix>}
+      {option === "barcode" && (
+        <Barcode
+          message="O boleto será gerado ao concluir o pedido"
+          title="Boleto Bancário"
+          type={MercadoPagoPaymentType.BOLETO}
+        ></Barcode>
+      )}
+      {option === "loterica" && (
+        <Barcode
+          message="O código para pagamento será gerado ao concluir o pedido"
+          title="Pagamento na Lotérica"
+          type={MercadoPagoPaymentType.LOTERICA}
+        ></Barcode>
+      )}
       <CartFooterButtons
         buttons={[
           {

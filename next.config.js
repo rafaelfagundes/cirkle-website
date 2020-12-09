@@ -7,6 +7,7 @@ const DEV = {
   publicRuntimeConfig: {
     API_ENDPOINT: process.env.API_ENDPOINT,
     SHOW_CHAT: false,
+    MERCADO_PAGO_PUB_KEY: process.env.MERCADO_PAGO_PUB_KEY,
   },
 };
 
@@ -17,6 +18,7 @@ const PROD = withPWA({
   publicRuntimeConfig: {
     API_ENDPOINT: process.env.API_ENDPOINT,
     SHOW_CHAT: true,
+    MERCADO_PAGO_PUB_KEY: process.env.MERCADO_PAGO_PUB_KEY,
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     if (process.env.ANALYZE) {

@@ -222,11 +222,14 @@ function ProductPage({
     }
   }, [product]);
 
-  const isAlreadyInCart = cartContext?.isItemInCart(product.id);
+  let isAlreadyInCart = false;
+  if (cartContext.hasOwnProperty("isItemInCart")) {
+    isAlreadyInCart = cartContext?.isItemInCart(product.id);
+  }
 
   function showRecentlyViewed() {
     const numItems = _filter(
-      recentlyViewedContext.recentlyViewed.items,
+      recentlyViewedContext?.recentlyViewed?.items,
       (o: Product) => o.uid !== product.uid
     ).length;
 
@@ -239,7 +242,7 @@ function ProductPage({
 
   function getRecentItems(): Array<Product> {
     return _filter(
-      recentlyViewedContext.recentlyViewed.items,
+      recentlyViewedContext?.recentlyViewed?.items,
       (o: Product) => o.uid !== product.uid
     );
   }
