@@ -11,6 +11,7 @@ import { SWRConfig } from "swr";
 import AuthProvider from "../src/hooks/auth/useAuth";
 import CartProvider from "../src/hooks/cart/useCart";
 import DialogProvider from "../src/hooks/dialog/useDialog";
+import OrderProvider from "../src/hooks/order/useOrder";
 import RecentlyViewedProvider from "../src/hooks/recentlyViewed/useRecentlyViewed";
 import WishlistProvider from "../src/hooks/wishlist/useWishlist";
 import theme from "../src/theme/theme";
@@ -163,26 +164,28 @@ export default function MyApp(props) {
           <WishlistProvider>
             <CartProvider>
               <RecentlyViewedProvider>
-                <ThemeProvider theme={theme}>
-                  {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                  <CssBaseline />
-                  <SWRConfig
-                    value={{
-                      refreshInterval: 60000,
-                      refreshWhenHidden: false,
-                      refreshWhenOffline: false,
-                      revalidateOnFocus: true,
-                      revalidateOnMount: true,
-                      revalidateOnReconnect: true,
-                      dedupingInterval: 5000,
-                      focusThrottleInterval: 15000,
-                      errorRetryCount: 5,
-                      fetcher,
-                    }}
-                  >
-                    <Component {...pageProps} />
-                  </SWRConfig>
-                </ThemeProvider>
+                <OrderProvider>
+                  <ThemeProvider theme={theme}>
+                    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                    <CssBaseline />
+                    <SWRConfig
+                      value={{
+                        refreshInterval: 60000,
+                        refreshWhenHidden: false,
+                        refreshWhenOffline: false,
+                        revalidateOnFocus: true,
+                        revalidateOnMount: true,
+                        revalidateOnReconnect: true,
+                        dedupingInterval: 5000,
+                        focusThrottleInterval: 15000,
+                        errorRetryCount: 5,
+                        fetcher,
+                      }}
+                    >
+                      <Component {...pageProps} />
+                    </SWRConfig>
+                  </ThemeProvider>
+                </OrderProvider>
               </RecentlyViewedProvider>
             </CartProvider>
           </WishlistProvider>
