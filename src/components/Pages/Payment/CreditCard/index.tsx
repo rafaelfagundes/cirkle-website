@@ -204,7 +204,7 @@ function CreditCard(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    if (cardNumber.length > 6) {
+    if (typeof cardNumber === "string" && cardNumber.length > 6) {
       let bin = cardNumber?.replaceAll(" ", "");
       bin = bin.slice(0, 6);
       getAllCardInfo(bin);
@@ -528,7 +528,10 @@ function CreditCard(): JSX.Element {
                 onDrag={null}
                 onDrop={null}
                 autoComplete="off"
-                value={cardNumber?.replaceAll(" ", "")}
+                value={
+                  typeof cardNumber === "string" &&
+                  cardNumber?.replaceAll(" ", "")
+                }
                 readOnly
               />
             </div>
