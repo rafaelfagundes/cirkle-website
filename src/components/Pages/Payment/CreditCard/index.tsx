@@ -205,7 +205,7 @@ function CreditCard(): JSX.Element {
 
   useEffect(() => {
     if (typeof cardNumber === "string" && cardNumber.length > 6) {
-      let bin = cardNumber?.replaceAll(" ", "");
+      let bin = cardNumber?.replace(/ /g, "");
       bin = bin.slice(0, 6);
       getAllCardInfo(bin);
     } else if (cardNumber !== "") {
@@ -430,7 +430,7 @@ function CreditCard(): JSX.Element {
         )}
         <SizedBox height={20}></SizedBox>
       </div>
-      <span style={{ display: "none" }}>
+      <span style={{ display: "block" }}>
         <form method="post" id="paymentForm">
           <div>
             <div>
@@ -464,9 +464,7 @@ function CreditCard(): JSX.Element {
                 value={
                   documents
                     .filter((o) => o.selected)[0]
-                    ?.value?.replaceAll(".", "")
-                    ?.replaceAll("-", "")
-                    ?.replaceAll("/", "") || ""
+                    ?.value?.replace(/[^0-9]/g, "") || ""
                 }
               />
             </div>
@@ -530,7 +528,7 @@ function CreditCard(): JSX.Element {
                 autoComplete="off"
                 value={
                   typeof cardNumber === "string" &&
-                  cardNumber?.replaceAll(" ", "")
+                  cardNumber?.replace(/ /g, "")
                 }
                 readOnly
               />
