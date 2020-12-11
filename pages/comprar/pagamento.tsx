@@ -1,12 +1,10 @@
 import { useMediaQuery } from "@material-ui/core";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
 import HorizontalLine from "../../src/components/Atoms/HorizontalLine";
 import Row from "../../src/components/Atoms/Row";
 import SizedBox from "../../src/components/Atoms/SizedBox";
 import Title from "../../src/components/Atoms/Title";
-import CartFooterButtons from "../../src/components/Molecules/CartFooterButtons";
 import PaymentOptions from "../../src/components/Molecules/PaymentOptions";
 import Barcode, {
   MercadoPagoPaymentType,
@@ -50,16 +48,6 @@ function Pagamento(): JSX.Element {
 
   const [option, setOption] = useState("cc");
 
-  const router = useRouter();
-
-  const goToFinishPage = (): void => {
-    router.push("/comprar/concluir");
-  };
-
-  const goToAddressPage = (): void => {
-    router.push("/comprar/envio");
-  };
-
   return (
     <LastMilePage breadcrumbs={breadcrumbs}>
       <SizedBox height={10}></SizedBox>
@@ -92,23 +80,6 @@ function Pagamento(): JSX.Element {
           type={MercadoPagoPaymentType.LOTERICA}
         ></Barcode>
       )}
-      <CartFooterButtons
-        buttons={[
-          {
-            text: "Alterar Endereço",
-            onClick: goToAddressPage,
-            type: "text",
-            width: 180,
-            isBackButton: true,
-          },
-          {
-            text: "Revisar Pedido",
-            onClick: goToFinishPage,
-            type: "success",
-            width: 200,
-          },
-        ]}
-      ></CartFooterButtons>
     </LastMilePage>
   );
 }

@@ -1,5 +1,6 @@
 import { useMediaQuery } from "@material-ui/core";
 import _cloneDeep from "lodash/cloneDeep";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Cards from "react-credit-cards";
 import "react-credit-cards/es/styles-compiled.css";
@@ -22,7 +23,9 @@ import Row from "../../../Atoms/Row";
 import SelectMenu, { AssetType, SelectItem } from "../../../Atoms/SelectMenu";
 import SimpleText from "../../../Atoms/SimpleText";
 import SizedBox from "../../../Atoms/SizedBox";
+import StatefulTextInput from "../../../Atoms/StatefulTextInput";
 import Subtitle from "../../../Atoms/Subtitle";
+import CartFooterButtons from "../../../Molecules/CartFooterButtons";
 import {
   CardAndForm,
   CardContainer,
@@ -32,7 +35,6 @@ import {
   CPF,
   CVC,
   CVCandExpiration,
-  DefaultInput,
   ExpirationDate,
   InputFrame,
   PaymentForm,
@@ -56,6 +58,16 @@ function CreditCard(): JSX.Element {
   const [installmentsSelect, setInstallmentsSelect] = useState([]);
   const [documents, setDocuments] = useState([]);
   let cardData;
+
+  const router = useRouter();
+
+  const goToFinishPage = (): void => {
+    router.push("/comprar/concluir");
+  };
+
+  const goToAddressPage = (): void => {
+    router.push("/comprar/envio");
+  };
 
   const setIssuers = async (response: any) => {
     const issuerSelect = document.getElementById("issuer");
@@ -404,18 +416,17 @@ function CreditCard(): JSX.Element {
             </React.Fragment>
           ))}
         </>
-        <SizedBox height={20}></SizedBox>
-        <Subtitle>Email</Subtitle>
-        <SizedBox height={10}></SizedBox>
-        <InputFrame>
-          <DefaultInput
-            type="text"
-            name="email"
-            placeholder="Seu Email"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
-        </InputFrame>
+        <SizedBox height={24}></SizedBox>
+        <StatefulTextInput
+          type="text"
+          name="email"
+          onChange={setEmail}
+          value={email}
+          initialValue={email}
+          width={335}
+        >
+          Seu Email
+        </StatefulTextInput>
         {installmentsSelect.length > 0 && (
           <>
             <SizedBox height={32}></SizedBox>
@@ -590,6 +601,23 @@ function CreditCard(): JSX.Element {
           GetTokenAndPay
         </CustomButton>
       </span>
+      <CartFooterButtons
+        buttons={[
+          {
+            text: "Alterar Endereço",
+            onClick: goToAddressPage,
+            type: "text",
+            width: 180,
+            isBackButton: true,
+          },
+          {
+            text: "Revisar Pedido",
+            onClick: goToFinishPage,
+            type: "success",
+            width: 200,
+          },
+        ]}
+      ></CartFooterButtons>
     </>
   );
 }

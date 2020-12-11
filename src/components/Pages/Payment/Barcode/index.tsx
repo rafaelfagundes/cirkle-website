@@ -1,4 +1,5 @@
 import _cloneDeep from "lodash/cloneDeep";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Colors from "../../../../enums/Colors";
 import { useAuth } from "../../../../hooks/auth/useAuth";
@@ -9,6 +10,7 @@ import SimpleText from "../../../Atoms/SimpleText";
 import SizedBox from "../../../Atoms/SizedBox";
 import StatefulTextInput from "../../../Atoms/StatefulTextInput";
 import Subtitle from "../../../Atoms/Subtitle";
+import CartFooterButtons from "../../../Molecules/CartFooterButtons";
 import { CNPJ, CPF, InputFrame } from "../styles";
 
 export enum MercadoPagoPaymentType {
@@ -24,6 +26,16 @@ interface BarcodeProps {
 
 function Barcode(props: BarcodeProps): JSX.Element {
   const authContext = useAuth();
+
+  const router = useRouter();
+
+  const goToFinishPage = (): void => {
+    router.push("/comprar/concluir");
+  };
+
+  const goToAddressPage = (): void => {
+    router.push("/comprar/envio");
+  };
 
   const [name, setName] = useState("");
   const [surName, setSurName] = useState("");
@@ -154,6 +166,24 @@ function Barcode(props: BarcodeProps): JSX.Element {
       </>
       <SizedBox height={20}></SizedBox>
       <SimpleText>{props.message}</SimpleText>
+      <SizedBox height={20}></SizedBox>
+      <CartFooterButtons
+        buttons={[
+          {
+            text: "Alterar Endereço",
+            onClick: goToAddressPage,
+            type: "text",
+            width: 180,
+            isBackButton: true,
+          },
+          {
+            text: "Revisar Pedido",
+            onClick: goToFinishPage,
+            type: "success",
+            width: 200,
+          },
+        ]}
+      ></CartFooterButtons>
     </div>
   );
 }

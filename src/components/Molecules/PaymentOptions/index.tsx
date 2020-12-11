@@ -17,9 +17,9 @@ const PaymentItem = styled.div<{ active: boolean; isSmartPhone: boolean }>`
   align-items: center;
   cursor: pointer;
   background-color: ${(props) => (props.active ? "#CAE4FB" : "transparent")};
-  border-radius: 8px;
-  padding-left: ${(props) => (props.isSmartPhone ? 12 : 16)}px;
-  padding-right: ${(props) => (props.isSmartPhone ? 12 : 16)}px;
+  border-radius: 4px;
+  padding-left: ${(props) => (props.isSmartPhone ? 10 : 12)}px;
+  padding-right: ${(props) => (props.isSmartPhone ? 10 : 12)}px;
 `;
 
 const Button = styled.div<{ isSmartPhone: boolean }>`
@@ -77,13 +77,6 @@ function PaymentOptions(props: PaymentOptionsProps): JSX.Element {
           ></RadioButton>
 
           <Button isSmartPhone={isSmartPhone}>
-            {/* <IconHolder size={isSmartPhone ? 52 : 78}>
-              <Icon
-                size={isSmartPhone ? item.size / 1.5 : item.size}
-                type={item.icon}
-                onClick={() => props.setOption(item.id)}
-              ></Icon>
-            </IconHolder> */}
             <TextHolder>
               <SimpleText centered={isSmartPhone} size={0.9}>
                 {item.desc}

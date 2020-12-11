@@ -194,6 +194,7 @@ function CartItem({
                     </OldPrice>
                   </Row>
                 )}
+                {isSmartPhone && <SizedBox height={10}></SizedBox>}
                 {isImmutable && (
                   <Padding horizontal={10}>
                     <Row>
@@ -209,10 +210,29 @@ function CartItem({
                     </Row>
                   </Padding>
                 )}
+                {isSmartPhone && (
+                  <>
+                    <SizedBox height={10}></SizedBox>
+                    <Row>
+                      <Price>
+                        {new Intl.NumberFormat("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        }).format(item.price)}
+                      </Price>
+                      <OldPrice>
+                        {new Intl.NumberFormat("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        }).format(item.priceWhenNew)}
+                      </OldPrice>
+                    </Row>
+                  </>
+                )}
               </>
             </Link>
           </SpaceBetweenColumn>
-          {isImmutable && (
+          {isImmutable && !isSmartPhone && (
             <Row>
               <OldPrice>
                 {new Intl.NumberFormat("pt-BR", {

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import CartDescItem from "../../src/components/Atoms/CartDescItem";
 import CartHeaderDataItem from "../../src/components/Atoms/CartHeaderDataItem";
 import CartTotal from "../../src/components/Atoms/CartTotal";
+import HorizontalLine from "../../src/components/Atoms/HorizontalLine";
 import Row from "../../src/components/Atoms/Row";
 import SizedBox from "../../src/components/Atoms/SizedBox";
 import Subtitle from "../../src/components/Atoms/Subtitle";
@@ -100,7 +101,9 @@ function FinishPage(): JSX.Element {
           ></CartHeaderDataItem>
         </WrapRow>
       )}
-      <SizedBox height={48}></SizedBox>
+      <SizedBox height={20}></SizedBox>
+      <HorizontalLine></HorizontalLine>
+      <SizedBox height={32}></SizedBox>
       <Subtitle color={Colors.SECONDARY}>{`${cartContext.cart.items.length} ${
         cartContext.cart.items.length === 1 ? "ITEM" : "ITENS"
       }`}</Subtitle>
@@ -120,7 +123,9 @@ function FinishPage(): JSX.Element {
           </React.Fragment>
         ))}
       </>
-      <SizedBox height={48}></SizedBox>
+      <SizedBox height={32}></SizedBox>
+      <HorizontalLine></HorizontalLine>
+      <SizedBox height={20}></SizedBox>
       <CartDescItem title="subtotal">
         {new Intl.NumberFormat("pt-BR", {
           style: "currency",

@@ -132,6 +132,7 @@ type StatefulTextInputProps = {
   onEnterKeyPressed?: () => void;
   value: string;
   onChange: Dispatch<SetStateAction<string>>;
+  name?: string;
 };
 
 function getConfig(type: string): { icon: string; inputType: string } {
