@@ -4,7 +4,11 @@ import React, { useEffect, useRef, useState } from "react";
 import validator from "validator";
 import Address from "../../../../modules/address/Address";
 import CustomButton from "../../../Atoms/CustomButton";
-import CustomTextField from "../../../Atoms/CustomTextField";
+import CustomTextField, {
+  customTextFieldFocus,
+  getCustomTextFieldValue,
+  setCustomTextFieldValue,
+} from "../../../Atoms/CustomTextField";
 import LoadingAnimation from "../../../Atoms/LoadingAnimation";
 import Row from "../../../Atoms/Row";
 import SimpleText from "../../../Atoms/SimpleText";
@@ -36,13 +40,14 @@ function NewAddress({
 
   const _fillFields = () => {
     console.log("Preenchendo campos...");
-    street.current.children[0].value = editAddressObj.street;
-    number.current.children[0].value = editAddressObj.number;
-    complement.current.children[0].value = editAddressObj.complement;
-    neighborhood.current.children[0].value = editAddressObj.neighborhood;
-    city.current.children[0].value = editAddressObj.city;
-    state.current.children[0].value = editAddressObj.state;
-    postalCode.current.children[0].value = editAddressObj.postalCode;
+
+    setCustomTextFieldValue(street, editAddressObj.street);
+    setCustomTextFieldValue(number, String(editAddressObj.number));
+    setCustomTextFieldValue(complement, editAddressObj.complement);
+    setCustomTextFieldValue(neighborhood, editAddressObj.neighborhood);
+    setCustomTextFieldValue(city, editAddressObj.city);
+    setCustomTextFieldValue(state, editAddressObj.state);
+    setCustomTextFieldValue(postalCode, editAddressObj.postalCode);
   };
 
   useEffect(() => {
@@ -85,29 +90,29 @@ function NewAddress({
   );
 
   const _setAddress = (address: Address) => {
-    street.current.children[0].value = address.street;
-    neighborhood.current.children[0].value = address.neighborhood;
-    city.current.children[0].value = address.city;
-    state.current.children[0].value = address.state;
+    setCustomTextFieldValue(street, address.street);
+    setCustomTextFieldValue(neighborhood, address.neighborhood);
+    setCustomTextFieldValue(city, address.city);
+    setCustomTextFieldValue(state, address.state);
+
+    customTextFieldFocus(number);
   };
 
   const _clearAddress = () => {
-    street.current.children[0].value = "";
-    neighborhood.current.children[0].value = "";
-    city.current.children[0].value = "";
-    state.current.children[0].value = "";
+    setCustomTextFieldValue(street, "");
+    setCustomTextFieldValue(neighborhood, "");
+    setCustomTextFieldValue(city, "");
+    setCustomTextFieldValue(state, "");
   };
 
   useEffect(() => {
     let _postalCode = "";
     const postalCodeInterval = setInterval(async () => {
-      if (postalCode?.current?.children[0].value) {
-        if (
-          postalCode?.current?.children[0].value.length === "12345-123".length
-        ) {
-          if (postalCode.current.children[0].value !== _postalCode) {
+      if (getCustomTextFieldValue(postalCode)) {
+        if (getCustomTextFieldValue(postalCode).length === "12345-123".length) {
+          if (getCustomTextFieldValue(postalCode) !== _postalCode) {
             try {
-              _postalCode = postalCode.current.children[0].value;
+              _postalCode = getCustomTextFieldValue(postalCode);
 
               const url = `https://brasilapi.com.br/api/cep/v1/${_postalCode.replace(
                 "-",
@@ -209,13 +214,13 @@ function NewAddress({
     if (!_validate()) return false;
     const address: Address = {
       id: null,
-      street: street.current.children[0].value,
-      number: number.current.children[0].value,
-      complement: complement.current.children[0].value,
-      neighborhood: neighborhood.current.children[0].value,
-      city: city.current.children[0].value,
-      state: state.current.children[0].value,
-      postalCode: postalCode.current.children[0].value,
+      street: getCustomTextFieldValue(street),
+      number: Number(getCustomTextFieldValue(number)),
+      complement: getCustomTextFieldValue(complement),
+      neighborhood: getCustomTextFieldValue(neighborhood),
+      city: getCustomTextFieldValue(city),
+      state: getCustomTextFieldValue(state),
+      postalCode: getCustomTextFieldValue(postalCode),
     };
 
     addAddress(address);
@@ -226,13 +231,13 @@ function NewAddress({
     const address: Address = {
       id: editAddressObj.id,
       mainAddress: editAddressObj.mainAddress,
-      street: street.current.children[0].value,
-      number: number.current.children[0].value,
-      complement: complement.current.children[0].value,
-      neighborhood: neighborhood.current.children[0].value,
-      city: city.current.children[0].value,
-      state: state.current.children[0].value,
-      postalCode: postalCode.current.children[0].value,
+      street: getCustomTextFieldValue(street),
+      number: Number(getCustomTextFieldValue(number)),
+      complement: getCustomTextFieldValue(complement),
+      neighborhood: getCustomTextFieldValue(neighborhood),
+      city: getCustomTextFieldValue(city),
+      state: getCustomTextFieldValue(state),
+      postalCode: getCustomTextFieldValue(postalCode),
     };
 
     updateAddress(address);

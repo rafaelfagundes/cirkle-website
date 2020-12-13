@@ -6,7 +6,10 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Center from "../src/components/Atoms/Center";
 import CustomButton from "../src/components/Atoms/CustomButton";
-import CustomTextField from "../src/components/Atoms/CustomTextField";
+import CustomTextField, {
+  getCustomTextFieldValue,
+  setCustomTextFieldValue,
+} from "../src/components/Atoms/CustomTextField";
 import Row from "../src/components/Atoms/Row";
 import SizedBox from "../src/components/Atoms/SizedBox";
 import SocialLoginButton from "../src/components/Atoms/SocialLoginButton";
@@ -121,8 +124,8 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
     }
 
     setLoading(true);
-    const _email = email.current.children[0].value;
-    const _password = password.current.children[0].value;
+    const _email = getCustomTextFieldValue(email);
+    const _password = getCustomTextFieldValue(password);
     const result = await auth.signin(_email, _password);
     setLoading(false);
     if (result) {
@@ -136,9 +139,9 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
     }
 
     setLoading(true);
-    const _email = email.current.children[0].value;
-    const _password = password.current.children[0].value;
-    const _displayName = displayName.current.children[0].value;
+    const _email = getCustomTextFieldValue(email);
+    const _password = getCustomTextFieldValue(password);
+    const _displayName = getCustomTextFieldValue(displayName);
     const result = await auth.signup(_displayName, _email, _password);
     setLoading(false);
     if (result) {
@@ -153,9 +156,9 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
   };
 
   const _validate = (action: string) => {
-    const _email = email.current?.children[0].value;
-    const _password = password.current?.children[0].value;
-    const _displayName = displayName.current?.children[0].value;
+    const _email = getCustomTextFieldValue(email);
+    const _password = getCustomTextFieldValue(password);
+    const _displayName = getCustomTextFieldValue(displayName);
 
     const _errors = _cloneDeep(errorsTemplate);
     let _errorsCount = 0;
@@ -210,7 +213,8 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
           capitalizeFirstLetter(splitedFullName[0]) +
           " " +
           capitalizeFirstLetter(splitedFullName[1]);
-        displayName.current.children[0].value = _fullName;
+
+        setCustomTextFieldValue(displayName, _fullName);
       }
     }
     if (_errorsCount) {

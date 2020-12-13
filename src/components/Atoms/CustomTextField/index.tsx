@@ -8,7 +8,28 @@ import Icon from "../Icon";
 import SimpleText from "../SimpleText";
 import SizedBox from "../SizedBox";
 
-function PhoneMask(props) {
+export function getCustomTextFieldValue(ref: {
+  current: { children: { value: string }[] };
+}): string {
+  return ref?.current?.children[0]?.value;
+}
+
+export function setCustomTextFieldValue(
+  ref: {
+    current: { children: { value: string }[] };
+  },
+  value: string
+): void {
+  ref.current.children[0].value = value;
+}
+
+export function customTextFieldFocus(ref: {
+  current: { children: { focus: () => void }[] };
+}): void {
+  ref?.current?.children[0]?.focus();
+}
+
+function PhoneMask(props: any) {
   return (
     <MaskedInput
       {...props}
@@ -38,7 +59,7 @@ function PhoneMask(props) {
   );
 }
 
-function PostalCodeMask(props) {
+function PostalCodeMask(props: any) {
   return (
     <MaskedInput
       {...props}
@@ -110,6 +131,7 @@ const ErrorText = styled.span`
     "Helvetica Neue", sans-serif;
   font-size: 14px;
   color: ${Colors.ERROR};
+  font-weight: 500;
 `;
 
 const useStyles = makeStyles(() => ({

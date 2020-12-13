@@ -15,9 +15,6 @@ const StyledSectionTitle = styled.div`
   background: linear-gradient(135deg, rgba(201, 66, 119, 1) 0%, #ffbc42 100%);
   padding: 10px 20px;
   border-radius: 4px;
-
-  /* width: 270px; */
-  /* margin-left: -10px; */
 `;
 
 function HotSectionTitle(): JSX.Element {

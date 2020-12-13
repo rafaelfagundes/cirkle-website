@@ -1,18 +1,23 @@
 import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
-import _cloneDeep from "lodash/cloneDeep";
+import _orderBy from "lodash/orderBy";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
 import CheckBoxWithLabel from "../../src/components/Atoms/CheckboxWithLabel";
-import CustomTextField from "../../src/components/Atoms/CustomTextField";
+import CustomTextField, {
+  customTextFieldFocus,
+  getCustomTextFieldValue,
+  setCustomTextFieldValue,
+} from "../../src/components/Atoms/CustomTextField";
 import LoadingAnimation from "../../src/components/Atoms/LoadingAnimation";
 import Row from "../../src/components/Atoms/Row";
 import SelectMenu, {
   AssetType,
   SelectItem,
 } from "../../src/components/Atoms/SelectMenu";
+import SimpleText from "../../src/components/Atoms/SimpleText";
 import SizedBox from "../../src/components/Atoms/SizedBox";
 import Subtitle from "../../src/components/Atoms/Subtitle";
 import Title from "../../src/components/Atoms/Title";
@@ -21,7 +26,13 @@ import LastMilePage from "../../src/components/Templates/LastMilePage";
 import Colors from "../../src/enums/Colors";
 import { useAuth } from "../../src/hooks/auth/useAuth";
 import { useCart } from "../../src/hooks/cart/useCart";
-import Address from "../../src/modules/address/Address";
+import { useOrder } from "../../src/hooks/order/useOrder";
+import Address, {
+  addressErrorsTemplate,
+  validateAddress,
+} from "../../src/modules/address/Address";
+import MelhorEnvioShipping from "../../src/modules/melhorEnvio/MelhorEnvio";
+import ShippingData from "../../src/modules/shippingData/ShippingData";
 import theme from "../../src/theme/theme";
 
 const ColumnsOrNot = styled.div`
@@ -46,10 +57,6 @@ const ShippingCol = styled.div<{ isDesktop: boolean }>`
 function AddressAndShipping(): JSX.Element {
   const router = useRouter();
 
-  const goToPaymentInfo = (): void => {
-    router.push("/comprar/pagamento");
-  };
-
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const breadcrumbs = [
@@ -72,16 +79,34 @@ function AddressAndShipping(): JSX.Element {
 
   const authContext = useAuth();
   const cartContext = useCart();
+  const orderContext = useOrder();
 
-  const { data, error } = useSWR(authContext?.user ? "/addresses" : null);
+  const { data: addressData, error: addressError } = useSWR(
+    authContext?.user ? "/addresses" : null
+  );
+  if (addressError) console.error(addressError);
 
-  const [addresses, setAddresses] = useState(null);
+  const [addressList, setAddressList] = useState(null);
 
   const [otherAddress, setOtherAddress] = useState(
-    authContext?.user ? false : true
+    authContext?.user
+      ? orderContext?.order?.address?.customAddress
+        ? true
+        : false
+      : true
   );
 
+  const [selectedAddress, setSelectedAddress] = useState(null);
+
   const [loadingPostalCode, setLoadingPostalCode] = useState(false);
+
+  const [shippingList, setShippingList] = useState([]);
+  const [loadingShipping, setLoadingShipping] = useState(false);
+  const [calculatedShippingOptions, setCalculatedShippingOptions] = useState(
+    null
+  );
+  const [selectedShipping, setSelectedShipping] = useState(null);
+  const [shippingError, setShippingError] = useState(false);
 
   const street = useRef(null);
   const number = useRef(null);
@@ -91,51 +116,22 @@ function AddressAndShipping(): JSX.Element {
   const state = useRef(null);
   const postalCode = useRef(null);
 
-  const addressErrorsTemplate = {
-    postalCode: "",
-    street: "",
-    number: "",
-    neighborhood: "",
-    city: "",
-    state: "",
-  };
-
-  const [addressErrors, setAddressErrors] = useState(
-    _cloneDeep(addressErrorsTemplate)
-  );
-
-  useEffect(() => {
-    if (data) {
-      const _addresses: Array<SelectItem> = data.map((item: Address) => ({
-        text: `${item.street}, ${item.number} - ${item.neighborhood}`,
-        value: item.id,
-        selected: item.mainAddress,
-        assetType: AssetType.NONE,
-        secondaryValue: item.postalCode,
-        secondaryText: `${item.city} - ${item.state}`,
-      }));
-
-      setAddresses(_addresses);
-    }
-  }, [data]);
+  const [addressErrors, setAddressErrors] = useState(addressErrorsTemplate);
 
   const _setAddress = (address: Address) => {
-    street.current.children[0].value = address.street;
-    neighborhood.current.children[0].value = address.neighborhood;
-    city.current.children[0].value = address.city;
-    state.current.children[0].value = address.state;
-    number.current.children[0].focus();
+    setCustomTextFieldValue(street, address.street);
+    setCustomTextFieldValue(neighborhood, address.neighborhood);
+    setCustomTextFieldValue(city, address.city);
+    setCustomTextFieldValue(state, address.state);
+
+    customTextFieldFocus(number);
   };
 
   const _clearAddress = () => {
-    street.current.children[0].value = "";
-    neighborhood.current.children[0].value = "";
-    city.current.children[0].value = "";
-    state.current.children[0].value = "";
-  };
-
-  const _setShippingList = (list: Array<SelectItem>) => {
-    cartContext.setShippingList(list);
+    setCustomTextFieldValue(street, "");
+    setCustomTextFieldValue(neighborhood, "");
+    setCustomTextFieldValue(city, "");
+    setCustomTextFieldValue(state, "");
   };
 
   const _setPostalCode = (address: Address) => {
@@ -147,16 +143,108 @@ function AddressAndShipping(): JSX.Element {
     });
   };
 
+  const getShipping = async (postalCode: string) => {
+    if (!postalCode) return;
+
+    const getSelected = (index: number, id: number) => {
+      if (orderContext.order.shipping) {
+        return id === orderContext.order.shipping.id;
+      } else {
+        return index === 0 ? true : false;
+      }
+    };
+
+    setLoadingShipping(true);
+    const shippingData: ShippingData = {
+      to: {
+        postal_code: postalCode,
+      },
+      products: [],
+    };
+
+    cartContext.cart.items.forEach((item) => {
+      shippingData.products.push({
+        height: item.pHeight,
+        id: item.uid,
+        insurance_value: item.price,
+        length: item.pLength,
+        quantity: item.cartQty,
+        weight: item.pWeight,
+        width: item.pWidth,
+      });
+    });
+
+    const response = await Axios.post("/shippingcalc", shippingData);
+
+    setLoadingShipping(false);
+    if (response.status === 200) {
+      const _shippingList: Array<SelectItem> = [];
+      const _sortedResponse = _orderBy(response.data, ["price"], ["asc"]);
+
+      _sortedResponse.forEach((item: MelhorEnvioShipping, index: number) => {
+        if (!item?.error) {
+          _shippingList.push({
+            assetType: AssetType.IMAGE,
+            selected: getSelected(index, item.id),
+            text: `${item?.company?.name} ${item.name}`,
+            value: item.id,
+            assetValue: item?.company?.picture,
+            secondaryText: `${item.currency} ${item.price} (${item.delivery_range.min} à ${item.delivery_range.max} dias úteis)`,
+            secondaryValue: Number(item.price),
+          });
+        }
+      });
+
+      setShippingList(_shippingList);
+      setCalculatedShippingOptions(_sortedResponse);
+      setSelectedShipping(_sortedResponse[0]);
+    } else {
+      console.error(response.data.error);
+    }
+  };
+
+  const goToPaymentInfo = (): void => {
+    setShippingError(false);
+    let _finalAddress: Address;
+
+    if (otherAddress) {
+      _finalAddress = {
+        street: getCustomTextFieldValue(street),
+        number: Number(getCustomTextFieldValue(number)),
+        complement: getCustomTextFieldValue(complement),
+        neighborhood: getCustomTextFieldValue(neighborhood),
+        city: getCustomTextFieldValue(city),
+        state: getCustomTextFieldValue(state),
+        postalCode: getCustomTextFieldValue(postalCode),
+        customAddress: true,
+      };
+    } else {
+      _finalAddress = selectedAddress;
+    }
+
+    setAddressErrors(addressErrorsTemplate);
+    const resultAddressValidation = validateAddress(_finalAddress);
+
+    if (!resultAddressValidation.valid) {
+      setAddressErrors(resultAddressValidation.errors);
+      return;
+    }
+    if (!selectedShipping) {
+      setShippingError(true);
+      return;
+    }
+    orderContext.setAddress(_finalAddress);
+    router.push("/comprar/pagamento");
+  };
+
   useEffect(() => {
     let _postalCode = "";
     const postalCodeInterval = setInterval(async () => {
-      if (postalCode?.current?.children[0].value) {
-        if (
-          postalCode?.current?.children[0].value.length === "12345-123".length
-        ) {
-          if (postalCode.current.children[0].value !== _postalCode) {
+      if (getCustomTextFieldValue(postalCode)) {
+        if (getCustomTextFieldValue(postalCode).length === "12345-123".length) {
+          if (getCustomTextFieldValue(postalCode) !== _postalCode) {
             try {
-              _postalCode = postalCode.current.children[0].value;
+              _postalCode = getCustomTextFieldValue(postalCode);
 
               const url = `https://brasilapi.com.br/api/cep/v1/${_postalCode.replace(
                 "-",
@@ -197,26 +285,109 @@ function AddressAndShipping(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    if (addresses) {
-      const selectAddress = addresses.filter((o) => o.selected);
+    if (shippingList && shippingList.length > 0) {
+      const selectedId = shippingList.filter((o: SelectItem) => o.selected)[0]
+        .value;
 
-      if (selectAddress.length) {
-        console.log("selectAddress[0]", selectAddress[0]);
+      if (
+        selectedId &&
+        calculatedShippingOptions &&
+        calculatedShippingOptions.length > 0
+      ) {
+        const _selectedShipping = calculatedShippingOptions.filter(
+          (o: MelhorEnvioShipping) => o.id === selectedId
+        );
 
-        const _address: Address = {
-          id: null,
-          street: null,
-          number: 0,
-          neighborhood: null,
-          city: null,
-          state: null,
-          postalCode: selectAddress[0].secondaryValue,
-        };
-
-        _setPostalCode(_address);
+        setSelectedShipping(_selectedShipping[0]);
       }
     }
-  }, [addresses]);
+  }, [shippingList]);
+
+  useEffect(() => {
+    if (selectedShipping) {
+      orderContext.setShipping(selectedShipping);
+    }
+  }, [selectedShipping]);
+
+  useEffect(() => {
+    const _postalCode = getCustomTextFieldValue(postalCode);
+    if (_postalCode) {
+      getShipping(_postalCode);
+    }
+  }, [getCustomTextFieldValue(postalCode)]);
+
+  useEffect(() => {
+    if (selectedAddress) {
+      getShipping(selectedAddress.postalCode);
+    }
+  }, [selectedAddress]);
+
+  useEffect(() => {
+    function getSelectedAddress(id: string, mainAddress: boolean) {
+      if (orderContext.order.address) {
+        return orderContext.order.address.id === id;
+      } else {
+        return mainAddress;
+      }
+    }
+
+    if (addressData) {
+      const _addresses: Array<SelectItem> = addressData.map(
+        (item: Address) => ({
+          text: `${item.street}, ${item.number} - ${item.neighborhood}`,
+          value: item.id,
+          selected: getSelectedAddress(item.id, item.mainAddress),
+          assetType: AssetType.NONE,
+          secondaryValue: item.postalCode,
+          secondaryText: `${item.city} - ${item.state}`,
+        })
+      );
+
+      setAddressList(_addresses);
+    }
+  }, [addressData]);
+
+  useEffect(() => {
+    if (addressList) {
+      const _selectedAddress = addressList.filter(
+        (o: SelectItem) => o.selected
+      );
+
+      if (_selectedAddress.length) {
+        setSelectedAddress(
+          addressData?.filter(
+            (o: Address) => o.id === _selectedAddress[0].value
+          )[0]
+        );
+      }
+    }
+  }, [addressList]);
+
+  useEffect(() => {
+    if (orderContext.order?.address?.customAddress) {
+      if (otherAddress) {
+        setCustomTextFieldValue(street, orderContext.order.address.street);
+        setCustomTextFieldValue(
+          number,
+          String(orderContext.order.address.number)
+        );
+        setCustomTextFieldValue(
+          complement,
+          orderContext.order.address.complement
+        );
+        setCustomTextFieldValue(
+          neighborhood,
+          orderContext.order.address.neighborhood
+        );
+        setCustomTextFieldValue(city, orderContext.order.address.city);
+        setCustomTextFieldValue(state, orderContext.order.address.state);
+        setCustomTextFieldValue(
+          postalCode,
+          orderContext.order.address.postalCode
+        );
+      }
+    }
+  }, [orderContext.order.address]);
 
   return (
     <LastMilePage breadcrumbs={breadcrumbs}>
@@ -224,7 +395,7 @@ function AddressAndShipping(): JSX.Element {
         <AddressCol isDesktop={!isSmartPhone}>
           <SizedBox height={10}></SizedBox>
           <Title>Endereço de Entrega</Title>
-          {addresses && addresses.length > 0 && (
+          {addressList && addressList.length > 0 && (
             <>
               <SizedBox height={20}></SizedBox>
               {!otherAddress && (
@@ -235,8 +406,8 @@ function AddressAndShipping(): JSX.Element {
                   <SizedBox height={20}></SizedBox>
                   <SelectMenu
                     width={isSmartPhone ? 300 : undefined}
-                    items={addresses || []}
-                    setSelected={setAddresses}
+                    items={addressList || []}
+                    setSelected={setAddressList}
                     placeholder="Escolha um endereços..."
                     errorText=""
                     radioButtonList
@@ -251,11 +422,11 @@ function AddressAndShipping(): JSX.Element {
               ></CheckBoxWithLabel>
             </>
           )}
-          {(otherAddress || (addresses && addresses.length === 0)) && (
+          {(otherAddress || (addressList && addressList.length === 0)) && (
             <>
               <SizedBox height={20}></SizedBox>
               <Subtitle color={Colors.SECONDARY}>
-                Preencha abaixo o endereço
+                Informe o CEP e tentaremos preencher o resto dos dados
               </Subtitle>
               <SizedBox height={20}></SizedBox>
               <Row>
@@ -321,23 +492,34 @@ function AddressAndShipping(): JSX.Element {
         <ShippingCol isDesktop={!isSmartPhone}>
           <SizedBox height={10}></SizedBox>
           <Title>Frete</Title>
-          <SizedBox height={20}></SizedBox>
-
-          <Subtitle color={Colors.SECONDARY}>
-            Favor informar o CEP para cálculo do frete
-          </Subtitle>
-          <SizedBox height={16}></SizedBox>
-          {!cartContext.cart.loadingShipping && (
+          {!authContext.user && (
+            <>
+              <SizedBox height={20}></SizedBox>
+              <Subtitle color={Colors.SECONDARY}>
+                Preencha o CEP ao lado para calcular o frente
+              </Subtitle>
+              <SizedBox height={20}></SizedBox>
+            </>
+          )}
+          {!loadingShipping && (
             <SelectMenu
-              items={cartContext.cart.shippingList}
-              setSelected={_setShippingList}
-              title="Selecione o frete"
+              items={shippingList}
+              setSelected={setShippingList}
+              title="Selecione o frete de sua preferência"
               errorText=""
               radioButtonList
             ></SelectMenu>
           )}
-          {cartContext.cart.loadingShipping && (
+          {loadingShipping && (
             <LoadingAnimation size={32} color></LoadingAnimation>
+          )}
+          {shippingError && (
+            <>
+              <SizedBox height={16}></SizedBox>
+              <SimpleText color={Colors.ERROR} size={0.9}>
+                Por favor selecione um frete
+              </SimpleText>
+            </>
           )}
         </ShippingCol>
       </ColumnsOrNot>

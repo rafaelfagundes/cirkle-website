@@ -6,7 +6,9 @@ import Card from "../src/components/Atoms/Card";
 import CheckBoxWithLabel from "../src/components/Atoms/CheckboxWithLabel";
 import Column from "../src/components/Atoms/Column";
 import CustomButton from "../src/components/Atoms/CustomButton";
-import CustomTextField from "../src/components/Atoms/CustomTextField";
+import CustomTextField, {
+  getCustomTextFieldValue,
+} from "../src/components/Atoms/CustomTextField";
 import Padding from "../src/components/Atoms/Padding";
 import PaymentType from "../src/components/Atoms/PaymentType";
 import SelectMenu, { SelectItem } from "../src/components/Atoms/SelectMenu";
@@ -123,7 +125,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
   const setPostalCode = () => {
     cartContext.setShipping({
       id: null,
-      postalCode: postalCode.current.children[0].value,
+      postalCode: getCustomTextFieldValue(postalCode),
       type: null,
       value: null,
     });

@@ -193,7 +193,7 @@ function Home(props: HomeProps): JSX.Element {
         )}
         <SizedBox height={32}></SizedBox>
         <Container maxWidth="md" disableGutters>
-          <Padding horizontal={isSmartPhone ? 20 : 0}>
+          <Padding horizontal={isSmartPhone ? 16 : 0}>
             <HotSectionTitle />
           </Padding>
           <SizedBox height={32}></SizedBox>

@@ -5,7 +5,9 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import Center from "../src/components/Atoms/Center";
 import CustomButton from "../src/components/Atoms/CustomButton";
-import CustomTextField from "../src/components/Atoms/CustomTextField";
+import CustomTextField, {
+  getCustomTextFieldValue,
+} from "../src/components/Atoms/CustomTextField";
 import SizedBox from "../src/components/Atoms/SizedBox";
 import Subtitle from "../src/components/Atoms/Subtitle";
 import Title from "../src/components/Atoms/Title";
@@ -63,7 +65,7 @@ function RecoverPassword({ menu }: { menu: Menu }): JSX.Element {
       return;
     }
     setLoading(true);
-    await auth.sendPasswordResetEmail(email.current.children[0].value);
+    await auth.sendPasswordResetEmail(getCustomTextFieldValue(email));
     setLoading(false);
     setDone(true);
     return false;

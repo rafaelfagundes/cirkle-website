@@ -14,7 +14,10 @@ import Center from "../../../Atoms/Center";
 import CheckBoxWithLabel from "../../../Atoms/CheckboxWithLabel";
 import CustomButton from "../../../Atoms/CustomButton";
 import CustomDatePicker from "../../../Atoms/CustomDatePicker";
-import CustomTextField from "../../../Atoms/CustomTextField";
+import CustomTextField, {
+  getCustomTextFieldValue,
+  setCustomTextFieldValue,
+} from "../../../Atoms/CustomTextField";
 import FileUploadButton from "../../../Atoms/FileUploadButton";
 import RadioButtonWithLabel from "../../../Atoms/RadioButtonWithLabel";
 import Row from "../../../Atoms/Row";
@@ -119,7 +122,8 @@ function ProfileTab(): JSX.Element {
         capitalizeFirstLetter(splitedFullName[0]) +
         " " +
         capitalizeFirstLetter(splitedFullName[1]);
-      displayName.current.children[0].value = _fullName;
+
+      setCustomTextFieldValue(displayName, _fullName);
     }
 
     setErrors(_errors);
@@ -172,8 +176,9 @@ function ProfileTab(): JSX.Element {
   const updateProfile = async () => {
     if (!_validateProfile()) return;
     const _user = _cloneDeep(authContext.user);
-    _user.phoneNumber = phoneNumber.current.children[0].value;
-    _user.name = displayName.current.children[0].value;
+    _user.phoneNumber = getCustomTextFieldValue(phoneNumber);
+    _user.name = getCustomTextFieldValue(displayName);
+
     if (uploadedPicture) _user.picture = uploadedPicture;
     _user.gender = gender;
     _user.dateOfBirth = dateOfBirth;

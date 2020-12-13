@@ -1,3 +1,4 @@
+import _cloneDeep from "lodash/cloneDeep";
 import React, { createContext, useContext, useState } from "react";
 import Address from "../../modules/address/Address";
 import Coupon from "../../modules/coupon";
@@ -26,6 +27,8 @@ type Order = {
 
 export interface IOrderContextProps {
   order: Order;
+  setAddress: (address: Address) => void;
+  setShipping: (shipping: MelhorEnvioShipping) => void;
 }
 
 const OrderContext = createContext({} as IOrderContextProps);
@@ -46,10 +49,42 @@ export const useOrder = (): IOrderContextProps => {
 };
 
 function useOrderProvider() {
-  const [order, setOrder] = useState();
+  const initialState = {
+    isValid: false,
+    user: {
+      id: null,
+      firstName: null,
+      lastName: null,
+      email: null,
+      phone: null,
+    },
+    payment: null,
+    products: [],
+    address: null,
+    coupon: null,
+    shipping: null,
+  };
+
+  const [order, setOrder] = useState(initialState);
+
+  const setAddress = (address: Address) => {
+    const _order = _cloneDeep(order);
+    _order.address = address;
+    setOrder(_order);
+  };
+
+  const setShipping = (shipping: MelhorEnvioShipping) => {
+    const _order = _cloneDeep(order);
+
+    _order.shipping = shipping;
+
+    setOrder(_order);
+  };
 
   return {
     order,
+    setAddress,
+    setShipping,
   };
 }
 

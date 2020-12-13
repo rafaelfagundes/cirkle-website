@@ -35,6 +35,7 @@ type MelhorEnvioShipping = {
     name: string;
     picture: string;
   };
+  error?: any;
 };
 
 export default MelhorEnvioShipping;
