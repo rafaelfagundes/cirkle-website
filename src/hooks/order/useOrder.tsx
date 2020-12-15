@@ -75,9 +75,7 @@ function useOrderProvider() {
 
   const setShipping = (shipping: MelhorEnvioShipping) => {
     const _order = _cloneDeep(order);
-
     _order.shipping = shipping;
-
     setOrder(_order);
   };
 

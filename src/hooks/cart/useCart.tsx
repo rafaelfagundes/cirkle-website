@@ -25,6 +25,7 @@ export interface ICartContextProps {
   updateColor: (id: string, color: string) => void;
   updateSize: (id: string, size: string) => void;
   updateFreeShipping: (active: boolean, value: number) => void;
+  isShippingFree: () => boolean;
 }
 
 const CartContext = createContext({} as ICartContextProps);
@@ -279,6 +280,10 @@ function useCartProvider() {
     }
   };
 
+  const isShippingFree = (): boolean => {
+    return cart.freeShipping && cart.subtotal >= cart.freeShippingValue;
+  };
+
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
@@ -309,6 +314,7 @@ function useCartProvider() {
     updateSize,
     updateFreeShipping,
     setShippingList,
+    isShippingFree,
   };
 }
 

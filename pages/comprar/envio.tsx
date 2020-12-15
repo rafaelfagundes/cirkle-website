@@ -1,6 +1,5 @@
 import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
-import _orderBy from "lodash/orderBy";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
@@ -31,7 +30,9 @@ import Address, {
   addressErrorsTemplate,
   validateAddress,
 } from "../../src/modules/address/Address";
-import MelhorEnvioShipping from "../../src/modules/melhorEnvio/MelhorEnvio";
+import MelhorEnvioShipping, {
+  getLowestShippingPrice,
+} from "../../src/modules/melhorEnvio/MelhorEnvio";
 import ShippingData from "../../src/modules/shippingData/ShippingData";
 import theme from "../../src/theme/theme";
 
@@ -147,7 +148,9 @@ function AddressAndShipping(): JSX.Element {
     if (!postalCode) return;
 
     const getSelected = (index: number, id: number) => {
-      if (orderContext.order.shipping) {
+      if (cartContext.isShippingFree()) {
+        return index === 0 ? true : false;
+      } else if (orderContext.order.shipping) {
         return id === orderContext.order.shipping.id;
       } else {
         return index === 0 ? true : false;
@@ -179,7 +182,8 @@ function AddressAndShipping(): JSX.Element {
     setLoadingShipping(false);
     if (response.status === 200) {
       const _shippingList: Array<SelectItem> = [];
-      const _sortedResponse = _orderBy(response.data, ["price"], ["asc"]);
+
+      const _sortedResponse = getLowestShippingPrice(response.data);
 
       _sortedResponse.forEach((item: MelhorEnvioShipping, index: number) => {
         if (!item?.error) {
@@ -189,8 +193,8 @@ function AddressAndShipping(): JSX.Element {
             text: `${item?.company?.name} ${item.name}`,
             value: item.id,
             assetValue: item?.company?.picture,
-            secondaryText: `${item.currency} ${item.price} (${item.delivery_range.min} à ${item.delivery_range.max} dias úteis)`,
-            secondaryValue: Number(item.price),
+            secondaryText: `${item.currency} ${item.price} (${item.custom_delivery_range.min} à ${item.custom_delivery_range.max} dias úteis)`,
+            secondaryValue: Number(item.custom_price),
           });
         }
       });
@@ -492,33 +496,51 @@ function AddressAndShipping(): JSX.Element {
         <ShippingCol isDesktop={!isSmartPhone}>
           <SizedBox height={10}></SizedBox>
           <Title>Frete</Title>
-          {!authContext.user && (
+          {!cartContext.isShippingFree() && (
             <>
+              {!authContext.user && (
+                <>
+                  <SizedBox height={20}></SizedBox>
+                  <Subtitle color={Colors.SECONDARY}>
+                    Preencha o CEP ao lado para calcular o frente
+                  </Subtitle>
+                </>
+              )}
               <SizedBox height={20}></SizedBox>
-              <Subtitle color={Colors.SECONDARY}>
-                Preencha o CEP ao lado para calcular o frente
-              </Subtitle>
-              <SizedBox height={20}></SizedBox>
+              {!loadingShipping && (
+                <SelectMenu
+                  items={shippingList}
+                  setSelected={setShippingList}
+                  title="Selecione o frete de sua preferência"
+                  errorText=""
+                  radioButtonList
+                ></SelectMenu>
+              )}
+              {loadingShipping && (
+                <LoadingAnimation size={32} color></LoadingAnimation>
+              )}
+              {shippingError && (
+                <>
+                  <SizedBox height={16}></SizedBox>
+                  <SimpleText color={Colors.ERROR} size={0.9}>
+                    Por favor selecione um frete
+                  </SimpleText>
+                </>
+              )}
             </>
           )}
-          {!loadingShipping && (
-            <SelectMenu
-              items={shippingList}
-              setSelected={setShippingList}
-              title="Selecione o frete de sua preferência"
-              errorText=""
-              radioButtonList
-            ></SelectMenu>
-          )}
-          {loadingShipping && (
-            <LoadingAnimation size={32} color></LoadingAnimation>
-          )}
-          {shippingError && (
+          {cartContext.isShippingFree() && (
             <>
               <SizedBox height={16}></SizedBox>
-              <SimpleText color={Colors.ERROR} size={0.9}>
-                Por favor selecione um frete
+              <SimpleText bold size={1.1} color={Colors.BLUE_JEANS}>
+                Frete Grátis!
               </SimpleText>
+              <SizedBox height={10}></SizedBox>
+              {orderContext?.order?.shipping && (
+                <SimpleText
+                  size={0.8}
+                >{`Previsão de entrega: ${orderContext.order.shipping.custom_delivery_range.min} à ${orderContext.order.shipping.custom_delivery_range.max} dias úteis.`}</SimpleText>
+              )}
             </>
           )}
         </ShippingCol>
