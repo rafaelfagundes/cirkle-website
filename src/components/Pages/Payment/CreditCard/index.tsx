@@ -7,6 +7,7 @@ import "react-credit-cards/es/styles-compiled.css";
 import Colors from "../../../../enums/Colors";
 import { useAuth } from "../../../../hooks/auth/useAuth";
 import { useCart } from "../../../../hooks/cart/useCart";
+import { useOrder } from "../../../../hooks/order/useOrder";
 import theme from "../../../../theme/theme";
 import {
   getCardToken,
@@ -15,6 +16,7 @@ import {
   getIssuers,
   getPaymentMethod,
   Issuer,
+  MercadoPagoCreditCard,
 } from "../../../../utils/mercadoPago";
 import Column from "../../../Atoms/Column";
 import CustomButton from "../../../Atoms/CustomButton";
@@ -46,6 +48,8 @@ function CreditCard(): JSX.Element {
   const cartContext = useCart();
   const authContext = useAuth();
 
+  const [loadingPayment, setLoadingPayment] = useState(false);
+
   const [name, setName] = useState("");
   const [cvc, setCvc] = useState("");
   const [focused, setFocused] = useState(null);
@@ -61,7 +65,34 @@ function CreditCard(): JSX.Element {
 
   const router = useRouter();
 
-  const goToFinishPage = (): void => {
+  const orderContext = useOrder();
+
+  const goToFinishPage = async (): Promise<void> => {
+    setLoadingPayment(true);
+    function getValue(name: string): string {
+      if (document.getElementsByName(name).length) {
+        return document.getElementsByName(name)[0]["value"];
+      }
+      return null;
+    }
+
+    if (!getValue("token")) {
+      await getPaymentToken();
+    }
+
+    const _payment: MercadoPagoCreditCard = {
+      token: getValue("token"),
+      description: getValue("description"),
+      docNumber: getValue("docNumber"),
+      docType: getValue("docType"),
+      email: getValue("email"),
+      installments: getValue("installments"),
+      issuer: getValue("issuer"),
+      paymentMethodId: getValue("paymentMethodId"),
+      transactionAmount: getValue("transactionAmount"),
+    };
+    setLoadingPayment(false);
+    orderContext.setPayment(_payment);
     router.push("/comprar/concluir");
   };
 
@@ -184,16 +215,11 @@ function CreditCard(): JSX.Element {
     const result = await getCardToken(form);
 
     if (result.status === 200) {
-      console.log("result.response", result.response);
       const card = document.createElement("input");
       card.setAttribute("name", "token");
       card.setAttribute("type", "hidden");
       card.setAttribute("value", result.response.id);
       form.appendChild(card);
-      console.log(
-        "🚀 ~ file: index.tsx ~ line 250 ~ getPaymentToken ~ form",
-        form
-      );
     } else {
       console.error(
         "Não foi possível gerar o token de pagamento, verifique todos os campos"
@@ -218,7 +244,7 @@ function CreditCard(): JSX.Element {
   useEffect(() => {
     if (typeof cardNumber === "string" && cardNumber.length > 6) {
       let bin = cardNumber?.replace(/ /g, "");
-      bin = bin.slice(0, 6);
+      bin = bin?.slice(0, 6);
       getAllCardInfo(bin);
     } else if (cardNumber !== "") {
       cardData = null;
@@ -441,7 +467,7 @@ function CreditCard(): JSX.Element {
         )}
         <SizedBox height={20}></SizedBox>
       </div>
-      <span style={{ display: "block" }}>
+      <span style={{ display: "none" }}>
         <form method="post" id="paymentForm">
           <div>
             <div>
@@ -615,6 +641,7 @@ function CreditCard(): JSX.Element {
             onClick: goToFinishPage,
             type: "success",
             width: 200,
+            loading: loadingPayment,
           },
         ]}
       ></CartFooterButtons>

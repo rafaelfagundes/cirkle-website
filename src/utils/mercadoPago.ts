@@ -14,11 +14,6 @@ if (config) {
   }
 }
 
-enum DocType {
-  CPF = "CPF",
-  CNPJ = "CNPJ",
-}
-
 type Document = {
   id: string;
   max_length: number;
@@ -41,8 +36,7 @@ export type Issuer = {
 export type MercadoPagoCreditCard = {
   description: string;
   docNumber: string;
-  docType: DocType;
-  number: string;
+  docType: string;
   email: string;
   installments: string;
   issuer: string;

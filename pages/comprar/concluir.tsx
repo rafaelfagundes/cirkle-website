@@ -23,6 +23,8 @@ const WrapRow = styled.div``;
 function FinishPage(): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
+  // const orderContext = useOrder();
+
   const breadcrumbs = [
     {
       active: false,

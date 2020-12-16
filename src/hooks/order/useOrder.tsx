@@ -29,6 +29,9 @@ export interface IOrderContextProps {
   order: Order;
   setAddress: (address: Address) => void;
   setShipping: (shipping: MelhorEnvioShipping) => void;
+  setPayment: (
+    payment: MercadoPagoCreditCard | MercadoPagoOtherPaymentMethod
+  ) => void;
 }
 
 const OrderContext = createContext({} as IOrderContextProps);
@@ -79,10 +82,19 @@ function useOrderProvider() {
     setOrder(_order);
   };
 
+  const setPayment = (
+    payment: MercadoPagoCreditCard | MercadoPagoOtherPaymentMethod
+  ) => {
+    const _order = _cloneDeep(order);
+    _order.payment = payment;
+    setOrder(_order);
+  };
+
   return {
     order,
     setAddress,
     setShipping,
+    setPayment,
   };
 }
 
