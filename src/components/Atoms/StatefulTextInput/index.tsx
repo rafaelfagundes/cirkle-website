@@ -1,56 +1,12 @@
 import { InputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import Cleave from "cleave.js/react";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import MaskedInput from "react-text-mask";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
 import Icon from "../Icon";
 import SimpleText from "../SimpleText";
 import SizedBox from "../SizedBox";
-
-function PhoneMask(props) {
-  return (
-    <MaskedInput
-      {...props}
-      ref={(ref) => {
-        props.inputRef(ref ? ref.inputElement : null);
-      }}
-      guide={false}
-      mask={[
-        "(",
-        /[1-9]/,
-        /\d/,
-        ")",
-        " ",
-        /\d/,
-        /\d/,
-        /\d/,
-        /\d/,
-        /\d/,
-        "-",
-        /\d/,
-        /\d/,
-        /\d/,
-        /\d/,
-      ]}
-      keepCharPositions={true}
-    />
-  );
-}
-
-function PostalCodeMask(props) {
-  return (
-    <MaskedInput
-      {...props}
-      ref={(ref) => {
-        props.inputRef(ref ? ref.inputElement : null);
-      }}
-      mask={[/\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/]}
-      guide={false}
-      keepCharPositions={true}
-    />
-  );
-}
 
 const StyledInput = styled.div<{
   error: boolean;
@@ -75,8 +31,9 @@ const StyledInput = styled.div<{
   border-radius: 4px;
 `;
 
-const StyledInputBase = styled(InputBase)`
-  flex: 1;
+const StyledInputBase = styled(Cleave)`
+  outline: none;
+  border: none;
 `;
 
 const PlaceHolder = styled.div<{ show: boolean; error: boolean }>`
@@ -116,14 +73,18 @@ const useStyles = makeStyles(() => ({
   input: {
     fontFamily: "Commissioner",
     fontSize: 16,
+    flex: 1,
+    width: "100%",
   },
 }));
 
 type StatefulTextInputProps = {
   id?: string;
+  name?: string;
   children?: string;
   error?: string;
   type?: string;
+  inputType?: string;
   initialValue?: string;
   showIcon?: boolean;
   width?: number;
@@ -131,8 +92,12 @@ type StatefulTextInputProps = {
   disabled?: boolean;
   onEnterKeyPressed?: () => void;
   value: string;
-  onChange: Dispatch<SetStateAction<string>>;
-  name?: string;
+  onChange: Dispatch<SetStateAction<string>> | ((value: string) => void);
+  maxLength?: number;
+  minLength?: number;
+  onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  uppercase?: boolean;
 };
 
 function getConfig(type: string): { icon: string; inputType: string } {
@@ -167,17 +132,9 @@ const StatefulTextInput = (props: StatefulTextInputProps): JSX.Element => {
 
   const isEmptyField = (value: string) => {
     if (props.initialValue) return false;
-    switch (value) {
-      case "":
-        return true;
-      case "     -   ":
-        return true;
-      case "(  )      -    ":
-        return true;
-
-      default:
-        return false;
-    }
+    if (value !== "" && value !== undefined && value !== null) {
+      return false;
+    } else return true;
   };
 
   useEffect(() => {
@@ -188,51 +145,26 @@ const StatefulTextInput = (props: StatefulTextInputProps): JSX.Element => {
     }
   }, [props.value]);
 
-  const _getInput = (type: string) => {
+  const _getOptions = (type: string) => {
     switch (type) {
-      case "phone":
-        return (
-          <StyledInputBase
-            className={useStyles().input}
-            placeholder={props.children}
-            type={config.inputType}
-            defaultValue={props.initialValue}
-            inputComponent={PhoneMask}
-            id={props.id}
-            onKeyPress={handleOnKeyPress}
-            disabled={props.disabled}
-            onChange={(e) => props.onChange(e.target.value)}
-          />
-        );
-
-      case "postalCode":
-        return (
-          <StyledInputBase
-            className={useStyles().input}
-            placeholder={props.children}
-            type={config.inputType}
-            defaultValue={props.initialValue}
-            inputComponent={PostalCodeMask}
-            id={props.id}
-            onKeyPress={handleOnKeyPress}
-            disabled={props.disabled}
-            onChange={(e) => props.onChange(e.target.value)}
-          />
-        );
-
-      default:
-        return (
-          <StyledInputBase
-            className={useStyles().input}
-            placeholder={props.children}
-            type={config.inputType}
-            defaultValue={props.initialValue}
-            id={props.id}
-            onKeyPress={handleOnKeyPress}
-            disabled={props.disabled}
-            onChange={(e) => props.onChange(e.target.value)}
-          />
-        );
+      case "cardNumber":
+        return { creditCard: true };
+      case "cardValidUntil":
+        return { date: true, datePattern: ["m", "y"] };
+      case "cardCvc":
+        return { blocks: [4] };
+      case "cpf":
+        return {
+          delimiters: [".", ".", "-"],
+          blocks: [3, 3, 3, 2],
+          uppercase: true,
+        };
+      case "cnpj":
+        return {
+          delimiters: [".", ".", "/", "-"],
+          blocks: [2, 3, 3, 4, 2],
+          uppercase: true,
+        };
     }
   };
 
@@ -257,7 +189,47 @@ const StatefulTextInput = (props: StatefulTextInputProps): JSX.Element => {
         >
           <PlaceHolderText>{props.children}</PlaceHolderText>
         </PlaceHolder>
-        {_getInput(props.type)}
+        {props.inputType && (
+          <StyledInputBase
+            options={_getOptions(props.inputType)}
+            className={useStyles().input}
+            placeholder={props.children}
+            type={config.inputType}
+            id={props.id}
+            onKeyPress={handleOnKeyPress}
+            disabled={props.disabled}
+            onChange={
+              props.uppercase
+                ? (e) => props.onChange(e.target.value.toUpperCase())
+                : (e) => props.onChange(e.target.value)
+            }
+            value={props.value || props.initialValue}
+            maxLength={props.maxLength}
+            minLength={props.minLength}
+            onFocus={props.onFocus}
+            onBlur={props.onBlur}
+            name={props.name}
+          />
+        )}
+        {!props.inputType && (
+          <InputBase
+            className={useStyles().input}
+            placeholder={props.children}
+            type={config.inputType}
+            id={props.id}
+            onKeyPress={handleOnKeyPress}
+            disabled={props.disabled}
+            onChange={
+              props.uppercase
+                ? (e) => props.onChange(e.target.value.toUpperCase())
+                : (e) => props.onChange(e.target.value)
+            }
+            value={props.value || props.initialValue}
+            onFocus={props.onFocus}
+            onBlur={props.onBlur}
+            name={props.name}
+          />
+        )}
 
         {config.icon && props.showIcon && (
           <IconHolder showLabel={showLabel}>

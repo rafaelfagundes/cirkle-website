@@ -3,7 +3,12 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Colors from "../../../../enums/Colors";
 import { useAuth } from "../../../../hooks/auth/useAuth";
-import { getIdTypes } from "../../../../utils/mercadoPago";
+import { useCart } from "../../../../hooks/cart/useCart";
+import { useOrder } from "../../../../hooks/order/useOrder";
+import {
+  getIdTypes,
+  MercadoPagoOtherPaymentMethod,
+} from "../../../../utils/mercadoPago";
 import RadioButton from "../../../Atoms/RadioButton";
 import Row from "../../../Atoms/Row";
 import SimpleText from "../../../Atoms/SimpleText";
@@ -11,7 +16,6 @@ import SizedBox from "../../../Atoms/SizedBox";
 import StatefulTextInput from "../../../Atoms/StatefulTextInput";
 import Subtitle from "../../../Atoms/Subtitle";
 import CartFooterButtons from "../../../Molecules/CartFooterButtons";
-import { CNPJ, CPF, InputFrame } from "../styles";
 
 export enum MercadoPagoPaymentType {
   BOLETO = "bolbradesco",
@@ -26,22 +30,60 @@ interface BarcodeProps {
 
 function Barcode(props: BarcodeProps): JSX.Element {
   const authContext = useAuth();
+  const cartContext = useCart();
+  const orderContext = useOrder();
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+
+  const [documents, setDocuments] = useState([]);
+
+  const [loadingPayment, setLoadingPayment] = useState(false);
 
   const router = useRouter();
 
   const goToFinishPage = (): void => {
-    router.push("/comprar/concluir");
+    setLoadingPayment(true);
+
+    const _document = documents.filter((o) => o.selected)[0];
+
+    const _payment: MercadoPagoOtherPaymentMethod = {
+      description: "",
+      payer: {
+        email,
+        address: {
+          city: orderContext.order.address.city,
+          federal_unit: orderContext.order.address.state,
+          neighborhood: orderContext.order.address.neighborhood,
+          street_name: orderContext.order.address.street,
+          street_number: String(orderContext.order.address.number),
+          zip_code: orderContext.order.address.postalCode,
+        },
+        first_name: firstName,
+        last_name: lastName,
+        identification: {
+          number: _document.value.replace(/[^0-9]/g, ""),
+          type: _document.id,
+        },
+      },
+      transaction_amount: cartContext.cart.total,
+      payment_method_id: props.type,
+    };
+    console.log(
+      "🚀 ~ file: index.tsx ~ line 51 ~ goToFinishPage ~ _payment",
+      _payment
+    );
+
+    setLoadingPayment(false);
+    orderContext.setPayment(_payment);
+    // router.push("/comprar/concluir");
   };
 
   const goToAddressPage = (): void => {
     router.push("/comprar/envio");
   };
 
-  const [name, setName] = useState("");
-  const [surName, setSurName] = useState("");
-  const [email, setEmail] = useState("");
-
-  const [documents, setDocuments] = useState([]);
   const setDocument = (id: string, value?: string) => {
     const _documents = _cloneDeep(documents);
 
@@ -80,8 +122,8 @@ function Barcode(props: BarcodeProps): JSX.Element {
       <SizedBox height={20}></SizedBox>
 
       <StatefulTextInput
-        value={name}
-        onChange={setName}
+        value={firstName}
+        onChange={setFirstName}
         width={400}
         initialValue={authContext?.user?.name?.split(" ")[0]}
       >
@@ -89,8 +131,8 @@ function Barcode(props: BarcodeProps): JSX.Element {
       </StatefulTextInput>
       <SizedBox height={24}></SizedBox>
       <StatefulTextInput
-        value={surName}
-        onChange={setSurName}
+        value={lastName}
+        onChange={setLastName}
         width={400}
         initialValue={authContext?.user?.name?.split(" ")[1]}
       >
@@ -125,41 +167,33 @@ function Barcode(props: BarcodeProps): JSX.Element {
           </React.Fragment>
         ))}
       </Row>
-      <SizedBox height={5}></SizedBox>
+      <SizedBox height={8}></SizedBox>
       <>
         {documents.map((doc, index) => (
           <React.Fragment key={index}>
             {doc.selected && doc.id === "CPF" && (
-              <InputFrame>
-                <CPF
-                  options={{
-                    delimiters: [".", ".", "-"],
-                    blocks: [3, 3, 3, 2],
-                    uppercase: true,
-                  }}
-                  type="tel"
-                  name="cpf"
-                  placeholder="CPF"
-                  value={doc.value || ""}
-                  onChange={(e) => setDocument(doc.id, e.target.value)}
-                ></CPF>
-              </InputFrame>
+              <StatefulTextInput
+                type="tel"
+                name="cpf"
+                inputType="cpf"
+                value={doc.value || ""}
+                onChange={(value: string) => setDocument(doc.id, value)}
+                width={400}
+              >
+                CPF
+              </StatefulTextInput>
             )}
             {doc.selected && doc.id === "CNPJ" && (
-              <InputFrame>
-                <CNPJ
-                  options={{
-                    delimiters: [".", ".", "/", "-"],
-                    blocks: [2, 3, 3, 4, 2],
-                    uppercase: true,
-                  }}
-                  type="tel"
-                  name="cnpj"
-                  placeholder="CNPJ"
-                  value={doc.value || ""}
-                  onChange={(e) => setDocument(doc.id, e.target.value)}
-                ></CNPJ>
-              </InputFrame>
+              <StatefulTextInput
+                type="tel"
+                name="cnpj"
+                inputType="cnpj"
+                value={doc.value || ""}
+                onChange={(value: string) => setDocument(doc.id, value)}
+                width={400}
+              >
+                CNPJ
+              </StatefulTextInput>
             )}
           </React.Fragment>
         ))}
@@ -181,6 +215,7 @@ function Barcode(props: BarcodeProps): JSX.Element {
             onClick: goToFinishPage,
             type: "success",
             width: 200,
+            loading: loadingPayment,
           },
         ]}
       ></CartFooterButtons>

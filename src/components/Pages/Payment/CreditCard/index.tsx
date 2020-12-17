@@ -28,19 +28,7 @@ import SizedBox from "../../../Atoms/SizedBox";
 import StatefulTextInput from "../../../Atoms/StatefulTextInput";
 import Subtitle from "../../../Atoms/Subtitle";
 import CartFooterButtons from "../../../Molecules/CartFooterButtons";
-import {
-  CardAndForm,
-  CardContainer,
-  CardHolder,
-  CardNumber,
-  CNPJ,
-  CPF,
-  CVC,
-  CVCandExpiration,
-  ExpirationDate,
-  InputFrame,
-  PaymentForm,
-} from "../styles";
+import { CardAndForm, CardContainer, PaymentForm } from "../styles";
 
 function CreditCard(): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
@@ -61,7 +49,7 @@ function CreditCard(): JSX.Element {
 
   const [installmentsSelect, setInstallmentsSelect] = useState([]);
   const [documents, setDocuments] = useState([]);
-  let cardData;
+  let cardData: any;
 
   const router = useRouter();
 
@@ -264,52 +252,59 @@ function CreditCard(): JSX.Element {
             <PaymentForm>
               <Column>
                 <SizedBox height={isSmartPhone ? 26 : 0}></SizedBox>
-                <InputFrame>
-                  <CardNumber
-                    options={{ creditCard: true }}
-                    name="number"
-                    placeholder="Número Do Cartão"
-                    value={cardNumber}
-                    onChange={(e: any) => setCardNumber(e.target.value)}
-                    onFocus={(e: any) => setFocused(e.target.name)}
-                    maxLength={19}
-                    type="tel"
-                  />
-                </InputFrame>
+                <StatefulTextInput
+                  name="number"
+                  value={cardNumber}
+                  inputType="cardNumber"
+                  onChange={setCardNumber}
+                  onFocus={(e: any) => setFocused(e.target.name)}
+                  maxLength={19}
+                  type="tel"
+                  width={400}
+                >
+                  Número Do Cartão
+                </StatefulTextInput>
                 <SizedBox height={20}></SizedBox>
-                <InputFrame>
-                  <CardHolder
-                    type="text"
-                    name="name"
-                    placeholder="Seu Nome Como No Cartão"
-                    onChange={(e) => setName(e.target.value)}
-                    onFocus={(e) => setFocused(e.target.name)}
-                  />
-                </InputFrame>
+
+                <StatefulTextInput
+                  name="name"
+                  value={name}
+                  type="text"
+                  onChange={setName}
+                  onFocus={(e) => setFocused(e.target.name)}
+                  uppercase
+                  width={400}
+                >
+                  Seu Nome Como No Cartão
+                </StatefulTextInput>
+
                 <SizedBox height={20}></SizedBox>
                 <Row>
-                  <InputFrame>
-                    <ExpirationDate
-                      options={{ date: true, datePattern: ["m", "y"] }}
-                      type="tel"
-                      name="expiry"
-                      placeholder="Validade"
-                      onChange={(e) => setExpiry(e.target.value)}
-                      onFocus={(e) => setFocused(e.target.name)}
-                    />
-                  </InputFrame>
+                  <StatefulTextInput
+                    value={expiry}
+                    type="tel"
+                    inputType="cardValidUntil"
+                    name="expiry"
+                    onChange={setExpiry}
+                    onFocus={(e) => setFocused(e.target.name)}
+                    width={157}
+                  >
+                    Validade
+                  </StatefulTextInput>
                   <SizedBox width={20}></SizedBox>
-                  <InputFrame>
-                    <CVC
-                      type="tel"
-                      name="cvc"
-                      placeholder="CVC"
-                      onChange={(e) => setCvc(e.target.value)}
-                      onFocus={(e) => setFocused(e.target.name)}
-                      onBlur={() => setFocused("name")}
-                      maxLength={4}
-                    />
-                  </InputFrame>
+                  <StatefulTextInput
+                    type="tel"
+                    name="cvc"
+                    inputType="cardCvc"
+                    onChange={setCvc}
+                    onFocus={(e) => setFocused(e.target.name)}
+                    onBlur={() => setFocused("name")}
+                    maxLength={4}
+                    value={cvc}
+                    width={157}
+                  >
+                    CVC
+                  </StatefulTextInput>
                 </Row>
               </Column>
             </PaymentForm>
@@ -329,53 +324,60 @@ function CreditCard(): JSX.Element {
             <PaymentForm>
               <Column>
                 <SizedBox height={isSmartPhone ? 26 : 0}></SizedBox>
-                <InputFrame>
-                  <CardNumber
-                    options={{ creditCard: true }}
-                    name="number"
-                    placeholder="Número Do Cartão"
-                    value={cardNumber}
-                    onChange={(e: any) => setCardNumber(e.target.value)}
-                    onFocus={(e: any) => setFocused(e.target.name)}
-                    maxLength={19}
+                <StatefulTextInput
+                  name="number"
+                  value={cardNumber}
+                  inputType="cardNumber"
+                  onChange={setCardNumber}
+                  onFocus={(e: any) => setFocused(e.target.name)}
+                  maxLength={19}
+                  type="tel"
+                  width={400}
+                >
+                  Número Do Cartão
+                </StatefulTextInput>
+                <SizedBox height={20}></SizedBox>
+
+                <StatefulTextInput
+                  name="name"
+                  value={name}
+                  type="text"
+                  onChange={setName}
+                  onFocus={(e) => setFocused(e.target.name)}
+                  uppercase
+                  width={400}
+                >
+                  Seu Nome Como No Cartão
+                </StatefulTextInput>
+
+                <SizedBox height={20}></SizedBox>
+                <Row>
+                  <StatefulTextInput
+                    value={expiry}
                     type="tel"
-                  />
-                </InputFrame>
-                <SizedBox height={20}></SizedBox>
-                <InputFrame>
-                  <CardHolder
-                    type="text"
-                    name="name"
-                    placeholder="Seu Nome Como No Cartão"
-                    onChange={(e) => setName(e.target.value)}
+                    inputType="cardValidUntil"
+                    name="expiry"
+                    onChange={setExpiry}
                     onFocus={(e) => setFocused(e.target.name)}
-                  />
-                </InputFrame>
-                <SizedBox height={20}></SizedBox>
-                <CVCandExpiration>
-                  <InputFrame>
-                    <ExpirationDate
-                      options={{ date: true, datePattern: ["m", "y"] }}
-                      type="tel"
-                      name="expiry"
-                      placeholder="Validade"
-                      onChange={(e) => setExpiry(e.target.value)}
-                      onFocus={(e) => setFocused(e.target.name)}
-                    />
-                  </InputFrame>
+                    width={157}
+                  >
+                    Validade
+                  </StatefulTextInput>
                   <SizedBox width={20}></SizedBox>
-                  <InputFrame>
-                    <CVC
-                      type="tel"
-                      name="cvc"
-                      placeholder="CVC"
-                      onChange={(e) => setCvc(e.target.value)}
-                      onFocus={(e) => setFocused(e.target.name)}
-                      onBlur={() => setFocused("name")}
-                      maxLength={4}
-                    />
-                  </InputFrame>
-                </CVCandExpiration>
+                  <StatefulTextInput
+                    type="tel"
+                    name="cvc"
+                    inputType="cardCvc"
+                    onChange={setCvc}
+                    onFocus={(e) => setFocused(e.target.name)}
+                    onBlur={() => setFocused("name")}
+                    maxLength={4}
+                    value={cvc}
+                    width={157}
+                  >
+                    CVC
+                  </StatefulTextInput>
+                </Row>
               </Column>
             </PaymentForm>
           )}
@@ -403,41 +405,33 @@ function CreditCard(): JSX.Element {
             </React.Fragment>
           ))}
         </Row>
-        <SizedBox height={5}></SizedBox>
+        <SizedBox height={8}></SizedBox>
         <>
           {documents.map((doc, index) => (
             <React.Fragment key={index}>
               {doc.selected && doc.id === "CPF" && (
-                <InputFrame>
-                  <CPF
-                    options={{
-                      delimiters: [".", ".", "-"],
-                      blocks: [3, 3, 3, 2],
-                      uppercase: true,
-                    }}
-                    type="tel"
-                    name="cpf"
-                    placeholder="CPF"
-                    value={doc.value || ""}
-                    onChange={(e) => setDocument(doc.id, e.target.value)}
-                  ></CPF>
-                </InputFrame>
+                <StatefulTextInput
+                  type="tel"
+                  name="cpf"
+                  inputType="cpf"
+                  value={doc.value || ""}
+                  onChange={(value: string) => setDocument(doc.id, value)}
+                  width={335}
+                >
+                  CPF
+                </StatefulTextInput>
               )}
               {doc.selected && doc.id === "CNPJ" && (
-                <InputFrame>
-                  <CNPJ
-                    options={{
-                      delimiters: [".", ".", "/", "-"],
-                      blocks: [2, 3, 3, 4, 2],
-                      uppercase: true,
-                    }}
-                    type="tel"
-                    name="cnpj"
-                    placeholder="CNPJ"
-                    value={doc.value || ""}
-                    onChange={(e) => setDocument(doc.id, e.target.value)}
-                  ></CNPJ>
-                </InputFrame>
+                <StatefulTextInput
+                  type="tel"
+                  name="cnpj"
+                  inputType="cnpj"
+                  value={doc.value || ""}
+                  onChange={(value: string) => setDocument(doc.id, value)}
+                  width={335}
+                >
+                  CNPJ
+                </StatefulTextInput>
               )}
             </React.Fragment>
           ))}
@@ -476,7 +470,6 @@ function CreditCard(): JSX.Element {
                 id="email"
                 name="email"
                 type="text"
-                // value={authContext?.user?.email || ""}
                 readOnly
                 value={email}
               />
