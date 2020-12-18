@@ -207,7 +207,7 @@ const StatefulTextInput = (props: StatefulTextInputProps): JSX.Element => {
                 ? (e) => props.onChange(e.target.value.toUpperCase())
                 : (e) => props.onChange(e.target.value)
             }
-            value={props.value || props.initialValue}
+            value={props.value}
             maxLength={props.maxLength}
             minLength={props.minLength}
             onFocus={props.onFocus}
@@ -228,7 +228,7 @@ const StatefulTextInput = (props: StatefulTextInputProps): JSX.Element => {
                 ? (e) => props.onChange(e.target.value.toUpperCase())
                 : (e) => props.onChange(e.target.value)
             }
-            value={props.value || props.initialValue}
+            value={props.value}
             onFocus={props.onFocus}
             onBlur={props.onBlur}
             name={props.name}

@@ -6,8 +6,11 @@ import { useAuth } from "../../../../hooks/auth/useAuth";
 import { useCart } from "../../../../hooks/cart/useCart";
 import { useOrder } from "../../../../hooks/order/useOrder";
 import {
+  barCodeErrorsTemplate,
+  BarCodeValidationResult,
   getIdTypes,
   MercadoPagoOtherPaymentMethod,
+  validateBarCode,
 } from "../../../../modules/mercadoPago/MercadoPago";
 import RadioButton from "../../../Atoms/RadioButton";
 import Row from "../../../Atoms/Row";
@@ -33,17 +36,22 @@ function Barcode(props: BarcodeProps): JSX.Element {
   const cartContext = useCart();
   const orderContext = useOrder();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-
+  const [firstName, setFirstName] = useState(
+    authContext?.user?.name?.split(" ")[0] || ""
+  );
+  const [lastName, setLastName] = useState(
+    authContext?.user?.name?.split(" ")[1] || ""
+  );
+  const [email, setEmail] = useState(authContext?.user?.email || "");
   const [documents, setDocuments] = useState([]);
-
   const [loadingPayment, setLoadingPayment] = useState(false);
+
+  const [errors, setErrors] = useState(barCodeErrorsTemplate);
 
   const router = useRouter();
 
   const goToFinishPage = (): void => {
+    setErrors(barCodeErrorsTemplate);
     setLoadingPayment(true);
 
     const _document = documents.filter((o) => o.selected)[0];
@@ -63,21 +71,32 @@ function Barcode(props: BarcodeProps): JSX.Element {
         first_name: firstName,
         last_name: lastName,
         identification: {
-          number: _document.value.replace(/[^0-9]/g, ""),
+          number: _document.value?.replace(/[^0-9]/g, ""),
           type: _document.id,
         },
       },
       transaction_amount: cartContext.cart.total,
       payment_method_id: props.type,
     };
-    console.log(
-      "🚀 ~ file: index.tsx ~ line 51 ~ goToFinishPage ~ _payment",
-      _payment
-    );
+
+    const barCodeValidationResult: BarCodeValidationResult = validateBarCode({
+      email,
+      firstName,
+      lastName,
+      docNumber: _document?.value || "",
+      docType: _document?.id || "",
+    });
+
+    if (!barCodeValidationResult.valid) {
+      setLoadingPayment(false);
+      console.log("errors", barCodeValidationResult.errors);
+      setErrors(barCodeValidationResult.errors);
+      return;
+    }
 
     setLoadingPayment(false);
     orderContext.setPayment(_payment);
-    // router.push("/comprar/concluir");
+    router.push("/comprar/concluir");
   };
 
   const goToAddressPage = (): void => {
@@ -126,6 +145,7 @@ function Barcode(props: BarcodeProps): JSX.Element {
         onChange={setFirstName}
         width={400}
         initialValue={authContext?.user?.name?.split(" ")[0]}
+        error={errors.firstName}
       >
         Nome
       </StatefulTextInput>
@@ -135,6 +155,7 @@ function Barcode(props: BarcodeProps): JSX.Element {
         onChange={setLastName}
         width={400}
         initialValue={authContext?.user?.name?.split(" ")[1]}
+        error={errors.lastName}
       >
         Sobrenome
       </StatefulTextInput>
@@ -144,6 +165,7 @@ function Barcode(props: BarcodeProps): JSX.Element {
         onChange={setEmail}
         width={400}
         initialValue={authContext?.user?.email}
+        error={errors.email}
       >
         Email
       </StatefulTextInput>
@@ -179,6 +201,7 @@ function Barcode(props: BarcodeProps): JSX.Element {
                 value={doc.value || ""}
                 onChange={(value: string) => setDocument(doc.id, value)}
                 width={400}
+                error={errors.docNumber}
               >
                 CPF
               </StatefulTextInput>
@@ -191,6 +214,7 @@ function Barcode(props: BarcodeProps): JSX.Element {
                 value={doc.value || ""}
                 onChange={(value: string) => setDocument(doc.id, value)}
                 width={400}
+                error={errors.docNumber}
               >
                 CNPJ
               </StatefulTextInput>

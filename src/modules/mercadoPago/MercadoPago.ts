@@ -136,6 +136,8 @@ export async function getCardToken(
   });
 }
 
+/* -- CREDIT CARD -------------------------------------------------- */
+
 export type CreditCardValidationResult = {
   valid: boolean;
   errors?: {
@@ -195,8 +197,6 @@ export function validateCreditCardInfo(
   paymentInfo: MercadoPagoCreditCardValidation,
   validateToken: boolean
 ): CreditCardValidationResult {
-  console.log("paymentInfo", paymentInfo);
-
   const errors = _cloneDeep(creditCardErrorsTemplate);
 
   let errorsCount = 0;
@@ -295,16 +295,84 @@ export function validateCreditCardInfo(
       "Houve um erro desconhecido. TransactionAmount não foi informado.";
   }
 
-  /*
-  docNumber: "",
-  docType: "",
+  if (errorsCount) {
+    return {
+      valid: false,
+      errors,
+    };
+  } else {
+    return {
+      valid: true,
+    };
+  }
+}
+
+/* -- BAR CODE -------------------------------------------------- */
+
+export type BarCodeValidationResult = {
+  valid: boolean;
+  errors?: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    docNumber: string;
+  };
+};
+
+export const barCodeErrorsTemplate = {
+  firstName: "",
+  lastName: "",
   email: "",
-  installments: "",
-  issuer: "",
-  paymentMethodId: "",
-  token: "",
-  transactionAmount: "",
-  */
+  docNumber: "",
+};
+
+export type MercadoPagoBarCodeValidation = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  docNumber: string;
+  docType: string;
+};
+
+export function validateBarCode(
+  paymentInfo: MercadoPagoBarCodeValidation
+): BarCodeValidationResult {
+  console.log(
+    "🚀 ~ file: MercadoPago.ts ~ line 342 ~ paymentInfo",
+    paymentInfo
+  );
+  const errors = _cloneDeep(barCodeErrorsTemplate);
+
+  let errorsCount = 0;
+
+  if (validator.isEmpty(paymentInfo.firstName)) {
+    errorsCount++;
+    errors.firstName = "Por favor, preencha o nome.";
+  }
+
+  if (validator.isEmpty(paymentInfo.lastName)) {
+    errorsCount++;
+    errors.lastName = "Por favor, preencha o sobrenome.";
+  }
+
+  if (validator.isEmpty(paymentInfo.email)) {
+    errorsCount++;
+    errors.email = "Por favor, preencha o email.";
+  } else if (!validator.isEmail(paymentInfo.email)) {
+    errorsCount++;
+    errors.email = "Por favor, preencha um email válido.";
+  }
+
+  if (validator.isEmpty(paymentInfo.docNumber)) {
+    errorsCount++;
+    errors.docNumber = "Por favor, preencha o número do documento.";
+  } else if (paymentInfo.docType === "CPF" && !isCPF(paymentInfo.docNumber)) {
+    errorsCount++;
+    errors.docNumber = "Por favor, preencha um CPF válido.";
+  } else if (paymentInfo.docType === "CNPJ" && !isCNPJ(paymentInfo.docNumber)) {
+    errorsCount++;
+    errors.docNumber = "Por favor, preencha um CNPJ válido.";
+  }
 
   if (errorsCount) {
     return {

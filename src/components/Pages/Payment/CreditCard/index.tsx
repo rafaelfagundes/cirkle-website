@@ -61,6 +61,7 @@ function CreditCard(): JSX.Element {
   const orderContext = useOrder();
 
   const goToFinishPage = async (): Promise<void> => {
+    setErrors(creditCardErrorsTemplate);
     setLoadingPayment(true);
     function getValue(name: string): string {
       if (document.getElementsByName(name).length) {
@@ -93,6 +94,7 @@ function CreditCard(): JSX.Element {
       },
       false
     );
+
     if (!creditCardValidationResult.valid) {
       setLoadingPayment(false);
       console.log("errors", creditCardValidationResult.errors);
