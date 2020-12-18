@@ -8,8 +8,9 @@ import Colors from "../../../../enums/Colors";
 import { useAuth } from "../../../../hooks/auth/useAuth";
 import { useCart } from "../../../../hooks/cart/useCart";
 import { useOrder } from "../../../../hooks/order/useOrder";
-import theme from "../../../../theme/theme";
 import {
+  creditCardErrorsTemplate,
+  CreditCardValidationResult,
   getCardToken,
   getIdTypes,
   getInstallments,
@@ -17,7 +18,9 @@ import {
   getPaymentMethod,
   Issuer,
   MercadoPagoCreditCard,
-} from "../../../../utils/mercadoPago";
+  validateCreditCardInfo,
+} from "../../../../modules/mercadoPago/MercadoPago";
+import theme from "../../../../theme/theme";
 import Column from "../../../Atoms/Column";
 import CustomButton from "../../../Atoms/CustomButton";
 import RadioButton from "../../../Atoms/RadioButton";
@@ -31,6 +34,7 @@ import CartFooterButtons from "../../../Molecules/CartFooterButtons";
 import { CardAndForm, CardContainer, PaymentForm } from "../styles";
 
 function CreditCard(): JSX.Element {
+  let cardData: any;
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const cartContext = useCart();
@@ -49,7 +53,8 @@ function CreditCard(): JSX.Element {
 
   const [installmentsSelect, setInstallmentsSelect] = useState([]);
   const [documents, setDocuments] = useState([]);
-  let cardData: any;
+
+  const [errors, setErrors] = useState(creditCardErrorsTemplate);
 
   const router = useRouter();
 
@@ -64,10 +69,6 @@ function CreditCard(): JSX.Element {
       return null;
     }
 
-    if (!getValue("token")) {
-      await getPaymentToken();
-    }
-
     const _payment: MercadoPagoCreditCard = {
       token: getValue("token"),
       description: getValue("description"),
@@ -79,9 +80,51 @@ function CreditCard(): JSX.Element {
       paymentMethodId: getValue("paymentMethodId"),
       transactionAmount: getValue("transactionAmount"),
     };
-    setLoadingPayment(false);
-    orderContext.setPayment(_payment);
-    router.push("/comprar/concluir");
+
+    let creditCardValidationResult: CreditCardValidationResult = validateCreditCardInfo(
+      {
+        ..._payment,
+        creditCard: {
+          cardHolderName: name,
+          cvc,
+          number: cardNumber,
+          validUntil: expiry,
+        },
+      },
+      false
+    );
+    if (!creditCardValidationResult.valid) {
+      setLoadingPayment(false);
+      console.log("errors", creditCardValidationResult.errors);
+      setErrors(creditCardValidationResult.errors);
+      return;
+    }
+
+    if (!getValue("token")) {
+      await getPaymentToken();
+      _payment["token"] = getValue("token");
+    }
+
+    creditCardValidationResult = validateCreditCardInfo(
+      {
+        ..._payment,
+        creditCard: {
+          cardHolderName: name,
+          cvc,
+          number: cardNumber,
+          validUntil: expiry,
+        },
+      },
+      true
+    );
+    if (!creditCardValidationResult.valid) {
+      setLoadingPayment(false);
+      return;
+    } else {
+      setLoadingPayment(false);
+      orderContext.setPayment(_payment);
+      router.push("/comprar/concluir");
+    }
   };
 
   const goToAddressPage = (): void => {
@@ -261,6 +304,7 @@ function CreditCard(): JSX.Element {
                   maxLength={19}
                   type="tel"
                   width={400}
+                  error={errors.creditCard.number}
                 >
                   Número Do Cartão
                 </StatefulTextInput>
@@ -274,6 +318,7 @@ function CreditCard(): JSX.Element {
                   onFocus={(e) => setFocused(e.target.name)}
                   uppercase
                   width={400}
+                  error={errors.creditCard.cardHolderName}
                 >
                   Seu Nome Como No Cartão
                 </StatefulTextInput>
@@ -288,6 +333,7 @@ function CreditCard(): JSX.Element {
                     onChange={setExpiry}
                     onFocus={(e) => setFocused(e.target.name)}
                     width={157}
+                    error={errors.creditCard.validUntil}
                   >
                     Validade
                   </StatefulTextInput>
@@ -302,6 +348,7 @@ function CreditCard(): JSX.Element {
                     maxLength={4}
                     value={cvc}
                     width={157}
+                    error={errors.creditCard.cvc}
                   >
                     CVC
                   </StatefulTextInput>
@@ -333,6 +380,7 @@ function CreditCard(): JSX.Element {
                   maxLength={19}
                   type="tel"
                   width={400}
+                  error={errors.creditCard.number}
                 >
                   Número Do Cartão
                 </StatefulTextInput>
@@ -346,6 +394,7 @@ function CreditCard(): JSX.Element {
                   onFocus={(e) => setFocused(e.target.name)}
                   uppercase
                   width={400}
+                  error={errors.creditCard.cardHolderName}
                 >
                   Seu Nome Como No Cartão
                 </StatefulTextInput>
@@ -360,6 +409,7 @@ function CreditCard(): JSX.Element {
                     onChange={setExpiry}
                     onFocus={(e) => setFocused(e.target.name)}
                     width={157}
+                    error={errors.creditCard.validUntil}
                   >
                     Validade
                   </StatefulTextInput>
@@ -374,6 +424,7 @@ function CreditCard(): JSX.Element {
                     maxLength={4}
                     value={cvc}
                     width={157}
+                    error={errors.creditCard.cvc}
                   >
                     CVC
                   </StatefulTextInput>
@@ -417,6 +468,7 @@ function CreditCard(): JSX.Element {
                   value={doc.value || ""}
                   onChange={(value: string) => setDocument(doc.id, value)}
                   width={335}
+                  error={errors.docNumber}
                 >
                   CPF
                 </StatefulTextInput>
@@ -429,6 +481,7 @@ function CreditCard(): JSX.Element {
                   value={doc.value || ""}
                   onChange={(value: string) => setDocument(doc.id, value)}
                   width={335}
+                  error={errors.docNumber}
                 >
                   CNPJ
                 </StatefulTextInput>
@@ -444,6 +497,7 @@ function CreditCard(): JSX.Element {
           value={email}
           initialValue={email}
           width={335}
+          error={errors.email}
         >
           Seu Email
         </StatefulTextInput>

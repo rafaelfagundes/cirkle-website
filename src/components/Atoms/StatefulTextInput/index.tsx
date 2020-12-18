@@ -4,6 +4,7 @@ import Cleave from "cleave.js/react";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
+import { Column } from "../../Molecules/DropdownCart/styles";
 import Icon from "../Icon";
 import SimpleText from "../SimpleText";
 import SizedBox from "../SizedBox";
@@ -75,6 +76,9 @@ const useStyles = makeStyles(() => ({
     fontSize: 16,
     flex: 1,
     width: "100%",
+    "&::placeholder": {
+      color: "#939393",
+    },
   },
 }));
 
@@ -169,7 +173,7 @@ const StatefulTextInput = (props: StatefulTextInputProps): JSX.Element => {
   };
 
   return (
-    <>
+    <Column>
       <StyledInput
         error={
           props.error !== undefined &&
@@ -251,7 +255,7 @@ const StatefulTextInput = (props: StatefulTextInputProps): JSX.Element => {
           <SizedBox height={8}></SizedBox>
         </>
       )}
-    </>
+    </Column>
   );
 };
 

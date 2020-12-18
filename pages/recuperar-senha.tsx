@@ -3,6 +3,7 @@ import Axios from "axios";
 import _cloneDeep from "lodash/cloneDeep";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
+import validator from "validator";
 import Center from "../src/components/Atoms/Center";
 import CustomButton from "../src/components/Atoms/CustomButton";
 import CustomTextField, {
@@ -14,7 +15,6 @@ import Title from "../src/components/Atoms/Title";
 import Layout from "../src/components/Templates/Layout";
 import { useAuth } from "../src/hooks/auth/useAuth";
 import Menu from "../src/modules/menu/Menu";
-import { validateEmail } from "../src/utils/string";
 
 function RecoverPassword({ menu }: { menu: Menu }): JSX.Element {
   const router = useRouter();
@@ -46,7 +46,7 @@ function RecoverPassword({ menu }: { menu: Menu }): JSX.Element {
     if (_email === "" || _email === null || _email === undefined) {
       _errorsCount++;
       _errors.email = "Por favor, preencha o email";
-    } else if (!validateEmail(_email)) {
+    } else if (!validator.isEmail(_email)) {
       _errorsCount++;
       _errors.email =
         "Por favor, preencha um email válido. Ex.: maria@gmail.com";

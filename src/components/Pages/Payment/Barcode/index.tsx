@@ -8,7 +8,7 @@ import { useOrder } from "../../../../hooks/order/useOrder";
 import {
   getIdTypes,
   MercadoPagoOtherPaymentMethod,
-} from "../../../../utils/mercadoPago";
+} from "../../../../modules/mercadoPago/MercadoPago";
 import RadioButton from "../../../Atoms/RadioButton";
 import Row from "../../../Atoms/Row";
 import SimpleText from "../../../Atoms/SimpleText";

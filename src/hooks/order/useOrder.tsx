@@ -3,11 +3,11 @@ import React, { createContext, useContext, useState } from "react";
 import Address from "../../modules/address/Address";
 import Coupon from "../../modules/coupon";
 import MelhorEnvioShipping from "../../modules/melhorEnvio/MelhorEnvio";
-import Product from "../../modules/product/Product";
 import {
   MercadoPagoCreditCard,
   MercadoPagoOtherPaymentMethod,
-} from "../../utils/mercadoPago";
+} from "../../modules/mercadoPago/MercadoPago";
+import Product from "../../modules/product/Product";
 
 type Order = {
   isValid: boolean;

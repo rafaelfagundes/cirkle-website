@@ -4,6 +4,7 @@ import _cloneDeep from "lodash/cloneDeep";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import validator from "validator";
 import Center from "../src/components/Atoms/Center";
 import CustomButton from "../src/components/Atoms/CustomButton";
 import CustomTextField, {
@@ -22,7 +23,7 @@ import Layout from "../src/components/Templates/Layout";
 import Colors from "../src/enums/Colors";
 import { IAuthContextProps, useAuth } from "../src/hooks/auth/useAuth";
 import Menu from "../src/modules/menu/Menu";
-import { capitalizeFirstLetter, validateEmail } from "../src/utils/string";
+import { capitalizeFirstLetter } from "../src/utils/string";
 
 const LoginContainer = styled.div`
   padding: 32px 16px;
@@ -167,7 +168,7 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
     if (_email === "" || _email === null || _email === undefined) {
       _errorsCount++;
       _errors.email = "Por favor, preencha o email";
-    } else if (!validateEmail(_email)) {
+    } else if (!validator.isEmail(_email)) {
       _errorsCount++;
       _errors.email =
         "Por favor, preencha um email válido. Ex.: maria@gmail.com";
