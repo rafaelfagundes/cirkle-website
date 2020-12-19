@@ -42,6 +42,7 @@ export type MercadoPagoCreditCard = {
   docType: string;
   email: string;
   installments: string;
+  installmentValue: string;
   issuer: string;
   paymentMethodId: string;
   token: string;
@@ -337,10 +338,7 @@ export type MercadoPagoBarCodeValidation = {
 export function validateBarCode(
   paymentInfo: MercadoPagoBarCodeValidation
 ): BarCodeValidationResult {
-  console.log(
-    "🚀 ~ file: MercadoPago.ts ~ line 342 ~ paymentInfo",
-    paymentInfo
-  );
+  console.log("paymentInfo", paymentInfo);
   const errors = _cloneDeep(barCodeErrorsTemplate);
 
   let errorsCount = 0;

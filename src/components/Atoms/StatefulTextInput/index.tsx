@@ -1,5 +1,6 @@
 import { InputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import "cleave.js/dist/addons/cleave-phone.br";
 import Cleave from "cleave.js/react";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
@@ -151,6 +152,11 @@ const StatefulTextInput = (props: StatefulTextInputProps): JSX.Element => {
 
   const _getOptions = (type: string) => {
     switch (type) {
+      case "cellphone":
+        return {
+          phone: true,
+          phoneRegionCode: "BR",
+        };
       case "cardNumber":
         return { creditCard: true };
       case "cardValidUntil":

@@ -9,15 +9,17 @@ import {
 } from "../../modules/mercadoPago/MercadoPago";
 import Product from "../../modules/product/Product";
 
+export type OrderUser = {
+  id?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+};
+
 type Order = {
   isValid: boolean;
-  user: {
-    id?: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone?: string;
-  };
+  user: OrderUser;
   payment: MercadoPagoCreditCard | MercadoPagoOtherPaymentMethod;
   products: Array<Product>;
   address: Address;
@@ -27,7 +29,9 @@ type Order = {
 
 export interface IOrderContextProps {
   order: Order;
+  setUser: (orderUser: OrderUser) => void;
   setAddress: (address: Address) => void;
+  setAddressAndUser: (address: Address, orderUser: OrderUser) => void;
   setShipping: (shipping: MelhorEnvioShipping) => void;
   setPayment: (
     payment: MercadoPagoCreditCard | MercadoPagoOtherPaymentMethod
@@ -54,13 +58,7 @@ export const useOrder = (): IOrderContextProps => {
 function useOrderProvider() {
   const initialState = {
     isValid: false,
-    user: {
-      id: null,
-      firstName: null,
-      lastName: null,
-      email: null,
-      phone: null,
-    },
+    user: null,
     payment: null,
     products: [],
     address: null,
@@ -70,8 +68,21 @@ function useOrderProvider() {
 
   const [order, setOrder] = useState(initialState);
 
+  const setUser = (orderUser: OrderUser) => {
+    const _order = _cloneDeep(order);
+    _order.user = orderUser;
+    setOrder(_order);
+  };
+
   const setAddress = (address: Address) => {
     const _order = _cloneDeep(order);
+    _order.address = address;
+    setOrder(_order);
+  };
+
+  const setAddressAndUser = (address: Address, orderUser: OrderUser) => {
+    const _order = _cloneDeep(order);
+    _order.user = orderUser;
     _order.address = address;
     setOrder(_order);
   };
@@ -95,6 +106,8 @@ function useOrderProvider() {
     setAddress,
     setShipping,
     setPayment,
+    setUser,
+    setAddressAndUser,
   };
 }
 

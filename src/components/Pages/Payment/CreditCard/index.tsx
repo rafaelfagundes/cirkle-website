@@ -70,6 +70,8 @@ function CreditCard(): JSX.Element {
       return null;
     }
 
+    const selectedInstallment = installmentsSelect.filter((o) => o.selected)[0];
+
     const _payment: MercadoPagoCreditCard = {
       token: getValue("token"),
       description: getValue("description"),
@@ -77,6 +79,7 @@ function CreditCard(): JSX.Element {
       docType: getValue("docType"),
       email: getValue("email"),
       installments: getValue("installments"),
+      installmentValue: selectedInstallment.secondaryValue,
       issuer: getValue("issuer"),
       paymentMethodId: getValue("paymentMethodId"),
       transactionAmount: getValue("transactionAmount"),

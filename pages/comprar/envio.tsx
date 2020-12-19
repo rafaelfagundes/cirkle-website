@@ -1,9 +1,11 @@
 import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
+import _cloneDeep from "lodash/cloneDeep";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
+import validator from "validator";
 import CheckBoxWithLabel from "../../src/components/Atoms/CheckboxWithLabel";
 import CustomTextField, {
   customTextFieldFocus,
@@ -18,6 +20,7 @@ import SelectMenu, {
 } from "../../src/components/Atoms/SelectMenu";
 import SimpleText from "../../src/components/Atoms/SimpleText";
 import SizedBox from "../../src/components/Atoms/SizedBox";
+import StatefulTextInput from "../../src/components/Atoms/StatefulTextInput";
 import Subtitle from "../../src/components/Atoms/Subtitle";
 import Title from "../../src/components/Atoms/Title";
 import CartFooterButtons from "../../src/components/Molecules/CartFooterButtons";
@@ -56,6 +59,11 @@ const ShippingCol = styled.div<{ isDesktop: boolean }>`
 `;
 
 function AddressAndShipping(): JSX.Element {
+  const userErrosTemplate = {
+    email: "",
+    name: "",
+    phone: "",
+  };
   const router = useRouter();
 
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
@@ -119,6 +127,15 @@ function AddressAndShipping(): JSX.Element {
 
   const [addressErrors, setAddressErrors] = useState(addressErrorsTemplate);
 
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [postalCodeNotFound, setPostalCodeNotFound] = useState(false);
+
+  const [userErrors, setUserErrors] = useState(userErrosTemplate);
+
   const _setAddress = (address: Address) => {
     setCustomTextFieldValue(street, address.street);
     setCustomTextFieldValue(neighborhood, address.neighborhood);
@@ -145,7 +162,10 @@ function AddressAndShipping(): JSX.Element {
   };
 
   const getShipping = async (postalCode: string) => {
+    console.log("getShipping");
+
     if (!postalCode) return;
+    setLoadingShipping(true);
 
     const getSelected = (index: number, id: number) => {
       if (cartContext.isShippingFree()) {
@@ -157,7 +177,6 @@ function AddressAndShipping(): JSX.Element {
       }
     };
 
-    setLoadingShipping(true);
     const shippingData: ShippingData = {
       to: {
         postal_code: postalCode,
@@ -177,10 +196,11 @@ function AddressAndShipping(): JSX.Element {
       });
     });
 
-    const response = await Axios.post("/shippingcalc", shippingData);
+    try {
+      console.log("Calculando frete");
+      const response = await Axios.post("/shippingcalc", shippingData);
+      console.log(response);
 
-    setLoadingShipping(false);
-    if (response.status === 200) {
       const _shippingList: Array<SelectItem> = [];
 
       const _sortedResponse = getLowestShippingPrice(response.data);
@@ -202,12 +222,81 @@ function AddressAndShipping(): JSX.Element {
       setShippingList(_shippingList);
       setCalculatedShippingOptions(_sortedResponse);
       setSelectedShipping(_sortedResponse[0]);
-    } else {
-      console.error(response.data.error);
+      setLoadingShipping(false);
+    } catch (error) {
+      setLoadingShipping(false);
+      console.error(error);
     }
   };
 
   const goToPaymentInfo = (): void => {
+    console.log("goToPaymentInfo");
+    function validateUser(orderUser: {
+      email: string;
+      name: string;
+      phone: string;
+    }): boolean {
+      setUserErrors(userErrosTemplate);
+      console.log("orderUser", orderUser);
+
+      const errors = _cloneDeep(userErrosTemplate);
+
+      let errorsCount = 0;
+
+      if (validator.isEmpty(orderUser?.email)) {
+        errorsCount++;
+        errors.email = "Por favor, preencha o email.";
+      } else if (!validator.isEmail(orderUser.email)) {
+        errorsCount++;
+        errors.email = "Por favor, preencha um email válido.";
+      }
+
+      if (validator.isEmpty(orderUser?.name || "")) {
+        errorsCount++;
+        errors.name =
+          "Por favor, preencha o nome e sobrenome. Ex.: Maria José.";
+      } else {
+        const splitedName = name.split(" ");
+        if (splitedName.length !== 2) {
+          errorsCount++;
+          errors.name =
+            "Por favor, preencha somente nome e sobrenome. Ex.: Maria José.";
+        } else if (splitedName[1] === "") {
+          errorsCount++;
+          errors.name = "Por favor, preencha o sobrenome. Ex.: Maria José.";
+        }
+      }
+
+      if (validator.isEmpty(orderUser?.phone || "")) {
+        errorsCount++;
+        errors.phone = "Por favor, preencha o telefone.";
+      } else {
+        const phoneRemovedSpaces = orderUser?.phone?.replace(/ /g, "");
+        if (phoneRemovedSpaces.length !== 11) {
+          errorsCount++;
+          errors.phone =
+            "Por favor, preencha o telefone com DDD+Número (11 dígitos)";
+        }
+      }
+
+      if (errorsCount) {
+        setUserErrors(errors);
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    const _user = {
+      email: authContext?.user?.email || email,
+      phone: authContext?.user?.phoneNumber || phone,
+      name: authContext?.user?.name || name,
+    };
+
+    if (!validateUser(_user)) {
+      return;
+    }
+
     setShippingError(false);
     let _finalAddress: Address;
 
@@ -237,7 +326,13 @@ function AddressAndShipping(): JSX.Element {
       setShippingError(true);
       return;
     }
-    orderContext.setAddress(_finalAddress);
+    orderContext.setAddressAndUser(_finalAddress, {
+      email,
+      firstName: name.split(" ")[0],
+      lastName: name.split(" ")[1],
+      phone,
+    });
+
     router.push("/comprar/pagamento");
   };
 
@@ -247,6 +342,7 @@ function AddressAndShipping(): JSX.Element {
       if (getCustomTextFieldValue(postalCode)) {
         if (getCustomTextFieldValue(postalCode).length === "12345-123".length) {
           if (getCustomTextFieldValue(postalCode) !== _postalCode) {
+            setPostalCodeNotFound(false);
             try {
               _postalCode = getCustomTextFieldValue(postalCode);
 
@@ -256,6 +352,7 @@ function AddressAndShipping(): JSX.Element {
               )}`;
               setLoadingPostalCode(true);
               const result = await Axios.get(url);
+              setShowAddressForm(true);
               if (result) {
                 const { cep, state, city, neighborhood, street } = result.data;
 
@@ -274,6 +371,8 @@ function AddressAndShipping(): JSX.Element {
                 setLoadingPostalCode(false);
               }
             } catch (error) {
+              setPostalCodeNotFound(true);
+              setShowAddressForm(true);
               setLoadingPostalCode(false);
             }
           }
@@ -398,6 +497,37 @@ function AddressAndShipping(): JSX.Element {
       <ColumnsOrNot>
         <AddressCol isDesktop={!isSmartPhone}>
           <SizedBox height={10}></SizedBox>
+          {!authContext.user && (
+            <>
+              <Title>Seus Dados para Entrega</Title>
+              <SizedBox height={20}></SizedBox>
+              <StatefulTextInput
+                value={name}
+                onChange={setName}
+                error={userErrors.name}
+              >
+                Nome e Sobrenome
+              </StatefulTextInput>
+              <SizedBox height={20}></SizedBox>
+              <StatefulTextInput
+                value={phone}
+                onChange={setPhone}
+                inputType="cellphone"
+                error={userErrors.phone}
+              >
+                Celular/Telefone
+              </StatefulTextInput>
+              <SizedBox height={20}></SizedBox>
+              <StatefulTextInput
+                value={email}
+                onChange={setEmail}
+                error={userErrors.email}
+              >
+                Email
+              </StatefulTextInput>
+            </>
+          )}
+          <SizedBox height={30}></SizedBox>
           <Title>Endereço de Entrega</Title>
           {addressList && addressList.length > 0 && (
             <>
@@ -449,46 +579,58 @@ function AddressAndShipping(): JSX.Element {
                   <LoadingAnimation size={36} color={true}></LoadingAnimation>
                 )}
               </Row>
-              <SizedBox height={20}></SizedBox>
-              <span data-test="address-street">
-                <CustomTextField ref={street} error={addressErrors.street}>
-                  Logradouro (Rua, Avenida, Alameda, etc)*
-                </CustomTextField>
-              </span>
-              <SizedBox height={20}></SizedBox>
-              <span data-test="address-number">
-                <CustomTextField
-                  ref={number}
-                  error={addressErrors.number}
-                  width={100}
-                >
-                  Número*
-                </CustomTextField>
-              </span>
-              <SizedBox height={20}></SizedBox>
-              <span data-test="address-complement">
-                <CustomTextField ref={complement}>Complemento</CustomTextField>
-              </span>
-              <SizedBox height={20}></SizedBox>
-              <span data-test="address-neighborhood">
-                <CustomTextField
-                  ref={neighborhood}
-                  error={addressErrors.neighborhood}
-                >
-                  Bairro*
-                </CustomTextField>
-              </span>
-              <SizedBox height={20}></SizedBox>
-              <span data-test="address-city">
-                <CustomTextField ref={city} error={addressErrors.city}>
-                  Cidade*
-                </CustomTextField>
-              </span>
-              <SizedBox height={20}></SizedBox>
-              <span data-test="address-state">
-                <CustomTextField ref={state} error={addressErrors.state}>
-                  Sigla do Estado*
-                </CustomTextField>
+              {postalCodeNotFound && (
+                <>
+                  <SizedBox height={5}></SizedBox>
+                  <SimpleText size={0.9} color={Colors.ERROR}>
+                    CEP não encontrado.
+                  </SimpleText>
+                </>
+              )}
+              <span style={{ display: showAddressForm ? "block" : "none" }}>
+                <SizedBox height={20}></SizedBox>
+                <span data-test="address-street">
+                  <CustomTextField ref={street} error={addressErrors.street}>
+                    Logradouro (Rua, Avenida, Alameda, etc)*
+                  </CustomTextField>
+                </span>
+                <SizedBox height={20}></SizedBox>
+                <span data-test="address-number">
+                  <CustomTextField
+                    ref={number}
+                    error={addressErrors.number}
+                    width={100}
+                  >
+                    Número*
+                  </CustomTextField>
+                </span>
+                <SizedBox height={20}></SizedBox>
+                <span data-test="address-complement">
+                  <CustomTextField ref={complement}>
+                    Complemento
+                  </CustomTextField>
+                </span>
+                <SizedBox height={20}></SizedBox>
+                <span data-test="address-neighborhood">
+                  <CustomTextField
+                    ref={neighborhood}
+                    error={addressErrors.neighborhood}
+                  >
+                    Bairro*
+                  </CustomTextField>
+                </span>
+                <SizedBox height={20}></SizedBox>
+                <span data-test="address-city">
+                  <CustomTextField ref={city} error={addressErrors.city}>
+                    Cidade*
+                  </CustomTextField>
+                </span>
+                <SizedBox height={20}></SizedBox>
+                <span data-test="address-state">
+                  <CustomTextField ref={state} error={addressErrors.state}>
+                    Sigla do Estado*
+                  </CustomTextField>
+                </span>
               </span>
             </>
           )}
