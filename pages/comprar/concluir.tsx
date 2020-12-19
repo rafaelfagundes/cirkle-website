@@ -26,7 +26,6 @@ function FinishPage(): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const orderContext = useOrder();
-  console.log("orderContext", orderContext);
 
   const breadcrumbs = [
     {
@@ -56,10 +55,10 @@ function FinishPage(): JSX.Element {
   const authContext = useAuth();
 
   const getPaymentIcon = (payment: any) => {
-    if (payment.hasOwnProperty("paymentMethodId")) {
+    if (payment?.hasOwnProperty("paymentMethodId")) {
       return "payment-cc";
     } else {
-      if (payment.payment_method_id === "bolbradesco") {
+      if (payment?.payment_method_id === "bolbradesco") {
         return "payment-barcode";
       } else {
         return "banker";
@@ -68,10 +67,10 @@ function FinishPage(): JSX.Element {
   };
 
   const getPaymentType = (payment: any) => {
-    if (payment.hasOwnProperty("paymentMethodId")) {
+    if (payment?.hasOwnProperty("paymentMethodId")) {
       return "Cartão de Crédito";
     } else {
-      if (payment.payment_method_id === "bolbradesco") {
+      if (payment?.payment_method_id === "bolbradesco") {
         return "Boleto Bancário";
       } else {
         return "Pagamento na Lotérica";
@@ -80,13 +79,13 @@ function FinishPage(): JSX.Element {
   };
 
   const getPaymentInstallments = (payment: any) => {
-    if (payment.hasOwnProperty("paymentMethodId")) {
-      return `${payment.installments}x ${new Intl.NumberFormat("pt-BR", {
+    if (payment?.hasOwnProperty("paymentMethodId")) {
+      return `${payment?.installments}x ${new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
-      }).format(payment.installmentValue)}`;
+      }).format(payment?.installmentValue)}`;
     } else {
-      if (payment.payment_method_id === "bolbradesco") {
+      if (payment?.payment_method_id === "bolbradesco") {
         return "À Vista";
       } else {
         return "Não Precisa de Boleto";
@@ -95,10 +94,10 @@ function FinishPage(): JSX.Element {
   };
 
   const getPaymentBrand = (payment: any) => {
-    if (payment.hasOwnProperty("paymentMethodId")) {
-      return capitalizeFirstLetter(payment.paymentMethodId);
+    if (payment?.hasOwnProperty("paymentMethodId")) {
+      return capitalizeFirstLetter(payment?.paymentMethodId);
     } else {
-      if (payment.payment_method_id === "bolbradesco") {
+      if (payment?.payment_method_id === "bolbradesco") {
         return "À Vista";
       } else {
         return "Não Precisa de Boleto";
@@ -116,24 +115,24 @@ function FinishPage(): JSX.Element {
           <CartHeaderDataItem
             icon="user"
             line1={
-              orderContext.order.user.firstName +
+              orderContext?.order?.user?.firstName +
               " " +
-              orderContext.order.user.lastName
+              orderContext?.order?.user?.lastName
             }
-            line2={orderContext.order.user.phone}
-            line3={orderContext.order.user.email}
+            line2={orderContext?.order?.user?.phone}
+            line3={orderContext?.order?.user?.email}
           ></CartHeaderDataItem>
           <CartHeaderDataItem
             icon="map-pin"
-            line1={`${orderContext.order.address.street}, ${orderContext.order.address.number}`}
-            line2={`${orderContext.order.address.neighborhood}, ${orderContext.order.address.city} - ${orderContext.order.address.state}`}
-            line3={orderContext.order.address.postalCode}
+            line1={`${orderContext?.order?.address?.street}, ${orderContext?.order?.address?.number}`}
+            line2={`${orderContext?.order?.address?.neighborhood}, ${orderContext?.order?.address?.city} - ${orderContext?.order?.address?.state}`}
+            line3={orderContext?.order?.address?.postalCode}
           ></CartHeaderDataItem>
           <CartHeaderDataItem
-            icon={getPaymentIcon(orderContext.order.payment)}
-            line1={getPaymentType(orderContext.order.payment)}
-            line2={getPaymentInstallments(orderContext.order.payment)}
-            line3={getPaymentBrand(orderContext.order.payment)}
+            icon={getPaymentIcon(orderContext?.order?.payment)}
+            line1={getPaymentType(orderContext?.order?.payment)}
+            line2={getPaymentInstallments(orderContext?.order?.payment)}
+            line3={getPaymentBrand(orderContext?.order?.payment)}
           ></CartHeaderDataItem>
         </Row>
       )}
@@ -141,23 +140,27 @@ function FinishPage(): JSX.Element {
         <WrapRow>
           <CartHeaderDataItem
             icon="user"
-            line1={authContext?.user?.name}
-            line2={authContext?.user?.phoneNumber}
-            line3={authContext?.user?.email}
+            line1={
+              orderContext?.order?.user?.firstName +
+              " " +
+              orderContext?.order?.user?.lastName
+            }
+            line2={orderContext?.order?.user?.phone}
+            line3={orderContext?.order?.user?.email}
           ></CartHeaderDataItem>
           <SizedBox height={20}></SizedBox>
           <CartHeaderDataItem
             icon="map-pin"
-            line1="Av. Borges de Medeiros, 997"
-            line2="Gávea, Rio de Janeiro - RJ"
-            line3="22430-041"
+            line1={`${orderContext?.order?.address?.street}, ${orderContext?.order?.address?.number}`}
+            line2={`${orderContext?.order?.address?.neighborhood}, ${orderContext?.order?.address?.city} - ${orderContext?.order?.address?.state}`}
+            line3={orderContext?.order?.address?.postalCode}
           ></CartHeaderDataItem>
           <SizedBox height={20}></SizedBox>
           <CartHeaderDataItem
-            icon="payment-cc"
-            line1="Forma de Pagamento"
-            line2="À Vista"
-            line3="PIX"
+            icon={getPaymentIcon(orderContext?.order?.payment)}
+            line1={getPaymentType(orderContext?.order?.payment)}
+            line2={getPaymentInstallments(orderContext?.order?.payment)}
+            line3={getPaymentBrand(orderContext?.order?.payment)}
           ></CartHeaderDataItem>
         </WrapRow>
       )}
