@@ -23,6 +23,16 @@ import { capitalizeFirstLetter } from "../../src/utils/string";
 const WrapRow = styled.div``;
 
 function FinishPage(): JSX.Element {
+  const cartContext = useCart();
+  const router = useRouter();
+
+  if (cartContext.cart.items.length === 0) {
+    if (process.browser) {
+      router.push("/");
+      return <></>;
+    }
+  }
+
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const orderContext = useOrder();
@@ -45,13 +55,10 @@ function FinishPage(): JSX.Element {
     },
   ];
 
-  const router = useRouter();
-
   const goToPayment = (): void => {
     router.push("/comprar/pagamento");
   };
 
-  const cartContext = useCart();
   const authContext = useAuth();
 
   const getPaymentIcon = (payment: any) => {

@@ -10,10 +10,10 @@ if (config) {
   publicRuntimeConfig = getConfig().publicRuntimeConfig;
 
   if (process.browser) {
-    window["Mercadopago"].setPublishableKey(
+    window["Mercadopago"]?.setPublishableKey(
       publicRuntimeConfig.MERCADO_PAGO_PUB_KEY
     );
-    window["Mercadopago"].getIdentificationTypes();
+    window["Mercadopago"]?.getIdentificationTypes();
   }
 }
 
@@ -94,7 +94,7 @@ export async function getInstallments(
   issuer_id: number
 ): Promise<{ status: number; response: any }> {
   return new Promise((resolve) => {
-    window["Mercadopago"].getInstallments(
+    window["Mercadopago"]?.getInstallments(
       {
         payment_method_id,
         amount,
@@ -109,7 +109,7 @@ export function getIssuers(
   paymentMethodId: number
 ): Promise<{ status: number; response: any }> {
   return new Promise((resolve) => {
-    window["Mercadopago"].getIssuers(
+    window["Mercadopago"]?.getIssuers(
       paymentMethodId,
       (status: number, response: any) => resolve({ status, response })
     );
@@ -120,7 +120,7 @@ export function getPaymentMethod(
   cardFirstSixNumbers: string
 ): Promise<{ status: number; response: any }> {
   return new Promise((resolve) => {
-    window["Mercadopago"].getPaymentMethod(
+    window["Mercadopago"]?.getPaymentMethod(
       { bin: cardFirstSixNumbers },
       (status: number, response: any) => resolve({ status, response })
     );
@@ -131,7 +131,7 @@ export async function getCardToken(
   form: HTMLFormElement
 ): Promise<{ status: number; response: any }> {
   return new Promise((resolve) => {
-    window["Mercadopago"].createToken(form, (status: number, response: any) =>
+    window["Mercadopago"]?.createToken(form, (status: number, response: any) =>
       resolve({ status, response })
     );
   });

@@ -37,12 +37,18 @@ function Barcode(props: BarcodeProps): JSX.Element {
   const orderContext = useOrder();
 
   const [firstName, setFirstName] = useState(
-    authContext?.user?.name?.split(" ")[0] || ""
+    orderContext?.order?.user?.firstName ||
+      authContext?.user?.name?.split(" ")[0] ||
+      ""
   );
   const [lastName, setLastName] = useState(
-    authContext?.user?.name?.split(" ")[1] || ""
+    orderContext?.order?.user?.lastName ||
+      authContext?.user?.name?.split(" ")[1] ||
+      ""
   );
-  const [email, setEmail] = useState(authContext?.user?.email || "");
+  const [email, setEmail] = useState(
+    orderContext?.order?.user?.email || authContext?.user?.email || ""
+  );
   const [documents, setDocuments] = useState([]);
   const [loadingPayment, setLoadingPayment] = useState(false);
 

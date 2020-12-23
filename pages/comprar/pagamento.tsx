@@ -1,4 +1,5 @@
 import { useMediaQuery } from "@material-ui/core";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
 import HorizontalLine from "../../src/components/Atoms/HorizontalLine";
@@ -24,6 +25,16 @@ const Price = styled.p`
 `;
 
 function Pagamento(): JSX.Element {
+  const cartContext = useCart();
+  const router = useRouter();
+
+  if (cartContext.cart.items.length === 0) {
+    if (process.browser) {
+      router.push("/");
+      return <></>;
+    }
+  }
+
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const breadcrumbs = [
@@ -43,8 +54,6 @@ function Pagamento(): JSX.Element {
       desc: "Revisão",
     },
   ];
-
-  const cartContext = useCart();
 
   const [option, setOption] = useState("cc");
 

@@ -59,12 +59,24 @@ const ShippingCol = styled.div<{ isDesktop: boolean }>`
 `;
 
 function AddressAndShipping(): JSX.Element {
+  const router = useRouter();
+  const cartContext = useCart();
+
+  if (cartContext.cart.items.length === 0) {
+    if (process.browser) {
+      router.push("/");
+      return <></>;
+    }
+  }
+
+  const authContext = useAuth();
+  const orderContext = useOrder();
+
   const userErrosTemplate = {
     email: "",
     name: "",
     phone: "",
   };
-  const router = useRouter();
 
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -85,10 +97,6 @@ function AddressAndShipping(): JSX.Element {
       desc: "Revisão",
     },
   ];
-
-  const authContext = useAuth();
-  const cartContext = useCart();
-  const orderContext = useOrder();
 
   const { data: addressData, error: addressError } = useSWR(
     authContext?.user ? "/addresses" : null
@@ -127,9 +135,19 @@ function AddressAndShipping(): JSX.Element {
 
   const [addressErrors, setAddressErrors] = useState(addressErrorsTemplate);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const getCompleteName = () => {
+    if (
+      orderContext?.order?.user?.firstName &&
+      orderContext?.order?.user?.lastName
+    ) {
+      return `${orderContext?.order?.user?.firstName} ${orderContext?.order?.user?.lastName}`;
+    }
+    return null;
+  };
+
+  const [name, setName] = useState(getCompleteName() || "");
+  const [email, setEmail] = useState(orderContext?.order?.user?.email || "");
+  const [phone, setPhone] = useState(orderContext?.order?.user?.phone || "");
 
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [postalCodeNotFound, setPostalCodeNotFound] = useState(false);

@@ -79,7 +79,7 @@ function CreditCard(): JSX.Element {
       docType: getValue("docType"),
       email: getValue("email"),
       installments: getValue("installments"),
-      installmentValue: selectedInstallment.secondaryValue,
+      installmentValue: selectedInstallment?.secondaryValue,
       issuer: getValue("issuer"),
       paymentMethodId: getValue("paymentMethodId"),
       transactionAmount: getValue("transactionAmount"),
