@@ -33,7 +33,7 @@ interface CartItemsProps {
   showBackground: boolean;
   showSelects: boolean;
   isImmutable?: boolean;
-  item: Product;
+  item: Product | any;
 }
 
 function CartItem({
@@ -142,7 +142,7 @@ function CartItem({
             ></CartItemImage>
           </ImagePrice>
           <SpaceBetweenColumn>
-            <Row>
+            <Row alignTop>
               <TitleAndRemove>
                 <Link href={isImmutable ? "" : `/produtos/${item.uid}`}>
                   <ProductBrand>{item.brand.name}</ProductBrand>

@@ -223,7 +223,7 @@ export const SpaceBetweenColumn = styled.div`
   flex-direction: column;
   justify-content: space-between;
   /* align-items: flex-start; */
-  min-height: 100px;
+  min-height: 90px;
   width: 100%;
 `;
 

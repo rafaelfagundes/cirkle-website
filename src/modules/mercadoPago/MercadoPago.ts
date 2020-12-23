@@ -53,6 +53,7 @@ export type MercadoPagoOtherPaymentMethod = {
   transaction_amount: number;
   description: string;
   payment_method_id: string;
+  installments?: string;
   payer: {
     email: string;
     first_name: string;

@@ -4,6 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import CartDescItem from "../../src/components/Atoms/CartDescItem";
 import CartHeaderDataItem from "../../src/components/Atoms/CartHeaderDataItem";
+import CartInstallments from "../../src/components/Atoms/CartInstallments";
 import CartTotal from "../../src/components/Atoms/CartTotal";
 import HorizontalLine from "../../src/components/Atoms/HorizontalLine";
 import Row from "../../src/components/Atoms/Row";
@@ -93,9 +94,9 @@ function FinishPage(): JSX.Element {
       }).format(payment?.installmentValue)}`;
     } else {
       if (payment?.payment_method_id === "bolbradesco") {
-        return "À Vista";
+        return "À vista";
       } else {
-        return "Não Precisa de Boleto";
+        return "À vista";
       }
     }
   };
@@ -105,9 +106,9 @@ function FinishPage(): JSX.Element {
       return capitalizeFirstLetter(payment?.paymentMethodId);
     } else {
       if (payment?.payment_method_id === "bolbradesco") {
-        return "À Vista";
+        return "";
       } else {
-        return "Não Precisa de Boleto";
+        return "Não precisa imprimir boleto";
       }
     }
   };
@@ -174,60 +175,77 @@ function FinishPage(): JSX.Element {
       <SizedBox height={20}></SizedBox>
       <HorizontalLine></HorizontalLine>
       <SizedBox height={32}></SizedBox>
-      <Subtitle color={Colors.SECONDARY}>{`${cartContext.cart.items.length} ${
-        cartContext.cart.items.length === 1 ? "ITEM" : "ITENS"
+      <Subtitle color={Colors.SECONDARY}>{`${
+        orderContext.order.products.length
+      } ${
+        orderContext.order.products.length === 1 ? "ITEM" : "ITENS"
       }`}</Subtitle>
       <SizedBox height={20}></SizedBox>
       <>
-        {cartContext.cart.items.map((item, index) => (
-          <React.Fragment key={item.id}>
-            <CartItem
-              item={item}
-              showBackground={false}
-              showSelects={false}
-              isImmutable={true}
-            ></CartItem>
-            {index !== cartContext.cart.items.length - 1 && (
-              <SizedBox height={24}></SizedBox>
+        {orderContext.order.products.map((item, index) => (
+          <>
+            <React.Fragment key={item.id}>
+              <CartItem
+                item={item}
+                showBackground={false}
+                showSelects={false}
+                isImmutable={true}
+              ></CartItem>
+            </React.Fragment>
+            {index !== orderContext.order.products.length - 1 && (
+              <>
+                <SizedBox height={16}></SizedBox>
+                <HorizontalLine></HorizontalLine>
+                <SizedBox height={24}></SizedBox>
+              </>
             )}
-          </React.Fragment>
+          </>
         ))}
       </>
-      <SizedBox height={32}></SizedBox>
+      <SizedBox height={48}></SizedBox>
       <HorizontalLine></HorizontalLine>
       <SizedBox height={20}></SizedBox>
       <CartDescItem title="subtotal">
         {new Intl.NumberFormat("pt-BR", {
           style: "currency",
           currency: "BRL",
-        }).format(cartContext.cart.subtotal)}
+        }).format(orderContext.getSubtotal())}
       </CartDescItem>
       <SizedBox height={20}></SizedBox>
 
-      <CartDescItem title="desconto" negative subtitle="Cupom #TRINTAO">
+      {/* <CartDescItem title="desconto" negative subtitle="Cupom #TRINTAO">
         {new Intl.NumberFormat("pt-BR", {
           style: "currency",
           currency: "BRL",
         }).format(30)}
       </CartDescItem>
-      <SizedBox height={20}></SizedBox>
+      <SizedBox height={20}></SizedBox> */}
 
       <CartDescItem title="frete" subtitle="JadLog .Package - 2 à 4 dias úteis">
         {new Intl.NumberFormat("pt-BR", {
           style: "currency",
           currency: "BRL",
-        }).format(
-          cartContext.cart.shippingList.filter((o) => o.selected)[0]
-            ?.secondaryValue
-        )}
+        }).format(orderContext.getShippingValue())}
       </CartDescItem>
       <SizedBox height={40}></SizedBox>
       <CartTotal>
         {new Intl.NumberFormat("pt-BR", {
           style: "currency",
           currency: "BRL",
-        }).format(cartContext.cart.total)}
+        }).format(orderContext.getTotal())}
       </CartTotal>
+      {orderContext?.order?.payment?.hasOwnProperty("paymentMethodId") && (
+        <>
+          <SizedBox height={20}></SizedBox>
+          <CartInstallments
+            singlePayment={
+              orderContext?.order?.payment?.installments === "1" || false
+            }
+          >
+            {getPaymentInstallments(orderContext?.order?.payment)}
+          </CartInstallments>
+        </>
+      )}
       <CartFooterButtons
         buttons={[
           {

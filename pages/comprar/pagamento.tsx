@@ -14,6 +14,7 @@ import CreditCard from "../../src/components/Pages/Payment/CreditCard";
 import LastMilePage from "../../src/components/Templates/LastMilePage";
 import Colors from "../../src/enums/Colors";
 import { useCart } from "../../src/hooks/cart/useCart";
+import { useOrder } from "../../src/hooks/order/useOrder";
 import theme from "../../src/theme/theme";
 
 const Price = styled.p`
@@ -26,6 +27,7 @@ const Price = styled.p`
 
 function Pagamento(): JSX.Element {
   const cartContext = useCart();
+  const orderContext = useOrder();
   const router = useRouter();
 
   if (cartContext.cart.items.length === 0) {
@@ -66,7 +68,7 @@ function Pagamento(): JSX.Element {
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
-          }).format(cartContext.cart.total)}
+          }).format(orderContext.getTotal())}
         </Price>
       </Row>
       <SizedBox height={isSmartPhone ? 20 : 24}></SizedBox>

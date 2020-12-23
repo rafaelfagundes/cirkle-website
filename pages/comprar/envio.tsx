@@ -61,6 +61,9 @@ const ShippingCol = styled.div<{ isDesktop: boolean }>`
 function AddressAndShipping(): JSX.Element {
   const router = useRouter();
   const cartContext = useCart();
+  const authContext = useAuth();
+  const orderContext = useOrder();
+  console.log("orderContext", orderContext);
 
   if (cartContext.cart.items.length === 0) {
     if (process.browser) {
@@ -68,9 +71,6 @@ function AddressAndShipping(): JSX.Element {
       return <></>;
     }
   }
-
-  const authContext = useAuth();
-  const orderContext = useOrder();
 
   const userErrosTemplate = {
     email: "",
@@ -355,6 +355,10 @@ function AddressAndShipping(): JSX.Element {
   };
 
   useEffect(() => {
+    if (cartContext.cart.items.length > 0) {
+      orderContext.setProducts(cartContext.cart.items);
+    }
+
     let _postalCode = "";
     const postalCodeInterval = setInterval(async () => {
       if (getCustomTextFieldValue(postalCode)) {
