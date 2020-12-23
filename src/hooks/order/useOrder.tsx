@@ -152,11 +152,11 @@ function useOrderProvider() {
   };
 
   const getTotal = (): number => {
-    return getSubtotal() + Number(order.shipping.custom_price);
+    return getSubtotal() + Number(order?.shipping?.custom_price || 0);
   };
 
   const getShippingValue = (): number => {
-    return order.shipping.custom_price;
+    return order?.shipping?.custom_price || 0;
   };
 
   return {
