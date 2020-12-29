@@ -34,7 +34,6 @@ export type OrderUser = {
 };
 
 type Order = {
-  isValid: boolean;
   user: OrderUser;
   payment: MercadoPagoCreditCard | MercadoPagoOtherPaymentMethod;
   products: Array<OrderProductItem>;
@@ -77,7 +76,6 @@ export const useOrder = (): IOrderContextProps => {
 
 function useOrderProvider() {
   const initialState = {
-    isValid: false,
     user: null,
     payment: null,
     products: [],

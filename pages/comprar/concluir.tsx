@@ -1,4 +1,5 @@
 import { useMediaQuery } from "@material-ui/core";
+import Axios from "axios";
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
@@ -110,6 +111,18 @@ function FinishPage(): JSX.Element {
       } else {
         return "Não precisa imprimir boleto";
       }
+    }
+  };
+
+  const finishOrder = async () => {
+    const _finalOrder = orderContext.order;
+    console.log("_finalOrder", _finalOrder);
+
+    try {
+      const response = await Axios.post("/orders", _finalOrder);
+      console.log("response", response);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -257,7 +270,7 @@ function FinishPage(): JSX.Element {
           },
           {
             text: "CONCLUIR COMPRA",
-            onClick: null,
+            onClick: finishOrder,
             type: "cta",
             width: 200,
           },
