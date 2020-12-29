@@ -63,7 +63,6 @@ function AddressAndShipping(): JSX.Element {
   const cartContext = useCart();
   const authContext = useAuth();
   const orderContext = useOrder();
-  console.log("orderContext", orderContext);
 
   if (cartContext.cart.items.length === 0) {
     if (process.browser) {
@@ -180,8 +179,6 @@ function AddressAndShipping(): JSX.Element {
   };
 
   const getShipping = async (postalCode: string) => {
-    console.log("getShipping");
-
     if (!postalCode) return;
     setLoadingShipping(true);
 
@@ -215,12 +212,8 @@ function AddressAndShipping(): JSX.Element {
     });
 
     try {
-      console.log("Calculando frete");
       const response = await Axios.post("/shippingcalc", shippingData);
-      console.log(response);
-
       const _shippingList: Array<SelectItem> = [];
-
       const _sortedResponse = getLowestShippingPrice(response.data);
 
       _sortedResponse.forEach((item: MelhorEnvioShipping, index: number) => {
@@ -248,14 +241,12 @@ function AddressAndShipping(): JSX.Element {
   };
 
   const goToPaymentInfo = (): void => {
-    console.log("goToPaymentInfo");
     function validateUser(orderUser: {
       email: string;
       name: string;
       phone: string;
     }): boolean {
       setUserErrors(userErrosTemplate);
-      console.log("orderUser", orderUser);
 
       const errors = _cloneDeep(userErrosTemplate);
 
@@ -274,7 +265,8 @@ function AddressAndShipping(): JSX.Element {
         errors.name =
           "Por favor, preencha o nome e sobrenome. Ex.: Maria José.";
       } else {
-        const splitedName = name.split(" ");
+        const splitedName = orderUser?.name.split(" ");
+
         if (splitedName.length !== 2) {
           errorsCount++;
           errors.name =
@@ -289,7 +281,12 @@ function AddressAndShipping(): JSX.Element {
         errorsCount++;
         errors.phone = "Por favor, preencha o telefone.";
       } else {
-        const phoneRemovedSpaces = orderUser?.phone?.replace(/ /g, "");
+        const phoneRemovedSpaces = orderUser?.phone
+          ?.replace("(", "")
+          .replace(")", "")
+          .replace("-", "")
+          .replace(/ /g, "");
+
         if (phoneRemovedSpaces.length !== 11) {
           errorsCount++;
           errors.phone =
@@ -298,6 +295,7 @@ function AddressAndShipping(): JSX.Element {
       }
 
       if (errorsCount) {
+        console.error(errors);
         setUserErrors(errors);
         return false;
       } else {
@@ -312,6 +310,7 @@ function AddressAndShipping(): JSX.Element {
     };
 
     if (!validateUser(_user)) {
+      console.error("Usuário não válido!");
       return;
     }
 
@@ -344,12 +343,24 @@ function AddressAndShipping(): JSX.Element {
       setShippingError(true);
       return;
     }
-    orderContext.setAddressAndUser(_finalAddress, {
-      email,
-      firstName: name.split(" ")[0],
-      lastName: name.split(" ")[1],
-      phone,
-    });
+    if (authContext.user) {
+      const _finalUser = {
+        email: authContext?.user?.email,
+        firstName: authContext?.user?.name.split(" ")[0],
+        lastName: authContext?.user?.name.split(" ")[1],
+        phone: authContext?.user?.phoneNumber,
+      };
+      console.log("_finalUser", _finalUser);
+      orderContext.setAddressAndUser(_finalAddress, _finalUser);
+    } else {
+      const _finalUser = {
+        email,
+        firstName: name.split(" ")[0],
+        lastName: name.split(" ")[1],
+        phone,
+      };
+      orderContext.setAddressAndUser(_finalAddress, _finalUser);
+    }
 
     router.push("/comprar/pagamento");
   };

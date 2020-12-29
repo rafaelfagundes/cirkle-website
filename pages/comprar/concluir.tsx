@@ -183,15 +183,15 @@ function FinishPage(): JSX.Element {
       <SizedBox height={20}></SizedBox>
       <>
         {orderContext.order.products.map((item, index) => (
-          <>
-            <React.Fragment key={item.id}>
+          <React.Fragment key={item.id}>
+            <>
               <CartItem
                 item={item}
                 showBackground={false}
                 showSelects={false}
                 isImmutable={true}
               ></CartItem>
-            </React.Fragment>
+            </>
             {index !== orderContext.order.products.length - 1 && (
               <>
                 <SizedBox height={16}></SizedBox>
@@ -199,7 +199,7 @@ function FinishPage(): JSX.Element {
                 <SizedBox height={24}></SizedBox>
               </>
             )}
-          </>
+          </React.Fragment>
         ))}
       </>
       <SizedBox height={48}></SizedBox>
