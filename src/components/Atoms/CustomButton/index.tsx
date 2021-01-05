@@ -88,6 +88,7 @@ function CustomButton({
   variant = "contained",
   width = 120,
   loading = false,
+  loadingDark = false,
   onClick,
   small = false,
   icon,
@@ -100,6 +101,7 @@ function CustomButton({
   variant?: string;
   width?: number;
   loading?: boolean;
+  loadingDark?: boolean;
   small?: boolean;
   icon?: string;
   noPadding?: boolean;
@@ -199,7 +201,9 @@ function CustomButton({
               </ButtonText>
             </TextIconHolder>
           )}
-          {loading && <LoadingAnimation size={20}></LoadingAnimation>}
+          {loading && (
+            <LoadingAnimation size={20} color={loadingDark}></LoadingAnimation>
+          )}
         </ButtonContained>
       );
     case "text":

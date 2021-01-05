@@ -16,6 +16,8 @@ export type Button = {
   width?: number;
   isBackButton?: boolean;
   loading?: boolean;
+  loadingDark?: boolean;
+  disabled?: boolean;
 };
 
 interface CartFooterButtonsProps {
@@ -33,9 +35,10 @@ function CartFooterButtons(props: CartFooterButtonsProps): JSX.Element {
               key={item.text}
               onClick={item.onClick}
               variant={item.isBackButton ? "text" : "contained"}
-              type={item.type}
+              type={item.disabled ? "disabled" : item.type}
               width={item.width}
               loading={item.loading}
+              loadingDark={item.loadingDark}
             >
               {item.text}
             </CustomButton>

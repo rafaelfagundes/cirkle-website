@@ -18,6 +18,11 @@ function PurchaseSuccess({ menu }: { menu: Menu }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const authContext = useAuth();
 
+  // Scroll to top when page is loaded
+  React.useEffect(() => {
+    if (process.browser) window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Layout menu={menu}>
       <SizedBox height={isSmartPhone ? 16 : 32}></SizedBox>

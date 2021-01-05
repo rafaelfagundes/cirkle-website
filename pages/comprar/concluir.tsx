@@ -1,7 +1,7 @@
 import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import CartDescItem from "../../src/components/Atoms/CartDescItem";
 import CartHeaderDataItem from "../../src/components/Atoms/CartHeaderDataItem";
@@ -27,6 +27,8 @@ const WrapRow = styled.div``;
 function FinishPage(): JSX.Element {
   const cartContext = useCart();
   const router = useRouter();
+  const [loadingPurchase, setLoadingPurchase] = useState(false);
+  const [purchaseDisabled, setPurchaseDisabled] = useState(false);
 
   if (cartContext.cart.items.length === 0) {
     if (process.browser) {
@@ -59,6 +61,14 @@ function FinishPage(): JSX.Element {
 
   const goToPayment = (): void => {
     router.push("/comprar/pagamento");
+  };
+
+  const goToSuccess = (): void => {
+    router.push("/comprar/sucesso");
+  };
+
+  const goToError = (): void => {
+    router.push("/comprar/error");
   };
 
   const authContext = useAuth();
@@ -115,14 +125,22 @@ function FinishPage(): JSX.Element {
   };
 
   const finishOrder = async () => {
+    setPurchaseDisabled(true);
+    setLoadingPurchase(true);
     const _finalOrder = orderContext.order;
     console.log("_finalOrder", _finalOrder);
 
     try {
       const response = await Axios.post("/orders", _finalOrder);
       console.log("response", response);
+      setPurchaseDisabled(false);
+      setLoadingPurchase(false);
+      // goToSuccess();
     } catch (error) {
+      setPurchaseDisabled(false);
       console.error(error);
+      setLoadingPurchase(false);
+      // goToError();
     }
   };
 
@@ -273,6 +291,9 @@ function FinishPage(): JSX.Element {
             onClick: finishOrder,
             type: "cta",
             width: 200,
+            loading: loadingPurchase,
+            disabled: purchaseDisabled,
+            loadingDark: true,
           },
         ]}
       ></CartFooterButtons>
