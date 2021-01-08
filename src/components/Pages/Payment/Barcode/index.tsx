@@ -81,7 +81,7 @@ function Barcode(props: BarcodeProps): JSX.Element {
           type: _document.id,
         },
       },
-      transaction_amount: cartContext.cart.total,
+      transaction_amount: orderContext.getTotal(),
       payment_method_id: props.type,
     };
 

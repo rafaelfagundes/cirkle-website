@@ -47,7 +47,7 @@ function CreditCard(): JSX.Element {
   const [expiry, setExpiry] = useState("");
   const [email, setEmail] = useState(
     "test_user_37176104@testuser.com" || authContext?.user?.email
-  );
+  ); // TODO: remover
 
   const [installmentsSelect, setInstallmentsSelect] = useState([]);
   const [documents, setDocuments] = useState([]);

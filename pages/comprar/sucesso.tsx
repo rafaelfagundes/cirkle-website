@@ -1,111 +1,235 @@
 import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
+import moment from "moment";
 import React from "react";
+import BoletoNumber from "../../src/components/Atoms/BoletoNumber";
 import Card from "../../src/components/Atoms/Card";
 import Center from "../../src/components/Atoms/Center";
 import CustomButton from "../../src/components/Atoms/CustomButton";
+import HorizontalLine from "../../src/components/Atoms/HorizontalLine";
 import Icon from "../../src/components/Atoms/Icon";
 import SimpleText from "../../src/components/Atoms/SimpleText";
 import SizedBox from "../../src/components/Atoms/SizedBox";
 import Title from "../../src/components/Atoms/Title";
 import Layout from "../../src/components/Templates/Layout";
 import Colors from "../../src/enums/Colors";
-import { useAuth } from "../../src/hooks/auth/useAuth";
+import { useOrder } from "../../src/hooks/order/useOrder";
 import Menu from "../../src/modules/menu/Menu";
 import theme from "../../src/theme/theme";
 
 function PurchaseSuccess({ menu }: { menu: Menu }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
-  const authContext = useAuth();
+  const orderContext = useOrder();
+  console.log("orderContext", orderContext.order.orderResultData);
 
   // Scroll to top when page is loaded
   React.useEffect(() => {
     if (process.browser) window.scrollTo(0, 0);
   }, []);
 
+  let orderResult: any;
+  if (orderContext?.order?.orderResultData) {
+    orderResult = orderContext.order.orderResultData;
+  }
+
+  function isBoletoOrLoterica(paymentMethodId: string) {
+    if (paymentMethodId === "bolbradesco" || paymentMethodId === "pec")
+      return paymentMethodId;
+    return false;
+  }
+
+  function openBoletoURL(url: string) {
+    window.open(url);
+  }
+
   return (
     <Layout menu={menu}>
       <SizedBox height={isSmartPhone ? 16 : 32}></SizedBox>
-      <Card>
-        <SizedBox height={32}></SizedBox>
-        <Center>
-          <img src="/images/check.svg" width={96} height={96}></img>
-        </Center>
-        <SizedBox height={32}></SizedBox>
-        <Center>
-          <Title color={Colors.MONEY} size={22}>
-            Compra Concluída
-          </Title>
-        </Center>
-        <SizedBox height={4}></SizedBox>
-        <Center>
-          <Title color={Colors.MONEY} size={22}>
-            Com Sucesso!
-          </Title>
-        </Center>
-        <SizedBox height={32}></SizedBox>
-        <Center>
-          <SimpleText>PEDIDO #AET65433A</SimpleText>
-        </Center>
-        <SizedBox height={32}></SizedBox>
-        <Center>
-          <SimpleText bold centered>
-            Todos os detalhes da compra
-          </SimpleText>
-        </Center>
-        <SizedBox height={4}></SizedBox>
-        <Center>
-          <SimpleText bold centered>
-            foram enviados para
-          </SimpleText>
-        </Center>
-        <SizedBox height={8}></SizedBox>
-        <Center>
-          <SimpleText centered color={Colors.SECONDARY}>
-            {authContext?.user?.email}
-          </SimpleText>
-        </Center>
-        <SizedBox height={32}></SizedBox>
-        <Center>
-          <Icon type="truck" size={32}></Icon>
-        </Center>
-        <SizedBox height={4}></SizedBox>
-        <Center>
-          <SimpleText centered>Previsão de Entrega</SimpleText>
-        </Center>
-        <SizedBox height={4}></SizedBox>
-        <Center>
-          <SimpleText centered color={Colors.SECONDARY}>
-            2 à 4 dias úteis
-          </SimpleText>
-        </Center>
-        <SizedBox height={24}></SizedBox>
-        <Center>
-          <CustomButton variant="outlined" onClick={null} width={220}>
-            Acompanhar Pedido
-          </CustomButton>
-        </Center>
-        <SizedBox height={16}></SizedBox>
-        <Center>
-          <CustomButton variant="contained" onClick={null} width={220}>
-            Criar Conta
-          </CustomButton>
-        </Center>
-        <SizedBox height={8}></SizedBox>
+      {orderResult && (
+        <Card>
+          <SizedBox height={32}></SizedBox>
+          <Center>
+            <img src="/images/check.svg" width={96} height={96}></img>
+          </Center>
+          <SizedBox height={32}></SizedBox>
+          <Center>
+            <>
+              {isBoletoOrLoterica(
+                orderResult.payload.payment.payment_method_id
+              ) && (
+                <Title color={Colors.MONEY} size={22}>
+                  Pedido Concluído
+                </Title>
+              )}
+              {!isBoletoOrLoterica(
+                orderResult.payload.payment.payment_method_id
+              ) && (
+                <Title color={Colors.MONEY} size={22}>
+                  Compra Concluída
+                </Title>
+              )}
+            </>
+          </Center>
+          <SizedBox height={4}></SizedBox>
+          <Center>
+            <Title color={Colors.MONEY} size={22}>
+              Com Sucesso!
+            </Title>
+          </Center>
+          <SizedBox height={32}></SizedBox>
+          <Center>
+            <SimpleText>{`PEDIDO #${orderResult.orderId.toUpperCase()}`}</SimpleText>
+          </Center>
+          <SizedBox height={32}></SizedBox>
+          {isBoletoOrLoterica(
+            orderResult.payload.payment.payment_method_id
+          ) && (
+            <>
+              <HorizontalLine></HorizontalLine>
+              <SizedBox height={32}></SizedBox>
+              <>
+                {isBoletoOrLoterica(
+                  orderResult.payload.payment.payment_method_id
+                ) === "bolbradesco" && (
+                  <>
+                    <Center>
+                      <Title>Pagamento Via Boleto</Title>
+                    </Center>
+                    <SizedBox height={16}></SizedBox>
+                    <Center>
+                      <CustomButton
+                        width={220}
+                        type="edit"
+                        onClick={() =>
+                          openBoletoURL(
+                            orderResult.payload.payment.transaction_details
+                              .external_resource_url
+                          )
+                        }
+                        icon="printer"
+                      >
+                        Imprimir Boleto
+                      </CustomButton>
+                    </Center>
+                    <SizedBox height={12}></SizedBox>
+                    <Center>
+                      <SimpleText centered color={Colors.GRAY} size={0.9}>
+                        O boleto é válido até
+                      </SimpleText>
+                    </Center>
+                    <SizedBox height={4}></SizedBox>
+                    <Center>
+                      <SimpleText centered color={Colors.PRIMARY} size={1}>
+                        {`${moment(
+                          orderResult.payload.payment.date_of_expiration
+                        ).format("DD/MM/YYYY[ às ]HH:mm")}`}
+                      </SimpleText>
+                    </Center>
+                    <SizedBox height={32}></SizedBox>
+                    <BoletoNumber>
+                      {orderResult.payload.payment.barcode.content}
+                    </BoletoNumber>
+                  </>
+                )}
+                {isBoletoOrLoterica(
+                  orderResult.payload.payment.payment_method_id
+                ) === "pec" && (
+                  <>
+                    <Center>
+                      <Title>Pagamento Via Boleto</Title>
+                    </Center>
+                  </>
+                )}
+              </>
+              <SizedBox height={36}></SizedBox>
+              <HorizontalLine></HorizontalLine>
+              <SizedBox height={32}></SizedBox>
+            </>
+          )}
+          <Center>
+            <>
+              {isBoletoOrLoterica(
+                orderResult.payload.payment.payment_method_id
+              ) && (
+                <SimpleText bold centered>
+                  Todos os detalhes do pedido
+                </SimpleText>
+              )}
+              {!isBoletoOrLoterica(
+                orderResult.payload.payment.payment_method_id
+              ) && (
+                <SimpleText bold centered>
+                  Todos os detalhes da compra
+                </SimpleText>
+              )}
+            </>
+          </Center>
+          <SizedBox height={4}></SizedBox>
+          <Center>
+            <SimpleText bold centered>
+              foram enviados para
+            </SimpleText>
+          </Center>
+          <SizedBox height={8}></SizedBox>
+          <Center>
+            <SimpleText centered color={Colors.SECONDARY}>
+              {orderResult.payload.user.email}
+            </SimpleText>
+          </Center>
+          <SizedBox height={36}></SizedBox>
+          <Center>
+            <Icon type="truck" size={32}></Icon>
+          </Center>
+          <SizedBox height={4}></SizedBox>
+          <Center>
+            <SimpleText centered>Previsão de Entrega</SimpleText>
+          </Center>
+          <SizedBox height={4}></SizedBox>
+          <Center>
+            <SimpleText centered color={Colors.SECONDARY}>
+              {`${orderResult.payload.shipping.deliveryRange.min} à ${orderResult.payload.shipping.deliveryRange.max} dias úteis`}
+            </SimpleText>
+          </Center>
+          <SizedBox height={36}></SizedBox>
 
-        <Center>
-          <SimpleText centered color={Colors.SECONDARY} size={0.9}>
-            Crie uma conta para acompanhar
-          </SimpleText>
-        </Center>
-        <Center>
-          <SimpleText centered color={Colors.SECONDARY} size={0.9}>
-            seus pedidos facilmente
-          </SimpleText>
-        </Center>
+          {/* <Center>
+            <CustomButton variant="outlined" onClick={null} width={220}>
+              Acompanhar Pedido
+            </CustomButton>
+          </Center> */}
+          <HorizontalLine></HorizontalLine>
+          <SizedBox height={36}></SizedBox>
+          <Center>
+            <CustomButton
+              variant={
+                isBoletoOrLoterica(
+                  orderResult.payload.payment.payment_method_id
+                )
+                  ? "outlined"
+                  : "contained"
+              }
+              onClick={null}
+              width={220}
+            >
+              Criar Conta
+            </CustomButton>
+          </Center>
+          <SizedBox height={8}></SizedBox>
 
-        <SizedBox height={32}></SizedBox>
-      </Card>
+          <Center>
+            <SimpleText centered color={Colors.SECONDARY} size={0.9}>
+              Crie uma conta para acompanhar
+            </SimpleText>
+          </Center>
+          <Center>
+            <SimpleText centered color={Colors.SECONDARY} size={0.9}>
+              seus pedidos de forma simples
+            </SimpleText>
+          </Center>
+
+          <SizedBox height={16}></SizedBox>
+        </Card>
+      )}
       <SizedBox height={isSmartPhone ? 16 : 32}></SizedBox>
     </Layout>
   );

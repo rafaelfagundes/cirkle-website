@@ -40,6 +40,7 @@ type Order = {
   address: Address;
   coupon: Coupon;
   shipping: MelhorEnvioShipping;
+  orderResultData: any;
 };
 
 export interface IOrderContextProps {
@@ -55,6 +56,7 @@ export interface IOrderContextProps {
   getSubtotal: () => number;
   getTotal: () => number;
   getShippingValue: () => number;
+  setOrderResult: (orderResultData: any) => void;
 }
 
 const OrderContext = createContext({} as IOrderContextProps);
@@ -82,6 +84,7 @@ function useOrderProvider() {
     address: null,
     coupon: null,
     shipping: null,
+    orderResultData: null,
   };
 
   const [order, setOrder] = useState(initialState);
@@ -157,6 +160,12 @@ function useOrderProvider() {
     return order?.shipping?.custom_price || 0;
   };
 
+  const setOrderResult = (orderResultData: any) => {
+    const _order = _cloneDeep(order);
+    _order.orderResultData = orderResultData;
+    setOrder(_order);
+  };
+
   return {
     order,
     setAddress,
@@ -168,6 +177,7 @@ function useOrderProvider() {
     getSubtotal,
     getTotal,
     getShippingValue,
+    setOrderResult,
   };
 }
 

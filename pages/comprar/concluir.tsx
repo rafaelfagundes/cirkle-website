@@ -63,12 +63,15 @@ function FinishPage(): JSX.Element {
     router.push("/comprar/pagamento");
   };
 
-  const goToSuccess = (): void => {
+  const goToSuccess = (paymentData: any): void => {
+    orderContext.setOrderResult(paymentData);
+    setLoadingPurchase(false);
     router.push("/comprar/sucesso");
   };
 
   const goToError = (): void => {
-    router.push("/comprar/error");
+    setLoadingPurchase(false);
+    // router.push("/comprar/erro");
   };
 
   const authContext = useAuth();
@@ -132,15 +135,17 @@ function FinishPage(): JSX.Element {
 
     try {
       const response = await Axios.post("/orders", _finalOrder);
-      console.log("response", response);
       setPurchaseDisabled(false);
-      setLoadingPurchase(false);
-      // goToSuccess();
+      if (response.data.status.code === 0) {
+        goToSuccess(response.data);
+      } else {
+        setPurchaseDisabled(false);
+        console.error(response.data);
+      }
     } catch (error) {
       setPurchaseDisabled(false);
       console.error(error);
-      setLoadingPurchase(false);
-      // goToError();
+      goToError();
     }
   };
 
