@@ -68,7 +68,7 @@ function Pagamento(): JSX.Element {
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
-          }).format(orderContext.getTotal())}
+          }).format(orderContext.getTotal(cartContext.isShippingFree()))}
         </Price>
       </Row>
       <SizedBox height={isSmartPhone ? 20 : 24}></SizedBox>

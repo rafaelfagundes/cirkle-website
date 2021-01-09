@@ -54,7 +54,7 @@ export interface IOrderContextProps {
   ) => void;
   setProducts: (products: Array<Product>) => void;
   getSubtotal: () => number;
-  getTotal: () => number;
+  getTotal: (freeShipping: boolean) => number;
   getShippingValue: () => number;
   setOrderResult: (orderResultData: any) => void;
 }
@@ -152,7 +152,10 @@ function useOrderProvider() {
     return subtotal;
   };
 
-  const getTotal = (): number => {
+  const getTotal = (freeShipping = false): number => {
+    if (freeShipping) {
+      return getSubtotal();
+    }
     return getSubtotal() + Number(order?.shipping?.custom_price || 0);
   };
 

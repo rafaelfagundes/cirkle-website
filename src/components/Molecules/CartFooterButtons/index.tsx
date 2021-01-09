@@ -12,6 +12,7 @@ const Holder = styled.div`
 export type Button = {
   onClick: () => void;
   text: string;
+  icon?: string;
   type?: string;
   width?: number;
   isBackButton?: boolean;
@@ -39,6 +40,7 @@ function CartFooterButtons(props: CartFooterButtonsProps): JSX.Element {
               width={item.width}
               loading={item.loading}
               loadingDark={item.loadingDark}
+              icon={item.icon}
             >
               {item.text}
             </CustomButton>

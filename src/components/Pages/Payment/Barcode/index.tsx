@@ -33,8 +33,8 @@ interface BarcodeProps {
 
 function Barcode(props: BarcodeProps): JSX.Element {
   const authContext = useAuth();
-  const cartContext = useCart();
   const orderContext = useOrder();
+  const cartContext = useCart();
 
   const [firstName, setFirstName] = useState(
     orderContext?.order?.user?.firstName ||
@@ -81,7 +81,7 @@ function Barcode(props: BarcodeProps): JSX.Element {
           type: _document.id,
         },
       },
-      transaction_amount: orderContext.getTotal(),
+      transaction_amount: orderContext.getTotal(cartContext.isShippingFree()),
       payment_method_id: props.type,
     };
 
@@ -229,7 +229,7 @@ function Barcode(props: BarcodeProps): JSX.Element {
         ))}
       </>
       <SizedBox height={20}></SizedBox>
-      <SimpleText>{props.message}</SimpleText>
+      <SimpleText color={Colors.BLUE_JEANS}>{props.message}</SimpleText>
       <SizedBox height={20}></SizedBox>
       <CartFooterButtons
         buttons={[

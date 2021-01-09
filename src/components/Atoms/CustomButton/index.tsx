@@ -16,6 +16,8 @@ const ButtonBase = styled.div<{ width: number; small: boolean }>`
   height: ${(props) => (props.small ? "28px" : "44px")};
   border-radius: 4px;
 
+  transition: width 200ms;
+
   &:hover {
     filter: saturate(200%);
   }

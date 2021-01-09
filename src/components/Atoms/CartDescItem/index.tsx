@@ -16,7 +16,7 @@ function CartDescItem({
   title: string;
   subtitle?: string;
   negative?: boolean;
-  children: string;
+  children: string | JSX.Element;
 }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -48,9 +48,12 @@ function CartDescItem({
           )}
         </Row>
       )}
-      <SimpleText bold color={negative ? Colors.SECONDARY : Colors.PRIMARY}>
-        {`${negative ? "-" : ""}${children}`}
-      </SimpleText>
+      {typeof children === "string" && (
+        <SimpleText bold color={negative ? Colors.SECONDARY : Colors.PRIMARY}>
+          {`${negative ? "-" : ""}${children}`}
+        </SimpleText>
+      )}
+      {typeof children !== "string" && <>{children}</>}
     </Row>
   );
 }

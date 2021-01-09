@@ -6,6 +6,7 @@ import Cards from "react-credit-cards";
 import "react-credit-cards/es/styles-compiled.css";
 import Colors from "../../../../enums/Colors";
 import { useAuth } from "../../../../hooks/auth/useAuth";
+import { useCart } from "../../../../hooks/cart/useCart";
 import { useOrder } from "../../../../hooks/order/useOrder";
 import {
   creditCardErrorsTemplate,
@@ -37,6 +38,7 @@ function CreditCard(): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const authContext = useAuth();
+  const cartContext = useCart();
 
   const [loadingPayment, setLoadingPayment] = useState(false);
 
@@ -155,7 +157,7 @@ function CreditCard(): JSX.Element {
       console.log("3. Recuperando parcelas");
       const result = await getInstallments(
         cardData.id,
-        orderContext.getTotal(),
+        orderContext.getTotal(cartContext.isShippingFree()),
         issuerId
       );
 
@@ -655,7 +657,7 @@ function CreditCard(): JSX.Element {
                 type="hidden"
                 name="transactionAmount"
                 id="transactionAmount"
-                value={orderContext.getTotal()}
+                value={orderContext.getTotal(cartContext.isShippingFree())}
                 readOnly
               />
               <input

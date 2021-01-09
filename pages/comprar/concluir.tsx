@@ -9,6 +9,7 @@ import CartInstallments from "../../src/components/Atoms/CartInstallments";
 import CartTotal from "../../src/components/Atoms/CartTotal";
 import HorizontalLine from "../../src/components/Atoms/HorizontalLine";
 import Row from "../../src/components/Atoms/Row";
+import SimpleText from "../../src/components/Atoms/SimpleText";
 import SizedBox from "../../src/components/Atoms/SizedBox";
 import Subtitle from "../../src/components/Atoms/Subtitle";
 import Title from "../../src/components/Atoms/Title";
@@ -65,13 +66,15 @@ function FinishPage(): JSX.Element {
 
   const goToSuccess = (paymentData: any): void => {
     orderContext.setOrderResult(paymentData);
-    setLoadingPurchase(false);
+    // setLoadingPurchase(false);
     router.push("/comprar/sucesso");
   };
 
-  const goToError = (): void => {
-    setLoadingPurchase(false);
-    // router.push("/comprar/erro");
+  const goToError = (errorData): void => {
+    orderContext.setOrderResult(errorData);
+    // setLoadingPurchase(false);
+
+    router.push("/comprar/erro");
   };
 
   const authContext = useAuth();
@@ -83,7 +86,7 @@ function FinishPage(): JSX.Element {
       if (payment?.payment_method_id === "bolbradesco") {
         return "payment-barcode";
       } else {
-        return "banker";
+        return "ticket-dark";
       }
     }
   };
@@ -141,11 +144,12 @@ function FinishPage(): JSX.Element {
       } else {
         setPurchaseDisabled(false);
         console.error(response.data);
+        goToError(response.data);
       }
     } catch (error) {
       setPurchaseDisabled(false);
       console.error(error);
-      goToError();
+      goToError(error);
     }
   };
 
@@ -257,18 +261,33 @@ function FinishPage(): JSX.Element {
       </CartDescItem>
       <SizedBox height={20}></SizedBox> */}
 
-      <CartDescItem title="frete" subtitle="JadLog .Package - 2 à 4 dias úteis">
-        {new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(orderContext.getShippingValue())}
-      </CartDescItem>
+      {!cartContext.isShippingFree() && (
+        <CartDescItem
+          title="frete"
+          subtitle="JadLog .Package - 2 à 4 dias úteis"
+        >
+          {new Intl.NumberFormat("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          }).format(orderContext.getShippingValue())}
+        </CartDescItem>
+      )}
+      {cartContext.isShippingFree() && (
+        <CartDescItem
+          title="frete"
+          subtitle="JadLog .Package - 2 à 4 dias úteis"
+        >
+          <SimpleText bold color={Colors.ORANGE_PANTONE}>
+            GRÁTIS
+          </SimpleText>
+        </CartDescItem>
+      )}
       <SizedBox height={40}></SizedBox>
       <CartTotal>
         {new Intl.NumberFormat("pt-BR", {
           style: "currency",
           currency: "BRL",
-        }).format(orderContext.getTotal())}
+        }).format(orderContext.getTotal(cartContext.isShippingFree()))}
       </CartTotal>
       {orderContext?.order?.payment?.hasOwnProperty("paymentMethodId") && (
         <>
@@ -294,11 +313,12 @@ function FinishPage(): JSX.Element {
           {
             text: "CONCLUIR COMPRA",
             onClick: finishOrder,
-            type: "cta",
-            width: 200,
+            type: "edit",
+            width: loadingPurchase ? 100 : 200,
             loading: loadingPurchase,
             disabled: purchaseDisabled,
             loadingDark: true,
+            icon: "done",
           },
         ]}
       ></CartFooterButtons>

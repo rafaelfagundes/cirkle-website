@@ -136,7 +136,50 @@ function PurchaseSuccess({ menu }: { menu: Menu }): JSX.Element {
                 ) === "pec" && (
                   <>
                     <Center>
-                      <Title>Pagamento Via Boleto</Title>
+                      <Title>Pagamento Na Lotérica</Title>
+                    </Center>
+                    <SizedBox height={16}></SizedBox>
+                    <Center>
+                      <SimpleText size={0.9} centered>
+                        Após pressionar o botão abaixo,
+                      </SimpleText>
+                    </Center>
+                    <Center>
+                      <SimpleText size={0.9} centered>
+                        anote os dados e informe ao atendente da casa lotérica.
+                      </SimpleText>
+                    </Center>
+                    <SizedBox height={16}></SizedBox>
+                    <Center>
+                      <CustomButton
+                        onClick={() =>
+                          openBoletoURL(
+                            orderResult.payload.payment.transaction_details
+                              .external_resource_url
+                          )
+                        }
+                        width={230}
+                        type="edit"
+                        icon="ticket"
+                      >
+                        Abrir Dados de Pagamento
+                      </CustomButton>
+                    </Center>
+                    <SizedBox height={16}></SizedBox>
+                    <Center>
+                      <SimpleText size={0.9} color={Colors.MONEY} centered>
+                        Dica: caso esteja no celular tire um print dos dados,
+                      </SimpleText>
+                    </Center>
+                    <Center>
+                      <SimpleText size={0.9} color={Colors.MONEY} centered>
+                        caso esteja no computador, tire uma foto com o
+                      </SimpleText>
+                    </Center>
+                    <Center>
+                      <SimpleText size={0.9} color={Colors.MONEY} centered>
+                        smartphone.
+                      </SimpleText>
                     </Center>
                   </>
                 )}
