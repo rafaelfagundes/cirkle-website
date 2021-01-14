@@ -37,7 +37,7 @@ function Footer(): JSX.Element {
           CIRKLE TECNOLOGIA E COMERCIO LTDA - MG
         </LegalText>
         <LegalText style={{ color: "#fff" }}>
-          ©2020 TODOS OS DIREITOS RESERVADOS - CNPJ: 11.222.333/0001-99
+          CNPJ: 11.222.333/0001-99
         </LegalText>
       </Legal>
     </div>

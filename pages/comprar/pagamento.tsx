@@ -30,6 +30,11 @@ function Pagamento(): JSX.Element {
   const orderContext = useOrder();
   const router = useRouter();
 
+  React.useEffect(() => {
+    // Scroll to top when page is loaded
+    if (process.browser) window.scrollTo(0, 0);
+  }, []);
+
   if (cartContext.cart.items.length === 0) {
     if (process.browser) {
       router.push("/");

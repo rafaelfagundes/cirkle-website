@@ -11,6 +11,7 @@ import SizedBox from "../../src/components/Atoms/SizedBox";
 import Title from "../../src/components/Atoms/Title";
 import Layout from "../../src/components/Templates/Layout";
 import Colors from "../../src/enums/Colors";
+import { useCart } from "../../src/hooks/cart/useCart";
 import { useOrder } from "../../src/hooks/order/useOrder";
 import Menu from "../../src/modules/menu/Menu";
 import theme from "../../src/theme/theme";
@@ -32,7 +33,7 @@ const OrderStatus = {
   201: {
     title: "Erro ao Processar Pagamento",
     message:
-      "Um erro ocorreu ao tentar efetuar o pagamento. Tente novamente mais tarde. Se o problema persistir entre em contato com a adminstradora do cartão.",
+      "Um erro ocorreu ao tentar efetuar o pagamento. Tente novamente mais tarde. Se o problema persistir entre em contato com a administradora do cartão.",
   },
   300: {
     title: "Dados Inválidos Foram Enviados",
@@ -61,9 +62,16 @@ const OrderStatus = {
 function PurchaseError({ menu }: { menu: Menu }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const orderContext = useOrder();
-  console.log("orderContext", orderContext.order.orderResultData);
+  const cartContext = useCart();
 
   const router = useRouter();
+
+  if (cartContext.cart.items.length === 0) {
+    if (process.browser) {
+      router.push("/");
+      return <></>;
+    }
+  }
 
   useEffect(() => {
     // Scroll to top when page is loaded

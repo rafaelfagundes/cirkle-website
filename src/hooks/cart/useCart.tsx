@@ -26,6 +26,7 @@ export interface ICartContextProps {
   updateSize: (id: string, size: string) => void;
   updateFreeShipping: (active: boolean, value: number) => void;
   isShippingFree: () => boolean;
+  emptyCart: () => void;
 }
 
 const CartContext = createContext({} as ICartContextProps);
@@ -44,7 +45,7 @@ export const useCart = (): ICartContextProps => {
 };
 
 function useCartProvider() {
-  const emptyCart: Cart = {
+  const initialState: Cart = {
     items: [],
     shipping: null,
     address: null,
@@ -61,7 +62,7 @@ function useCartProvider() {
   if (process.browser) {
     savedCart = JSON.parse(localStorage.getItem("cart"));
   }
-  const [cart, setCart] = useState(savedCart ? savedCart : emptyCart);
+  const [cart, setCart] = useState(savedCart ? savedCart : initialState);
 
   function calculateValues(newCart: Cart): { subtotal: number; total: number } {
     const subtotal = newCart.items.reduce((sum, item) => {
@@ -284,6 +285,10 @@ function useCartProvider() {
     return cart.freeShipping && cart.subtotal >= cart.freeShippingValue;
   };
 
+  const emptyCart = () => {
+    setCart(initialState);
+  };
+
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
@@ -315,6 +320,7 @@ function useCartProvider() {
     updateFreeShipping,
     setShippingList,
     isShippingFree,
+    emptyCart,
   };
 }
 

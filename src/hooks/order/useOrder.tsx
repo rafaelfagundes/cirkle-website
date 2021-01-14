@@ -57,6 +57,7 @@ export interface IOrderContextProps {
   getTotal: (freeShipping: boolean) => number;
   getShippingValue: () => number;
   setOrderResult: (orderResultData: any) => void;
+  emptyOrder: () => void;
 }
 
 const OrderContext = createContext({} as IOrderContextProps);
@@ -169,6 +170,18 @@ function useOrderProvider() {
     setOrder(_order);
   };
 
+  const emptyOrder = () => {
+    setOrder({
+      user: null,
+      payment: null,
+      products: [],
+      address: null,
+      coupon: null,
+      shipping: null,
+      orderResultData: order.orderResultData,
+    });
+  };
+
   return {
     order,
     setAddress,
@@ -181,6 +194,7 @@ function useOrderProvider() {
     getTotal,
     getShippingValue,
     setOrderResult,
+    emptyOrder,
   };
 }
 

@@ -55,7 +55,7 @@ const AddressCol = styled.div<{ isDesktop: boolean }>`
 
 const ShippingCol = styled.div<{ isDesktop: boolean }>`
   margin-top: ${(props) => (props.isDesktop ? 0 : 32)}px;
-  ${(props) => (props.isDesktop ? "flex:1" : "")};
+  ${(props) => (props.isDesktop ? "flex:1" : "width:100%")};
 `;
 
 function AddressAndShipping(): JSX.Element {
@@ -63,6 +63,11 @@ function AddressAndShipping(): JSX.Element {
   const cartContext = useCart();
   const authContext = useAuth();
   const orderContext = useOrder();
+
+  React.useEffect(() => {
+    // Scroll to top when page is loaded
+    if (process.browser) window.scrollTo(0, 0);
+  }, []);
 
   if (cartContext.cart.items.length === 0) {
     if (process.browser) {

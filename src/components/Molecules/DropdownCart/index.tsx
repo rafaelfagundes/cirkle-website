@@ -34,6 +34,11 @@ function DropdownCart(): JSX.Element {
     setIsOpen(false);
   };
 
+  const goToPurchase = () => {
+    typeof window !== "undefined" && router.push("/comprar/envio");
+    setIsOpen(false);
+  };
+
   return (
     <div style={{ cursor: "pointer" }}>
       <Bag
@@ -91,7 +96,7 @@ function DropdownCart(): JSX.Element {
                 width={200}
                 variant="outlined"
                 type="primary"
-                onClick={() => goToCart()}
+                onClick={goToCart}
               >
                 Ver Sacola
               </CustomButton>
@@ -100,7 +105,7 @@ function DropdownCart(): JSX.Element {
                 width={200}
                 variant="contained"
                 type="success"
-                onClick={null}
+                onClick={goToPurchase}
               >
                 Comprar
               </CustomButton>

@@ -1,6 +1,7 @@
 import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
 import moment from "moment";
+import { useRouter } from "next/router";
 import React from "react";
 import BoletoNumber from "../../src/components/Atoms/BoletoNumber";
 import Card from "../../src/components/Atoms/Card";
@@ -13,6 +14,7 @@ import SizedBox from "../../src/components/Atoms/SizedBox";
 import Title from "../../src/components/Atoms/Title";
 import Layout from "../../src/components/Templates/Layout";
 import Colors from "../../src/enums/Colors";
+import { useCart } from "../../src/hooks/cart/useCart";
 import { useOrder } from "../../src/hooks/order/useOrder";
 import Menu from "../../src/modules/menu/Menu";
 import theme from "../../src/theme/theme";
@@ -20,11 +22,27 @@ import theme from "../../src/theme/theme";
 function PurchaseSuccess({ menu }: { menu: Menu }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const orderContext = useOrder();
-  console.log("orderContext", orderContext.order.orderResultData);
+  const cartContext = useCart();
+  const router = useRouter();
 
-  // Scroll to top when page is loaded
+  if (cartContext.cart.items.length === 0) {
+    if (process.browser) {
+      router.push("/");
+      return <></>;
+    }
+  }
+
+  const emptyCartAndOrder = () => {
+    orderContext.emptyOrder();
+    cartContext.emptyCart();
+  };
+
   React.useEffect(() => {
+    // Scroll to top when page is loaded
     if (process.browser) window.scrollTo(0, 0);
+
+    // Empty cart and order context
+    emptyCartAndOrder();
   }, []);
 
   let orderResult: any;

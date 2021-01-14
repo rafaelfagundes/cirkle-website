@@ -31,6 +31,11 @@ function FinishPage(): JSX.Element {
   const [loadingPurchase, setLoadingPurchase] = useState(false);
   const [purchaseDisabled, setPurchaseDisabled] = useState(false);
 
+  React.useEffect(() => {
+    // Scroll to top when page is loaded
+    if (process.browser) window.scrollTo(0, 0);
+  }, []);
+
   if (cartContext.cart.items.length === 0) {
     if (process.browser) {
       router.push("/");
