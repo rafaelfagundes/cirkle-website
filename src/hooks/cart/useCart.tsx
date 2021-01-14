@@ -2,12 +2,12 @@ import Axios from "axios";
 import _cloneDeep from "lodash/cloneDeep";
 import _find from "lodash/find";
 import _findIndex from "lodash/findIndex";
-import _orderBy from "lodash/orderBy";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { AssetType, SelectItem } from "../../components/Atoms/SelectMenu";
 import Address from "../../modules/address/Address";
 import Cart from "../../modules/cart/Cart";
 import Shipping from "../../modules/cart/CartShipping";
+import { getLowestShippingPrice } from "../../modules/melhorEnvio/MelhorEnvio";
 import Payment from "../../modules/payment/Payment";
 import Product from "../../modules/product/Product";
 import ShippingData from "../../modules/shippingData/ShippingData";
@@ -27,6 +27,7 @@ export interface ICartContextProps {
   updateFreeShipping: (active: boolean, value: number) => void;
   isShippingFree: () => boolean;
   emptyCart: () => void;
+  calculateShipping: (postalCode: string) => Promise<void>;
 }
 
 const CartContext = createContext({} as ICartContextProps);
@@ -210,28 +211,13 @@ function useCartProvider() {
     }
   };
 
-  const updateShipping = async (value: string) => {
-    console.log("-> Atualizando fretes:", value);
-
-    if (!Axios.defaults.headers.common["Authorization"]) {
-      console.error("Não tem token de autorização");
-      return;
-    }
+  const calculateShipping = async (_postalCode: string) => {
+    console.log("_postalCode", _postalCode);
+    if (!_postalCode) return;
 
     const _cart = _cloneDeep(cart);
-    _cart.loadingShipping = true;
-    setCart(_cart);
 
-    if (cart.freeShipping && cart.subtotal > cart.freeShippingValue) {
-      return;
-    }
-
-    let postalCode = null;
-    if (cart?.shipping?.postalCode) {
-      postalCode = cart?.shipping?.postalCode.replace("-", "");
-    } else {
-      return;
-    }
+    const postalCode = _postalCode.replace("-", "");
 
     const shippingData: ShippingData = {
       to: {
@@ -257,7 +243,7 @@ function useCartProvider() {
 
       const _shippingList: Array<SelectItem> = [];
 
-      const _sortedResponse = _orderBy(response.data, ["price"], ["asc"]);
+      const _sortedResponse = getLowestShippingPrice(response.data);
 
       _sortedResponse.forEach((item: any) => {
         const selected = item.id === cart?.shipping?.id;
@@ -275,7 +261,14 @@ function useCartProvider() {
         }
       });
 
-      setShippingList(_shippingList);
+      _cart.shipping = {
+        id: null,
+        postalCode: _postalCode,
+        type: null,
+        value: null,
+      };
+      _cart.shippingList = _shippingList;
+      setCart(_cart);
     } catch (error) {
       console.dir(error);
     }
@@ -293,18 +286,6 @@ function useCartProvider() {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  useEffect(() => {
-    if (cart?.shipping?.postalCode) {
-      updateShipping("postalcode");
-    }
-  }, [cart.shipping?.postalCode]);
-
-  useEffect(() => {
-    if (cart?.items?.length > 0) {
-      updateShipping("cart items");
-    }
-  }, [cart?.subtotal]);
-
   return {
     cart,
     addToCart,
@@ -321,6 +302,7 @@ function useCartProvider() {
     setShippingList,
     isShippingFree,
     emptyCart,
+    calculateShipping,
   };
 }
 

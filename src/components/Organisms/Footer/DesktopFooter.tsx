@@ -270,36 +270,25 @@ function DesktopFooter(): JSX.Element {
                 <PaymentType type="amex" size={48}></PaymentType>
               </Grid>
               <Grid item md={3}>
-                <PaymentType type="aura" size={48}></PaymentType>
+                <PaymentType type="dinersclub" size={48}></PaymentType>
               </Grid>
             </Grid>
             <SizedBox height={16}></SizedBox>
             <Grid container spacing={2}>
-              <Grid item md={3}>
-                <PaymentType type="dinersclub" size={48}></PaymentType>
-              </Grid>
-              <Grid item md={3}>
-                <PaymentType type="discover" size={48}></PaymentType>
-              </Grid>
               <Grid item md={3}>
                 <PaymentType type="elo" size={48}></PaymentType>
               </Grid>
               <Grid item md={3}>
                 <PaymentType type="hipercard" size={48}></PaymentType>
               </Grid>
-            </Grid>
-            <SizedBox height={16}></SizedBox>
-            <Grid container spacing={2}>
-              <Grid item md={3}>
-                <PaymentType type="jcb" size={48}></PaymentType>
-              </Grid>
               <Grid item md={3}>
                 <PaymentType type="boleto" size={48}></PaymentType>
               </Grid>
               <Grid item md={3}>
-                <PaymentType type="bank_transfer" size={48}></PaymentType>
+                <PaymentType type="loterica" size={48}></PaymentType>
               </Grid>
             </Grid>
+            <SizedBox height={16}></SizedBox>
           </LinksSection>
         </Columns>
       </Container>

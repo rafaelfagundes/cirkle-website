@@ -25,19 +25,29 @@ function TextLink({
   children,
   color = Colors.PRIMARY,
   size = 16,
+  onClick,
 }: {
-  href: string;
+  href?: string;
   children: string;
   color?: string;
   size?: number;
+  onClick?: () => void;
 }): JSX.Element {
-  return (
-    <Link href={href}>
-      <StyledLink color={color} size={size}>
+  if (onClick) {
+    return (
+      <StyledLink color={color} size={size} onClick={onClick}>
         {children}
       </StyledLink>
-    </Link>
-  );
+    );
+  } else {
+    return (
+      <Link href={href}>
+        <StyledLink color={color} size={size}>
+          {children}
+        </StyledLink>
+      </Link>
+    );
+  }
 }
 
 export default TextLink;

@@ -210,25 +210,6 @@ function CartItem({
                     </Row>
                   </Padding>
                 )}
-                {isSmartPhone && (
-                  <>
-                    <SizedBox height={10}></SizedBox>
-                    <Row>
-                      <Price>
-                        {new Intl.NumberFormat("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        }).format(item.price)}
-                      </Price>
-                      <OldPrice>
-                        {new Intl.NumberFormat("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        }).format(item.priceWhenNew)}
-                      </OldPrice>
-                    </Row>
-                  </>
-                )}
               </>
             </Link>
           </SpaceBetweenColumn>

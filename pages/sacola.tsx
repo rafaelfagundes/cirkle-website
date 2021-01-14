@@ -3,23 +3,25 @@ import Axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import Card from "../src/components/Atoms/Card";
-import CheckBoxWithLabel from "../src/components/Atoms/CheckboxWithLabel";
 import Column from "../src/components/Atoms/Column";
 import CustomButton from "../src/components/Atoms/CustomButton";
 import CustomTextField, {
   getCustomTextFieldValue,
+  setCustomTextFieldValue,
 } from "../src/components/Atoms/CustomTextField";
 import Padding from "../src/components/Atoms/Padding";
 import PaymentType from "../src/components/Atoms/PaymentType";
 import SelectMenu, { SelectItem } from "../src/components/Atoms/SelectMenu";
-import SimpleText from "../src/components/Atoms/SimpleText";
 import SizedBox from "../src/components/Atoms/SizedBox";
 import Subtitle from "../src/components/Atoms/Subtitle";
+import TextLink from "../src/components/Atoms/TextLink";
 import Title from "../src/components/Atoms/Title";
 import CartItem from "../src/components/Molecules/CartItem";
 import FreeDeliveryMeter from "../src/components/Molecules/FreeShippingMeter";
 import EmptyPage from "../src/components/Templates/EmptyPage";
 import Layout from "../src/components/Templates/Layout";
+import Colors from "../src/enums/Colors";
+import { useAuth } from "../src/hooks/auth/useAuth";
 import { useCart } from "../src/hooks/cart/useCart";
 import Menu from "../src/modules/menu/Menu";
 import theme from "../src/theme/theme";
@@ -28,7 +30,6 @@ import {
   CartItems,
   Label,
   MainColumn,
-  OpacityAnimation,
   Row,
   SideColumn,
   StyledCartContainer,
@@ -40,8 +41,10 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
 
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const cartContext = useCart();
-
+  const authContext = useAuth();
   const postalCode = useRef(null);
+
+  const [shippingLoading, setShippingLoading] = useState(false);
 
   const [hasCoupon, setHasCoupon] = useState(false);
 
@@ -122,14 +125,50 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
     cartContext.setShippingList(list);
   };
 
-  const setPostalCode = () => {
-    cartContext.setShipping({
-      id: null,
-      postalCode: getCustomTextFieldValue(postalCode),
-      type: null,
-      value: null,
-    });
+  const calculateShipping = async (_postalCode = null) => {
+    setShippingLoading(true);
+    if (typeof _postalCode === "string") {
+      await cartContext.calculateShipping(_postalCode);
+    } else {
+      await cartContext.calculateShipping(getCustomTextFieldValue(postalCode));
+    }
+    setShippingLoading(false);
   };
+
+  const calculatePredefinedPostalCode = async () => {
+    const userAddress = authContext.user.addresses.filter(
+      (address) => address.mainAddress
+    );
+    if (userAddress) {
+      setCustomTextFieldValue(postalCode, userAddress[0].postalCode);
+      calculateShipping(userAddress[0].postalCode);
+    }
+  };
+
+  const userDefaultAddress = () => {
+    const userAddress = authContext.user.addresses.filter(
+      (address) => address.mainAddress
+    );
+    if (userAddress) {
+      return userAddress[0].postalCode;
+    }
+  };
+
+  const userHasSavedAddress = () => {
+    return authContext.user.addresses.length;
+  };
+
+  useEffect(() => {
+    if (cartContext?.cart?.items?.length) {
+      const _postalCode =
+        getCustomTextFieldValue(postalCode) ||
+        cartContext?.cart?.shipping?.postalCode;
+
+      if (_postalCode) {
+        calculateShipping(_postalCode);
+      }
+    }
+  }, [cartContext.cart.items.length]);
 
   return (
     <Layout menu={menu}>
@@ -192,13 +231,25 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                             CEP de Destino
                           </CustomTextField>
                           <CustomButton
-                            onClick={setPostalCode}
-                            loading={cartContext.cart.loadingShipping}
+                            onClick={calculateShipping}
+                            loading={shippingLoading}
                           >
                             Calcular
                           </CustomButton>
                         </Row>
                         <SizedBox height={8}></SizedBox>
+                        {userHasSavedAddress() && (
+                          <>
+                            <TextLink
+                              onClick={calculatePredefinedPostalCode}
+                              color={Colors.SECONDARY}
+                              size={14}
+                            >
+                              {`Calcular para ${userDefaultAddress()}?`}
+                            </TextLink>
+                            <SizedBox height={8}></SizedBox>
+                          </>
+                        )}
                       </>
                     )}
 
@@ -251,7 +302,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                     </Row>
                     <SizedBox height={24}></SizedBox>
 
-                    <CheckBoxWithLabel
+                    {/* <CheckBoxWithLabel
                       value={hasCoupon}
                       onClick={() => setHasCoupon(!hasCoupon)}
                       label="Tenho um cupom de desconto"
@@ -262,7 +313,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                       <CustomTextField type="coupon" showIcon>
                         Insira seu cupom de desconto
                       </CustomTextField>
-                    </OpacityAnimation>
+                    </OpacityAnimation> */}
 
                     <SizedBox height={hasCoupon ? 24 : 16}></SizedBox>
                     <Title>Aceitamos</Title>
@@ -293,24 +344,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                         <Grid item xs={2}>
                           <PaymentType
                             border
-                            type="aura"
-                            size={42}
-                          ></PaymentType>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <PaymentType
-                            border
                             type="dinersclub"
-                            size={42}
-                          ></PaymentType>
-                        </Grid>
-                      </Grid>
-                      <SizedBox height={16}></SizedBox>
-                      <Grid container spacing={8}>
-                        <Grid item xs={2}>
-                          <PaymentType
-                            border
-                            type="discover"
                             size={42}
                           ></PaymentType>
                         </Grid>
@@ -321,6 +355,9 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                             size={42}
                           ></PaymentType>
                         </Grid>
+                      </Grid>
+                      <SizedBox height={16}></SizedBox>
+                      <Grid container spacing={8}>
                         <Grid item xs={2}>
                           <PaymentType
                             border
@@ -331,30 +368,21 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                         <Grid item xs={2}>
                           <PaymentType
                             border
-                            type="jcb"
+                            type="boleto"
                             size={42}
                           ></PaymentType>
                         </Grid>
                         <Grid item xs={2}>
                           <PaymentType
                             border
-                            type="boleto"
+                            type="loterica"
                             size={42}
                           ></PaymentType>
                         </Grid>
                       </Grid>
                       <SizedBox height={16}></SizedBox>
-                      <Grid container spacing={8}>
-                        <Grid item xs={2}>
-                          <PaymentType
-                            border
-                            type="bank_transfer"
-                            size={42}
-                          ></PaymentType>
-                        </Grid>
-                      </Grid>
                     </>
-                    <SizedBox height={24}></SizedBox>
+                    {/* <SizedBox height={24}></SizedBox>
                     <Title>Compartilhar Sacola</Title>
                     <SizedBox height={10}></SizedBox>
                     <Row>
@@ -381,7 +409,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                     <SimpleText size={0.8}>
                       Compartilhe para continuar em outro aparelho ou envie para
                       outra pessoa concluir a compra
-                    </SimpleText>
+                    </SimpleText> */}
                   </CartFooter>
                 </Card>
               </SideColumn>

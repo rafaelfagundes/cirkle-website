@@ -25,12 +25,12 @@ function PurchaseSuccess({ menu }: { menu: Menu }): JSX.Element {
   const cartContext = useCart();
   const router = useRouter();
 
-  if (cartContext.cart.items.length === 0) {
-    if (process.browser) {
-      router.push("/");
-      return <></>;
-    }
-  }
+  // if (cartContext.cart.items.length === 0) {
+  //   if (process.browser) {
+  //     router.push("/");
+  //     return <></>;
+  //   }
+  // }
 
   const emptyCartAndOrder = () => {
     orderContext.emptyOrder();

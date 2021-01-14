@@ -120,6 +120,14 @@ function PaymentType({
           bgColor: "#FFF",
           title: "Visa",
         };
+      case "loterica":
+        return {
+          image: `https://res.cloudinary.com/cirklebr/image/upload/c_scale,w_${
+            size * 2
+          }/v1599082122/payment/loterica.png`,
+          bgColor: "#FFF",
+          title: "Pagamento nas Loterias Caixa",
+        };
       case "boleto":
       default:
         return {

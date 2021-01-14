@@ -66,12 +66,12 @@ function PurchaseError({ menu }: { menu: Menu }): JSX.Element {
 
   const router = useRouter();
 
-  if (cartContext.cart.items.length === 0) {
-    if (process.browser) {
-      router.push("/");
-      return <></>;
-    }
-  }
+  // if (cartContext.cart.items.length === 0) {
+  //   if (process.browser) {
+  //     router.push("/");
+  //     return <></>;
+  //   }
+  // }
 
   useEffect(() => {
     // Scroll to top when page is loaded
