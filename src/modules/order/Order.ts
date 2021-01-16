@@ -5,6 +5,7 @@ export enum PaymentType {
   PIX = "PIX",
   BOLETO = "BOLETO",
   BANK_TRANSFER = "BANK_TRANSFER",
+  PEC = "PEC",
 }
 
 export enum PaymentStatus {

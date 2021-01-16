@@ -64,7 +64,7 @@ export function getPayment(payment: OrderPayment): string | JSX.Element {
       );
     case PaymentStatus.PENDING:
       return (
-        <Link>
+        <Link onClick={() => window.open(payment.paymentLink)}>
           <LinkText>Pagar Agora</LinkText>
         </Link>
       );
