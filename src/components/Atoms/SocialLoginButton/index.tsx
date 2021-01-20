@@ -12,6 +12,7 @@ const StyledSocialLoginButton = styled.div`
   justify-content: center;
   align-items: center;
   flex: 1;
+  border-radius: 4px;
 `;
 
 const SocialLoginButtonText = styled.span`

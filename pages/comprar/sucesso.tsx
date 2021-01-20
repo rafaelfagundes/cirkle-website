@@ -14,6 +14,7 @@ import SizedBox from "../../src/components/Atoms/SizedBox";
 import Title from "../../src/components/Atoms/Title";
 import Layout from "../../src/components/Templates/Layout";
 import Colors from "../../src/enums/Colors";
+import { useAuth } from "../../src/hooks/auth/useAuth";
 import { useCart } from "../../src/hooks/cart/useCart";
 import { useOrder } from "../../src/hooks/order/useOrder";
 import Menu from "../../src/modules/menu/Menu";
@@ -23,14 +24,20 @@ function PurchaseSuccess({ menu }: { menu: Menu }): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const orderContext = useOrder();
   const cartContext = useCart();
+  const authContext = useAuth();
   const router = useRouter();
 
-  // if (cartContext.cart.items.length === 0) {
-  //   if (process.browser) {
-  //     router.push("/");
-  //     return <></>;
-  //   }
-  // }
+  const createAccount = () => {
+    router.push("/cadastrar");
+  };
+
+  const goToOrders = () => {
+    if (isSmartPhone) {
+      router.push("/meus-pedidos");
+    } else {
+      router.push("/perfil?aba=meus-pedidos");
+    }
+  };
 
   const emptyCartAndOrder = () => {
     orderContext.emptyOrder();
@@ -260,33 +267,50 @@ function PurchaseSuccess({ menu }: { menu: Menu }): JSX.Element {
           </Center> */}
           <HorizontalLine></HorizontalLine>
           <SizedBox height={36}></SizedBox>
-          <Center>
-            <CustomButton
-              variant={
-                isBoletoOrLoterica(
-                  orderResult.payload.payment.payment_method_id
-                )
-                  ? "outlined"
-                  : "contained"
-              }
-              onClick={null}
-              width={220}
-            >
-              Criar Conta
-            </CustomButton>
-          </Center>
-          <SizedBox height={8}></SizedBox>
 
-          <Center>
-            <SimpleText centered color={Colors.SECONDARY} size={0.9}>
-              Crie uma conta para acompanhar
-            </SimpleText>
-          </Center>
-          <Center>
-            <SimpleText centered color={Colors.SECONDARY} size={0.9}>
-              seus pedidos de forma simples
-            </SimpleText>
-          </Center>
+          {!authContext.user && (
+            <>
+              <Center>
+                <CustomButton
+                  variant="contained"
+                  onClick={createAccount}
+                  width={220}
+                >
+                  Criar Conta
+                </CustomButton>
+              </Center>
+              <SizedBox height={8}></SizedBox>
+              <Center>
+                <SimpleText centered color={Colors.SECONDARY} size={0.9}>
+                  Crie uma conta para acompanhar
+                </SimpleText>
+              </Center>
+              <Center>
+                <SimpleText centered color={Colors.SECONDARY} size={0.9}>
+                  seus pedidos de forma simples
+                </SimpleText>
+              </Center>
+            </>
+          )}
+          {authContext.user && (
+            <>
+              <Center>
+                <CustomButton
+                  variant="contained"
+                  onClick={goToOrders}
+                  width={220}
+                >
+                  Meus Pedidos
+                </CustomButton>
+              </Center>
+              <SizedBox height={8}></SizedBox>
+              <Center>
+                <SimpleText centered color={Colors.SECONDARY} size={0.9}>
+                  Acompanhe aqui seus pedidos
+                </SimpleText>
+              </Center>
+            </>
+          )}
 
           <SizedBox height={16}></SizedBox>
         </Card>

@@ -13,6 +13,7 @@ import SizedBox from "../src/components/Atoms/SizedBox";
 import Subtitle from "../src/components/Atoms/Subtitle";
 import Title from "../src/components/Atoms/Title";
 import Layout from "../src/components/Templates/Layout";
+import Colors from "../src/enums/Colors";
 import { useAuth } from "../src/hooks/auth/useAuth";
 import Menu from "../src/modules/menu/Menu";
 
@@ -86,16 +87,17 @@ function RecoverPassword({ menu }: { menu: Menu }): JSX.Element {
           <>
             <SizedBox height={16}></SizedBox>
             <Container maxWidth="xs">
-              <Center>
-                <Subtitle>
-                  Por favor informe o seu email para enviarmos as instruções de
-                  recuperação de senha.
-                </Subtitle>
-              </Center>
+              <Subtitle>
+                Por favor informe o seu email para enviarmos as instruções de
+                recuperação de senha.
+              </Subtitle>
+
               <SizedBox height={8}></SizedBox>
-              <Center>
-                <Subtitle>Não se preocupe, é muito simples!</Subtitle>
-              </Center>
+
+              <Subtitle color={Colors.MONEY}>
+                Não se preocupe, é muito simples!
+              </Subtitle>
+
               <SizedBox height={32}></SizedBox>
               <CustomTextField type="email" ref={email} error={errors.email}>
                 Email
