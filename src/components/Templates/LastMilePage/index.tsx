@@ -31,6 +31,8 @@ const Frame = styled.div`
   height: 100%;
   padding: 20px;
   border-radius: 4px;
+
+  transition: height 500ms;
 `;
 
 const Badge = styled.img``;

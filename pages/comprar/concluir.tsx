@@ -2,11 +2,14 @@ import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import Lottie from "react-lottie";
 import styled from "styled-components";
+import animationData from "../../public/animations/frog_lottie.json";
 import CartDescItem from "../../src/components/Atoms/CartDescItem";
 import CartHeaderDataItem from "../../src/components/Atoms/CartHeaderDataItem";
 import CartInstallments from "../../src/components/Atoms/CartInstallments";
 import CartTotal from "../../src/components/Atoms/CartTotal";
+import Center from "../../src/components/Atoms/Center";
 import HorizontalLine from "../../src/components/Atoms/HorizontalLine";
 import Row from "../../src/components/Atoms/Row";
 import SimpleText from "../../src/components/Atoms/SimpleText";
@@ -25,11 +28,31 @@ import { capitalizeFirstLetter } from "../../src/utils/string";
 
 const WrapRow = styled.div``;
 
+const LoadingAnimationCircle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #440044;
+  width: 300px;
+  height: 300px;
+  border-radius: 150px;
+  overflow: hidden;
+`;
+
 function FinishPage(): JSX.Element {
   const cartContext = useCart();
   const router = useRouter();
   const [loadingPurchase, setLoadingPurchase] = useState(false);
   const [purchaseDisabled, setPurchaseDisabled] = useState(false);
+
+  const defaultAnimationOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   React.useEffect(() => {
     // Scroll to top when page is loaded
@@ -160,105 +183,134 @@ function FinishPage(): JSX.Element {
 
   return (
     <LastMilePage breadcrumbs={breadcrumbs}>
-      <SizedBox height={10}></SizedBox>
-      <Title>Revise seu Pedido</Title>
-      <SizedBox height={32}></SizedBox>
-      {!isSmartPhone && (
-        <Row spaceBetween>
-          <CartHeaderDataItem
-            icon="user"
-            line1={
-              orderContext?.order?.user?.firstName +
-              " " +
-              orderContext?.order?.user?.lastName
-            }
-            line2={orderContext?.order?.user?.phone}
-            line3={orderContext?.order?.user?.email}
-          ></CartHeaderDataItem>
-          <CartHeaderDataItem
-            icon="map-pin"
-            line1={`${orderContext?.order?.address?.street}, ${orderContext?.order?.address?.number}`}
-            line2={`${orderContext?.order?.address?.neighborhood}, ${orderContext?.order?.address?.city} - ${orderContext?.order?.address?.state}`}
-            line3={orderContext?.order?.address?.postalCode}
-          ></CartHeaderDataItem>
-          <CartHeaderDataItem
-            icon={getPaymentIcon(orderContext?.order?.payment)}
-            line1={getPaymentType(orderContext?.order?.payment)}
-            line2={getPaymentInstallments(orderContext?.order?.payment)}
-            line3={getPaymentBrand(orderContext?.order?.payment)}
-          ></CartHeaderDataItem>
-        </Row>
+      {loadingPurchase && (
+        <>
+          <SizedBox height={72}></SizedBox>
+          <Center>
+            <LoadingAnimationCircle>
+              <Lottie
+                options={defaultAnimationOptions}
+                height={250}
+                width={250}
+                isStopped={false}
+                isPaused={false}
+              />
+            </LoadingAnimationCircle>
+          </Center>
+          <SizedBox height={32}></SizedBox>
+          <Center>
+            <Subtitle color={Colors.SECONDARY}>
+              SÓ MAIS UM POUQUINHO...
+            </Subtitle>
+          </Center>
+          <SizedBox height={16}></SizedBox>
+          <Center>
+            <Title>Estamos concluindo o pedido</Title>
+          </Center>
+          <SizedBox height={72}></SizedBox>
+        </>
       )}
-      {isSmartPhone && (
-        <WrapRow>
-          <CartHeaderDataItem
-            icon="user"
-            line1={
-              orderContext?.order?.user?.firstName +
-              " " +
-              orderContext?.order?.user?.lastName
-            }
-            line2={orderContext?.order?.user?.phone}
-            line3={orderContext?.order?.user?.email}
-          ></CartHeaderDataItem>
+      {!loadingPurchase && (
+        <>
+          <SizedBox height={10}></SizedBox>
+          <Title>Revise seu Pedido</Title>
+          <SizedBox height={32}></SizedBox>
+          {!isSmartPhone && (
+            <Row spaceBetween>
+              <CartHeaderDataItem
+                icon="user"
+                line1={
+                  orderContext?.order?.user?.firstName +
+                  " " +
+                  orderContext?.order?.user?.lastName
+                }
+                line2={orderContext?.order?.user?.phone}
+                line3={orderContext?.order?.user?.email}
+              ></CartHeaderDataItem>
+              <CartHeaderDataItem
+                icon="map-pin"
+                line1={`${orderContext?.order?.address?.street}, ${orderContext?.order?.address?.number}`}
+                line2={`${orderContext?.order?.address?.neighborhood}, ${orderContext?.order?.address?.city} - ${orderContext?.order?.address?.state}`}
+                line3={orderContext?.order?.address?.postalCode}
+              ></CartHeaderDataItem>
+              <CartHeaderDataItem
+                icon={getPaymentIcon(orderContext?.order?.payment)}
+                line1={getPaymentType(orderContext?.order?.payment)}
+                line2={getPaymentInstallments(orderContext?.order?.payment)}
+                line3={getPaymentBrand(orderContext?.order?.payment)}
+              ></CartHeaderDataItem>
+            </Row>
+          )}
+          {isSmartPhone && (
+            <WrapRow>
+              <CartHeaderDataItem
+                icon="user"
+                line1={
+                  orderContext?.order?.user?.firstName +
+                  " " +
+                  orderContext?.order?.user?.lastName
+                }
+                line2={orderContext?.order?.user?.phone}
+                line3={orderContext?.order?.user?.email}
+              ></CartHeaderDataItem>
+              <SizedBox height={20}></SizedBox>
+              <CartHeaderDataItem
+                icon="map-pin"
+                line1={`${orderContext?.order?.address?.street}, ${orderContext?.order?.address?.number}`}
+                line2={`${orderContext?.order?.address?.neighborhood}, ${orderContext?.order?.address?.city} - ${orderContext?.order?.address?.state}`}
+                line3={orderContext?.order?.address?.postalCode}
+              ></CartHeaderDataItem>
+              <SizedBox height={20}></SizedBox>
+              <CartHeaderDataItem
+                icon={getPaymentIcon(orderContext?.order?.payment)}
+                line1={getPaymentType(orderContext?.order?.payment)}
+                line2={getPaymentInstallments(orderContext?.order?.payment)}
+                line3={getPaymentBrand(orderContext?.order?.payment)}
+              ></CartHeaderDataItem>
+            </WrapRow>
+          )}
           <SizedBox height={20}></SizedBox>
-          <CartHeaderDataItem
-            icon="map-pin"
-            line1={`${orderContext?.order?.address?.street}, ${orderContext?.order?.address?.number}`}
-            line2={`${orderContext?.order?.address?.neighborhood}, ${orderContext?.order?.address?.city} - ${orderContext?.order?.address?.state}`}
-            line3={orderContext?.order?.address?.postalCode}
-          ></CartHeaderDataItem>
+          <HorizontalLine></HorizontalLine>
+          <SizedBox height={32}></SizedBox>
+          <Subtitle color={Colors.SECONDARY}>{`${
+            orderContext.order.products.length
+          } ${
+            orderContext.order.products.length === 1 ? "ITEM" : "ITENS"
+          }`}</Subtitle>
           <SizedBox height={20}></SizedBox>
-          <CartHeaderDataItem
-            icon={getPaymentIcon(orderContext?.order?.payment)}
-            line1={getPaymentType(orderContext?.order?.payment)}
-            line2={getPaymentInstallments(orderContext?.order?.payment)}
-            line3={getPaymentBrand(orderContext?.order?.payment)}
-          ></CartHeaderDataItem>
-        </WrapRow>
-      )}
-      <SizedBox height={20}></SizedBox>
-      <HorizontalLine></HorizontalLine>
-      <SizedBox height={32}></SizedBox>
-      <Subtitle color={Colors.SECONDARY}>{`${
-        orderContext.order.products.length
-      } ${
-        orderContext.order.products.length === 1 ? "ITEM" : "ITENS"
-      }`}</Subtitle>
-      <SizedBox height={20}></SizedBox>
-      <>
-        {orderContext.order.products.map((item, index) => (
-          <React.Fragment key={item.id}>
-            <>
-              <CartItem
-                item={item}
-                showBackground={false}
-                showSelects={false}
-                isImmutable={true}
-              ></CartItem>
-            </>
-            {index !== orderContext.order.products.length - 1 && (
-              <>
-                <SizedBox height={16}></SizedBox>
-                <HorizontalLine></HorizontalLine>
-                <SizedBox height={24}></SizedBox>
-              </>
-            )}
-          </React.Fragment>
-        ))}
-      </>
-      <SizedBox height={48}></SizedBox>
-      <HorizontalLine></HorizontalLine>
-      <SizedBox height={20}></SizedBox>
-      <CartDescItem title="subtotal">
-        {new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(orderContext.getSubtotal())}
-      </CartDescItem>
-      <SizedBox height={20}></SizedBox>
+          <>
+            {orderContext.order.products.map((item, index) => (
+              <React.Fragment key={item.id}>
+                <>
+                  <CartItem
+                    item={item}
+                    showBackground={false}
+                    showSelects={false}
+                    isImmutable={true}
+                  ></CartItem>
+                </>
+                {index !== orderContext.order.products.length - 1 && (
+                  <>
+                    <SizedBox height={16}></SizedBox>
+                    <HorizontalLine></HorizontalLine>
+                    <SizedBox height={24}></SizedBox>
+                  </>
+                )}
+              </React.Fragment>
+            ))}
+          </>
+          <SizedBox height={48}></SizedBox>
+          <HorizontalLine></HorizontalLine>
+          <SizedBox height={20}></SizedBox>
+          <CartDescItem title="subtotal">
+            {new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(orderContext.getSubtotal())}
+          </CartDescItem>
+          <SizedBox height={20}></SizedBox>
 
-      {/* <CartDescItem title="desconto" negative subtitle="Cupom #TRINTAO">
+          {/* <CartDescItem title="desconto" negative subtitle="Cupom #TRINTAO">
         {new Intl.NumberFormat("pt-BR", {
           style: "currency",
           currency: "BRL",
@@ -266,67 +318,68 @@ function FinishPage(): JSX.Element {
       </CartDescItem>
       <SizedBox height={20}></SizedBox> */}
 
-      {!cartContext.isShippingFree() && (
-        <CartDescItem
-          title="frete"
-          subtitle="JadLog .Package - 2 à 4 dias úteis"
-        >
-          {new Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          }).format(orderContext.getShippingValue())}
-        </CartDescItem>
-      )}
-      {cartContext.isShippingFree() && (
-        <CartDescItem
-          title="frete"
-          subtitle="JadLog .Package - 2 à 4 dias úteis"
-        >
-          <SimpleText bold color={Colors.ORANGE_PANTONE}>
-            GRÁTIS
-          </SimpleText>
-        </CartDescItem>
-      )}
-      <SizedBox height={40}></SizedBox>
-      <CartTotal>
-        {new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(orderContext.getTotal(cartContext.isShippingFree()))}
-      </CartTotal>
-      {orderContext?.order?.payment?.hasOwnProperty("paymentMethodId") && (
-        <>
-          <SizedBox height={20}></SizedBox>
-          <CartInstallments
-            singlePayment={
-              orderContext?.order?.payment?.installments === "1" || false
-            }
-          >
-            {getPaymentInstallments(orderContext?.order?.payment)}
-          </CartInstallments>
+          {!cartContext.isShippingFree() && (
+            <CartDescItem
+              title="frete"
+              subtitle="JadLog .Package - 2 à 4 dias úteis"
+            >
+              {new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(orderContext.getShippingValue())}
+            </CartDescItem>
+          )}
+          {cartContext.isShippingFree() && (
+            <CartDescItem
+              title="frete"
+              subtitle="JadLog .Package - 2 à 4 dias úteis"
+            >
+              <SimpleText bold color={Colors.ORANGE_PANTONE}>
+                GRÁTIS
+              </SimpleText>
+            </CartDescItem>
+          )}
+          <SizedBox height={40}></SizedBox>
+          <CartTotal>
+            {new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(orderContext.getTotal(cartContext.isShippingFree()))}
+          </CartTotal>
+          {orderContext?.order?.payment?.hasOwnProperty("paymentMethodId") && (
+            <>
+              <SizedBox height={20}></SizedBox>
+              <CartInstallments
+                singlePayment={
+                  orderContext?.order?.payment?.installments === "1" || false
+                }
+              >
+                {getPaymentInstallments(orderContext?.order?.payment)}
+              </CartInstallments>
+            </>
+          )}
+          <CartFooterButtons
+            buttons={[
+              {
+                text: "Alterar Pagamento",
+                onClick: goToPayment,
+                type: "text",
+                width: 180,
+                isBackButton: true,
+              },
+              {
+                text: "CONCLUIR COMPRA",
+                onClick: finishOrder,
+                type: "edit",
+                width: loadingPurchase ? 100 : 200,
+                loading: loadingPurchase,
+                disabled: purchaseDisabled,
+                icon: "done",
+              },
+            ]}
+          ></CartFooterButtons>
         </>
       )}
-      <CartFooterButtons
-        buttons={[
-          {
-            text: "Alterar Pagamento",
-            onClick: goToPayment,
-            type: "text",
-            width: 180,
-            isBackButton: true,
-          },
-          {
-            text: "CONCLUIR COMPRA",
-            onClick: finishOrder,
-            type: "edit",
-            width: loadingPurchase ? 100 : 200,
-            loading: loadingPurchase,
-            disabled: purchaseDisabled,
-            loadingDark: true,
-            icon: "done",
-          },
-        ]}
-      ></CartFooterButtons>
     </LastMilePage>
   );
 }
