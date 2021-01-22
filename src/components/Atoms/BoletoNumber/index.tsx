@@ -9,10 +9,10 @@ import Row from "../Row";
 import SimpleText from "../SimpleText";
 import SizedBox from "../SizedBox";
 
-const StyledBoletoNumber = styled.div`
+const StyledBoletoNumber = styled.div<{ leftAlign: boolean }>`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: ${(props) => (props.leftAlign ? "flex-start" : "center")};
   flex-direction: column;
 `;
 
@@ -24,7 +24,13 @@ const BarcodeNumber = styled.p<{ isSmartPhone: boolean }>`
   color: ${Colors.DARK_GRAY};
 `;
 
-function BoletoNumber({ children }: { children: string }): JSX.Element {
+function BoletoNumber({
+  children,
+  leftAlign,
+}: {
+  children: string;
+  leftAlign?: boolean;
+}): JSX.Element {
   const [copied, setCopied] = useState(false);
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -37,7 +43,7 @@ function BoletoNumber({ children }: { children: string }): JSX.Element {
   };
 
   return (
-    <StyledBoletoNumber>
+    <StyledBoletoNumber leftAlign={leftAlign}>
       <Row>
         <Icon type="nature" size={isSmartPhone ? 20 : 24}></Icon>
         <SizedBox width={8}></SizedBox>

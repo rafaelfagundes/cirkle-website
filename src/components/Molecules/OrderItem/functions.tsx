@@ -15,25 +15,26 @@ const LinkText = styled.a`
   cursor: pointer;
 `;
 
-const Status = styled.div<{ color: string }>`
+const Status = styled.div<{ color: string; fontSize: number }>`
   background-color: ${(props) => props.color};
-  padding: 3px 6px;
+  padding: ${(props) => props.fontSize * 0.3}px
+    ${(props) => props.fontSize * 0.8}px;
   border-radius: 2px;
 `;
 
-const StatusText = styled.div`
+const StatusText = styled.div<{ fontSize: number }>`
   color: ${Colors.WHITE};
   font-weight: 700;
   text-align: center;
-  font-size: 12px;
+  font-size: ${(props) => props.fontSize}px;
 `;
 
-const MobileText = styled.div<{ color: string }>`
+const MobileText = styled.div<{ color: string; fontSize: number }>`
   color: ${(props) => props.color};
   font-weight: 700;
   text-align: center;
   font-family: Commissioner, sans-serif;
-  font-size: 10px;
+  font-size: ${(props) => props.fontSize - 2}px;
   line-height: 12px;
   font-weight: 700;
   text-align: right;
@@ -74,108 +75,138 @@ export function getPayment(payment: OrderPayment): string | JSX.Element {
   }
 }
 
-export function getStatus(status: OrderStatus, mobile: boolean): JSX.Element {
+export function getStatus(
+  status: OrderStatus,
+  mobile: boolean,
+  fontSize = 12
+): JSX.Element {
   if (mobile) {
     switch (status) {
       case OrderStatus.CANCELED:
-        return <MobileText color={Colors.ERROR}>Cancelado</MobileText>;
+        return (
+          <MobileText fontSize={fontSize} color={Colors.ERROR}>
+            Cancelado
+          </MobileText>
+        );
 
       case OrderStatus.DELIVERED:
-        return <MobileText color={Colors.PRIMARY}>Entregue</MobileText>;
+        return (
+          <MobileText fontSize={fontSize} color={Colors.PRIMARY}>
+            Entregue
+          </MobileText>
+        );
 
       case OrderStatus.SHIPPED:
         return (
-          <MobileText color={Colors.BLUE_JEANS}>Em Rota de Entrega</MobileText>
+          <MobileText fontSize={fontSize} color={Colors.BLUE_JEANS}>
+            Em Rota de Entrega
+          </MobileText>
         );
 
       case OrderStatus.PAYMENT_CONFIRMED:
         return (
-          <MobileText color={Colors.MONEY}>Pagamento Confirmado</MobileText>
+          <MobileText fontSize={fontSize} color={Colors.MONEY}>
+            Pagamento Confirmado
+          </MobileText>
         );
 
       case OrderStatus.PAYMENT_ERROR:
-        return <MobileText color={Colors.ERROR}>Erro no Pagamento</MobileText>;
+        return (
+          <MobileText fontSize={fontSize} color={Colors.ERROR}>
+            Erro no Pagamento
+          </MobileText>
+        );
 
       case OrderStatus.PAYMENT_PENDING:
         return (
-          <MobileText color={Colors.ORANGE_KIDS}>
+          <MobileText fontSize={fontSize} color={Colors.ORANGE_KIDS}>
             Aguardando Pagamento
           </MobileText>
         );
 
       case OrderStatus.PRE_SHIPPING:
         return (
-          <MobileText color={Colors.PURPUREUS}>Preparando Pedido</MobileText>
+          <MobileText fontSize={fontSize} color={Colors.PURPUREUS}>
+            Preparando Pedido
+          </MobileText>
         );
 
       case OrderStatus.RECEIVED:
-        return <MobileText color={Colors.GRAY}>Pedido Criado</MobileText>;
+        return (
+          <MobileText fontSize={fontSize} color={Colors.GRAY}>
+            Pedido Criado
+          </MobileText>
+        );
 
       default:
-        return <MobileText color={Colors.ERROR}>Erro</MobileText>;
+        return (
+          <MobileText fontSize={fontSize} color={Colors.ERROR}>
+            Erro
+          </MobileText>
+        );
     }
   } else {
     switch (status) {
       case OrderStatus.CANCELED:
         return (
-          <Status color={Colors.ERROR}>
-            <StatusText>Cancelado</StatusText>
+          <Status fontSize={fontSize} color={Colors.ERROR}>
+            <StatusText fontSize={fontSize}>Cancelado</StatusText>
           </Status>
         );
 
       case OrderStatus.DELIVERED:
         return (
-          <Status color={Colors.PRIMARY}>
-            <StatusText>Entregue</StatusText>
+          <Status fontSize={fontSize} color={Colors.PRIMARY}>
+            <StatusText fontSize={fontSize}>Entregue</StatusText>
           </Status>
         );
 
       case OrderStatus.SHIPPED:
         return (
-          <Status color={Colors.BLUE_JEANS}>
-            <StatusText>Em Rota de Entrega</StatusText>
+          <Status fontSize={fontSize} color={Colors.BLUE_JEANS}>
+            <StatusText fontSize={fontSize}>Em Rota de Entrega</StatusText>
           </Status>
         );
 
       case OrderStatus.PAYMENT_CONFIRMED:
         return (
-          <Status color={Colors.MONEY}>
-            <StatusText>Pagamento Confirmado</StatusText>
+          <Status fontSize={fontSize} color={Colors.MONEY}>
+            <StatusText fontSize={fontSize}>Pagamento Confirmado</StatusText>
           </Status>
         );
 
       case OrderStatus.PAYMENT_ERROR:
         return (
-          <Status color={Colors.ERROR}>
-            <StatusText>Erro no Pagamento</StatusText>
+          <Status fontSize={fontSize} color={Colors.ERROR}>
+            <StatusText fontSize={fontSize}>Erro no Pagamento</StatusText>
           </Status>
         );
 
       case OrderStatus.PAYMENT_PENDING:
         return (
-          <Status color={Colors.ORANGE_KIDS}>
-            <StatusText>Aguardando Pagamento</StatusText>
+          <Status fontSize={fontSize} color={Colors.ORANGE_KIDS}>
+            <StatusText fontSize={fontSize}>Aguardando Pagamento</StatusText>
           </Status>
         );
 
       case OrderStatus.PRE_SHIPPING:
         return (
-          <Status color={Colors.PURPUREUS}>
-            <StatusText>Preparando Pedido</StatusText>
+          <Status fontSize={fontSize} color={Colors.PURPUREUS}>
+            <StatusText fontSize={fontSize}>Preparando Pedido</StatusText>
           </Status>
         );
 
       case OrderStatus.RECEIVED:
         return (
-          <Status color={Colors.GRAY}>
-            <StatusText>Pedido Criado</StatusText>
+          <Status fontSize={fontSize} color={Colors.GRAY}>
+            <StatusText fontSize={fontSize}>Pedido Criado</StatusText>
           </Status>
         );
 
       default:
         return (
-          <Status color={Colors.ERROR}>
-            <StatusText>Erro</StatusText>
+          <Status fontSize={fontSize} color={Colors.ERROR}>
+            <StatusText fontSize={fontSize}>Erro</StatusText>
           </Status>
         );
     }

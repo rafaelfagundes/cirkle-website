@@ -41,6 +41,8 @@ const LoadingAnimationCircle = styled.div`
 
 function FinishPage(): JSX.Element {
   const cartContext = useCart();
+  const orderContext = useOrder();
+  console.log("orderContext", orderContext);
   const router = useRouter();
   const [loadingPurchase, setLoadingPurchase] = useState(false);
   const [purchaseDisabled, setPurchaseDisabled] = useState(false);
@@ -67,8 +69,6 @@ function FinishPage(): JSX.Element {
   }
 
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const orderContext = useOrder();
 
   const breadcrumbs = [
     {
@@ -321,7 +321,7 @@ function FinishPage(): JSX.Element {
           {!cartContext.isShippingFree() && (
             <CartDescItem
               title="frete"
-              subtitle="JadLog .Package - 2 à 4 dias úteis"
+              subtitle={`${orderContext?.order?.shipping?.company?.name} ${orderContext?.order?.shipping?.name} - ${orderContext?.order?.shipping?.custom_delivery_range.min} à ${orderContext?.order?.shipping?.custom_delivery_range.max} dias úteis`}
             >
               {new Intl.NumberFormat("pt-BR", {
                 style: "currency",
@@ -332,7 +332,7 @@ function FinishPage(): JSX.Element {
           {cartContext.isShippingFree() && (
             <CartDescItem
               title="frete"
-              subtitle="JadLog .Package - 2 à 4 dias úteis"
+              subtitle={`${orderContext?.order?.shipping?.company?.name} ${orderContext?.order?.shipping?.name} - ${orderContext?.order?.shipping?.custom_delivery_range.min} à ${orderContext?.order?.shipping?.custom_delivery_range.max} dias úteis`}
             >
               <SimpleText bold color={Colors.ORANGE_PANTONE}>
                 GRÁTIS

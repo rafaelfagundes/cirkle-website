@@ -46,8 +46,6 @@ function Orders(): JSX.Element {
   });
 
   useEffect(() => {
-    // console.log("data", data);
-
     if (data && data.length) {
       const _orders: Array<Order> = [];
 
@@ -60,10 +58,10 @@ function Orders(): JSX.Element {
             status: getPaymentStatus(o.status),
             type: o.paymentType,
             paymentLink:
-              o?.payment?.result?.response?.transaction_details
-                ?.external_resource_url,
+              o?.payment?.response?.transaction_details?.external_resource_url,
           },
           status: o.status,
+          uid: o.uid,
         };
 
         _orders.push(_order);

@@ -96,7 +96,7 @@ function Contato(): JSX.Element {
   return (
     <Page
       title="precisa falar com a gente?"
-      image="images/contact.jpg"
+      image="/images/contact.jpg"
       maxWidth={640}
     >
       {contactItems.map((item, index) => (

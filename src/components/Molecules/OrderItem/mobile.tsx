@@ -1,4 +1,5 @@
 import moment from "moment";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
@@ -55,6 +56,8 @@ const OrderContent = styled.div`
 `;
 
 function MobileOrdemItem({ order }: { order: Order }): JSX.Element {
+  const router = useRouter();
+
   return (
     <OrderItem>
       <OrderHeader>
@@ -84,7 +87,7 @@ function MobileOrdemItem({ order }: { order: Order }): JSX.Element {
         </Row>
         <SizedBox width={20}></SizedBox>
         <CustomButton
-          onClick={null}
+          onClick={() => router.push(`/pedidos/${order.uid}`)}
           width={75}
           type="default"
           variant="outlined"

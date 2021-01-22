@@ -37,6 +37,7 @@ type Order = {
   status: OrderStatus;
   items: Array<Product>;
   payment: OrderPayment;
+  uid: string;
 };
 
 export default Order;

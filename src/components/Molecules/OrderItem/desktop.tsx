@@ -1,4 +1,5 @@
 import moment from "moment";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 import Order from "../../../modules/order/Order";
@@ -38,6 +39,8 @@ function DesktopOrderItem({
   order: Order;
   last: boolean;
 }): JSX.Element {
+  const router = useRouter();
+
   return (
     <OrderItem last={last}>
       <BasicInfo>
@@ -61,7 +64,7 @@ function DesktopOrderItem({
           <CustomButton
             type="default"
             variant="outlined"
-            onClick={null}
+            onClick={() => router.push(`/pedidos/${order.uid}`)}
             width={120}
             icon="search"
           >
