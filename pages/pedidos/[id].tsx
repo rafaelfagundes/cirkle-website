@@ -220,7 +220,7 @@ function OrderPage(): JSX.Element {
                 <SizedBox height={32}></SizedBox>
 
                 <CustomButton
-                  onClick={() => openURL("http://www.google.com")}
+                  onClick={() => openURL(`/rastreio/${data.uid}`)}
                   width={200}
                   icon="truck-light"
                 >
