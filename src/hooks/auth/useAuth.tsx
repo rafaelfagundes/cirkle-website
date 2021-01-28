@@ -68,7 +68,8 @@ export interface IAuthContextProps {
   signup: (
     displayName: string,
     email: string,
-    password: string
+    password: string,
+    isSubscribed: boolean
   ) => Promise<User>;
   signout: () => Promise<void>;
   sendPasswordResetEmail: (email: string) => Promise<void>;
@@ -105,7 +106,11 @@ async function updateToken() {
   if (token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 
-async function saveUserDB(firebaseUser: firebase.User, loginType: LoginType) {
+async function saveUserDB(
+  firebaseUser: firebase.User,
+  loginType: LoginType,
+  isSubscribed?: boolean
+) {
   try {
     const user: User = {
       name: firebaseUser.displayName,
@@ -115,6 +120,7 @@ async function saveUserDB(firebaseUser: firebase.User, loginType: LoginType) {
       picture: firebaseUser.photoURL,
       uid: firebaseUser.uid,
       loginType,
+      isSubscribed,
     };
     const response = await axios.post("/public-users", { user });
     if (response) return response?.data;
@@ -255,7 +261,8 @@ function useProviderAuth() {
   const signup = async (
     displayName: string,
     email: string,
-    password: string
+    password: string,
+    isSubscribed: boolean
   ) => {
     try {
       const response = await firebase
@@ -268,10 +275,18 @@ function useProviderAuth() {
           "https://res.cloudinary.com/cirklebr/image/upload/v1598000887/avatar.jpg",
       });
 
+      if (isSubscribed) {
+        await axios.post("/newsletters/", {
+          firstName: displayName.split(" ")[0],
+          lastName: displayName.split(" ")[1],
+          email,
+        });
+      }
+
       const savedUser = await saveUserDB(
         response.user,
-
-        LoginType.EMAIL_PASSWORD
+        LoginType.EMAIL_PASSWORD,
+        isSubscribed
       );
       if (savedUser) {
         saveUserInContextAndLocalStorage(savedUser);
@@ -332,6 +347,21 @@ function useProviderAuth() {
   const updateUser = async (user: User) => {
     try {
       await firebase.auth().currentUser.getIdToken(true);
+
+      let subscribedResponse: any;
+
+      if (user.isSubscribed) {
+        subscribedResponse = await axios.post("/newsletters/", {
+          firstName: user.name.split(" ")[0],
+          lastName: user.name.split(" ")[1],
+          email: user.email,
+        });
+      } else {
+        subscribedResponse = await axios.delete("/newsletters/" + user.email);
+      }
+
+      if (!subscribedResponse) throw "Erro ao atualizar newsletter";
+
       const response = await axios.put("/public-users/" + user.id, {
         name: user.name,
         phoneNumber: user.phoneNumber,

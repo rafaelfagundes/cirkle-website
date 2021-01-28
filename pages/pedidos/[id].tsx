@@ -215,10 +215,7 @@ function OrderPage(): JSX.Element {
 
             {data?.status === "SHIPPED" && (
               <>
-                {/* <SizedBox height={32}></SizedBox> */}
-                {/* <HorizontalLine></HorizontalLine> */}
                 <SizedBox height={32}></SizedBox>
-
                 <CustomButton
                   onClick={() => openURL(`/rastreio/${data.uid}`)}
                   width={200}

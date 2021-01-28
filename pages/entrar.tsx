@@ -6,12 +6,14 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import validator from "validator";
 import Center from "../src/components/Atoms/Center";
+import CheckBoxWithLabel from "../src/components/Atoms/CheckboxWithLabel";
 import CustomButton from "../src/components/Atoms/CustomButton";
 import CustomTextField, {
   getCustomTextFieldValue,
   setCustomTextFieldValue,
 } from "../src/components/Atoms/CustomTextField";
 import Row from "../src/components/Atoms/Row";
+import SimpleText from "../src/components/Atoms/SimpleText";
 import SizedBox from "../src/components/Atoms/SizedBox";
 import SocialLoginButton from "../src/components/Atoms/SocialLoginButton";
 import Subtitle from "../src/components/Atoms/Subtitle";
@@ -103,6 +105,8 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
   const password = useRef(null);
   const displayName = useRef(null);
 
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
   const tabs: Array<ITab> = [
     {
       title: "Cadastre-se",
@@ -143,7 +147,12 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
     const _email = getCustomTextFieldValue(email);
     const _password = getCustomTextFieldValue(password);
     const _displayName = getCustomTextFieldValue(displayName);
-    const result = await auth.signup(_displayName, _email, _password);
+    const result = await auth.signup(
+      _displayName,
+      _email,
+      _password,
+      isSubscribed
+    );
     setLoading(false);
     if (result) {
       typeof window !== "undefined" && router.push("/");
@@ -362,17 +371,16 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
                   >
                     Senha
                   </CustomTextField>
-                  <SizedBox height={24}></SizedBox>
                 </Container>
-
                 <Container maxWidth="xs">
-                  <Text>
-                    Ao criar um conta, você concorda com os termos de uso e a
-                    política de privacidade
-                  </Text>
+                  <SizedBox height={6}></SizedBox>
+                  <CheckBoxWithLabel
+                    label="Desejo receber informações e promoções exclusivas"
+                    onClick={() => setIsSubscribed(!isSubscribed)}
+                    value={isSubscribed}
+                  ></CheckBoxWithLabel>
                 </Container>
-
-                <SizedBox height={16}></SizedBox>
+                <SizedBox height={24}></SizedBox>
                 <Center>
                   <CustomButton
                     width={300}
@@ -385,6 +393,13 @@ function Login({ menu }: { menu: Menu }): JSX.Element {
                     Cadastrar
                   </CustomButton>
                 </Center>
+                <SizedBox height={16}></SizedBox>
+                <Container maxWidth="xs">
+                  <SimpleText color={Colors.SECONDARY} centered size={0.9}>
+                    Ao criar um conta, você concorda com os termos de uso e a
+                    política de privacidade
+                  </SimpleText>
+                </Container>
               </>
             )}
 
