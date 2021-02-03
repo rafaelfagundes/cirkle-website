@@ -43,54 +43,58 @@ function OrderPage(): JSX.Element {
 
   console.log("data", data);
 
-  const getPaymentIcon = (payment: any) => {
-    if (payment?.hasOwnProperty("paymentMethodId")) {
-      return "payment-cc";
-    } else {
-      if (payment?.payment_method_id === "bolbradesco") {
+  const getPaymentIcon = (paymentType: string) => {
+    switch (paymentType) {
+      case "CREDIT_CARD":
+        return "payment-cc";
+      case "BOLETO":
         return "payment-barcode";
-      } else {
+      case "PEC":
         return "ticket-dark";
-      }
+      default:
+        return "ticket-dark";
     }
   };
 
-  const getPaymentType = (payment: any) => {
-    if (payment?.hasOwnProperty("paymentMethodId")) {
-      return "Cartão de Crédito";
-    } else {
-      if (payment?.payment_method_id === "bolbradesco") {
+  const getPaymentType = (paymentType: string) => {
+    switch (paymentType) {
+      case "CREDIT_CARD":
+        return "Cartão de Crédito";
+      case "BOLETO":
         return "Boleto Bancário";
-      } else {
+      case "PEC":
         return "Pagamento na Lotérica";
-      }
+      default:
+        return "ERRO";
     }
   };
 
   const getPaymentInstallments = (payment: any) => {
-    if (payment?.hasOwnProperty("paymentMethodId")) {
-      return `${payment?.installments}x ${new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }).format(payment?.installmentValue)}`;
-    } else {
-      if (payment?.payment_method_id === "bolbradesco") {
+    switch (payment.method) {
+      case "CREDIT_CARD":
+        return `${payment?.installments}x ${new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }).format(payment?.installmentValue)}`;
+      case "BOLETO":
         return "À vista";
-      } else {
+      case "PEC":
         return "À vista";
-      }
+      default:
+        return "ERRO";
     }
   };
 
   const getPaymentBrand = (payment: any) => {
-    if (payment?.hasOwnProperty("paymentMethodId")) {
-      return capitalizeFirstLetter(payment?.paymentMethodId);
-    } else {
-      if (payment?.payment_method_id === "bolbradesco") {
+    switch (payment.method) {
+      case "CREDIT_CARD":
+        return capitalizeFirstLetter(payment?.issuerName);
+      case "BOLETO":
         return "";
-      } else {
+      case "PEC":
         return "Não precisa imprimir boleto";
-      }
+      default:
+        return "ERRO";
     }
   };
 
@@ -181,10 +185,10 @@ function OrderPage(): JSX.Element {
                   line3={data.address?.postalCode}
                 ></CartHeaderDataItem>
                 <CartHeaderDataItem
-                  icon={getPaymentIcon(data.payment.input)}
-                  line1={getPaymentType(data.payment.input)}
-                  line2={getPaymentInstallments(data.payment.input)}
-                  line3={getPaymentBrand(data.payment.input)}
+                  icon={getPaymentIcon(data.payment.method)}
+                  line1={getPaymentType(data.payment.method)}
+                  line2={getPaymentInstallments(data.payment)}
+                  line3={getPaymentBrand(data.payment)}
                 ></CartHeaderDataItem>
               </Row>
             )}
@@ -226,7 +230,7 @@ function OrderPage(): JSX.Element {
               </>
             )}
             <>
-              {data.payment?.input?.payment_method_id === "bolbradesco" &&
+              {data.payment?.method === "BOLETO" &&
                 data?.status === "PAYMENT_PENDING" && (
                   <>
                     <SizedBox height={32}></SizedBox>
@@ -238,12 +242,7 @@ function OrderPage(): JSX.Element {
                     <CustomButton
                       width={220}
                       type="edit"
-                      onClick={() =>
-                        openURL(
-                          data.payment.response.transaction_details
-                            .external_resource_url
-                        )
-                      }
+                      onClick={() => openURL(data.payment.link)}
                       icon="printer"
                     >
                       Imprimir Boleto
@@ -256,17 +255,17 @@ function OrderPage(): JSX.Element {
                     <SizedBox height={4}></SizedBox>
 
                     <SimpleText color={Colors.PRIMARY} size={1}>
-                      {`${moment(
-                        data.payment.response.date_of_expiration
-                      ).format("DD/MM/YYYY[ às ]HH:mm")}`}
+                      {`${moment(data.payment.expiresAt).format(
+                        "DD/MM/YYYY[ às ]HH:mm"
+                      )}`}
                     </SimpleText>
                     <SizedBox height={32}></SizedBox>
                     <BoletoNumber leftAlign>
-                      {data?.payment?.response?.barcode?.content}
+                      {data?.payment?.barCodeContent}
                     </BoletoNumber>
                   </>
                 )}
-              {data.payment?.input?.payment_method_id === "pec" &&
+              {data.payment?.method === "PEC" &&
                 data?.status === "PAYMENT_PENDING" && (
                   <>
                     <SizedBox height={32}></SizedBox>
@@ -282,12 +281,7 @@ function OrderPage(): JSX.Element {
                     </SimpleText>
                     <SizedBox height={16}></SizedBox>
                     <CustomButton
-                      onClick={() =>
-                        openURL(
-                          data.payment.response.transaction_details
-                            .external_resource_url
-                        )
-                      }
+                      onClick={() => openURL(data.payment.link)}
                       width={230}
                       type="edit"
                       icon="ticket"
@@ -343,12 +337,12 @@ function OrderPage(): JSX.Element {
             {!data.isShippingFree && (
               <CartDescItem
                 title="frete"
-                subtitle={`${data.shipping.company.name} ${data.shipping.name} - ${data.shipping.custom_delivery_range.min} à ${data.shipping.custom_delivery_range.max} dias úteis`}
+                subtitle={`${data.shipping.companyName} ${data.shipping.productName} - ${data.shipping.deliveryRangeMin} à ${data.shipping.deliveryRangeMax} dias úteis`}
               >
                 {new Intl.NumberFormat("pt-BR", {
                   style: "currency",
                   currency: "BRL",
-                }).format(data.shipping.custom_price)}
+                }).format(data.shipping.price)}
               </CartDescItem>
             )}
             <SizedBox height={20}></SizedBox>
@@ -356,7 +350,7 @@ function OrderPage(): JSX.Element {
             {data.isShippingFree && (
               <CartDescItem
                 title="frete"
-                subtitle={`${data.shipping.company.name} ${data.shipping.name} - ${data.shipping.custom_delivery_range.min} à ${data.shipping.custom_delivery_range.max} dias úteis`}
+                subtitle={`${data.shipping.companyName} ${data.shipping.productName} - ${data.shipping.deliveryRangeMin} à ${data.shipping.deliveryRangeMax} dias úteis`}
               >
                 <SimpleText bold color={Colors.ORANGE_PANTONE}>
                   GRÁTIS
@@ -367,20 +361,21 @@ function OrderPage(): JSX.Element {
               {new Intl.NumberFormat("pt-BR", {
                 style: "currency",
                 currency: "BRL",
-              }).format(
-                data.payment.input.transaction_amount ||
-                  data.payment.input.transactionAmount
-              )}
+              }).format(data.payment.amount)}
             </CartTotal>
-            {data.payment.input.hasOwnProperty("paymentMethodId") && (
+            {data.payment.method === "CREDIT_CARD" && (
               <>
                 <SizedBox height={20}></SizedBox>
                 <CartInstallments
-                  singlePayment={
-                    data.payment?.input?.installments === "1" || false
-                  }
+                  singlePayment={data.payment.installments === 1 || false}
                 >
-                  {getPaymentInstallments(data.payment.input)}
+                  {`${data.payment.installments}x de ${new Intl.NumberFormat(
+                    "pt-BR",
+                    {
+                      style: "currency",
+                      currency: "BRL",
+                    }
+                  ).format(data.payment.installmentValue)}`}
                 </CartInstallments>
               </>
             )}

@@ -51,14 +51,13 @@ function Orders(): JSX.Element {
 
       data.forEach((o: any) => {
         const _order: Order = {
-          date: o.created_at,
-          id: o.orderId,
-          items: o.products,
+          date: o.date,
+          id: o.id,
+          items: o.items,
           payment: {
-            status: getPaymentStatus(o.status),
-            type: o.paymentType,
-            paymentLink:
-              o?.payment?.response?.transaction_details?.external_resource_url,
+            status: getPaymentStatus(o.payment.status),
+            type: o.payment.type,
+            paymentLink: o.payment.paymentLink,
           },
           status: o.status,
           uid: o.uid,
