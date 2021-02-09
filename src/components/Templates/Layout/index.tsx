@@ -73,7 +73,7 @@ function Layout({
       <Hidden only={["xs", "sm"]}>
         <Background>
           <Container
-            maxWidth={containerMargin ? "md" : false}
+            maxWidth={containerMargin ? "md" : undefined}
             disableGutters={true}
           >
             {children}
@@ -83,7 +83,7 @@ function Layout({
       <Hidden only={["md", "lg", "xl"]}>
         <Background>
           <Container
-            maxWidth={containerMargin ? "md" : false}
+            maxWidth={containerMargin ? "md" : undefined}
             disableGutters={true}
           >
             {children}
