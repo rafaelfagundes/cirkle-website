@@ -10,6 +10,7 @@ const StyledRadioButton = styled.div`
   align-items: center;
   user-select: none;
   min-height: 38px;
+  border-radius: 4px;
 
   &:hover {
     background-color: #eee;
