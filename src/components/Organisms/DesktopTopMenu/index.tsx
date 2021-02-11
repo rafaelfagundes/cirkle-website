@@ -2,6 +2,7 @@ import { Container, InputBase } from "@material-ui/core";
 import _cloneDeep from "lodash/cloneDeep";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
@@ -207,7 +208,13 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchBarFocused, setSearchBarFocused] = useState(false);
 
+  const [searchQuery, setSearchQuery] = useState(null);
+
   const authContext = useAuth();
+
+  const router = useRouter();
+
+  const { q } = router.query;
 
   useEffect(() => {
     if (data) {
@@ -217,6 +224,12 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
       });
     }
   }, [data]);
+
+  useEffect(() => {
+    if (q) {
+      setSearchQuery(q);
+    }
+  }, [q]);
 
   function toggleTab(tab: string) {
     setSelectedCategory(null);
@@ -246,6 +259,19 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
       setMenuData(_menuData);
     }
     setSelectedCategory(null);
+  }
+
+  function onSearchChange(e: any) {
+    setSearchQuery(e.target.value);
+  }
+
+  function submitSearch() {
+    router.push({
+      pathname: "/pesquisa",
+      query: {
+        q: searchQuery,
+      },
+    });
   }
 
   return (
@@ -302,6 +328,11 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
               inputProps={{ "aria-label": "search" }}
               onFocus={() => setSearchBarFocused(true)}
               onBlur={() => setSearchBarFocused(false)}
+              onChange={(event) => onSearchChange(event)}
+              onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>) => {
+                if (e.key === "Enter") submitSearch();
+              }}
+              value={searchQuery}
             />
             <Icon type="search"></Icon>
           </StyledSearchBar>

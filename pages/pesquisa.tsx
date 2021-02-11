@@ -187,9 +187,6 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
 
   const { q, size, color, category, brand, department } = router.query;
 
-  const { data: products, error: productsError } = useSWR("/products");
-  if (productsError) console.error(productsError);
-
   const { data: sizes, error: sizesError } = useSWR("/sizes");
   if (sizesError) console.error(sizesError);
 
@@ -203,12 +200,6 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
     "/sub-categories"
   );
   if (subCategoriesError) console.error(subCategoriesError);
-
-  // console.log("products", products);
-
-  // console.log("q", q);
-  // console.log("size", size);
-  // console.log("color", color);
 
   const [section, setSection] = useState("Mulher");
   const [selectedSize, setSelectedSize] = useState(null);
@@ -266,9 +257,32 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
         size: selectedSize || undefined,
         minPrice: price[0] || undefined,
         maxPrice: price[1] || undefined,
+        q,
+        brands: selectedBrands,
+        categories,
       },
     });
-  }, [section, selectedSize, selectedColor, price]);
+  }, [
+    section,
+    selectedSize,
+    selectedColor,
+    price,
+    q,
+    categories,
+    selectedBrands,
+  ]);
+
+  const getSearchUrl = () => {
+    if (process.browser) {
+      const url = window.location.href;
+      const params = url.split("?")[1];
+      return `/search?${params}`;
+    }
+    return "/search";
+  };
+
+  const { data: products, error: productsError } = useSWR(getSearchUrl());
+  if (productsError) console.error(productsError);
 
   return (
     <Layout menu={menu} containerMargin={false}>
