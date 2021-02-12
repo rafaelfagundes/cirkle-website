@@ -155,7 +155,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
   };
 
   const userHasSavedAddress = () => {
-    return authContext.user.addresses.length;
+    return authContext?.user?.addresses?.length > 0;
   };
 
   useEffect(() => {
@@ -252,22 +252,20 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
                         )}
                       </>
                     )}
-
                     {_showShippingSelect() && (
                       <>
-                        {!cartContext?.cart?.loadingShipping &&
-                          cartContext?.cart?.shippingList?.length > 0 && (
-                            <>
-                              <SizedBox height={16}></SizedBox>
-                              <SelectMenu
-                                items={cartContext.cart.shippingList}
-                                setSelected={setShippingList}
-                                title="Selecione o frete"
-                                errorText=""
-                                radioButtonList
-                              ></SelectMenu>
-                            </>
-                          )}
+                        {cartContext?.cart?.shippingList?.length > 0 && (
+                          <>
+                            <SizedBox height={16}></SizedBox>
+                            <SelectMenu
+                              items={cartContext.cart.shippingList}
+                              setSelected={setShippingList}
+                              title="Selecione o frete"
+                              errorText=""
+                              radioButtonList
+                            ></SelectMenu>
+                          </>
+                        )}
                       </>
                     )}
                     <SizedBox height={16}></SizedBox>

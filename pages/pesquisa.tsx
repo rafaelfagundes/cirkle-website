@@ -185,7 +185,8 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
 
   const router = useRouter();
 
-  const { q, size, color, category, brand, department } = router.query;
+  const { q, size, color, categories, brands } = router.query;
+  console.log("categories", categories);
 
   const { data: sizes, error: sizesError } = useSWR("/sizes");
   if (sizesError) console.error(sizesError);
@@ -193,7 +194,7 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
   const { data: colors, error: colorsError } = useSWR("/colors");
   if (colorsError) console.error(colorsError);
 
-  const { data: brands, error: brandsError } = useSWR("/brands");
+  const { data: remoteBrands, error: brandsError } = useSWR("/brands");
   if (brandsError) console.error(brandsError);
 
   const { data: subCategories, error: subCategoriesError } = useSWR(
@@ -205,11 +206,12 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
 
-  const [price, setPrice] = useState([0, 2880]);
+  const [price, setPrice] = useState([0, 3000]);
 
-  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const [selectedBrands, setSelectedBrands] = useState([]);
+  console.log("selectedBrands", selectedBrands);
 
   function priceText(value: number) {
     return `R$ ${value}`;
@@ -220,23 +222,25 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
   };
 
   const addOrRemoveCategory = (category: string) => {
-    const _categories = _cloneDeep(categories);
+    const _categories = _cloneDeep(selectedCategories);
     const index = _findIndex(_categories, (o) => o === category);
 
-    if (index < 0) {
-      setCategories([..._categories, category]);
+    if (!_categories) {
+      setSelectedCategories([category]);
+    } else if (index < 0) {
+      setSelectedCategories([..._categories, category]);
     } else {
       _categories.splice(index, 1);
-      setCategories(_categories);
+      setSelectedCategories(_categories);
     }
   };
 
-  const addOrRemoveBrands = (brand: string) => {
+  const addOrRemoveBrands = (brandId: number) => {
     const _brands = _cloneDeep(selectedBrands);
-    const index = _findIndex(_brands, (o) => o === brand);
+    const index = _findIndex(_brands, (o) => o === brandId);
 
     if (index < 0) {
-      setSelectedBrands([..._brands, brand]);
+      setSelectedBrands([..._brands, brandId]);
     } else {
       _brands.splice(index, 1);
       setSelectedBrands(_brands);
@@ -244,9 +248,31 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
   };
 
   useEffect(() => {
-    if (color) setSelectedColor(color);
+    if (color) setSelectedColor(Number(color));
     if (size) setSelectedSize(size);
-  }, [color, size]);
+    if (categories) {
+      if (Array.isArray(categories)) {
+        const urlCategories = categories?.map((c) => Number(c));
+
+        if (selectedCategories.length === 0) {
+          setSelectedCategories(urlCategories);
+        }
+      } else {
+        setSelectedCategories([Number(categories)]);
+      }
+    }
+    if (brands) {
+      if (Array.isArray(brands)) {
+        const urlBrands = brands?.map((c) => Number(c));
+
+        if (selectedBrands.length === 0) {
+          setSelectedBrands(urlBrands);
+        }
+      } else {
+        setSelectedBrands([Number(brands)]);
+      }
+    }
+  }, [color, size, categories, brands]);
 
   useEffect(() => {
     router.push({
@@ -259,7 +285,7 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
         maxPrice: price[1] || undefined,
         q,
         brands: selectedBrands,
-        categories,
+        categories: selectedCategories,
       },
     });
   }, [
@@ -268,7 +294,7 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
     selectedColor,
     price,
     q,
-    categories,
+    selectedCategories,
     selectedBrands,
   ]);
 
@@ -276,9 +302,14 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
     if (process.browser) {
       const url = window.location.href;
       const params = url.split("?")[1];
-      return `/search?${params}`;
+      console.log("params", params);
+      if (params) {
+        return `/search?${params}`;
+      } else {
+        return null;
+      }
     }
-    return "/search";
+    return null;
   };
 
   const { data: products, error: productsError } = useSWR(getSearchUrl());
@@ -301,7 +332,7 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
           <Filters>
             <FilterCard>
               <FilterHead>
-                <FilterTitle>Seção</FilterTitle>
+                <FilterTitle>Departamento</FilterTitle>
               </FilterHead>
               <SizedBox height={5}></SizedBox>
               <Column>
@@ -350,13 +381,15 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
               <SizedBox height={16}></SizedBox>
               <Sizes>
                 {colors &&
-                  colors.map((s: any, index: number) => (
+                  colors.map((c: any, index: number) => (
                     <Color
-                      key={s.name}
-                      selected={selectedColor === s.name || !selectedColor}
-                      onClick={() => setSelectedColor(s.name)}
+                      key={c.id}
+                      selected={
+                        selectedColor === Number(c.id) || !selectedColor
+                      }
+                      onClick={() => setSelectedColor(Number(c.id))}
                       noMargin={(index + 1) % 4 === 0}
-                      color={s.hexColor}
+                      color={c.hexColor}
                     ></Color>
                   ))}
               </Sizes>
@@ -365,7 +398,7 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
             <FilterCard>
               <FilterHead>
                 <FilterTitle>Preço</FilterTitle>
-                <FilterCleanButton onClick={() => setPrice([0, 2880])}>
+                <FilterCleanButton onClick={() => setPrice([0, 3000])}>
                   Limpar
                 </FilterCleanButton>
               </FilterHead>
@@ -379,7 +412,7 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
                     aria-labelledby="range-slider"
                     getAriaValueText={priceText}
                     min={0}
-                    max={2880}
+                    max={3000}
                     step={100}
                     color="primary"
                   />
@@ -400,7 +433,7 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
             <FilterCard>
               <FilterHead>
                 <FilterTitle>Categorias</FilterTitle>
-                <FilterCleanButton onClick={() => setCategories([])}>
+                <FilterCleanButton onClick={() => setSelectedCategories([])}>
                   Limpar
                 </FilterCleanButton>
               </FilterHead>
@@ -410,8 +443,8 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
                   <CheckboxWithLabel
                     key={sub.slug}
                     label={sub.title}
-                    onClick={() => addOrRemoveCategory(sub.slug)}
-                    value={categories.includes(sub.slug)}
+                    onClick={() => addOrRemoveCategory(sub.id)}
+                    value={selectedCategories?.includes(sub.id)}
                   ></CheckboxWithLabel>
                 ))}
               </div>
@@ -426,12 +459,12 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
               </FilterHead>
               <SizedBox height={12}></SizedBox>
               <div>
-                {brands?.map((sub: any) => (
+                {remoteBrands?.map((brand: any) => (
                   <CheckboxWithLabel
-                    key={sub.id}
-                    label={sub.name}
-                    onClick={() => addOrRemoveBrands(sub.id)}
-                    value={selectedBrands.includes(sub.id)}
+                    key={brand.id}
+                    label={brand.name}
+                    onClick={() => addOrRemoveBrands(brand.id)}
+                    value={selectedBrands.includes(brand.id)}
                   ></CheckboxWithLabel>
                 ))}
               </div>
