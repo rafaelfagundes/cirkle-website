@@ -1,5 +1,6 @@
 import { InputBase } from "@material-ui/core";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Icon from "../../Atoms/Icon";
 
@@ -35,6 +36,31 @@ interface MobileSearchProps {
 }
 
 function MobileSearch(props: MobileSearchProps): JSX.Element {
+  const router = useRouter();
+
+  const [searchQuery, setSearchQuery] = useState(null);
+
+  const { q } = router.query;
+
+  useEffect(() => {
+    if (q) {
+      setSearchQuery(q);
+    }
+  }, [q]);
+
+  function submitSearch() {
+    router.push({
+      pathname: "/pesquisa",
+      query: {
+        q: searchQuery,
+      },
+    });
+  }
+
+  function onSearchChange(e: any) {
+    setSearchQuery(e.target.value);
+  }
+
   return (
     <StyledMobileSearch active={props.active}>
       <Icon type="search" onClick={() => props.onClick(!props.active)}></Icon>
@@ -42,8 +68,13 @@ function MobileSearch(props: MobileSearchProps): JSX.Element {
         <Input
           placeholder="Pesquise items, marcas..."
           autoFocus={props.active}
-          onBlur={() => props.onClick(false)}
           type="search"
+          onBlur={() => props.onClick(false)}
+          onChange={(event) => onSearchChange(event)}
+          onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>) => {
+            if (e.key === "Enter") submitSearch();
+          }}
+          value={searchQuery}
         ></Input>
       )}
     </StyledMobileSearch>

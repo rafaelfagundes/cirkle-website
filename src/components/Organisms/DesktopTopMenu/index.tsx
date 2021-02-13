@@ -226,7 +226,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
   }, [data]);
 
   useEffect(() => {
-    if (q) {
+    if (q !== undefined) {
       setSearchQuery(q);
     }
   }, [q]);

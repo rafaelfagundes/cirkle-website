@@ -1,6 +1,7 @@
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import _shuffle from "lodash/shuffle";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 import Product from "../../../modules/product/Product";
@@ -52,6 +53,7 @@ function HotSection({
     image: string;
   }[];
 }): JSX.Element {
+  const router = useRouter();
   const theme = useTheme();
   const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
   let randomBrands = _shuffle(brands);
@@ -112,7 +114,7 @@ function HotSection({
             width={250}
             type="secondary"
             variant="outlined"
-            onClick={null}
+            onClick={() => router.push("/pesquisa")}
           >
             Ver Mais Produtos
           </CustomButton>

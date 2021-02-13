@@ -9,6 +9,8 @@ import styled from "styled-components";
 import useSWR from "swr";
 import CheckboxWithLabel from "../src/components/Atoms/CheckboxWithLabel";
 import Column from "../src/components/Atoms/Column";
+import CustomButton from "../src/components/Atoms/CustomButton";
+import Icon from "../src/components/Atoms/Icon";
 import Padding from "../src/components/Atoms/Padding";
 import RadioButtonWithLabel from "../src/components/Atoms/RadioButtonWithLabel";
 import SizedBox from "../src/components/Atoms/SizedBox";
@@ -17,6 +19,7 @@ import StaticBreadcrumbs from "../src/components/Molecules/StaticBreadcrumbs";
 import Layout from "../src/components/Templates/Layout";
 import Colors from "../src/enums/Colors";
 import Menu from "../src/modules/menu/Menu";
+import Product from "../src/modules/product/Product";
 import theme from "../src/theme/theme";
 
 const Row = styled.div`
@@ -147,6 +150,14 @@ const Price = styled.div`
   font-size: 12px;
 `;
 
+const FilterToggle = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+`;
+
 const useStyles = makeStyles({
   root: {
     colorPrimary: Colors.PRIMARY,
@@ -179,14 +190,32 @@ const CustomSlider = withStyles({
   },
 })(Slider);
 
-function Search({ menu }: { menu: Menu }): JSX.Element {
+function Search({
+  menu,
+  products: productsFallback,
+}: {
+  menu: Menu;
+  products: Array<Product>;
+}): JSX.Element {
   const classes = useStyles();
   const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const [filters, setFilters] = useState({
+    department: false,
+    size: false,
+    color: false,
+    price: false,
+    categories: false,
+    brands: false,
+  });
+
+  const [showRemoveAllFiltersButton, setShowRemoveAllFiltersButton] = useState(
+    false
+  );
 
   const router = useRouter();
 
   const { q, size, color, categories, brands } = router.query;
-  console.log("categories", categories);
 
   const { data: sizes, error: sizesError } = useSWR("/sizes");
   if (sizesError) console.error(sizesError);
@@ -211,7 +240,6 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const [selectedBrands, setSelectedBrands] = useState([]);
-  console.log("selectedBrands", selectedBrands);
 
   function priceText(value: number) {
     return `R$ ${value}`;
@@ -247,10 +275,22 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
     }
   };
 
+  // Scroll to top when page is loaded
   useEffect(() => {
-    if (color) setSelectedColor(Number(color));
-    if (size) setSelectedSize(size);
-    if (categories) {
+    if (process.browser) window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (color || size || categories || brands || q) {
+      setShowRemoveAllFiltersButton(true);
+    } else {
+      setShowRemoveAllFiltersButton(false);
+    }
+
+    if (color && !selectedColor) setSelectedColor(Number(color));
+    if (size && !selectedSize) setSelectedSize(size);
+    if (categories && selectedCategories.length === 0) {
+      console.log("tem categorias");
       if (Array.isArray(categories)) {
         const urlCategories = categories?.map((c) => Number(c));
 
@@ -261,7 +301,8 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
         setSelectedCategories([Number(categories)]);
       }
     }
-    if (brands) {
+    if (brands && selectedBrands.length === 0) {
+      console.log("tem marcas");
       if (Array.isArray(brands)) {
         const urlBrands = brands?.map((c) => Number(c));
 
@@ -272,7 +313,7 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
         setSelectedBrands([Number(brands)]);
       }
     }
-  }, [color, size, categories, brands]);
+  }, [color, size, categories, brands, q]);
 
   useEffect(() => {
     router.push({
@@ -302,7 +343,6 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
     if (process.browser) {
       const url = window.location.href;
       const params = url.split("?")[1];
-      console.log("params", params);
       if (params) {
         return `/search?${params}`;
       } else {
@@ -312,8 +352,32 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
     return null;
   };
 
-  const { data: products, error: productsError } = useSWR(getSearchUrl());
+  const { data: products, error: productsError } = useSWR(getSearchUrl(), {
+    initialData: productsFallback,
+  });
   if (productsError) console.error(productsError);
+
+  const showHideFilter = (filterName: string) => {
+    const _filters = _cloneDeep(filters);
+    _filters[filterName] = !_filters[filterName];
+    setFilters(_filters);
+  };
+
+  const removeAllFilters = () => {
+    router.push({
+      pathname: "/pesquisa",
+      query: {
+        department: undefined,
+        color: undefined,
+        size: undefined,
+        minPrice: undefined,
+        maxPrice: undefined,
+        q: undefined,
+        brands: undefined,
+        categories: undefined,
+      },
+    });
+  };
 
   return (
     <Layout menu={menu} containerMargin={false}>
@@ -330,144 +394,244 @@ function Search({ menu }: { menu: Menu }): JSX.Element {
         <SizedBox height={16}></SizedBox>
         <Row>
           <Filters>
+            {showRemoveAllFiltersButton && (
+              <>
+                <CustomButton
+                  onClick={removeAllFilters}
+                  width={260}
+                  variant="outlined"
+                  type="delete"
+                >
+                  Limpar Todos Filtros
+                </CustomButton>
+                <SizedBox height={20}></SizedBox>
+              </>
+            )}
             <FilterCard>
               <FilterHead>
-                <FilterTitle>Departamento</FilterTitle>
+                <FilterToggle onClick={() => showHideFilter("department")}>
+                  <Icon
+                    type={filters.department ? "minus" : "plus"}
+                    size={16}
+                    onClick={() => showHideFilter("department")}
+                  ></Icon>
+                  <SizedBox width={6}></SizedBox>
+                  <FilterTitle>Departamento</FilterTitle>
+                </FilterToggle>
+                <SizedBox height={5}></SizedBox>
               </FilterHead>
               <SizedBox height={5}></SizedBox>
-              <Column>
-                <RadioButtonWithLabel
-                  label="Mulher"
-                  onClick={() => setSection("Mulher")}
-                  value={section === "Mulher"}
-                ></RadioButtonWithLabel>
-                <RadioButtonWithLabel
-                  label="Kids"
-                  onClick={() => setSection("Kids")}
-                  value={section === "Kids"}
-                ></RadioButtonWithLabel>
-              </Column>
+              {filters.department && (
+                <Column>
+                  <RadioButtonWithLabel
+                    label="Mulher"
+                    onClick={() => setSection("Mulher")}
+                    value={section === "Mulher"}
+                  ></RadioButtonWithLabel>
+                  <RadioButtonWithLabel
+                    label="Kids"
+                    onClick={() => setSection("Kids")}
+                    value={section === "Kids"}
+                  ></RadioButtonWithLabel>
+                </Column>
+              )}
+              {!filters.department && <SizedBox height={2}></SizedBox>}
             </FilterCard>
             <SizedBox height={20}></SizedBox>
             <FilterCard>
               <FilterHead>
-                <FilterTitle>Tamanho</FilterTitle>
-                <FilterCleanButton onClick={() => setSelectedSize(null)}>
-                  Limpar
-                </FilterCleanButton>
+                <FilterToggle onClick={() => showHideFilter("size")}>
+                  <Icon
+                    type={filters.size ? "minus" : "plus"}
+                    size={16}
+                    onClick={() => showHideFilter("size")}
+                  ></Icon>
+                  <SizedBox width={6}></SizedBox>
+                  <FilterTitle>Tamanho</FilterTitle>
+                </FilterToggle>
+                {filters.size && (
+                  <FilterCleanButton onClick={() => setSelectedSize(null)}>
+                    Limpar
+                  </FilterCleanButton>
+                )}
               </FilterHead>
-              <SizedBox height={16}></SizedBox>
-              <Sizes>
-                {sizes?.map((s: any, index: number) => (
-                  <Size
-                    key={s.value}
-                    selected={selectedSize === s.value}
-                    onClick={() => setSelectedSize(s.value)}
-                    noMargin={(index + 1) % 4 === 0}
-                  >
-                    {s.value}
-                  </Size>
-                ))}
-              </Sizes>
+              {filters.size && (
+                <>
+                  <SizedBox height={16}></SizedBox>
+                  <Sizes>
+                    {sizes?.map((s: any, index: number) => (
+                      <Size
+                        key={s.value}
+                        selected={selectedSize === s.value}
+                        onClick={() => setSelectedSize(s.value)}
+                        noMargin={(index + 1) % 4 === 0}
+                      >
+                        {s.value}
+                      </Size>
+                    ))}
+                  </Sizes>
+                </>
+              )}
+              {!filters.size && <SizedBox height={8}></SizedBox>}
             </FilterCard>
             <SizedBox height={20}></SizedBox>
             <FilterCard>
               <FilterHead>
-                <FilterTitle>Cor</FilterTitle>
-                <FilterCleanButton onClick={() => setSelectedColor(null)}>
-                  Limpar
-                </FilterCleanButton>
+                <FilterToggle onClick={() => showHideFilter("color")}>
+                  <Icon
+                    type={filters.color ? "minus" : "plus"}
+                    size={16}
+                    onClick={() => showHideFilter("color")}
+                  ></Icon>
+                  <SizedBox width={6}></SizedBox>
+                  <FilterTitle>Cor</FilterTitle>
+                </FilterToggle>
+                {filters.color && (
+                  <FilterCleanButton onClick={() => setSelectedColor(null)}>
+                    Limpar
+                  </FilterCleanButton>
+                )}
               </FilterHead>
-              <SizedBox height={16}></SizedBox>
-              <Sizes>
-                {colors &&
-                  colors.map((c: any, index: number) => (
-                    <Color
-                      key={c.id}
-                      selected={
-                        selectedColor === Number(c.id) || !selectedColor
-                      }
-                      onClick={() => setSelectedColor(Number(c.id))}
-                      noMargin={(index + 1) % 4 === 0}
-                      color={c.hexColor}
-                    ></Color>
-                  ))}
-              </Sizes>
+              {filters.color && (
+                <>
+                  <SizedBox height={16}></SizedBox>
+                  <Sizes>
+                    {colors &&
+                      colors.map((c: any, index: number) => (
+                        <Color
+                          key={c.id}
+                          selected={
+                            selectedColor === Number(c.id) || !selectedColor
+                          }
+                          onClick={() => setSelectedColor(Number(c.id))}
+                          noMargin={(index + 1) % 4 === 0}
+                          color={c.hexColor}
+                        ></Color>
+                      ))}
+                  </Sizes>
+                </>
+              )}
+              {!filters.color && <SizedBox height={8}></SizedBox>}
             </FilterCard>
             <SizedBox height={20}></SizedBox>
             <FilterCard>
               <FilterHead>
-                <FilterTitle>Preço</FilterTitle>
-                <FilterCleanButton onClick={() => setPrice([0, 3000])}>
-                  Limpar
-                </FilterCleanButton>
+                <FilterToggle onClick={() => showHideFilter("price")}>
+                  <Icon
+                    type={filters.price ? "minus" : "plus"}
+                    size={16}
+                    onClick={() => showHideFilter("price")}
+                  ></Icon>
+                  <SizedBox width={6}></SizedBox>
+                  <FilterTitle>Preço</FilterTitle>
+                </FilterToggle>
+                {filters.price && (
+                  <FilterCleanButton onClick={() => setPrice([0, 3000])}>
+                    Limpar
+                  </FilterCleanButton>
+                )}
               </FilterHead>
-              <SizedBox height={12}></SizedBox>
-              <Padding horizontal={12}>
-                <div className={classes.root}>
-                  <CustomSlider
-                    value={price}
-                    onChange={priceChange}
-                    valueLabelDisplay="off"
-                    aria-labelledby="range-slider"
-                    getAriaValueText={priceText}
-                    min={0}
-                    max={3000}
-                    step={100}
-                    color="primary"
-                  />
-                </div>
-              </Padding>
-              <Prices>
-                <Price>{`${new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(price[0])}`}</Price>
-                <Price>{`${new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(price[1])}`}</Price>
-              </Prices>
+              {filters.price && (
+                <>
+                  <SizedBox height={12}></SizedBox>
+                  <Padding horizontal={12}>
+                    <div className={classes.root}>
+                      <CustomSlider
+                        value={price}
+                        onChange={priceChange}
+                        valueLabelDisplay="off"
+                        aria-labelledby="range-slider"
+                        getAriaValueText={priceText}
+                        min={0}
+                        max={3000}
+                        step={100}
+                        color="primary"
+                      />
+                    </div>
+                  </Padding>
+                  <Prices>
+                    <Price>{`${new Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(price[0])}`}</Price>
+                    <Price>{`${new Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(price[1])}`}</Price>
+                  </Prices>
+                </>
+              )}
+              {!filters.price && <SizedBox height={8}></SizedBox>}
             </FilterCard>
             <SizedBox height={20}></SizedBox>
             <FilterCard>
               <FilterHead>
-                <FilterTitle>Categorias</FilterTitle>
-                <FilterCleanButton onClick={() => setSelectedCategories([])}>
-                  Limpar
-                </FilterCleanButton>
+                <FilterToggle onClick={() => showHideFilter("categories")}>
+                  <Icon
+                    type={filters.categories ? "minus" : "plus"}
+                    size={16}
+                    onClick={() => showHideFilter("categories")}
+                  ></Icon>
+                  <SizedBox width={6}></SizedBox>
+                  <FilterTitle>Categorias</FilterTitle>
+                </FilterToggle>
+                {filters.categories && (
+                  <FilterCleanButton onClick={() => setSelectedCategories([])}>
+                    Limpar
+                  </FilterCleanButton>
+                )}
               </FilterHead>
-              <SizedBox height={12}></SizedBox>
-              <div>
-                {subCategories?.map((sub: any) => (
-                  <CheckboxWithLabel
-                    key={sub.slug}
-                    label={sub.title}
-                    onClick={() => addOrRemoveCategory(sub.id)}
-                    value={selectedCategories?.includes(sub.id)}
-                  ></CheckboxWithLabel>
-                ))}
-              </div>
+              {filters.categories && (
+                <>
+                  <SizedBox height={12}></SizedBox>
+                  <div>
+                    {subCategories?.map((sub: any) => (
+                      <CheckboxWithLabel
+                        key={sub.slug}
+                        label={sub.title}
+                        onClick={() => addOrRemoveCategory(sub.id)}
+                        value={selectedCategories?.includes(sub.id)}
+                      ></CheckboxWithLabel>
+                    ))}
+                  </div>
+                </>
+              )}
+              {!filters.categories && <SizedBox height={8}></SizedBox>}
             </FilterCard>
             <SizedBox height={20}></SizedBox>
             <FilterCard>
               <FilterHead>
-                <FilterTitle>Marcas</FilterTitle>
-                <FilterCleanButton onClick={() => setSelectedBrands([])}>
-                  Limpar
-                </FilterCleanButton>
+                <FilterToggle onClick={() => showHideFilter("brands")}>
+                  <Icon
+                    type={filters.brands ? "minus" : "plus"}
+                    size={16}
+                    onClick={() => showHideFilter("brands")}
+                  ></Icon>
+                  <SizedBox width={6}></SizedBox>
+                  <FilterTitle>Marcas</FilterTitle>
+                </FilterToggle>
+                {filters.brands && (
+                  <FilterCleanButton onClick={() => setSelectedBrands([])}>
+                    Limpar
+                  </FilterCleanButton>
+                )}
               </FilterHead>
-              <SizedBox height={12}></SizedBox>
-              <div>
-                {remoteBrands?.map((brand: any) => (
-                  <CheckboxWithLabel
-                    key={brand.id}
-                    label={brand.name}
-                    onClick={() => addOrRemoveBrands(brand.id)}
-                    value={selectedBrands.includes(brand.id)}
-                  ></CheckboxWithLabel>
-                ))}
-              </div>
+              {filters.brands && (
+                <>
+                  <SizedBox height={12}></SizedBox>
+                  <div>
+                    {remoteBrands?.map((brand: any) => (
+                      <CheckboxWithLabel
+                        key={brand.id}
+                        label={brand.name}
+                        onClick={() => addOrRemoveBrands(brand.id)}
+                        value={selectedBrands.includes(brand.id)}
+                      ></CheckboxWithLabel>
+                    ))}
+                  </div>
+                </>
+              )}
+              {!filters.brands && <SizedBox height={8}></SizedBox>}
             </FilterCard>
           </Filters>
           <Products>
@@ -498,9 +662,14 @@ export async function getStaticProps(): Promise<any> {
   const menuResult = await Axios.get(menuUrl);
   const menu = menuResult.data;
 
+  const productsUrl = `${process.env.API_ENDPOINT}/search?department=Mulher&color=&size=&minPrice=&maxPrice=3000&q=`;
+  const productsResult = await Axios.get(productsUrl);
+  const products = productsResult.data;
+
   return {
     props: {
       menu,
+      products,
     },
     revalidate: 60,
   };
