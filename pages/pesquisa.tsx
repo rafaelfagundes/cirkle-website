@@ -158,6 +158,30 @@ const FilterToggle = styled.div`
   width: 100%;
 `;
 
+const ProductPlaceholder = styled.div<{ margin: number }>`
+  width: 228px;
+  height: 388px;
+  margin-right: ${(props) => props.margin}px;
+  margin-bottom: 32px;
+  border-radius: 4px;
+
+  animation-name: fadeInFadeOut;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  @keyframes fadeInFadeOut {
+    0% {
+      background-color: #ddd;
+    }
+    50% {
+      background-color: #eaeaea;
+    }
+    100% {
+      background-color: #eee;
+    }
+  }
+`;
+
 const useStyles = makeStyles({
   root: {
     colorPrimary: Colors.PRIMARY,
@@ -190,21 +214,46 @@ const CustomSlider = withStyles({
   },
 })(Slider);
 
+function ProductsPlaceholder(props: { qty: number }): JSX.Element {
+  const result: Array<JSX.Element> = [];
+
+  for (let index = 0; index < props.qty; index++) {
+    result.push(
+      <ProductPlaceholder
+        margin={(index + 1) % 4 !== 0 ? 16 : 0}
+        key={index}
+      ></ProductPlaceholder>
+    );
+  }
+
+  return <>{result}</>;
+}
+
 function Search({
   menu,
   products: productsFallback,
+  sizes,
+  colors,
+  remoteBrands,
+  subCategories,
+  prices,
 }: {
   menu: Menu;
   products: Array<Product>;
+  sizes: Array<any>;
+  colors: Array<any>;
+  remoteBrands: Array<any>;
+  subCategories: Array<any>;
+  prices: Array<number>;
 }): JSX.Element {
   const classes = useStyles();
   const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [filters, setFilters] = useState({
-    department: false,
-    size: false,
-    color: false,
-    price: false,
+    department: true,
+    size: true,
+    color: true,
+    price: true,
     categories: false,
     brands: false,
   });
@@ -215,27 +264,21 @@ function Search({
 
   const router = useRouter();
 
-  const { q, size, color, categories, brands } = router.query;
-
-  const { data: sizes, error: sizesError } = useSWR("/sizes");
-  if (sizesError) console.error(sizesError);
-
-  const { data: colors, error: colorsError } = useSWR("/colors");
-  if (colorsError) console.error(colorsError);
-
-  const { data: remoteBrands, error: brandsError } = useSWR("/brands");
-  if (brandsError) console.error(brandsError);
-
-  const { data: subCategories, error: subCategoriesError } = useSWR(
-    "/sub-categories"
-  );
-  if (subCategoriesError) console.error(subCategoriesError);
+  const {
+    q,
+    size,
+    color,
+    categories,
+    brands,
+    minPrice,
+    maxPrice,
+  } = router.query;
 
   const [section, setSection] = useState("Mulher");
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
 
-  const [price, setPrice] = useState([0, 3000]);
+  const [price, setPrice] = useState(prices);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
 
@@ -281,7 +324,15 @@ function Search({
   }, []);
 
   useEffect(() => {
-    if (color || size || categories || brands || q) {
+    if (
+      color ||
+      size ||
+      categories ||
+      brands ||
+      q ||
+      Number(minPrice) !== prices[0] ||
+      Number(maxPrice) !== prices[1]
+    ) {
       setShowRemoveAllFiltersButton(true);
     } else {
       setShowRemoveAllFiltersButton(false);
@@ -313,7 +364,7 @@ function Search({
         setSelectedBrands([Number(brands)]);
       }
     }
-  }, [color, size, categories, brands, q]);
+  }, [color, size, categories, brands, q, minPrice, maxPrice]);
 
   useEffect(() => {
     router.push({
@@ -352,10 +403,12 @@ function Search({
     return null;
   };
 
+  // Search API call
   const { data: products, error: productsError } = useSWR(getSearchUrl(), {
-    initialData: productsFallback,
+    // initialData: productsFallback,
   });
   if (productsError) console.error(productsError);
+  if (!products) console.log("Loading products...");
 
   const showHideFilter = (filterName: string) => {
     const _filters = _cloneDeep(filters);
@@ -367,16 +420,22 @@ function Search({
     router.push({
       pathname: "/pesquisa",
       query: {
-        department: undefined,
+        department: "Mulher",
         color: undefined,
         size: undefined,
-        minPrice: undefined,
-        maxPrice: undefined,
+        minPrice: prices[0],
+        maxPrice: prices[1],
         q: undefined,
         brands: undefined,
         categories: undefined,
       },
     });
+    setSection("Mulher");
+    setSelectedSize(null);
+    setSelectedColor(null);
+    setPrice(prices);
+    setSelectedCategories([]);
+    setSelectedBrands([]);
   };
 
   return (
@@ -526,7 +585,7 @@ function Search({
                   <FilterTitle>Preço</FilterTitle>
                 </FilterToggle>
                 {filters.price && (
-                  <FilterCleanButton onClick={() => setPrice([0, 3000])}>
+                  <FilterCleanButton onClick={() => setPrice(prices)}>
                     Limpar
                   </FilterCleanButton>
                 )}
@@ -542,8 +601,8 @@ function Search({
                         valueLabelDisplay="off"
                         aria-labelledby="range-slider"
                         getAriaValueText={priceText}
-                        min={0}
-                        max={3000}
+                        min={prices[0]}
+                        max={prices[1]}
                         step={100}
                         color="primary"
                       />
@@ -635,6 +694,7 @@ function Search({
             </FilterCard>
           </Filters>
           <Products>
+            {!products && <ProductsPlaceholder qty={12}></ProductsPlaceholder>}
             {products?.map((item: any, index: number) => (
               <span
                 style={{
@@ -658,20 +718,51 @@ function Search({
 }
 
 export async function getStaticProps(): Promise<any> {
-  const menuUrl = `${process.env.API_ENDPOINT}/menu`;
-  const menuResult = await Axios.get(menuUrl);
-  const menu = menuResult.data;
+  function getData(url: string) {
+    return Axios.get(url);
+  }
 
-  const productsUrl = `${process.env.API_ENDPOINT}/search?department=Mulher&color=&size=&minPrice=&maxPrice=3000&q=`;
-  const productsResult = await Axios.get(productsUrl);
-  const products = productsResult.data;
+  const menuUrl = `${process.env.API_ENDPOINT}/menu`;
+  const productsUrl = `${process.env.API_ENDPOINT}/search?department=Mulher&color=&size=&minPrice=1&maxPrice=1000000&q=`;
+  const sizesUrl = `${process.env.API_ENDPOINT}/sizes`;
+  const colorsUrl = `${process.env.API_ENDPOINT}/colors`;
+  const brandsUrl = `${process.env.API_ENDPOINT}/brands`;
+  const subCategoriesUrl = `${process.env.API_ENDPOINT}/sub-categories`;
+  const pricesUrl = `${process.env.API_ENDPOINT}/prices-min-max`;
+
+  const results = await Promise.all([
+    getData(menuUrl),
+    getData(productsUrl),
+    getData(sizesUrl),
+    getData(colorsUrl),
+    getData(brandsUrl),
+    getData(subCategoriesUrl),
+    getData(pricesUrl),
+  ]);
+
+  const menu = results[0].data;
+  const products = results[1].data;
+  const sizes = results[2].data;
+  const colors = results[3].data;
+  const brands = results[4].data;
+  const subCategories = results[5].data;
+
+  const prices = [
+    Number(results[6].data.min) - 1,
+    Number(results[6].data.max) + 1,
+  ];
 
   return {
     props: {
       menu,
       products,
+      sizes,
+      colors,
+      remoteBrands: brands,
+      subCategories,
+      prices,
     },
-    revalidate: 60,
+    revalidate: 1,
   };
 }
 
