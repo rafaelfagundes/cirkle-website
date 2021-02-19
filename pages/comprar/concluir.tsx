@@ -42,7 +42,6 @@ const LoadingAnimationCircle = styled.div`
 function FinishPage(): JSX.Element {
   const cartContext = useCart();
   const orderContext = useOrder();
-  console.log("orderContext", orderContext);
   const router = useRouter();
   const [loadingPurchase, setLoadingPurchase] = useState(false);
   const [purchaseDisabled, setPurchaseDisabled] = useState(false);

@@ -11,26 +11,24 @@ import CheckboxWithLabel from "../src/components/Atoms/CheckboxWithLabel";
 import Column from "../src/components/Atoms/Column";
 import CustomButton from "../src/components/Atoms/CustomButton";
 import Icon from "../src/components/Atoms/Icon";
+import ListOrderSwitch, {
+  OPTIONS,
+} from "../src/components/Atoms/ListOrderSwitch";
 import Padding from "../src/components/Atoms/Padding";
 import RadioButtonWithLabel from "../src/components/Atoms/RadioButtonWithLabel";
+import Row from "../src/components/Atoms/Row";
 import SizedBox from "../src/components/Atoms/SizedBox";
 import ProductItem from "../src/components/Molecules/ProductItem";
 import StaticBreadcrumbs from "../src/components/Molecules/StaticBreadcrumbs";
+import EmptyPage from "../src/components/Templates/EmptyPage";
 import Layout from "../src/components/Templates/Layout";
 import Colors from "../src/enums/Colors";
 import Menu from "../src/modules/menu/Menu";
-import Product from "../src/modules/product/Product";
 import theme from "../src/theme/theme";
 
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-`;
-
 const Filters = styled.div`
-  width: 260px;
-  margin-right: 20px;
+  width: 264px;
+  margin-right: 32px;
 `;
 
 const FilterCard = styled.div`
@@ -85,7 +83,7 @@ const Products = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
-  width: 960px;
+  width: 1000px;
   height: 100%;
 `;
 
@@ -231,7 +229,6 @@ function ProductsPlaceholder(props: { qty: number }): JSX.Element {
 
 function Search({
   menu,
-  products: productsFallback,
   sizes,
   colors,
   remoteBrands,
@@ -239,7 +236,6 @@ function Search({
   prices,
 }: {
   menu: Menu;
-  products: Array<Product>;
   sizes: Array<any>;
   colors: Array<any>;
   remoteBrands: Array<any>;
@@ -261,6 +257,8 @@ function Search({
   const [showRemoveAllFiltersButton, setShowRemoveAllFiltersButton] = useState(
     false
   );
+
+  const [sortOrder, setSortOrder] = useState(OPTIONS.DEFAULT);
 
   const router = useRouter();
 
@@ -364,7 +362,7 @@ function Search({
         setSelectedBrands([Number(brands)]);
       }
     }
-  }, [color, size, categories, brands, q, minPrice, maxPrice]);
+  }, [color, size, categories, brands, q, minPrice, maxPrice, sortOrder]);
 
   useEffect(() => {
     router.push({
@@ -378,6 +376,7 @@ function Search({
         q,
         brands: selectedBrands,
         categories: selectedCategories,
+        sortOrder,
       },
     });
   }, [
@@ -388,6 +387,7 @@ function Search({
     q,
     selectedCategories,
     selectedBrands,
+    sortOrder,
   ]);
 
   const getSearchUrl = () => {
@@ -443,15 +443,21 @@ function Search({
       <Container maxWidth="lg" disableGutters>
         <SizedBox height={16}></SizedBox>
         <Padding horizontal={20}>
-          <StaticBreadcrumbs
-            showHome
-            root={{ link: "pesquisa", title: q ? "Pesquisa" : "Produtos" }}
-            category={q ? { link: `?q=${q}`, title: `"${q}"` } : null}
-          ></StaticBreadcrumbs>
+          <Row spaceBetween>
+            <StaticBreadcrumbs
+              showHome
+              root={{ link: "pesquisa", title: q ? "Pesquisa" : "Produtos" }}
+              category={q ? { link: `?q=${q}`, title: `"${q}"` } : null}
+            ></StaticBreadcrumbs>
+            <ListOrderSwitch
+              value={sortOrder}
+              setValue={setSortOrder}
+            ></ListOrderSwitch>
+          </Row>
         </Padding>
 
         <SizedBox height={16}></SizedBox>
-        <Row>
+        <Row alignTop>
           <Filters>
             {showRemoveAllFiltersButton && (
               <>
@@ -693,23 +699,41 @@ function Search({
               {!filters.brands && <SizedBox height={8}></SizedBox>}
             </FilterCard>
           </Filters>
-          <Products>
-            {!products && <ProductsPlaceholder qty={12}></ProductsPlaceholder>}
-            {products?.map((item: any, index: number) => (
-              <span
-                style={{
-                  width: !isSmartphone && (index + 1) % 4 !== 0 ? 244 : 228,
-                }}
-                key={item.id}
-              >
-                <ProductItem data={item}></ProductItem>
-                {!isSmartphone && (index + 1) % 4 !== 0 && (
-                  <SizedBox width={16}></SizedBox>
-                )}
-                {isSmartphone && <SizedBox width={16}></SizedBox>}
-              </span>
-            ))}
-          </Products>
+          {(!products || products.length > 0) && (
+            <Products>
+              {!products && (
+                <ProductsPlaceholder qty={12}></ProductsPlaceholder>
+              )}
+              {products?.map((item: any, index: number) => (
+                <span
+                  style={{
+                    width: !isSmartphone && (index + 1) % 4 !== 0 ? 252 : 228,
+                  }}
+                  key={item.id}
+                >
+                  <ProductItem data={item}></ProductItem>
+                  {!isSmartphone && (index + 1) % 4 !== 0 && (
+                    <SizedBox width={16}></SizedBox>
+                  )}
+                  {isSmartphone && <SizedBox width={16}></SizedBox>}
+                </span>
+              ))}
+            </Products>
+          )}
+          <>
+            {products && products.length === 0 && (
+              <div style={{ width: 1000 }}>
+                <SizedBox height={72}></SizedBox>
+                <EmptyPage
+                  buttonAction={removeAllFilters}
+                  buttonText="Limpar Filtros"
+                  icon="search"
+                  title="Nenhum produto encontrado"
+                  subtitle="Por favor, remova todos ou alguns filtros"
+                ></EmptyPage>
+              </div>
+            )}
+          </>
         </Row>
         <SizedBox height={96}></SizedBox>
       </Container>
@@ -723,7 +747,6 @@ export async function getStaticProps(): Promise<any> {
   }
 
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
-  const productsUrl = `${process.env.API_ENDPOINT}/search?department=Mulher&color=&size=&minPrice=1&maxPrice=1000000&q=`;
   const sizesUrl = `${process.env.API_ENDPOINT}/sizes`;
   const colorsUrl = `${process.env.API_ENDPOINT}/colors`;
   const brandsUrl = `${process.env.API_ENDPOINT}/brands`;
@@ -732,7 +755,6 @@ export async function getStaticProps(): Promise<any> {
 
   const results = await Promise.all([
     getData(menuUrl),
-    getData(productsUrl),
     getData(sizesUrl),
     getData(colorsUrl),
     getData(brandsUrl),
@@ -741,21 +763,19 @@ export async function getStaticProps(): Promise<any> {
   ]);
 
   const menu = results[0].data;
-  const products = results[1].data;
-  const sizes = results[2].data;
-  const colors = results[3].data;
-  const brands = results[4].data;
-  const subCategories = results[5].data;
+  const sizes = results[1].data;
+  const colors = results[2].data;
+  const brands = results[3].data;
+  const subCategories = results[4].data;
 
   const prices = [
-    Number(results[6].data.min) - 1,
-    Number(results[6].data.max) + 1,
+    Number(results[5].data.min) - 1,
+    Number(results[5].data.max) + 1,
   ];
 
   return {
     props: {
       menu,
-      products,
       sizes,
       colors,
       remoteBrands: brands,
