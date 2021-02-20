@@ -1,6 +1,8 @@
+import { useMediaQuery } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
+import theme from "../../../theme/theme";
 
 const Title = styled.div`
   font-family: Commissioner, sans-serif;
@@ -19,7 +21,7 @@ const Options = styled.div`
   justify-content: center;
 `;
 
-const Option = styled.div<{ active: boolean }>`
+const Option = styled.div<{ active: boolean; isSmartphone: boolean }>`
   cursor: pointer;
   font-family: Commissioner, sans-serif;
   font-weight: ${(props) => (props.active ? 700 : 400)};
@@ -28,6 +30,7 @@ const Option = styled.div<{ active: boolean }>`
   &:hover {
     text-decoration: underline;
   }
+  font-size: ${(props) => (props.isSmartphone ? 13 : 14)}px;
 `;
 
 const Separator = styled.div`
@@ -51,12 +54,15 @@ function ListOrderSwitch({
   value: OPTIONS;
   setValue: React.Dispatch<React.SetStateAction<OPTIONS>>;
 }): JSX.Element {
+  const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Options>
-      <Title>Ordernar:</Title>
+      {!isSmartphone && <Title>Ordernar:</Title>}
       <Option
         active={value === OPTIONS.DEFAULT}
         onClick={() => setValue(OPTIONS.DEFAULT)}
+        isSmartphone={isSmartphone}
       >
         Padrão
       </Option>
@@ -64,6 +70,7 @@ function ListOrderSwitch({
       <Option
         active={value === OPTIONS.L_PRICE}
         onClick={() => setValue(OPTIONS.L_PRICE)}
+        isSmartphone={isSmartphone}
       >
         Menor Preço
       </Option>
@@ -71,6 +78,7 @@ function ListOrderSwitch({
       <Option
         active={value === OPTIONS.H_PRICE}
         onClick={() => setValue(OPTIONS.H_PRICE)}
+        isSmartphone={isSmartphone}
       >
         Maior Preço
       </Option>
@@ -78,6 +86,7 @@ function ListOrderSwitch({
       <Option
         active={value === OPTIONS.RECENTS}
         onClick={() => setValue(OPTIONS.RECENTS)}
+        isSmartphone={isSmartphone}
       >
         Recentes
       </Option>

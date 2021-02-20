@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
+import Center from "../src/components/Atoms/Center";
 import CheckboxWithLabel from "../src/components/Atoms/CheckboxWithLabel";
 import Column from "../src/components/Atoms/Column";
 import CustomButton from "../src/components/Atoms/CustomButton";
@@ -18,6 +19,7 @@ import Padding from "../src/components/Atoms/Padding";
 import RadioButtonWithLabel from "../src/components/Atoms/RadioButtonWithLabel";
 import Row from "../src/components/Atoms/Row";
 import SizedBox from "../src/components/Atoms/SizedBox";
+import MobileProductItem from "../src/components/Molecules/MobileProductItem";
 import ProductItem from "../src/components/Molecules/ProductItem";
 import StaticBreadcrumbs from "../src/components/Molecules/StaticBreadcrumbs";
 import EmptyPage from "../src/components/Templates/EmptyPage";
@@ -26,9 +28,10 @@ import Colors from "../src/enums/Colors";
 import Menu from "../src/modules/menu/Menu";
 import theme from "../src/theme/theme";
 
-const Filters = styled.div`
-  width: 264px;
-  margin-right: 32px;
+const Filters = styled.div<{ isSmartphone: boolean }>`
+  width: ${(props) => (props.isSmartphone ? 400 : 264)}px;
+  margin-right: ${(props) => (props.isSmartphone ? 20 : 32)}px;
+  margin-left: ${(props) => (props.isSmartphone ? 20 : 0)}px;
 `;
 
 const FilterCard = styled.div`
@@ -156,11 +159,20 @@ const FilterToggle = styled.div`
   width: 100%;
 `;
 
-const ProductPlaceholder = styled.div<{ margin: number }>`
-  width: 228px;
-  height: 388px;
+const ProductPlaceholder = styled.div<{
+  margin: number;
+  isSmartphone: boolean;
+}>`
+  width: ${(props) =>
+    props.isSmartphone
+      ? process.browser
+        ? window.innerWidth - 28
+        : 228
+      : 228}px;
+  height: ${(props) => (props.isSmartphone ? 170 : 388)}px;
   margin-right: ${(props) => props.margin}px;
-  margin-bottom: 32px;
+  margin-bottom: ${(props) => (props.isSmartphone ? 16 : 32)}px;
+  margin-left: ${(props) => (props.isSmartphone ? 14.5 : 0)}px;
   border-radius: 4px;
 
   animation-name: fadeInFadeOut;
@@ -212,13 +224,17 @@ const CustomSlider = withStyles({
   },
 })(Slider);
 
-function ProductsPlaceholder(props: { qty: number }): JSX.Element {
+function ProductsPlaceholder(props: {
+  qty: number;
+  isSmartphone: boolean;
+}): JSX.Element {
   const result: Array<JSX.Element> = [];
 
   for (let index = 0; index < props.qty; index++) {
     result.push(
       <ProductPlaceholder
-        margin={(index + 1) % 4 !== 0 ? 16 : 0}
+        margin={props.isSmartphone ? 0 : (index + 1) % 4 !== 0 ? 16 : 0}
+        isSmartphone={props.isSmartphone}
         key={index}
       ></ProductPlaceholder>
     );
@@ -281,6 +297,9 @@ function Search({
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const [selectedBrands, setSelectedBrands] = useState([]);
+
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [showMobileOrders, setShowMobileOrders] = useState(false);
 
   function priceText(value: number) {
     return `R$ ${value}`;
@@ -417,308 +436,392 @@ function Search({
   };
 
   const removeAllFilters = () => {
-    router.push({
-      pathname: "/pesquisa",
-      query: {
-        department: "Mulher",
-        color: undefined,
-        size: undefined,
-        minPrice: prices[0],
-        maxPrice: prices[1],
-        q: undefined,
-        brands: undefined,
-        categories: undefined,
-      },
-    });
     setSection("Mulher");
     setSelectedSize(null);
     setSelectedColor(null);
     setPrice(prices);
     setSelectedCategories([]);
     setSelectedBrands([]);
+
+    setTimeout(() => {
+      router.push({
+        pathname: "/pesquisa",
+        query: {
+          department: "Mulher",
+          color: "",
+          size: "",
+          minPrice: prices[0],
+          maxPrice: prices[1],
+          q: "",
+          brands: "",
+          categories: "",
+        },
+      });
+    }, 100);
   };
 
   return (
     <Layout menu={menu} containerMargin={false}>
       <Container maxWidth="lg" disableGutters>
         <SizedBox height={16}></SizedBox>
-        <Padding horizontal={20}>
-          <Row spaceBetween>
-            <StaticBreadcrumbs
-              showHome
-              root={{ link: "pesquisa", title: q ? "Pesquisa" : "Produtos" }}
-              category={q ? { link: `?q=${q}`, title: `"${q}"` } : null}
-            ></StaticBreadcrumbs>
-            <ListOrderSwitch
-              value={sortOrder}
-              setValue={setSortOrder}
-            ></ListOrderSwitch>
-          </Row>
-        </Padding>
+        {!isSmartphone && (
+          <Padding horizontal={20}>
+            <Row spaceBetween>
+              <StaticBreadcrumbs
+                showHome
+                root={{ link: "pesquisa", title: q ? "Pesquisa" : "Produtos" }}
+                category={
+                  q
+                    ? {
+                        link: process.browser
+                          ? `?${String(window.location).split("?")[1]}`
+                          : null,
+                        title: `"${q}"`,
+                      }
+                    : null
+                }
+              ></StaticBreadcrumbs>
+              <ListOrderSwitch
+                value={sortOrder}
+                setValue={setSortOrder}
+              ></ListOrderSwitch>
+            </Row>
+          </Padding>
+        )}
+        {isSmartphone && (
+          <Padding horizontal={20}>
+            <Row>
+              <CustomButton
+                icon={
+                  showMobileFilters
+                    ? "filter-white"
+                    : showRemoveAllFiltersButton
+                    ? "filter-blue"
+                    : "filter"
+                }
+                variant={showMobileFilters ? "contained" : "outlined"}
+                type={showRemoveAllFiltersButton ? "edit" : "default"}
+                width={180}
+                onClick={() => setShowMobileFilters(!showMobileFilters)}
+              >
+                Filtrar
+              </CustomButton>
+              <SizedBox width={20}></SizedBox>
+              <CustomButton
+                icon={showMobileOrders ? "sort-white" : "sort"}
+                variant={showMobileOrders ? "contained" : "outlined"}
+                width={180}
+                onClick={() => setShowMobileOrders(!showMobileOrders)}
+              >
+                Ordenar
+              </CustomButton>
+            </Row>
+            {showMobileOrders && (
+              <>
+                <SizedBox height={20}></SizedBox>
+                <ListOrderSwitch
+                  value={sortOrder}
+                  setValue={setSortOrder}
+                ></ListOrderSwitch>
+                <SizedBox height={5}></SizedBox>
+              </>
+            )}
+          </Padding>
+        )}
 
         <SizedBox height={16}></SizedBox>
         <Row alignTop>
-          <Filters>
-            {showRemoveAllFiltersButton && (
-              <>
-                <CustomButton
-                  onClick={removeAllFilters}
-                  width={260}
-                  variant="outlined"
-                  type="delete"
-                >
-                  Limpar Todos Filtros
-                </CustomButton>
-                <SizedBox height={20}></SizedBox>
-              </>
-            )}
-            <FilterCard>
-              <FilterHead>
-                <FilterToggle onClick={() => showHideFilter("department")}>
-                  <Icon
-                    type={filters.department ? "minus" : "plus"}
-                    size={16}
-                    onClick={() => showHideFilter("department")}
-                  ></Icon>
-                  <SizedBox width={6}></SizedBox>
-                  <FilterTitle>Departamento</FilterTitle>
-                </FilterToggle>
+          {(!isSmartphone || showMobileFilters) && (
+            <Filters isSmartphone={isSmartphone}>
+              {showRemoveAllFiltersButton && (
+                <>
+                  <Center>
+                    <CustomButton
+                      onClick={removeAllFilters}
+                      width={260}
+                      variant="text"
+                      type="delete"
+                      icon="trash-red"
+                    >
+                      Limpar Todos Filtros
+                    </CustomButton>
+                  </Center>
+                  <SizedBox height={10}></SizedBox>
+                </>
+              )}
+              <FilterCard>
+                <FilterHead>
+                  <FilterToggle onClick={() => showHideFilter("department")}>
+                    <Icon
+                      type={filters.department ? "minus" : "plus"}
+                      size={16}
+                      onClick={() => showHideFilter("department")}
+                    ></Icon>
+                    <SizedBox width={6}></SizedBox>
+                    <FilterTitle>Departamento</FilterTitle>
+                  </FilterToggle>
+                  <SizedBox height={5}></SizedBox>
+                </FilterHead>
                 <SizedBox height={5}></SizedBox>
-              </FilterHead>
-              <SizedBox height={5}></SizedBox>
-              {filters.department && (
-                <Column>
-                  <RadioButtonWithLabel
-                    label="Mulher"
-                    onClick={() => setSection("Mulher")}
-                    value={section === "Mulher"}
-                  ></RadioButtonWithLabel>
-                  <RadioButtonWithLabel
-                    label="Kids"
-                    onClick={() => setSection("Kids")}
-                    value={section === "Kids"}
-                  ></RadioButtonWithLabel>
-                </Column>
-              )}
-              {!filters.department && <SizedBox height={2}></SizedBox>}
-            </FilterCard>
-            <SizedBox height={20}></SizedBox>
-            <FilterCard>
-              <FilterHead>
-                <FilterToggle onClick={() => showHideFilter("size")}>
-                  <Icon
-                    type={filters.size ? "minus" : "plus"}
-                    size={16}
-                    onClick={() => showHideFilter("size")}
-                  ></Icon>
-                  <SizedBox width={6}></SizedBox>
-                  <FilterTitle>Tamanho</FilterTitle>
-                </FilterToggle>
-                {filters.size && (
-                  <FilterCleanButton onClick={() => setSelectedSize(null)}>
-                    Limpar
-                  </FilterCleanButton>
+                {filters.department && (
+                  <Column>
+                    <RadioButtonWithLabel
+                      label="Mulher"
+                      onClick={() => setSection("Mulher")}
+                      value={section === "Mulher"}
+                    ></RadioButtonWithLabel>
+                    <RadioButtonWithLabel
+                      label="Kids"
+                      onClick={() => setSection("Kids")}
+                      value={section === "Kids"}
+                    ></RadioButtonWithLabel>
+                  </Column>
                 )}
-              </FilterHead>
-              {filters.size && (
-                <>
-                  <SizedBox height={16}></SizedBox>
-                  <Sizes>
-                    {sizes?.map((s: any, index: number) => (
-                      <Size
-                        key={s.value}
-                        selected={selectedSize === s.value}
-                        onClick={() => setSelectedSize(s.value)}
-                        noMargin={(index + 1) % 4 === 0}
-                      >
-                        {s.value}
-                      </Size>
-                    ))}
-                  </Sizes>
-                </>
-              )}
-              {!filters.size && <SizedBox height={8}></SizedBox>}
-            </FilterCard>
-            <SizedBox height={20}></SizedBox>
-            <FilterCard>
-              <FilterHead>
-                <FilterToggle onClick={() => showHideFilter("color")}>
-                  <Icon
-                    type={filters.color ? "minus" : "plus"}
-                    size={16}
-                    onClick={() => showHideFilter("color")}
-                  ></Icon>
-                  <SizedBox width={6}></SizedBox>
-                  <FilterTitle>Cor</FilterTitle>
-                </FilterToggle>
-                {filters.color && (
-                  <FilterCleanButton onClick={() => setSelectedColor(null)}>
-                    Limpar
-                  </FilterCleanButton>
-                )}
-              </FilterHead>
-              {filters.color && (
-                <>
-                  <SizedBox height={16}></SizedBox>
-                  <Sizes>
-                    {colors &&
-                      colors.map((c: any, index: number) => (
-                        <Color
-                          key={c.id}
-                          selected={
-                            selectedColor === Number(c.id) || !selectedColor
-                          }
-                          onClick={() => setSelectedColor(Number(c.id))}
-                          noMargin={(index + 1) % 4 === 0}
-                          color={c.hexColor}
-                        ></Color>
-                      ))}
-                  </Sizes>
-                </>
-              )}
-              {!filters.color && <SizedBox height={8}></SizedBox>}
-            </FilterCard>
-            <SizedBox height={20}></SizedBox>
-            <FilterCard>
-              <FilterHead>
-                <FilterToggle onClick={() => showHideFilter("price")}>
-                  <Icon
-                    type={filters.price ? "minus" : "plus"}
-                    size={16}
-                    onClick={() => showHideFilter("price")}
-                  ></Icon>
-                  <SizedBox width={6}></SizedBox>
-                  <FilterTitle>Preço</FilterTitle>
-                </FilterToggle>
-                {filters.price && (
-                  <FilterCleanButton onClick={() => setPrice(prices)}>
-                    Limpar
-                  </FilterCleanButton>
-                )}
-              </FilterHead>
-              {filters.price && (
-                <>
-                  <SizedBox height={12}></SizedBox>
-                  <Padding horizontal={12}>
-                    <div className={classes.root}>
-                      <CustomSlider
-                        value={price}
-                        onChange={priceChange}
-                        valueLabelDisplay="off"
-                        aria-labelledby="range-slider"
-                        getAriaValueText={priceText}
-                        min={prices[0]}
-                        max={prices[1]}
-                        step={100}
-                        color="primary"
-                      />
-                    </div>
-                  </Padding>
-                  <Prices>
-                    <Price>{`${new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(price[0])}`}</Price>
-                    <Price>{`${new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(price[1])}`}</Price>
-                  </Prices>
-                </>
-              )}
-              {!filters.price && <SizedBox height={8}></SizedBox>}
-            </FilterCard>
-            <SizedBox height={20}></SizedBox>
-            <FilterCard>
-              <FilterHead>
-                <FilterToggle onClick={() => showHideFilter("categories")}>
-                  <Icon
-                    type={filters.categories ? "minus" : "plus"}
-                    size={16}
-                    onClick={() => showHideFilter("categories")}
-                  ></Icon>
-                  <SizedBox width={6}></SizedBox>
-                  <FilterTitle>Categorias</FilterTitle>
-                </FilterToggle>
-                {filters.categories && (
-                  <FilterCleanButton onClick={() => setSelectedCategories([])}>
-                    Limpar
-                  </FilterCleanButton>
-                )}
-              </FilterHead>
-              {filters.categories && (
-                <>
-                  <SizedBox height={12}></SizedBox>
-                  <div>
-                    {subCategories?.map((sub: any) => (
-                      <CheckboxWithLabel
-                        key={sub.slug}
-                        label={sub.title}
-                        onClick={() => addOrRemoveCategory(sub.id)}
-                        value={selectedCategories?.includes(sub.id)}
-                      ></CheckboxWithLabel>
-                    ))}
-                  </div>
-                </>
-              )}
-              {!filters.categories && <SizedBox height={8}></SizedBox>}
-            </FilterCard>
-            <SizedBox height={20}></SizedBox>
-            <FilterCard>
-              <FilterHead>
-                <FilterToggle onClick={() => showHideFilter("brands")}>
-                  <Icon
-                    type={filters.brands ? "minus" : "plus"}
-                    size={16}
-                    onClick={() => showHideFilter("brands")}
-                  ></Icon>
-                  <SizedBox width={6}></SizedBox>
-                  <FilterTitle>Marcas</FilterTitle>
-                </FilterToggle>
-                {filters.brands && (
-                  <FilterCleanButton onClick={() => setSelectedBrands([])}>
-                    Limpar
-                  </FilterCleanButton>
-                )}
-              </FilterHead>
-              {filters.brands && (
-                <>
-                  <SizedBox height={12}></SizedBox>
-                  <div>
-                    {remoteBrands?.map((brand: any) => (
-                      <CheckboxWithLabel
-                        key={brand.id}
-                        label={brand.name}
-                        onClick={() => addOrRemoveBrands(brand.id)}
-                        value={selectedBrands.includes(brand.id)}
-                      ></CheckboxWithLabel>
-                    ))}
-                  </div>
-                </>
-              )}
-              {!filters.brands && <SizedBox height={8}></SizedBox>}
-            </FilterCard>
-          </Filters>
-          {(!products || products.length > 0) && (
-            <Products>
-              {!products && (
-                <ProductsPlaceholder qty={12}></ProductsPlaceholder>
-              )}
-              {products?.map((item: any, index: number) => (
-                <span
-                  style={{
-                    width: !isSmartphone && (index + 1) % 4 !== 0 ? 252 : 228,
-                  }}
-                  key={item.id}
-                >
-                  <ProductItem data={item}></ProductItem>
-                  {!isSmartphone && (index + 1) % 4 !== 0 && (
-                    <SizedBox width={16}></SizedBox>
+                {!filters.department && <SizedBox height={2}></SizedBox>}
+              </FilterCard>
+              <SizedBox height={20}></SizedBox>
+              <FilterCard>
+                <FilterHead>
+                  <FilterToggle onClick={() => showHideFilter("size")}>
+                    <Icon
+                      type={filters.size ? "minus" : "plus"}
+                      size={16}
+                      onClick={() => showHideFilter("size")}
+                    ></Icon>
+                    <SizedBox width={6}></SizedBox>
+                    <FilterTitle>Tamanho</FilterTitle>
+                  </FilterToggle>
+                  {filters.size && (
+                    <FilterCleanButton onClick={() => setSelectedSize(null)}>
+                      Limpar
+                    </FilterCleanButton>
                   )}
-                  {isSmartphone && <SizedBox width={16}></SizedBox>}
-                </span>
-              ))}
-            </Products>
+                </FilterHead>
+                {filters.size && (
+                  <>
+                    <SizedBox height={16}></SizedBox>
+                    <Sizes>
+                      {sizes?.map((s: any, index: number) => (
+                        <Size
+                          key={s.value}
+                          selected={selectedSize === s.value}
+                          onClick={() => setSelectedSize(s.value)}
+                          noMargin={
+                            isSmartphone
+                              ? (index + 1) % 5 === 0
+                              : (index + 1) % 4 === 0
+                          }
+                        >
+                          {s.value}
+                        </Size>
+                      ))}
+                    </Sizes>
+                  </>
+                )}
+                {!filters.size && <SizedBox height={8}></SizedBox>}
+              </FilterCard>
+              <SizedBox height={20}></SizedBox>
+              <FilterCard>
+                <FilterHead>
+                  <FilterToggle onClick={() => showHideFilter("color")}>
+                    <Icon
+                      type={filters.color ? "minus" : "plus"}
+                      size={16}
+                      onClick={() => showHideFilter("color")}
+                    ></Icon>
+                    <SizedBox width={6}></SizedBox>
+                    <FilterTitle>Cor</FilterTitle>
+                  </FilterToggle>
+                  {filters.color && (
+                    <FilterCleanButton onClick={() => setSelectedColor(null)}>
+                      Limpar
+                    </FilterCleanButton>
+                  )}
+                </FilterHead>
+                {filters.color && (
+                  <>
+                    <SizedBox height={16}></SizedBox>
+                    <Sizes>
+                      {colors &&
+                        colors.map((c: any, index: number) => (
+                          <Color
+                            key={c.id}
+                            selected={
+                              selectedColor === Number(c.id) || !selectedColor
+                            }
+                            onClick={() => setSelectedColor(Number(c.id))}
+                            noMargin={
+                              isSmartphone
+                                ? (index + 1) % 5 === 0
+                                : (index + 1) % 4 === 0
+                            }
+                            color={c.hexColor}
+                          ></Color>
+                        ))}
+                    </Sizes>
+                  </>
+                )}
+                {!filters.color && <SizedBox height={8}></SizedBox>}
+              </FilterCard>
+              <SizedBox height={20}></SizedBox>
+              <FilterCard>
+                <FilterHead>
+                  <FilterToggle onClick={() => showHideFilter("price")}>
+                    <Icon
+                      type={filters.price ? "minus" : "plus"}
+                      size={16}
+                      onClick={() => showHideFilter("price")}
+                    ></Icon>
+                    <SizedBox width={6}></SizedBox>
+                    <FilterTitle>Preço</FilterTitle>
+                  </FilterToggle>
+                  {filters.price && (
+                    <FilterCleanButton onClick={() => setPrice(prices)}>
+                      Limpar
+                    </FilterCleanButton>
+                  )}
+                </FilterHead>
+                {filters.price && (
+                  <>
+                    <SizedBox height={12}></SizedBox>
+                    <Padding horizontal={12}>
+                      <div className={classes.root}>
+                        <CustomSlider
+                          value={price}
+                          onChange={priceChange}
+                          valueLabelDisplay="off"
+                          aria-labelledby="range-slider"
+                          getAriaValueText={priceText}
+                          min={prices[0]}
+                          max={prices[1]}
+                          step={100}
+                          color="primary"
+                        />
+                      </div>
+                    </Padding>
+                    <Prices>
+                      <Price>{`${new Intl.NumberFormat("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      }).format(price[0])}`}</Price>
+                      <Price>{`${new Intl.NumberFormat("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      }).format(price[1])}`}</Price>
+                    </Prices>
+                  </>
+                )}
+                {!filters.price && <SizedBox height={8}></SizedBox>}
+              </FilterCard>
+              <SizedBox height={20}></SizedBox>
+              <FilterCard>
+                <FilterHead>
+                  <FilterToggle onClick={() => showHideFilter("categories")}>
+                    <Icon
+                      type={filters.categories ? "minus" : "plus"}
+                      size={16}
+                      onClick={() => showHideFilter("categories")}
+                    ></Icon>
+                    <SizedBox width={6}></SizedBox>
+                    <FilterTitle>Categorias</FilterTitle>
+                  </FilterToggle>
+                  {filters.categories && (
+                    <FilterCleanButton
+                      onClick={() => setSelectedCategories([])}
+                    >
+                      Limpar
+                    </FilterCleanButton>
+                  )}
+                </FilterHead>
+                {filters.categories && (
+                  <>
+                    <SizedBox height={12}></SizedBox>
+                    <div>
+                      {subCategories?.map((sub: any) => (
+                        <CheckboxWithLabel
+                          key={sub.slug}
+                          label={sub.title}
+                          onClick={() => addOrRemoveCategory(sub.id)}
+                          value={selectedCategories?.includes(sub.id)}
+                        ></CheckboxWithLabel>
+                      ))}
+                    </div>
+                  </>
+                )}
+                {!filters.categories && <SizedBox height={8}></SizedBox>}
+              </FilterCard>
+              <SizedBox height={20}></SizedBox>
+              <FilterCard>
+                <FilterHead>
+                  <FilterToggle onClick={() => showHideFilter("brands")}>
+                    <Icon
+                      type={filters.brands ? "minus" : "plus"}
+                      size={16}
+                      onClick={() => showHideFilter("brands")}
+                    ></Icon>
+                    <SizedBox width={6}></SizedBox>
+                    <FilterTitle>Marcas</FilterTitle>
+                  </FilterToggle>
+                  {filters.brands && (
+                    <FilterCleanButton onClick={() => setSelectedBrands([])}>
+                      Limpar
+                    </FilterCleanButton>
+                  )}
+                </FilterHead>
+                {filters.brands && (
+                  <>
+                    <SizedBox height={12}></SizedBox>
+                    <div>
+                      {remoteBrands?.map((brand: any) => (
+                        <CheckboxWithLabel
+                          key={brand.id}
+                          label={brand.name}
+                          onClick={() => addOrRemoveBrands(brand.id)}
+                          value={selectedBrands.includes(brand.id)}
+                        ></CheckboxWithLabel>
+                      ))}
+                    </div>
+                  </>
+                )}
+                {!filters.brands && <SizedBox height={8}></SizedBox>}
+              </FilterCard>
+            </Filters>
+          )}
+          {!showMobileFilters && (
+            <>
+              {(!products || products.length > 0) && (
+                <Products>
+                  {!products && (
+                    <ProductsPlaceholder
+                      qty={isSmartphone ? 4 : 12}
+                      isSmartphone={isSmartphone}
+                    ></ProductsPlaceholder>
+                  )}
+                  {products?.map((item: any, index: number) => (
+                    <span
+                      style={{
+                        width: isSmartphone
+                          ? process.browser
+                            ? window.innerWidth - 28
+                            : "100%"
+                          : (index + 1) % 4 !== 0
+                          ? 252
+                          : 228,
+                      }}
+                      key={item.id}
+                    >
+                      {isSmartphone && (
+                        <MobileProductItem data={item}></MobileProductItem>
+                      )}
+                      {!isSmartphone && <ProductItem data={item}></ProductItem>}
+                      {!isSmartphone && (index + 1) % 4 !== 0 && (
+                        <SizedBox width={16}></SizedBox>
+                      )}
+                    </span>
+                  ))}
+                </Products>
+              )}
+            </>
           )}
           <>
             {products && products.length === 0 && (
@@ -729,7 +832,7 @@ function Search({
                   buttonText="Limpar Filtros"
                   icon="search"
                   title="Nenhum produto encontrado"
-                  subtitle="Por favor, remova todos ou alguns filtros"
+                  subtitle="Por favor, remova alguns filtros"
                 ></EmptyPage>
               </div>
             )}
