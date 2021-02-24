@@ -234,7 +234,13 @@ const PromosDetail = styled.div<{ backgroundColor: string }>`
   transform: skew(-12deg);
 `;
 
-function DesktopTopMenu({ data }: { data: any }): JSX.Element {
+function DesktopTopMenu({
+  data,
+  search,
+}: {
+  data: any;
+  search: any;
+}): JSX.Element {
   const [menuData, setMenuData] = useState(null);
   const [selectedTab, setSelectedTab] = useState("women");
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -342,6 +348,7 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
                     <Title>Produtos</Title>
                     <SizedBox height={6}></SizedBox>
                     <HorizontalLine></HorizontalLine>
+                    <p>{JSON.stringify(search, null, 2)}</p>
                   </div>
                   <SizedBox width={16}></SizedBox>
                   <div style={{ flex: 1 }}>

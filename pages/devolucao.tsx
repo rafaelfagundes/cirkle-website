@@ -1,12 +1,24 @@
+import Axios from "axios";
 import React from "react";
 import Paragraph from "../src/components/Atoms/Paragraph";
 import SizedBox from "../src/components/Atoms/SizedBox";
 import Title from "../src/components/Atoms/Title";
 import Page from "../src/components/Templates/Page";
+import Menu from "../src/modules/menu/Menu";
 
-function Devolucao(): JSX.Element {
+interface PageProps {
+  menu: Menu;
+  search: any;
+}
+
+function Devolucao(props: PageProps): JSX.Element {
   return (
-    <Page title="devolução" image="images/return.jpg">
+    <Page
+      title="devolução"
+      image="images/return.jpg"
+      menu={props.menu}
+      search={props.search}
+    >
       <SizedBox height={40}></SizedBox>
       <Title>Duis vitae convallis sem</Title>
       <SizedBox height={20}></SizedBox>
@@ -66,6 +78,31 @@ function Devolucao(): JSX.Element {
       <SizedBox height={20}></SizedBox>
     </Page>
   );
+}
+
+export async function getStaticProps(): Promise<any> {
+  function getContent(url: string) {
+    return Axios.get(url);
+  }
+
+  const menuUrl = `${process.env.API_ENDPOINT}/menu`;
+  const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
+
+  const results = await Promise.all([
+    getContent(menuUrl),
+    getContent(searchUrl),
+  ]);
+
+  const menu = results[0].data;
+  const search = results[1].data;
+
+  return {
+    props: {
+      menu,
+      search,
+    },
+    revalidate: 1440,
+  };
 }
 
 export default Devolucao;

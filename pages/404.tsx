@@ -65,9 +65,10 @@ const Buttons = styled.div`
 
 interface Page404Props {
   menu: Menu;
+  search: any;
 }
 
-function Page404({ menu }: Page404Props): JSX.Element {
+function Page404({ menu, search }: Page404Props): JSX.Element {
   const router = useRouter();
 
   const _goTo = (route: string) => {
@@ -75,7 +76,7 @@ function Page404({ menu }: Page404Props): JSX.Element {
   };
 
   return (
-    <Layout menu={menu}>
+    <Layout menu={menu} search={search}>
       <Padding horizontal={16}>
         <>
           <SizedBox height={30}></SizedBox>
@@ -120,21 +121,27 @@ function Page404({ menu }: Page404Props): JSX.Element {
 }
 
 export async function getStaticProps(): Promise<any> {
-  function getMenu(url: string) {
+  function getContent(url: string) {
     return Axios.get(url);
   }
 
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
+  const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
 
-  const results = await Promise.all([getMenu(menuUrl)]);
+  const results = await Promise.all([
+    getContent(menuUrl),
+    getContent(searchUrl),
+  ]);
 
   const menu = results[0].data;
+  const search = results[1].data;
 
   return {
     props: {
       menu,
+      search,
     },
-    revalidate: 60,
+    revalidate: 1440,
   };
 }
 

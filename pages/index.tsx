@@ -48,6 +48,7 @@ interface HomeProps {
   shipping: Shipping;
   products: Array<Product>;
   menu: Menu;
+  search: any;
 }
 
 function Home(props: HomeProps): JSX.Element {
@@ -176,7 +177,7 @@ function Home(props: HomeProps): JSX.Element {
   }, [shipping]);
 
   return (
-    <Layout containerMargin={false} menu={props.menu}>
+    <Layout containerMargin={false} menu={props.menu} search={props.search}>
       <>
         <PromoHeroComponent data={promoHero}></PromoHeroComponent>
         <Hidden smUp={true}>
@@ -218,19 +219,7 @@ function Home(props: HomeProps): JSX.Element {
 }
 
 export async function getStaticProps(): Promise<any> {
-  function getBrands(url: string) {
-    return Axios.get(url);
-  }
-  function getHighlights(url: string) {
-    return Axios.get(url);
-  }
-  function getShipping(url: string) {
-    return Axios.get(url);
-  }
-  function getProducts(url: string) {
-    return Axios.get(url);
-  }
-  function getMenu(url: string) {
+  function getContent(url: string) {
     return Axios.get(url);
   }
 
@@ -239,13 +228,15 @@ export async function getStaticProps(): Promise<any> {
   const shippingUrl = `${process.env.API_ENDPOINT}/shipping`;
   const productsUrl = `${process.env.API_ENDPOINT}/products?_sort=views:DESC&_limit=8`;
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
+  const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
 
   const results = await Promise.all([
-    getBrands(brandsUrl),
-    getHighlights(highlightsUrl),
-    getShipping(shippingUrl),
-    getProducts(productsUrl),
-    getMenu(menuUrl),
+    getContent(brandsUrl),
+    getContent(highlightsUrl),
+    getContent(shippingUrl),
+    getContent(productsUrl),
+    getContent(menuUrl),
+    getContent(searchUrl),
   ]);
 
   const brands = results[0].data;
@@ -253,6 +244,7 @@ export async function getStaticProps(): Promise<any> {
   const shipping = results[2].data;
   const products = results[3].data;
   const menu = results[4].data;
+  const search = results[5].data;
 
   return {
     props: {
@@ -261,6 +253,7 @@ export async function getStaticProps(): Promise<any> {
       shipping,
       products,
       menu,
+      search,
     },
     revalidate: 60,
   };

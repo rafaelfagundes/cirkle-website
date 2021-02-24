@@ -25,12 +25,14 @@ interface LayoutProps {
   children: Array<JSX.Element> | JSX.Element;
   containerMargin?: boolean;
   menu?: any;
+  search?: any;
 }
 
 function Layout({
   children,
   containerMargin = true,
   menu,
+  search,
 }: LayoutProps): JSX.Element {
   const [drawer, setDrawer] = useState(false);
   const dialogContext = useDialog();
@@ -62,7 +64,7 @@ function Layout({
 
       {/* Desktop */}
       <Hidden only={["xs"]}>
-        <NavBarDesktop menuData={content}></NavBarDesktop>
+        <NavBarDesktop menuData={content} search={search}></NavBarDesktop>
       </Hidden>
       {/* Mobile */}
       <Hidden only={["sm", "md", "lg", "xl"]}>

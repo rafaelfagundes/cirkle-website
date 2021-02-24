@@ -36,7 +36,12 @@ import {
   Value,
 } from "../styles/pages/cart";
 
-function Cart({ menu }: { menu: Menu }): JSX.Element {
+interface PageProps {
+  menu: Menu;
+  search: any;
+}
+
+function Cart(props: PageProps): JSX.Element {
   const router = useRouter();
 
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
@@ -171,7 +176,7 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
   }, [cartContext.cart.items.length]);
 
   return (
-    <Layout menu={menu}>
+    <Layout menu={props.menu} search={props.search}>
       <>
         <StyledCartContainer>
           {cartContext?.cart?.items?.length > 0 && (
@@ -434,16 +439,27 @@ function Cart({ menu }: { menu: Menu }): JSX.Element {
 }
 
 export async function getStaticProps(): Promise<any> {
+  function getContent(url: string) {
+    return Axios.get(url);
+  }
+
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
-  const menuResult = await Axios.get(menuUrl);
-  const menu = menuResult.data;
+  const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
+
+  const results = await Promise.all([
+    getContent(menuUrl),
+    getContent(searchUrl),
+  ]);
+
+  const menu = results[0].data;
+  const search = results[1].data;
 
   return {
     props: {
       menu,
+      search,
     },
-    revalidate: 60,
+    revalidate: 1440,
   };
 }
-
 export default Cart;

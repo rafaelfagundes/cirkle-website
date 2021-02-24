@@ -1,4 +1,5 @@
 import { Avatar, useMediaQuery } from "@material-ui/core";
+import Axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -14,6 +15,7 @@ import WishlistTab from "../src/components/Pages/Profile/WishlistTab";
 import Page from "../src/components/Templates/Page";
 import Colors from "../src/enums/Colors";
 import { useAuth } from "../src/hooks/auth/useAuth";
+import Menu from "../src/modules/menu/Menu";
 import theme from "../src/theme/theme";
 import { cloudinaryImage } from "../src/utils/image";
 
@@ -55,7 +57,12 @@ const UserName = styled.span`
   color: ${Colors.SECONDARY};
 `;
 
-function Profile(): JSX.Element {
+interface PageProps {
+  menu: Menu;
+  search: any;
+}
+
+function Profile(props: PageProps): JSX.Element {
   const authContext = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(
@@ -80,6 +87,8 @@ function Profile(): JSX.Element {
       // tintColor={Colors.SPANISH_VIRIDIAN}
       noPadding={!isSmartPhone}
       doNotAutoScroll
+      menu={props.menu}
+      search={props.search}
     >
       {isSmartPhone && authContext.user && (
         <>
@@ -137,6 +146,31 @@ function Profile(): JSX.Element {
       )}
     </Page>
   );
+}
+
+export async function getStaticProps(): Promise<any> {
+  function getContent(url: string) {
+    return Axios.get(url);
+  }
+
+  const menuUrl = `${process.env.API_ENDPOINT}/menu`;
+  const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
+
+  const results = await Promise.all([
+    getContent(menuUrl),
+    getContent(searchUrl),
+  ]);
+
+  const menu = results[0].data;
+  const search = results[1].data;
+
+  return {
+    props: {
+      menu,
+      search,
+    },
+    revalidate: 1440,
+  };
 }
 
 export default Profile;

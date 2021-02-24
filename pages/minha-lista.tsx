@@ -25,7 +25,12 @@ const StyledWishlist = styled.div<{ isSmartphone: boolean }>`
     props.isSmartphone ? Colors.WHITE : Colors.TRANSPARENT};
 `;
 
-function Wishlist({ menu }: { menu: Menu }): JSX.Element {
+interface PageProps {
+  menu: Menu;
+  search: any;
+}
+
+function Wishlist({ menu, search }: PageProps): JSX.Element {
   const theme = useTheme();
   const isSmartphone = useMediaQuery(theme.breakpoints.down("xs"));
   const wishlistContext = useWishlist();
@@ -59,10 +64,11 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
 
   return (
     <Page
-      menu={menu}
       title="Lista de Desejos"
       image="images/wishlist.jpg"
       maxWidth={640}
+      menu={menu}
+      search={search}
     >
       <SizedBox height={20}></SizedBox>
       <StyledWishlist isSmartphone={isSmartphone}>
@@ -153,22 +159,28 @@ function Wishlist({ menu }: { menu: Menu }): JSX.Element {
   );
 }
 
-// This function gets called at build time on server-side.
-// It won't be called on client-side, so you can even do
-// direct database queries. See the "Technical details" section.
 export async function getStaticProps(): Promise<any> {
-  // Call an external API endpoint to get posts.
-  // You can use any data fetching library
+  function getContent(url: string) {
+    return Axios.get(url);
+  }
 
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
-  const menuResult = await Axios.get(menuUrl);
-  const menu = menuResult.data;
+  const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
+
+  const results = await Promise.all([
+    getContent(menuUrl),
+    getContent(searchUrl),
+  ]);
+
+  const menu = results[0].data;
+  const search = results[1].data;
 
   return {
     props: {
       menu,
+      search,
     },
-    revalidate: 60,
+    revalidate: 1440,
   };
 }
 

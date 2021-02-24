@@ -27,6 +27,7 @@ const StatusText = styled.div<{ fontSize: number }>`
   font-weight: 700;
   text-align: center;
   font-size: ${(props) => props.fontSize}px;
+  font-family: Commissioner, sans-serif;
 `;
 
 const MobileText = styled.div<{ color: string; fontSize: number }>`

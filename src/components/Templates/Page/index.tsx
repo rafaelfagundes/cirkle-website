@@ -1,5 +1,4 @@
 import { useMediaQuery } from "@material-ui/core";
-import Axios from "axios";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
@@ -64,6 +63,7 @@ const Panel = styled.div<{
 
 function Page({
   menu,
+  search,
   title,
   image,
   children,
@@ -72,6 +72,7 @@ function Page({
   tintColor = Colors.PRIMARY,
 }: {
   menu?: Menu;
+  search?: any;
   title: string;
   image: string;
   children: any;
@@ -88,7 +89,7 @@ function Page({
   }, []);
 
   return (
-    <Layout containerMargin={false} menu={menu}>
+    <Layout containerMargin={false} menu={menu} search={search}>
       <>
         <BackgroundBanner bgImage={image} mobile={isSmartPhone}>
           <BannerTint mobile={isSmartPhone} tint={tintColor}></BannerTint>
@@ -108,18 +109,4 @@ function Page({
     </Layout>
   );
 }
-
-export async function getStaticProps(): Promise<any> {
-  const menuUrl = `${process.env.API_ENDPOINT}/menu`;
-  const menuResult = await Axios.get(menuUrl);
-  const menu = menuResult.data;
-
-  return {
-    props: {
-      menu,
-    },
-    revalidate: 1440,
-  };
-}
-
 export default Page;

@@ -245,6 +245,7 @@ function ProductsPlaceholder(props: {
 
 function Search({
   menu,
+  search,
   sizes,
   colors,
   remoteBrands,
@@ -252,6 +253,7 @@ function Search({
   prices,
 }: {
   menu: Menu;
+  search: any;
   sizes: Array<any>;
   colors: Array<any>;
   remoteBrands: Array<any>;
@@ -461,7 +463,7 @@ function Search({
   };
 
   return (
-    <Layout menu={menu} containerMargin={false}>
+    <Layout menu={menu} containerMargin={false} search={search}>
       <Container maxWidth="lg" disableGutters>
         <SizedBox height={16}></SizedBox>
         {!isSmartphone && (
@@ -855,6 +857,7 @@ export async function getStaticProps(): Promise<any> {
   const brandsUrl = `${process.env.API_ENDPOINT}/brands`;
   const subCategoriesUrl = `${process.env.API_ENDPOINT}/sub-categories`;
   const pricesUrl = `${process.env.API_ENDPOINT}/prices-min-max`;
+  const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
 
   const results = await Promise.all([
     getData(menuUrl),
@@ -863,6 +866,7 @@ export async function getStaticProps(): Promise<any> {
     getData(brandsUrl),
     getData(subCategoriesUrl),
     getData(pricesUrl),
+    getData(searchUrl),
   ]);
 
   const menu = results[0].data;
@@ -870,6 +874,7 @@ export async function getStaticProps(): Promise<any> {
   const colors = results[2].data;
   const brands = results[3].data;
   const subCategories = results[4].data;
+  const search = results[6].data;
 
   const prices = [
     Number(results[5].data.min) - 1,
@@ -884,6 +889,7 @@ export async function getStaticProps(): Promise<any> {
       remoteBrands: brands,
       subCategories,
       prices,
+      search,
     },
     revalidate: 1,
   };

@@ -1,4 +1,5 @@
 import { useMediaQuery } from "@material-ui/core";
+import Axios from "axios";
 import _orderBy from "lodash/orderBy";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -12,6 +13,7 @@ import OrdersMobile from "../src/components/Pages/Orders/OrdersMobile";
 import EmptyPage from "../src/components/Templates/EmptyPage";
 import Page from "../src/components/Templates/Page";
 import { useAuth } from "../src/hooks/auth/useAuth";
+import Menu from "../src/modules/menu/Menu";
 import Order, { PaymentStatus } from "../src/modules/order/Order";
 import theme from "../src/theme/theme";
 
@@ -29,7 +31,12 @@ function getPaymentStatus(paymentStatus: string): PaymentStatus {
   }
 }
 
-function Orders(): JSX.Element {
+interface PageProps {
+  menu: Menu;
+  search: any;
+}
+
+function Orders(props: PageProps): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const router = useRouter();
   const authContext = useAuth();
@@ -75,6 +82,8 @@ function Orders(): JSX.Element {
       image="/images/orders.jpg"
       title="Meus Pedidos"
       noPadding={isSmartPhone}
+      menu={props.menu}
+      search={props.search}
     >
       <SizedBox height={20}></SizedBox>
       {data && orders.length === 0 && (
@@ -111,6 +120,31 @@ function Orders(): JSX.Element {
       )}
     </Page>
   );
+}
+
+export async function getStaticProps(): Promise<any> {
+  function getContent(url: string) {
+    return Axios.get(url);
+  }
+
+  const menuUrl = `${process.env.API_ENDPOINT}/menu`;
+  const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
+
+  const results = await Promise.all([
+    getContent(menuUrl),
+    getContent(searchUrl),
+  ]);
+
+  const menu = results[0].data;
+  const search = results[1].data;
+
+  return {
+    props: {
+      menu,
+      search,
+    },
+    revalidate: 1440,
+  };
 }
 
 export default Orders;

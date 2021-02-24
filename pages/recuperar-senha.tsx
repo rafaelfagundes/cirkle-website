@@ -17,7 +17,12 @@ import Colors from "../src/enums/Colors";
 import { useAuth } from "../src/hooks/auth/useAuth";
 import Menu from "../src/modules/menu/Menu";
 
-function RecoverPassword({ menu }: { menu: Menu }): JSX.Element {
+interface PageProps {
+  menu: Menu;
+  search: any;
+}
+
+function RecoverPassword(props: PageProps): JSX.Element {
   const router = useRouter();
   const auth = useAuth();
   const [loading, setLoading] = useState(false);
@@ -77,7 +82,7 @@ function RecoverPassword({ menu }: { menu: Menu }): JSX.Element {
   };
 
   return (
-    <Layout menu={menu}>
+    <Layout menu={props.menu} search={props.search}>
       <Container maxWidth="sm" disableGutters>
         <SizedBox height={72}></SizedBox>
         <Center>
@@ -147,23 +152,28 @@ function RecoverPassword({ menu }: { menu: Menu }): JSX.Element {
   );
 }
 
-// This function gets called at build time on server-side.
-// It won't be called on client-side, so you can even do
-// direct database queries. See the "Technical details" section.
 export async function getStaticProps(): Promise<any> {
-  // Call an external API endpoint to get posts.
-  // You can use any data fetching library
+  function getContent(url: string) {
+    return Axios.get(url);
+  }
 
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
-  const menuResult = await Axios.get(menuUrl);
-  const menu = menuResult.data;
+  const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
+
+  const results = await Promise.all([
+    getContent(menuUrl),
+    getContent(searchUrl),
+  ]);
+
+  const menu = results[0].data;
+  const search = results[1].data;
 
   return {
     props: {
       menu,
+      search,
     },
-    revalidate: 60,
+    revalidate: 1440,
   };
 }
-
 export default RecoverPassword;

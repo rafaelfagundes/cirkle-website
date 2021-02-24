@@ -1,8 +1,10 @@
+import Axios from "axios";
 import React from "react";
 import styled from "styled-components";
 import Icon from "../src/components/Atoms/Icon";
 import Page from "../src/components/Templates/Page";
 import Colors from "../src/enums/Colors";
+import Menu from "../src/modules/menu/Menu";
 
 const ContactItem = styled.div`
   padding: 20px 0;
@@ -92,12 +94,19 @@ const contactItems = [
   },
 ];
 
-function Contato(): JSX.Element {
+interface PageProps {
+  menu: Menu;
+  search: any;
+}
+
+function Contato(props: PageProps): JSX.Element {
   return (
     <Page
       title="precisa falar com a gente?"
       image="/images/contact.jpg"
       maxWidth={640}
+      menu={props.menu}
+      search={props.search}
     >
       {contactItems.map((item, index) => (
         <>
@@ -112,6 +121,31 @@ function Contato(): JSX.Element {
       ))}
     </Page>
   );
+}
+
+export async function getStaticProps(): Promise<any> {
+  function getContent(url: string) {
+    return Axios.get(url);
+  }
+
+  const menuUrl = `${process.env.API_ENDPOINT}/menu`;
+  const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
+
+  const results = await Promise.all([
+    getContent(menuUrl),
+    getContent(searchUrl),
+  ]);
+
+  const menu = results[0].data;
+  const search = results[1].data;
+
+  return {
+    props: {
+      menu,
+      search,
+    },
+    revalidate: 1440,
+  };
 }
 
 export default Contato;

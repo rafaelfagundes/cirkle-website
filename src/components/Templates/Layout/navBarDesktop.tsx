@@ -39,13 +39,13 @@ function HideOnScroll(props: Props) {
   );
 }
 
-function NavBarDesktop({ menuData }: { menuData: any }): JSX.Element {
+function NavBarDesktop({ menuData, search }: { menuData: any, search: any  }): JSX.Element {
   return (
     <>
       <NavBarSpacer></NavBarSpacer>
       <HideOnScroll>
         <AppBar position="fixed" color="transparent" elevation={0}>
-          <DesktopTopMenu data={menuData}></DesktopTopMenu>
+          <DesktopTopMenu data={menuData} search={search}></DesktopTopMenu>
         </AppBar>
       </HideOnScroll>
     </>
