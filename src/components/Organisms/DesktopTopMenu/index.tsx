@@ -7,12 +7,15 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
 import { useAuth } from "../../../hooks/auth/useAuth";
+import Center from "../../Atoms/Center";
 import FavoriteMenuItem from "../../Atoms/FavoriteMenuItem";
+import HorizontalLine from "../../Atoms/HorizontalLine";
 // import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../../Atoms/HorizontalLogo";
 import Icon from "../../Atoms/Icon";
 import SizedBox from "../../Atoms/SizedBox";
 import { TextPlaceholder } from "../../Atoms/TextPlaceholder";
+import Title from "../../Atoms/Title";
 
 const DropdownCart = dynamic(() => import("../../Molecules/DropdownCart"), {
   ssr: false,
@@ -26,6 +29,34 @@ const UserProfileMenuItem = dynamic(
 
 const MenuContainer = styled.div`
   background-color: ${Colors.WHITE};
+`;
+
+const SearchShade = styled.div<{ show: boolean }>`
+  width: 100vw;
+  height: ${(props) => (props.show ? 200 : 0)}vh;
+  background-color: ${(props) =>
+    props.show ? "rgba(0, 0, 0, 0.75)" : "rgba(0, 0, 0, 0.0)"};
+  position: absolute;
+  z-index: 999;
+
+  transition: background 250ms ease-in-out;
+`;
+
+const SearchContainer = styled.div<{ minWidth: number; show: boolean }>`
+  min-width: ${(props) => props.minWidth}px;
+  max-width: 960px;
+  height: ${(props) => (props.show ? 500 : 0)}px;
+  background-color: ${Colors.WHITE};
+  /* display: ${(props) => (props.show ? "flex" : "none")}; */
+  position: absolute;
+  z-index: 1000;
+  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+  top: 55px;
+  overflow: hidden;
+  padding: ${(props) => (props.show ? 20 : 0)}px;
+
+  transition: height 250ms ease-in-out;
 `;
 
 const Top = styled.div`
@@ -174,6 +205,7 @@ const StyledSearchBar = styled.div<{ active: boolean }>`
   border-radius: 22px;
 
   transition: border 400ms;
+  z-index: 1001;
 `;
 
 const SideIcons = styled.div<{ isLogged: boolean }>`
@@ -207,6 +239,9 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
   const [selectedTab, setSelectedTab] = useState("women");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchBarFocused, setSearchBarFocused] = useState(false);
+  const [mouseOverSearchContainer, setMouseOverSearchContainer] = useState(
+    false
+  );
 
   const [searchQuery, setSearchQuery] = useState(null);
 
@@ -274,186 +309,235 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
     });
   }
 
+  const closeSearchContainer = () => {
+    if (!mouseOverSearchContainer) {
+      setSearchBarFocused(false);
+    }
+  };
+
   return (
-    <MenuContainer>
-      <Container maxWidth="lg">
-        <Top>
-          <LogoAndTabs>
-            <Link href="/">
-              <LogoHolder>
-                <HorizontalLogo width={92}></HorizontalLogo>
-              </LogoHolder>
-            </Link>
-            {menuData && (
-              <Tabs>
-                {Object.keys(menuData).map((element) => (
-                  <Tab
-                    key={menuData[element].title}
-                    active={menuData[element].active}
-                    onClick={() => toggleTab(element)}
-                    // onMouseOver={() => toggleTab(element)}
-                    color={
-                      selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS
-                    }
-                  >
-                    <TabText active={menuData[element].active}>
-                      {menuData[element].title}
-                    </TabText>
-                  </Tab>
-                ))}
-              </Tabs>
-            )}
-            {!menuData && (
-              <Tabs>
-                <Tab active={true} color={Colors.PRIMARY}>
-                  <TextPlaceholder
-                    width={80}
-                    color={Colors.LIGHT_GRAY}
-                  ></TextPlaceholder>
-                </Tab>
-                <Tab active={false} color={Colors.KIDS}>
-                  <TextPlaceholder
-                    width={50}
-                    color={Colors.LIGHT_GRAY}
-                  ></TextPlaceholder>
-                </Tab>
-              </Tabs>
-            )}
-          </LogoAndTabs>
-          <SizedBox width={32}></SizedBox>
-          <StyledSearchBar active={searchBarFocused}>
-            <StyledInputBase
-              id="search-bar-on-menu"
-              placeholder="Procure por marcas, produtos, inspiração"
-              inputProps={{ "aria-label": "search" }}
-              onFocus={() => setSearchBarFocused(true)}
-              onBlur={() => setSearchBarFocused(false)}
-              onChange={(event) => onSearchChange(event)}
-              onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>) => {
-                if (e.key === "Enter") submitSearch();
-              }}
-              value={searchQuery}
-            />
-            <Icon type="search"></Icon>
-          </StyledSearchBar>
-          <SizedBox width={22}></SizedBox>
-          <SideIcons isLogged={authContext.user !== null}>
-            <UserProfileMenuItem
-              isLogged={authContext.user !== null}
-            ></UserProfileMenuItem>
-            {authContext.user && <FavoriteMenuItem></FavoriteMenuItem>}
-            <DropdownCart></DropdownCart>
-          </SideIcons>
-        </Top>
-      </Container>
-
-      <UnderTabsContent
-        color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
-        onMouseLeave={() => {
-          cleanActives(selectedTab, selectedCategory);
-        }}
-      >
+    <>
+      <SearchShade
+        show={searchBarFocused}
+        onClick={() => setSearchBarFocused(false)}
+      ></SearchShade>
+      <MenuContainer>
         <Container maxWidth="lg">
-          <Row>
-            <Categories>
-              <SizedBox width={6}></SizedBox>
-              {menuData && (
-                <MenuItem>
-                  <PromosDetail
-                    backgroundColor={
-                      selectedTab === "women"
-                        ? Colors.SECONDARY
-                        : Colors.KIDS_VIOLET
-                    }
-                  ></PromosDetail>
-                  <MenuItemText color={Colors.WHITE}>Promos</MenuItemText>
-                </MenuItem>
+          <Center>
+            <SearchContainer
+              show={searchBarFocused}
+              onMouseOver={() => setMouseOverSearchContainer(true)}
+              onMouseLeave={() => setMouseOverSearchContainer(false)}
+              minWidth={
+                process.browser
+                  ? window.innerWidth <= 960
+                    ? window.innerWidth
+                    : 960
+                  : 0
+              }
+            >
+              {searchBarFocused && (
+                <Row>
+                  <div style={{ flex: 1 }}>
+                    <Title>Produtos</Title>
+                    <SizedBox height={6}></SizedBox>
+                    <HorizontalLine></HorizontalLine>
+                  </div>
+                  <SizedBox width={16}></SizedBox>
+                  <div style={{ flex: 1 }}>
+                    <Title>Categorias</Title>
+                    <SizedBox height={6}></SizedBox>
+                    <HorizontalLine></HorizontalLine>
+                  </div>
+                  <SizedBox width={16}></SizedBox>
+                  <div style={{ flex: 1 }}>
+                    <Title>Páginas</Title>
+                    <SizedBox height={6}></SizedBox>
+                    <HorizontalLine></HorizontalLine>
+                  </div>
+                </Row>
               )}
-              <SizedBox width={16}></SizedBox>
+            </SearchContainer>
+          </Center>
 
-              {!menuData && (
-                <>
-                  <Link href="/">
-                    <MenuItem>
-                      <TextPlaceholder
-                        width={95}
-                        color={Colors.LIGHT_GRAY}
-                      ></TextPlaceholder>
-                    </MenuItem>
-                  </Link>
-                  <SizedBox width={16}></SizedBox>
-                  <Link href="/">
-                    <MenuItem>
-                      <TextPlaceholder
-                        width={90}
-                        color={Colors.LIGHT_GRAY}
-                      ></TextPlaceholder>
-                    </MenuItem>
-                  </Link>
-                  <SizedBox width={16}></SizedBox>
-                  <Link href="/">
-                    <MenuItem>
-                      <TextPlaceholder
-                        width={95}
-                        color={Colors.LIGHT_GRAY}
-                      ></TextPlaceholder>
-                    </MenuItem>
-                  </Link>
-                  <SizedBox width={16}></SizedBox>
-                  <Link href="/">
-                    <MenuItem>
-                      <TextPlaceholder
-                        width={90}
-                        color={Colors.LIGHT_GRAY}
-                      ></TextPlaceholder>
-                    </MenuItem>
-                  </Link>
-                  <SizedBox width={16}></SizedBox>
-                  <Link href="/">
-                    <MenuItem>
-                      <TextPlaceholder
-                        width={100}
-                        color={Colors.LIGHT_GRAY}
-                      ></TextPlaceholder>
-                    </MenuItem>
-                  </Link>
-                  <SizedBox width={16}></SizedBox>
-                  <Link href="/">
-                    <MenuItem>
-                      <TextPlaceholder
-                        width={95}
-                        color={Colors.LIGHT_GRAY}
-                      ></TextPlaceholder>
-                    </MenuItem>
-                  </Link>
-                  <SizedBox width={16}></SizedBox>
-                  <Link href="/">
-                    <MenuItem>
-                      <TextPlaceholder
-                        width={100}
-                        color={Colors.MIDDLE_YELLOW}
-                      ></TextPlaceholder>
-                    </MenuItem>
-                  </Link>
-                </>
-              )}
-              {menuData &&
-                Object.keys(menuData[selectedTab].categories).map((item) => (
-                  <Link
-                    href={menuData[selectedTab].categories[item].link}
-                    key={menuData[selectedTab].categories[item].link}
-                  >
-                    <MenuItem
-                      active={menuData[selectedTab].categories[item].active}
-                      onMouseOver={() => toggleCategory(selectedTab, item)}
+          <Top>
+            <LogoAndTabs>
+              <Link href="/">
+                <LogoHolder>
+                  <HorizontalLogo width={92}></HorizontalLogo>
+                </LogoHolder>
+              </Link>
+              {menuData && (
+                <Tabs>
+                  {Object.keys(menuData).map((element) => (
+                    <Tab
+                      key={menuData[element].title}
+                      active={menuData[element].active}
+                      onClick={() => toggleTab(element)}
+                      // onMouseOver={() => toggleTab(element)}
+                      color={
+                        selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS
+                      }
                     >
-                      <MenuItemText
+                      <TabText active={menuData[element].active}>
+                        {menuData[element].title}
+                      </TabText>
+                    </Tab>
+                  ))}
+                </Tabs>
+              )}
+              {!menuData && (
+                <Tabs>
+                  <Tab active={true} color={Colors.PRIMARY}>
+                    <TextPlaceholder
+                      width={80}
+                      color={Colors.LIGHT_GRAY}
+                    ></TextPlaceholder>
+                  </Tab>
+                  <Tab active={false} color={Colors.KIDS}>
+                    <TextPlaceholder
+                      width={50}
+                      color={Colors.LIGHT_GRAY}
+                    ></TextPlaceholder>
+                  </Tab>
+                </Tabs>
+              )}
+            </LogoAndTabs>
+            <SizedBox width={32}></SizedBox>
+            <StyledSearchBar active={searchBarFocused}>
+              <StyledInputBase
+                id="search-bar-on-menu"
+                placeholder="Procure por marcas, produtos, inspiração"
+                inputProps={{ "aria-label": "search" }}
+                onFocus={() => setSearchBarFocused(true)}
+                onBlur={closeSearchContainer}
+                onChange={(event) => onSearchChange(event)}
+                onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>) => {
+                  if (e.key === "Enter") submitSearch();
+                }}
+                value={searchQuery}
+                autoComplete="off"
+              />
+              <Icon type="search"></Icon>
+            </StyledSearchBar>
+            <SizedBox width={22}></SizedBox>
+            <SideIcons isLogged={authContext.user !== null}>
+              <UserProfileMenuItem
+                isLogged={authContext.user !== null}
+              ></UserProfileMenuItem>
+              {authContext.user && <FavoriteMenuItem></FavoriteMenuItem>}
+              <DropdownCart></DropdownCart>
+            </SideIcons>
+          </Top>
+        </Container>
+
+        <UnderTabsContent
+          color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
+          onMouseLeave={() => {
+            cleanActives(selectedTab, selectedCategory);
+          }}
+        >
+          <Container maxWidth="lg">
+            <Row>
+              <Categories>
+                <SizedBox width={6}></SizedBox>
+                {menuData && (
+                  <MenuItem>
+                    <PromosDetail
+                      backgroundColor={
+                        selectedTab === "women"
+                          ? Colors.SECONDARY
+                          : Colors.KIDS_VIOLET
+                      }
+                    ></PromosDetail>
+                    <MenuItemText color={Colors.WHITE}>Promos</MenuItemText>
+                  </MenuItem>
+                )}
+                <SizedBox width={16}></SizedBox>
+
+                {!menuData && (
+                  <>
+                    <Link href="/">
+                      <MenuItem>
+                        <TextPlaceholder
+                          width={95}
+                          color={Colors.LIGHT_GRAY}
+                        ></TextPlaceholder>
+                      </MenuItem>
+                    </Link>
+                    <SizedBox width={16}></SizedBox>
+                    <Link href="/">
+                      <MenuItem>
+                        <TextPlaceholder
+                          width={90}
+                          color={Colors.LIGHT_GRAY}
+                        ></TextPlaceholder>
+                      </MenuItem>
+                    </Link>
+                    <SizedBox width={16}></SizedBox>
+                    <Link href="/">
+                      <MenuItem>
+                        <TextPlaceholder
+                          width={95}
+                          color={Colors.LIGHT_GRAY}
+                        ></TextPlaceholder>
+                      </MenuItem>
+                    </Link>
+                    <SizedBox width={16}></SizedBox>
+                    <Link href="/">
+                      <MenuItem>
+                        <TextPlaceholder
+                          width={90}
+                          color={Colors.LIGHT_GRAY}
+                        ></TextPlaceholder>
+                      </MenuItem>
+                    </Link>
+                    <SizedBox width={16}></SizedBox>
+                    <Link href="/">
+                      <MenuItem>
+                        <TextPlaceholder
+                          width={100}
+                          color={Colors.LIGHT_GRAY}
+                        ></TextPlaceholder>
+                      </MenuItem>
+                    </Link>
+                    <SizedBox width={16}></SizedBox>
+                    <Link href="/">
+                      <MenuItem>
+                        <TextPlaceholder
+                          width={95}
+                          color={Colors.LIGHT_GRAY}
+                        ></TextPlaceholder>
+                      </MenuItem>
+                    </Link>
+                    <SizedBox width={16}></SizedBox>
+                    <Link href="/">
+                      <MenuItem>
+                        <TextPlaceholder
+                          width={100}
+                          color={Colors.MIDDLE_YELLOW}
+                        ></TextPlaceholder>
+                      </MenuItem>
+                    </Link>
+                  </>
+                )}
+                {menuData &&
+                  Object.keys(menuData[selectedTab].categories).map((item) => (
+                    <Link
+                      href={menuData[selectedTab].categories[item].link}
+                      key={menuData[selectedTab].categories[item].link}
+                    >
+                      <MenuItem
                         active={menuData[selectedTab].categories[item].active}
-                        color={Colors.WHITE}
+                        onMouseOver={() => toggleCategory(selectedTab, item)}
                       >
-                        {menuData[selectedTab].categories[item].title}
-                      </MenuItemText>
-                      {/* <MenuItemArrow>
+                        <MenuItemText
+                          active={menuData[selectedTab].categories[item].active}
+                          color={Colors.WHITE}
+                        >
+                          {menuData[selectedTab].categories[item].title}
+                        </MenuItemText>
+                        {/* <MenuItemArrow>
                         <Icon
                           size={8}
                           type={
@@ -463,39 +547,40 @@ function DesktopTopMenu({ data }: { data: any }): JSX.Element {
                           }
                         ></Icon>
                       </MenuItemArrow> */}
-                    </MenuItem>
-                  </Link>
-                ))}
-              {menuData && (
-                <MenuItem>
-                  <MenuItemText color={Colors.MIDDLE_YELLOW}>
-                    Novidades
-                  </MenuItemText>
-                </MenuItem>
-              )}
-            </Categories>
-          </Row>
-        </Container>
-        {selectedCategory &&
-          menuData[selectedTab].categories[selectedCategory].active && (
-            <SubcategoriesHolder>
-              <Container maxWidth="lg">
-                <Subcategories>
-                  {menuData[selectedTab].categories[selectedCategory].items.map(
-                    (item: { title: string; link: string }) => (
+                      </MenuItem>
+                    </Link>
+                  ))}
+                {menuData && (
+                  <MenuItem>
+                    <MenuItemText color={Colors.MIDDLE_YELLOW}>
+                      Novidades
+                    </MenuItemText>
+                  </MenuItem>
+                )}
+              </Categories>
+            </Row>
+          </Container>
+          {selectedCategory &&
+            menuData[selectedTab].categories[selectedCategory].active && (
+              <SubcategoriesHolder>
+                <Container maxWidth="lg">
+                  <Subcategories>
+                    {menuData[selectedTab].categories[
+                      selectedCategory
+                    ].items.map((item: { title: string; link: string }) => (
                       <Link href={item.link} key={item.link}>
                         <SubMenuItem>
                           <SubMenuItemText>{item.title}</SubMenuItemText>
                         </SubMenuItem>
                       </Link>
-                    )
-                  )}
-                </Subcategories>
-              </Container>
-            </SubcategoriesHolder>
-          )}
-      </UnderTabsContent>
-    </MenuContainer>
+                    ))}
+                  </Subcategories>
+                </Container>
+              </SubcategoriesHolder>
+            )}
+        </UnderTabsContent>
+      </MenuContainer>
+    </>
   );
 }
 
