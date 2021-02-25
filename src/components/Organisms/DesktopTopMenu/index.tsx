@@ -5,17 +5,23 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import useSWR from "swr";
 import Colors from "../../../enums/Colors";
 import { useAuth } from "../../../hooks/auth/useAuth";
+import SearchItemType from "../../../modules/searchItem/SearchItem";
+import pages from "../../../utils/pages";
 import Center from "../../Atoms/Center";
 import FavoriteMenuItem from "../../Atoms/FavoriteMenuItem";
-import HorizontalLine from "../../Atoms/HorizontalLine";
-// import DropdownCart from "../DropdownCart";
 import HorizontalLogo from "../../Atoms/HorizontalLogo";
 import Icon from "../../Atoms/Icon";
+import Row from "../../Atoms/Row";
+import SearchCategoryItem from "../../Atoms/SearchCategoryItem";
+import SearchItem from "../../Atoms/SearchItem";
+import SearchPageItem from "../../Atoms/SearchPageItem";
 import SizedBox from "../../Atoms/SizedBox";
 import { TextPlaceholder } from "../../Atoms/TextPlaceholder";
 import Title from "../../Atoms/Title";
+import EmptyPage from "../../Templates/EmptyPage";
 
 const DropdownCart = dynamic(() => import("../../Molecules/DropdownCart"), {
   ssr: false,
@@ -38,7 +44,6 @@ const SearchShade = styled.div<{ show: boolean }>`
     props.show ? "rgba(0, 0, 0, 0.75)" : "rgba(0, 0, 0, 0.0)"};
   position: absolute;
   z-index: 999;
-
   transition: background 250ms ease-in-out;
 `;
 
@@ -47,16 +52,15 @@ const SearchContainer = styled.div<{ minWidth: number; show: boolean }>`
   max-width: 960px;
   height: ${(props) => (props.show ? 500 : 0)}px;
   background-color: ${Colors.WHITE};
-  /* display: ${(props) => (props.show ? "flex" : "none")}; */
   position: absolute;
   z-index: 1000;
   border-radius: 4px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
   top: 55px;
-  overflow: hidden;
-  padding: ${(props) => (props.show ? 20 : 0)}px;
-
+  /* overflow: hidden; */
   transition: height 250ms ease-in-out;
+  padding: ${(props) => (props.show ? "20px 0 0 20px" : 0)};
+  overflow: hidden;
 `;
 
 const Top = styled.div`
@@ -100,13 +104,6 @@ const TabText = styled.span<{ active: boolean }>`
   font-weight: 700;
 `;
 
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
-
 const LogoAndTabs = styled.div`
   display: flex;
   flex-direction: row;
@@ -140,7 +137,6 @@ const MenuItemText = styled.span<{
   first?: boolean;
 }>`
   font-family: "Commissioner";
-  /* opacity: ${(props) => (props.active ? 1 : 0.95)}; */
   font-size: 15px;
   color: ${(props) => (props.color ? props.color : Colors.WHITE)};
   font-weight: 500;
@@ -228,10 +224,23 @@ const PromosDetail = styled.div<{ backgroundColor: string }>`
   position: absolute;
   width: 100px;
   height: 51px;
-
   background: ${(props) => props.backgroundColor};
-  /* transform: matrix(0.91, 0, -0.52, 1, 0, 0); */
   transform: skew(-12deg);
+`;
+
+const Section = styled.div<{ flex: number }>`
+  flex: ${(props) => props.flex};
+  height: 500px;
+  padding-bottom: 20px;
+  padding-right: 20px;
+  overflow: scroll;
+
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  scrollbar-width: none;
+  border-right: 1px solid #eee;
 `;
 
 function DesktopTopMenu({
@@ -241,6 +250,11 @@ function DesktopTopMenu({
   data: any;
   search: any;
 }): JSX.Element {
+  const router = useRouter();
+  const { q } = router.query;
+
+  const [searchQuery, setSearchQuery] = useState(null);
+
   const [menuData, setMenuData] = useState(null);
   const [selectedTab, setSelectedTab] = useState("women");
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -248,14 +262,30 @@ function DesktopTopMenu({
   const [mouseOverSearchContainer, setMouseOverSearchContainer] = useState(
     false
   );
+  const [searchData, setSearchData] = useState(null);
 
-  const [searchQuery, setSearchQuery] = useState(null);
+  const { data: searchDataResult } = useSWR(
+    searchQuery ? `/isearch?q=${searchQuery}` : "/isearch",
+    {
+      initialData: searchQuery ? null : search,
+    }
+  );
+
+  useEffect(() => {
+    if (searchDataResult) {
+      const finalResult = [];
+
+      searchDataResult.forEach((s: any) => {
+        const _s = _cloneDeep(s);
+        _s.colors = _s.colors.split(",");
+        _s.sizes = _s.sizes.split(",");
+        finalResult.push(_s);
+      });
+      setSearchData(finalResult);
+    }
+  }, [searchDataResult]);
 
   const authContext = useAuth();
-
-  const router = useRouter();
-
-  const { q } = router.query;
 
   useEffect(() => {
     if (data) {
@@ -343,25 +373,69 @@ function DesktopTopMenu({
               }
             >
               {searchBarFocused && (
-                <Row>
-                  <div style={{ flex: 1 }}>
-                    <Title>Produtos</Title>
+                <Row alignTop>
+                  {searchData?.length === 0 && (
+                    <>
+                      <Section flex={3}>
+                        <SizedBox height={6}></SizedBox>
+                        <Title>Resultados</Title>
+                        <SizedBox height={32}></SizedBox>
+                        <EmptyPage
+                          buttonAction={() => router.push("/pesquisa")}
+                          buttonText="Ver Produtos"
+                          icon="search"
+                          title="Nenhum resultado encontrado"
+                          subtitle="Veja nossos outros produtos"
+                        ></EmptyPage>
+                      </Section>
+                      <SizedBox width={16}></SizedBox>
+                    </>
+                  )}
+                  {searchData?.length > 0 && (
+                    <>
+                      <Section flex={2}>
+                        <SizedBox height={6}></SizedBox>
+                        <Title>Produtos</Title>
+                        <SizedBox height={16}></SizedBox>
+                        {searchData?.map((s: SearchItemType) => (
+                          <SearchItem
+                            item={s}
+                            key={s.puid}
+                            query={searchQuery}
+                            closePanel={() => setSearchBarFocused(false)}
+                          ></SearchItem>
+                        ))}
+                      </Section>
+                      <SizedBox width={16}></SizedBox>
+                      <Section flex={1}>
+                        <SizedBox height={6}></SizedBox>
+                        <Title>Categorias</Title>
+                        <SizedBox height={16}></SizedBox>
+                        {searchData?.map((s: SearchItemType) => (
+                          <SearchCategoryItem
+                            item={s}
+                            key={s.puid}
+                            query={searchQuery}
+                            closePanel={() => setSearchBarFocused(false)}
+                          ></SearchCategoryItem>
+                        ))}
+                      </Section>
+                      <SizedBox width={16}></SizedBox>
+                    </>
+                  )}
+                  <Section flex={1}>
                     <SizedBox height={6}></SizedBox>
-                    <HorizontalLine></HorizontalLine>
-                    <p>{JSON.stringify(search, null, 2)}</p>
-                  </div>
-                  <SizedBox width={16}></SizedBox>
-                  <div style={{ flex: 1 }}>
-                    <Title>Categorias</Title>
-                    <SizedBox height={6}></SizedBox>
-                    <HorizontalLine></HorizontalLine>
-                  </div>
-                  <SizedBox width={16}></SizedBox>
-                  <div style={{ flex: 1 }}>
                     <Title>Páginas</Title>
-                    <SizedBox height={6}></SizedBox>
-                    <HorizontalLine></HorizontalLine>
-                  </div>
+                    <SizedBox height={16}></SizedBox>
+                    {pages.map((p) => (
+                      <SearchPageItem
+                        item={p}
+                        key={p.href}
+                        query={searchQuery}
+                        closePanel={() => setSearchBarFocused(false)}
+                      ></SearchPageItem>
+                    ))}
+                  </Section>
                 </Row>
               )}
             </SearchContainer>

@@ -41,8 +41,6 @@ function OrderPage(): JSX.Element {
     }
   );
 
-  console.log("data", data);
-
   const getPaymentIcon = (paymentType: string) => {
     switch (paymentType) {
       case "CREDIT_CARD":

@@ -70,7 +70,6 @@ function Profile(props: PageProps): JSX.Element {
   );
 
   useEffect(() => {
-    console.log("router.query", router.query.aba);
     setActiveTab(router.query.aba ? "/" + router.query.aba : "/perfil");
   }, [router.query.aba]);
 
