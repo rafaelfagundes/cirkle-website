@@ -355,7 +355,7 @@ function AddressAndShipping(): JSX.Element {
         lastName: authContext?.user?.name.split(" ")[1],
         phone: authContext?.user?.phoneNumber,
       };
-      console.log("_finalUser", _finalUser);
+      // console.log("_finalUser", _finalUser);
       orderContext.setAddressAndUser(_finalAddress, _finalUser);
     } else {
       const _finalUser = {

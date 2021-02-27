@@ -45,10 +45,9 @@ function Layout({
         }
       : undefined
   );
+  // console.log("menu", menu);
+  // console.log("data", data);
   if (error) console.log("Menu loading error", error);
-
-  let content: any;
-  if (data?.content) content = data.content;
 
   return (
     <div style={{ overflowX: "hidden", userSelect: "none" }}>
@@ -64,7 +63,7 @@ function Layout({
 
       {/* Desktop */}
       <Hidden only={["xs"]}>
-        <NavBarDesktop menuData={content} search={search}></NavBarDesktop>
+        <NavBarDesktop menuData={data} search={search}></NavBarDesktop>
       </Hidden>
       {/* Mobile */}
       <Hidden only={["sm", "md", "lg", "xl"]}>
@@ -97,10 +96,7 @@ function Layout({
           onClose={() => setDrawer(false)}
           onOpen={() => setDrawer(true)}
         >
-          <SideMenu
-            data={content}
-            closeMenu={() => setDrawer(false)}
-          ></SideMenu>
+          <SideMenu data={data} closeMenu={() => setDrawer(false)}></SideMenu>
         </SwipeableDrawer>
       </Hidden>
       <Footer></Footer>

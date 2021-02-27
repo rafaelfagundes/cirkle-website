@@ -244,10 +244,10 @@ const Section = styled.div<{ flex: number }>`
 `;
 
 function DesktopTopMenu({
-  data,
+  menu,
   search,
 }: {
-  data: any;
+  menu: any;
   search: any;
 }): JSX.Element {
   const router = useRouter();
@@ -256,7 +256,8 @@ function DesktopTopMenu({
   const [searchQuery, setSearchQuery] = useState(null);
 
   const [menuData, setMenuData] = useState(null);
-  const [selectedTab, setSelectedTab] = useState("women");
+
+  const [selectedTab, setSelectedTab] = useState("mulher");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchBarFocused, setSearchBarFocused] = useState(false);
   const [mouseOverSearchContainer, setMouseOverSearchContainer] = useState(
@@ -288,13 +289,10 @@ function DesktopTopMenu({
   const authContext = useAuth();
 
   useEffect(() => {
-    if (data) {
-      setMenuData({
-        women: data.women,
-        kids: data.kids,
-      });
+    if (menu) {
+      setMenuData(menu);
     }
-  }, [data]);
+  }, [menu]);
 
   useEffect(() => {
     if (q !== undefined) {
@@ -457,7 +455,7 @@ function DesktopTopMenu({
                       onClick={() => toggleTab(element)}
                       // onMouseOver={() => toggleTab(element)}
                       color={
-                        selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS
+                        selectedTab === "mulher" ? Colors.PRIMARY : Colors.KIDS
                       }
                     >
                       <TabText active={menuData[element].active}>
@@ -513,7 +511,7 @@ function DesktopTopMenu({
         </Container>
 
         <UnderTabsContent
-          color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
+          color={selectedTab === "mulher" ? Colors.PRIMARY : Colors.KIDS}
           onMouseLeave={() => {
             cleanActives(selectedTab, selectedCategory);
           }}
@@ -526,7 +524,7 @@ function DesktopTopMenu({
                   <MenuItem>
                     <PromosDetail
                       backgroundColor={
-                        selectedTab === "women"
+                        selectedTab === "mulher"
                           ? Colors.SECONDARY
                           : Colors.KIDS_VIOLET
                       }
@@ -605,7 +603,10 @@ function DesktopTopMenu({
                 {menuData &&
                   Object.keys(menuData[selectedTab].categories).map((item) => (
                     <Link
-                      href={menuData[selectedTab].categories[item].link}
+                      href={
+                        "/categorias/" +
+                        menuData[selectedTab].categories[item].link
+                      }
                       key={menuData[selectedTab].categories[item].link}
                     >
                       <MenuItem
@@ -649,7 +650,7 @@ function DesktopTopMenu({
                     {menuData[selectedTab].categories[
                       selectedCategory
                     ].items.map((item: { title: string; link: string }) => (
-                      <Link href={item.link} key={item.link}>
+                      <Link href={"/categorias/" + item.link} key={item.link}>
                         <SubMenuItem>
                           <SubMenuItemText>{item.title}</SubMenuItemText>
                         </SubMenuItem>

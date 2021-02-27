@@ -161,7 +161,7 @@ function FinishPage(): JSX.Element {
     setPurchaseDisabled(true);
     setLoadingPurchase(true);
     const _finalOrder = orderContext.order;
-    console.log("_finalOrder", _finalOrder);
+    // console.log("_finalOrder", _finalOrder);
 
     try {
       const response = await Axios.post("/orders", _finalOrder);

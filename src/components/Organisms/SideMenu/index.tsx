@@ -182,15 +182,8 @@ function SideMenu({
   data: any;
   closeMenu: () => void;
 }): JSX.Element {
-  const [menuData, setMenuData] = useState(
-    data
-      ? {
-          women: data.women,
-          kids: data.kids,
-        }
-      : null
-  );
-  const [selectedTab, setSelectedTab] = useState("women");
+  const [menuData, setMenuData] = useState(data || null);
+  const [selectedTab, setSelectedTab] = useState("mulher");
   const router = useRouter();
   const auth = useAuth();
 
@@ -299,7 +292,7 @@ function SideMenu({
                     active={menuData[element].active}
                     onClick={() => toggleTab(element)}
                     color={
-                      selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS
+                      selectedTab === "mulher" ? Colors.PRIMARY : Colors.KIDS
                     }
                   >
                     <TabText active={menuData[element].active}>
@@ -310,7 +303,7 @@ function SideMenu({
               </Tabs>
             </HorizontalPadding>
             <MenuContainer
-              color={selectedTab === "women" ? Colors.PRIMARY : Colors.KIDS}
+              color={selectedTab === "mulher" ? Colors.PRIMARY : Colors.KIDS}
             >
               <Link href="/categories/novidades">
                 <StyledMenuItem>
@@ -353,7 +346,7 @@ function SideMenu({
                 <StyledMenuItem
                   lastOne={true}
                   backgroundColor={
-                    selectedTab === "women"
+                    selectedTab === "mulher"
                       ? Colors.SECONDARY
                       : Colors.KIDS_VIOLET
                   }
