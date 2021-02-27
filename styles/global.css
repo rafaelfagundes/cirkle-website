@@ -49,3 +49,7 @@ img {
 input {
   user-select: initial !important;
 }
+
+button.react-share__ShareButton > svg {
+  border-radius: 4px;
+}
