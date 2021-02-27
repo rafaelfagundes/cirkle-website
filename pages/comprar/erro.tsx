@@ -11,7 +11,6 @@ import SizedBox from "../../src/components/Atoms/SizedBox";
 import Title from "../../src/components/Atoms/Title";
 import Layout from "../../src/components/Templates/Layout";
 import Colors from "../../src/enums/Colors";
-import { useCart } from "../../src/hooks/cart/useCart";
 import { useOrder } from "../../src/hooks/order/useOrder";
 import Menu from "../../src/modules/menu/Menu";
 import theme from "../../src/theme/theme";
@@ -59,19 +58,16 @@ const OrderStatus = {
   },
 };
 
-function PurchaseError({ menu }: { menu: Menu }): JSX.Element {
+interface PageProps {
+  menu: Menu;
+  search: any;
+}
+
+function PurchaseError(props: PageProps): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const orderContext = useOrder();
-  const cartContext = useCart();
 
   const router = useRouter();
-
-  // if (cartContext.cart.items.length === 0) {
-  //   if (process.browser) {
-  //     router.push("/");
-  //     return <></>;
-  //   }
-  // }
 
   useEffect(() => {
     // Scroll to top when page is loaded
@@ -79,7 +75,7 @@ function PurchaseError({ menu }: { menu: Menu }): JSX.Element {
   }, []);
 
   return (
-    <Layout menu={menu}>
+    <Layout menu={props.menu} search={props.search}>
       <SizedBox height={isSmartPhone ? 16 : 32}></SizedBox>
       <Card>
         <SizedBox height={32}></SizedBox>
@@ -107,12 +103,7 @@ function PurchaseError({ menu }: { menu: Menu }): JSX.Element {
             }
           </SimpleText>
         </Center>
-        {/* <SizedBox height={4}></SizedBox>
-        <Center>
-          <SimpleText bold centered size={1.4}>
-            pela instituição financeira
-          </SimpleText>
-        </Center> */}
+
         <SizedBox height={24}></SizedBox>
         <Center>
           <LimitMessage>
@@ -124,16 +115,6 @@ function PurchaseError({ menu }: { menu: Menu }): JSX.Element {
             </SimpleText>
           </LimitMessage>
         </Center>
-        {/* <Center>
-          <SimpleText centered color={Colors.SECONDARY}>
-            ou tente novamente com outro cartão ou
-          </SimpleText>
-        </Center>
-        <Center>
-          <SimpleText centered color={Colors.SECONDARY}>
-            forma de pagamento
-          </SimpleText>
-        </Center> */}
         <SizedBox height={48}></SizedBox>
         <Center>
           <CustomButton
@@ -164,23 +145,28 @@ function PurchaseError({ menu }: { menu: Menu }): JSX.Element {
   );
 }
 
-// This function gets called at build time on server-side.
-// It won't be called on client-side, so you can even do
-// direct database queries. See the "Technical details" section.
 export async function getStaticProps(): Promise<any> {
-  // Call an external API endpoint to get posts.
-  // You can use any data fetching library
+  function getContent(url: string) {
+    return Axios.get(url);
+  }
 
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
-  const menuResult = await Axios.get(menuUrl);
-  const menu = menuResult.data;
+  const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
+
+  const results = await Promise.all([
+    getContent(menuUrl),
+    getContent(searchUrl),
+  ]);
+
+  const menu = results[0].data;
+  const search = results[1].data;
 
   return {
     props: {
       menu,
+      search,
     },
-    revalidate: 60,
+    revalidate: 1440,
   };
 }
-
 export default PurchaseError;
