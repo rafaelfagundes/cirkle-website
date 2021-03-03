@@ -86,12 +86,15 @@ const StyledSearchBar = styled.div<{ active: boolean }>`
 interface PageProps {
   menu: Menu;
   search: any;
+  brands: any;
 }
 
-function Marcas({ menu, search }: PageProps): JSX.Element {
+function Marcas({ menu, search, brands }: PageProps): JSX.Element {
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { data, error } = useSWR("/brands?_sort=views:DESC");
+  const { data, error } = useSWR("/brands?_sort=views:DESC", {
+    initialData: brands,
+  });
   // console.log("data", data);
   console.error("error", error);
 
@@ -201,19 +204,23 @@ export async function getStaticProps(): Promise<any> {
 
   const menuUrl = `${process.env.API_ENDPOINT}/menu`;
   const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
+  const brandsUrl = `${process.env.API_ENDPOINT}/brands?_sort=views:DESC`;
 
   const results = await Promise.all([
     getContent(menuUrl),
     getContent(searchUrl),
+    getContent(brandsUrl),
   ]);
 
   const menu = results[0].data;
   const search = results[1].data;
+  const brands = results[2].data;
 
   return {
     props: {
       menu,
       search,
+      brands,
     },
     revalidate: 1440,
   };
