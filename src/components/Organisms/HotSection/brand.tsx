@@ -7,7 +7,7 @@ import styled from "styled-components";
 import Colors from "../../../enums/Colors";
 import { cloudinaryImage } from "../../../utils/image";
 
-const StyledBrand = styled.div<{ width: number }>`
+const StyledBrand = styled.div<{ width: number; noMargin: boolean }>`
   width: ${(props) => props.width}px;
   height: ${(props) => props.width}px;
   background-color: ${Colors.WHITE};
@@ -15,7 +15,7 @@ const StyledBrand = styled.div<{ width: number }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
+  margin-bottom: ${(props) => (props.noMargin ? 0 : 16)}px;
   cursor: pointer;
   border-radius: 4px;
 `;
@@ -32,12 +32,14 @@ const BrandImage = styled.div<{ image: string; width: number }>`
 
 function Brand({
   data,
+  noMargin = false,
 }: {
   data: {
     id: string;
     name: string;
     image: string;
   };
+  noMargin?: boolean;
 }): JSX.Element {
   function calcHighlightItemWidth(): number {
     const width = window.innerWidth;
@@ -62,7 +64,7 @@ function Brand({
 
   return (
     <Link href={"/" + data.id}>
-      <StyledBrand width={widthHighlightItem} key={data.id}>
+      <StyledBrand width={widthHighlightItem} key={data.id} noMargin={noMargin}>
         <BrandImage
           width={widthHighlightItem}
           image={cloudinaryImage(data.image, 140)}

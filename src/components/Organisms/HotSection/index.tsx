@@ -134,7 +134,7 @@ function HotSection({
             width={250}
             type="secondary"
             variant="outlined"
-            onClick={null}
+            onClick={() => router.push("/marcas")}
           >
             Ver Todas as Marcas
           </CustomButton>

@@ -14,6 +14,7 @@ type EmptyPageProps = {
   icon?: string;
   buttonText?: string;
   buttonAction?: () => void;
+  noButton?: boolean;
 };
 
 function EmptyPage({
@@ -22,6 +23,7 @@ function EmptyPage({
   icon = "empty",
   buttonText = "Voltar",
   buttonAction = process.browser ? () => window.history.back() : null,
+  noButton = false,
 }: EmptyPageProps): JSX.Element {
   return (
     <Column>
@@ -39,16 +41,18 @@ function EmptyPage({
         </Padding>
       </Center>
       <SizedBox height={32}></SizedBox>
-      <Center>
-        <CustomButton
-          type="primary"
-          variant="contained"
-          onClick={buttonAction}
-          width={150}
-        >
-          {buttonText}
-        </CustomButton>
-      </Center>
+      {!noButton && (
+        <Center>
+          <CustomButton
+            type="primary"
+            variant="contained"
+            onClick={buttonAction}
+            width={150}
+          >
+            {buttonText}
+          </CustomButton>
+        </Center>
+      )}
     </Column>
   );
 }
