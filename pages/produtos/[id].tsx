@@ -466,8 +466,8 @@ function ProductPage({
                         )}
                       </Row>
                       <SizedBox height={32}></SizedBox>
-                      <Subtitle size={16} bold>
-                        Compartilhar
+                      <Subtitle size={12} bold color={Colors.SECONDARY}>
+                        COMPARTILHAR
                       </Subtitle>
                       <SizedBox height={8}></SizedBox>
                       <SocialShare

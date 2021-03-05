@@ -266,7 +266,7 @@ function DesktopTopMenu({
   const [searchData, setSearchData] = useState(null);
 
   const { data: searchDataResult } = useSWR(
-    searchQuery ? `/isearch?q=${searchQuery}` : "/isearch",
+    searchQuery ? `/isearch?mobile=false&q=${searchQuery}` : "/isearch",
     {
       initialData: searchQuery ? null : search,
     }
