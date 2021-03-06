@@ -118,7 +118,6 @@ function MobileSearch(props: MobileSearchProps): JSX.Element {
               type={searchQuery ? "close-gray" : "close-dark"}
               onClick={() => {
                 setSearchQuery("");
-
                 !searchQuery && props.onClick(false);
               }}
               size={18}
@@ -127,7 +126,12 @@ function MobileSearch(props: MobileSearchProps): JSX.Element {
         ></Input>
       )}
       {props.active && (
-        <Shade onClick={() => props.onClick(false)}>
+        <Shade
+          onClick={() => {
+            props.onClick(false);
+            setSearchQuery("");
+          }}
+        >
           {searchDataResult && searchDataResult.length > 0 && (
             <Background>
               {searchQuery && <SizedBox height={5}></SizedBox>}
