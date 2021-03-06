@@ -95,8 +95,6 @@ function MobileSearch(props: MobileSearchProps): JSX.Element {
     searchQuery ? `/isearch?mobile=true&q=${searchQuery}` : "/isearch"
   );
 
-  console.log("searchDataResult", searchDataResult);
-
   return (
     <StyledMobileSearch active={props.active}>
       <Icon type="search" onClick={() => props.onClick(!props.active)}></Icon>
