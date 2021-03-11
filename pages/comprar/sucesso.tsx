@@ -19,6 +19,7 @@ import { useCart } from "../../src/hooks/cart/useCart";
 import { useOrder } from "../../src/hooks/order/useOrder";
 import Menu from "../../src/modules/menu/Menu";
 import theme from "../../src/theme/theme";
+import { logEventWithParams } from "../../src/utils/logs";
 
 interface PageProps {
   menu: Menu;
@@ -54,12 +55,32 @@ function PurchaseSuccess(props: PageProps): JSX.Element {
     if (process.browser) window.scrollTo(0, 0);
 
     // Empty cart and order context
-    emptyCartAndOrder();
+    setTimeout(emptyCartAndOrder, 2000);
+    // emptyCartAndOrder();
   }, []);
 
   let orderResult: any;
   if (orderContext?.order?.orderResultData) {
     orderResult = orderContext.order.orderResultData;
+  }
+  if (orderResult) {
+    const items = cartContext.cart.items.map((item) => ({
+      item_id: item.uid,
+      item_name: item.title,
+      item_brand: item.brand.name,
+      item_category: item.subCategory.slug,
+      item_variant: item.cartColor,
+      price: item.price,
+      currency: "BRL",
+      quantity: 1,
+    }));
+    logEventWithParams("purchase", {
+      currency: "BRL",
+      items,
+      transaction_id: orderContext.order.orderResultData.orderId.toUpperCase(),
+      shipping: orderContext.order.shipping.custom_price,
+      value: cartContext.cart.subtotal,
+    });
   }
 
   function isBoletoOrLoterica(paymentMethodId: string) {

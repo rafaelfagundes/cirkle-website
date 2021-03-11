@@ -38,6 +38,7 @@ import MelhorEnvioShipping, {
 } from "../../src/modules/melhorEnvio/MelhorEnvio";
 import ShippingData from "../../src/modules/shippingData/ShippingData";
 import theme from "../../src/theme/theme";
+import { logEventWithParams } from "../../src/utils/logs";
 
 const ColumnsOrNot = styled.div`
   display: flex;
@@ -46,7 +47,6 @@ const ColumnsOrNot = styled.div`
 `;
 
 const AddressCol = styled.div<{ isDesktop: boolean }>`
-  margin-right: ${(props) => (props.isDesktop ? 40 : 0)}px;
   padding-right: ${(props) => (props.isDesktop ? 40 : 0)}px;
   border-right: ${(props) => (props.isDesktop ? "1px solid#FBEFF7" : "none")};
 
@@ -74,6 +74,23 @@ function AddressAndShipping(): JSX.Element {
       router.push("/");
       return <></>;
     }
+  } else {
+    const items = cartContext.cart.items.map((item) => ({
+      item_id: item.uid,
+      item_name: item.title,
+      item_brand: item.brand.name,
+      item_category: item.subCategory.slug,
+      item_variant: item.cartColor,
+      price: item.price,
+      currency: "BRL",
+      quantity: 1,
+    }));
+
+    logEventWithParams("begin_checkout", {
+      currency: "BRL",
+      items,
+      value: cartContext.cart.subtotal,
+    });
   }
 
   const userErrosTemplate = {
@@ -366,6 +383,12 @@ function AddressAndShipping(): JSX.Element {
       };
       orderContext.setAddressAndUser(_finalAddress, _finalUser);
     }
+
+    logEventWithParams("add_shipping_info", {
+      currency: "BRL",
+      shipping_tier: `${selectedShipping.company.name} ${selectedShipping.name}`,
+      value: selectedShipping.price,
+    });
 
     router.push("/comprar/pagamento");
   };

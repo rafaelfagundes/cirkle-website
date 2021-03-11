@@ -11,6 +11,7 @@ import { getLowestShippingPrice } from "../../modules/melhorEnvio/MelhorEnvio";
 import Payment from "../../modules/payment/Payment";
 import Product from "../../modules/product/Product";
 import ShippingData from "../../modules/shippingData/ShippingData";
+import { logEventWithParams } from "../../utils/logs";
 
 export interface ICartContextProps {
   cart: Cart;
@@ -95,17 +96,51 @@ function useCartProvider() {
     _cart.total = total;
     _cart.subtotal = subtotal;
 
+    logEventWithParams("add_to_cart", {
+      currency: "BRL",
+      items: [
+        {
+          item_id: item.uid,
+          item_name: item.title,
+          item_brand: item.brand.name,
+          item_category: item.subCategory.slug,
+          item_variant: item.cartColor,
+          price: item.price,
+          currency: "BRL",
+          quantity: 1,
+        },
+      ],
+      value: item.price,
+    });
     setCart(_cart);
   };
 
   const removeFromCart = (id: string) => {
     const _cart = _cloneDeep(cart);
+    const item = _cart.items.filter((o) => o.id === id)[0];
     const _newItems = _cart.items.filter((o) => o.id !== id);
     _cart.items = _newItems;
 
     const { subtotal, total } = calculateValues(_cart);
     _cart.total = total;
     _cart.subtotal = subtotal;
+
+    logEventWithParams("remove_from_cart", {
+      currency: "BRL",
+      items: [
+        {
+          item_id: item.uid,
+          item_name: item.title,
+          item_brand: item.brand.name,
+          item_category: item.subCategory.slug,
+          item_variant: item.cartColor,
+          price: item.price,
+          currency: "BRL",
+          quantity: 1,
+        },
+      ],
+      value: item.price,
+    });
 
     setCart(_cart);
   };

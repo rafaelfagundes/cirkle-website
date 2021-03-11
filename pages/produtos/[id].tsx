@@ -52,6 +52,7 @@ import Product from "../../src/modules/product/Product";
 import Size from "../../src/modules/size/Size";
 import theme from "../../src/theme/theme";
 import { cloudinaryImage, cloudinaryProductImage } from "../../src/utils/image";
+import { logEventWithParams } from "../../src/utils/logs";
 
 const IMAGE_SIZE = 470;
 
@@ -220,6 +221,23 @@ function ProductPage({
     if (!sizes) {
       getSelectSizes(product.sizes);
     }
+
+    logEventWithParams("view_item", {
+      currency: "BRL",
+      items: [
+        {
+          item_id: product.uid,
+          item_name: product.title,
+          item_brand: product.brand.name,
+          item_category: product.subCategory.slug,
+          item_variant: product.cartColor,
+          price: product.price,
+          currency: "BRL",
+          quantity: 1,
+        },
+      ],
+      value: product.price,
+    });
   }, [product]);
 
   let isAlreadyInCart = false;
@@ -473,6 +491,7 @@ function ProductPage({
                       <SocialShare
                         url={currentUrl}
                         buttonSize={isSmartPhone ? 44 : 36}
+                        uid={product.uid}
                       ></SocialShare>
                     </span>
                   </Padding>

@@ -5,6 +5,7 @@ import React, { createContext, useContext, useState } from "react";
 import firebase from "../../config/firebase";
 import Product from "../../modules/product/Product";
 import Wishlist from "../../modules/wishlist/Wishlist";
+import { logEventWithParams } from "../../utils/logs";
 
 firebase.auth().languageCode = "pt";
 
@@ -45,6 +46,23 @@ function useWishlistProvider() {
     } else {
       _wishlist = { products: [item] };
     }
+
+    logEventWithParams("add_to_wishlist", {
+      currency: "BRL",
+      items: [
+        {
+          item_id: item.uid,
+          item_name: item.title,
+          item_brand: item.brand.name,
+          item_category: item.subCategory.slug,
+          item_variant: item.cartColor,
+          price: item.price,
+          currency: "BRL",
+          quantity: 1,
+        },
+      ],
+      value: item.price,
+    });
 
     setWishlist(_wishlist);
     updateWishlist(_wishlist);

@@ -27,6 +27,7 @@ import Layout from "../src/components/Templates/Layout";
 import Colors from "../src/enums/Colors";
 import Menu from "../src/modules/menu/Menu";
 import theme from "../src/theme/theme";
+import { logEventWithParams } from "../src/utils/logs";
 
 const Filters = styled.div<{ isSmartphone: boolean }>`
   width: ${(props) => (props.isSmartphone ? 400 : 264)}px;
@@ -343,6 +344,11 @@ function Search({
   }, []);
 
   useEffect(() => {
+    if (q) {
+      logEventWithParams("search", {
+        search_term: q,
+      });
+    }
     if (
       color ||
       size ||

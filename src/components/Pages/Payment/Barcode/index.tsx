@@ -12,6 +12,7 @@ import {
   MercadoPagoOtherPaymentMethod,
   validateBarCode,
 } from "../../../../modules/mercadoPago/MercadoPago";
+import { logEventWithParams } from "../../../../utils/logs";
 import RadioButton from "../../../Atoms/RadioButton";
 import Row from "../../../Atoms/Row";
 import SimpleText from "../../../Atoms/SimpleText";
@@ -102,6 +103,14 @@ function Barcode(props: BarcodeProps): JSX.Element {
 
     setLoadingPayment(false);
     orderContext.setPayment(_payment);
+    logEventWithParams("add_payment_info", {
+      currency: "BRL",
+      payment_type:
+        props.type === MercadoPagoPaymentType.BOLETO
+          ? "Boleto"
+          : "Casa Lotérica",
+      value: cartContext.cart.total,
+    });
     router.push("/comprar/concluir");
   };
 

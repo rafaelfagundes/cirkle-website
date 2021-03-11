@@ -21,6 +21,7 @@ import {
   validateCreditCardInfo,
 } from "../../../../modules/mercadoPago/MercadoPago";
 import theme from "../../../../theme/theme";
+import { logEventWithParams } from "../../../../utils/logs";
 import Column from "../../../Atoms/Column";
 import CustomButton from "../../../Atoms/CustomButton";
 import RadioButton from "../../../Atoms/RadioButton";
@@ -128,6 +129,11 @@ function CreditCard(): JSX.Element {
     } else {
       setLoadingPayment(false);
       orderContext.setPayment(_payment);
+      logEventWithParams("add_payment_info", {
+        currency: "BRL",
+        payment_type: "Credit Card",
+        value: cartContext.cart.total,
+      });
       router.push("/comprar/concluir");
     }
   };
