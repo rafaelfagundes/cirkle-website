@@ -64,7 +64,7 @@ function PurchaseSuccess(props: PageProps): JSX.Element {
   if (orderContext?.order?.orderResultData) {
     orderResult = orderContext.order.orderResultData;
   }
-  if (orderResult) {
+  if (orderContext?.order?.shipping?.price) {
     const items = cartContext.cart.items.map((item) => ({
       item_id: item.uid,
       item_name: item.title,
@@ -79,7 +79,7 @@ function PurchaseSuccess(props: PageProps): JSX.Element {
       currency: "BRL",
       items,
       transaction_id: orderContext.order.orderResultData.orderId.toUpperCase(),
-      shipping: orderContext.order.shipping.custom_price,
+      shipping: orderContext.order.shipping.price,
       value: cartContext.cart.subtotal,
     });
   }
