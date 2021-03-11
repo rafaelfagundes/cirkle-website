@@ -74,23 +74,6 @@ function AddressAndShipping(): JSX.Element {
       router.push("/");
       return <></>;
     }
-  } else {
-    const items = cartContext.cart.items.map((item) => ({
-      item_id: item.uid,
-      item_name: item.title,
-      item_brand: item.brand.name,
-      item_category: item.subCategory.slug,
-      item_variant: item.cartColor,
-      price: item.price,
-      currency: "BRL",
-      quantity: 1,
-    }));
-
-    logEventWithParams("begin_checkout", {
-      currency: "BRL",
-      items,
-      value: cartContext.cart.subtotal,
-    });
   }
 
   const userErrosTemplate = {
@@ -396,6 +379,23 @@ function AddressAndShipping(): JSX.Element {
   useEffect(() => {
     if (cartContext.cart.items.length > 0) {
       orderContext.setProducts(cartContext.cart.items);
+
+      const items = cartContext.cart.items.map((item) => ({
+        item_id: item.uid,
+        item_name: item.title,
+        item_brand: item.brand.name,
+        item_category: item.subCategory.slug,
+        item_variant: item.cartColor,
+        price: item.price,
+        currency: "BRL",
+        quantity: 1,
+      }));
+
+      logEventWithParams("begin_checkout", {
+        currency: "BRL",
+        items,
+        value: cartContext.cart.subtotal,
+      });
     }
 
     let _postalCode = "";

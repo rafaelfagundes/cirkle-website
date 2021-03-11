@@ -46,8 +46,10 @@ function PurchaseSuccess(props: PageProps): JSX.Element {
   };
 
   const emptyCartAndOrder = () => {
-    orderContext.emptyOrder();
-    cartContext.emptyCart();
+    setTimeout(() => {
+      orderContext.emptyOrder();
+      cartContext.emptyCart();
+    }, 2000);
   };
 
   React.useEffect(() => {
@@ -55,8 +57,7 @@ function PurchaseSuccess(props: PageProps): JSX.Element {
     if (process.browser) window.scrollTo(0, 0);
 
     // Empty cart and order context
-    setTimeout(emptyCartAndOrder, 2000);
-    // emptyCartAndOrder();
+    emptyCartAndOrder();
   }, []);
 
   let orderResult: any;
