@@ -1,7 +1,7 @@
 import { Container, Hidden, useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
 import dynamic from "next/dynamic";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import HighlightsLoader from "../src/components/Atoms/Loaders/Highlights";
 import HotProductsLoader from "../src/components/Atoms/Loaders/HotProducts";
@@ -14,7 +14,6 @@ import PromoHeroComponent from "../src/components/Organisms/PromoHero";
 import RecentlyViewed from "../src/components/Organisms/RecentlyViewed";
 import Layout from "../src/components/Templates/Layout";
 import { MainCategory } from "../src/enums/Categories";
-import { useAuth } from "../src/hooks/auth/useAuth";
 import { useCart } from "../src/hooks/cart/useCart";
 import { useRecentlyViewed } from "../src/hooks/recentlyViewed/useRecentlyViewed";
 import { useWishlist } from "../src/hooks/wishlist/useWishlist";
@@ -55,17 +54,27 @@ function Home(props: HomeProps): JSX.Element {
   const cartContext = useCart();
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const wishlistContext = useWishlist();
-  const authContext = useAuth();
   const recentlyViewedContext = useRecentlyViewed();
 
-  const { data: dataWishlist } = useSWR(
-    authContext.user ? "/wishlists" : null,
-    {
-      shouldRetryOnError: true,
-      errorRetryInterval: 500,
-      errorRetryCount: 10,
+  const [hasToken, setHasToken] = useState(0);
+
+  const { data: dataWishlist } = useSWR(hasToken > 0 ? "/wishlists" : null, {
+    shouldRetryOnError: true,
+    errorRetryInterval: 500,
+    errorRetryCount: 10,
+  });
+
+  useEffect(() => {
+    if (Axios.defaults.headers.common["Authorization"]) {
+      setHasToken(1);
+    } else {
+      if (hasToken <= 0) {
+        setTimeout(() => {
+          setHasToken(hasToken - 1);
+        }, 250);
+      }
     }
-  );
+  }, [hasToken]);
 
   if (dataWishlist) {
     if (!wishlistContext.wishlist) {

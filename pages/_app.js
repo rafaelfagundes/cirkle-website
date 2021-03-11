@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { default as axios } from "axios";
+import firebase from "firebase";
 import Head from "next/head";
 import Router from "next/router";
 import NProgress from "nprogress";
@@ -18,6 +19,8 @@ import theme from "../src/theme/theme";
 import "../styles/datepicker.css";
 import "../styles/global.css";
 import "../styles/nprogress.css";
+
+if (process.browser) firebase.analytics();
 
 NProgress.configure({ showSpinner: false });
 

@@ -4,6 +4,7 @@ import getConfig from "next/config";
 import React, { createContext, useContext, useState } from "react";
 import firebase from "../../config/firebase";
 import User, { LoginType } from "../../modules/user/User";
+import { logEventWithParams } from "../../utils/logs";
 import { useDialog } from "../dialog/useDialog";
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
@@ -181,6 +182,7 @@ function useProviderAuth() {
           );
         }
       }
+      logEventWithParams("login", { method: "Email/Password" });
       return user;
     } catch (error) {
       dialogContext.newDialog(
@@ -199,10 +201,12 @@ function useProviderAuth() {
 
       if (user) {
         user.loginType = LoginType.GOOGLE;
+        logEventWithParams("login", { method: "Google" });
         saveUserInContextAndLocalStorage(user);
       } else {
         const savedUser = await saveUserDB(response.user, LoginType.GOOGLE);
         if (savedUser) {
+          logEventWithParams("sign_up", { method: "Google" });
           saveUserInContextAndLocalStorage(savedUser);
         } else {
           dialogContext.newDialog(
@@ -212,7 +216,6 @@ function useProviderAuth() {
           );
         }
       }
-
       return user;
     } catch (error) {
       dialogContext.newDialog(
@@ -232,6 +235,7 @@ function useProviderAuth() {
       if (user) {
         user.loginType = LoginType.FACEBOOK;
         saveUserInContextAndLocalStorage(user);
+        logEventWithParams("login", { method: "Facebook" });
       } else {
         const savedUser = await saveUserDB(
           response.user,
@@ -239,6 +243,7 @@ function useProviderAuth() {
           LoginType.FACEBOOK
         );
         if (savedUser) {
+          logEventWithParams("sign_up", { method: "Facebook" });
           saveUserInContextAndLocalStorage(savedUser);
         } else {
           dialogContext.newDialog(
@@ -297,6 +302,8 @@ function useProviderAuth() {
           "Não foi possível encontrar o usuário no sistema."
         );
       }
+
+      logEventWithParams("sign_up", { method: "Email/Password" });
       return savedUser;
     } catch (error) {
       dialogContext.newDialog(

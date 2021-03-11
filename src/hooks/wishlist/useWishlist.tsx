@@ -39,7 +39,6 @@ function useWishlistProvider() {
   const [wishlist, setWishlist] = useState(null);
 
   const addToWishlist = (item: Product) => {
-    console.log("add to wishlist");
     let _wishlist = _cloneDeep(wishlist);
     if (_wishlist?.products) {
       _wishlist.products.push(item);
@@ -52,7 +51,6 @@ function useWishlistProvider() {
   };
 
   const removeFromWishlist = (id: string) => {
-    console.log("remove from wishlist");
     const _wishlist = _cloneDeep(wishlist);
     const _newItems = _wishlist.products.filter((o: Product) => o.id !== id);
     _wishlist.products = _newItems;
