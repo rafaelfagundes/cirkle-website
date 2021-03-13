@@ -339,6 +339,7 @@ function DesktopTopMenu({
       pathname: "/pesquisa",
       query: {
         q: searchQuery,
+        department: 1,
       },
     });
   }

@@ -114,7 +114,14 @@ function HotSection({
             width={250}
             type="secondary"
             variant="outlined"
-            onClick={() => router.push("/pesquisa")}
+            onClick={() =>
+              router.push({
+                pathname: "/pesquisa",
+                query: {
+                  department: 1,
+                },
+              })
+            }
           >
             Ver Mais Produtos
           </CustomButton>
