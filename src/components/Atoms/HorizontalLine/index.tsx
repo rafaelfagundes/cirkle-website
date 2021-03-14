@@ -9,7 +9,11 @@ const StyledHorizontalLine = styled.div<{ color: string }>`
   width: 100%;
 `;
 
-function HorizontalLine({ color = "#fbeff7" }: { color: string }): JSX.Element {
+function HorizontalLine({
+  color = "#fbeff7",
+}: {
+  color?: string;
+}): JSX.Element {
   return <StyledHorizontalLine color={color}></StyledHorizontalLine>;
 }
 
