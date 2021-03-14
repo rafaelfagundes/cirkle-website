@@ -374,6 +374,7 @@ function Search(props: PageProps): JSX.Element {
           title: element.title,
           priceWhenNew: element.priceWhenNew,
           price: element.price,
+          sizes: element.sizes.split(",").map((s: string) => ({ value: s })),
         };
         _products.push(_product);
       });
