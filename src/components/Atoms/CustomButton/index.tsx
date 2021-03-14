@@ -94,6 +94,7 @@ function CustomButton({
   onClick,
   small = false,
   icon,
+  iconSize = 24,
   noPadding = false,
   ...props
 }: {
@@ -106,6 +107,7 @@ function CustomButton({
   loadingDark?: boolean;
   small?: boolean;
   icon?: string;
+  iconSize?: number;
   noPadding?: boolean;
   onClick: () => void;
 }): JSX.Element {
@@ -167,7 +169,7 @@ function CustomButton({
             <TextIconHolder>
               {icon && (
                 <>
-                  <Icon type={icon}></Icon>
+                  <Icon type={icon} size={iconSize}></Icon>
                   <SizedBox width={5}></SizedBox>
                 </>
               )}
@@ -194,7 +196,7 @@ function CustomButton({
             <TextIconHolder>
               {icon && (
                 <>
-                  <Icon type={icon}></Icon>
+                  <Icon type={icon} size={iconSize}></Icon>
                   <SizedBox width={5}></SizedBox>
                 </>
               )}
@@ -223,7 +225,7 @@ function CustomButton({
             <TextIconHolder>
               {icon && (
                 <>
-                  <Icon type={icon}></Icon>
+                  <Icon type={icon} size={iconSize}></Icon>
                   <SizedBox width={5}></SizedBox>
                 </>
               )}
@@ -250,7 +252,7 @@ function CustomButton({
             <TextIconHolder>
               {icon && (
                 <>
-                  <Icon type={icon}></Icon>
+                  <Icon type={icon} size={iconSize}></Icon>
                   <SizedBox width={5}></SizedBox>
                 </>
               )}

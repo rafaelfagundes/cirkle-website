@@ -118,7 +118,7 @@ function HotSection({
               router.push({
                 pathname: "/pesquisa",
                 query: {
-                  department: 1,
+                  department: "mulher",
                 },
               })
             }

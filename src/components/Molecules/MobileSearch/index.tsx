@@ -83,7 +83,7 @@ function MobileSearch(props: MobileSearchProps): JSX.Element {
       pathname: "/pesquisa",
       query: {
         q: searchQuery,
-        department: 1,
+        department: "mulher",
       },
     });
   }

@@ -13,11 +13,11 @@ const Title = styled.div`
   color: ${Colors.SECONDARY};
 `;
 
-const Options = styled.div`
+const Options = styled.div<{ isSmartphone: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-right: 16px;
+  margin-right: ${(props) => (props.isSmartphone ? 0 : 16)}px;
   justify-content: center;
 `;
 
@@ -30,7 +30,8 @@ const Option = styled.div<{ active: boolean; isSmartphone: boolean }>`
   &:hover {
     text-decoration: underline;
   }
-  font-size: ${(props) => (props.isSmartphone ? 13 : 14)}px;
+  letter-spacing: -0.2px;
+  font-size: ${(props) => (props.isSmartphone ? 14 : 14)}px;
 `;
 
 const Separator = styled.div`
@@ -51,13 +52,13 @@ function ListOrderSwitch({
   value,
   setValue,
 }: {
-  value: OPTIONS;
+  value: string | string[];
   setValue: React.Dispatch<React.SetStateAction<OPTIONS>>;
 }): JSX.Element {
   const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <Options>
+    <Options isSmartphone={isSmartphone}>
       {!isSmartphone && <Title>Ordernar:</Title>}
       <Option
         active={value === OPTIONS.DEFAULT}
