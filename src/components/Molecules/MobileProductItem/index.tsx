@@ -1,5 +1,6 @@
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
+import Axios from "axios";
 import { useAnimation } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -49,9 +50,24 @@ function MobileProductItem({
     router.push(`/produtos/${id}`);
   };
 
-  const _addToCart = (item: Product) => {
-    item.cartQty = item.cartQty ? item.cartQty + 1 : 1;
-    cartContext.addToCart(item);
+  const getProduct = async (uid: string) => {
+    try {
+      const response = await Axios.get(`/products/${uid}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addToCart = async () => {
+    const product: Product = await getProduct(data.uid);
+    product.cartQty = product.cartQty ? product.cartQty + 1 : 1;
+    cartContext.addToCart(product);
+  };
+
+  const addToWishlist = async () => {
+    const product: Product = await getProduct(data.uid);
+    wishlistContext.addToWishlist(product);
   };
 
   const isAlreadyInCart = cartContext.isItemInCart(data.id);
@@ -131,7 +147,7 @@ function MobileProductItem({
               width={143}
               type={isAlreadyInCart ? "disabled" : "default"}
               variant="contained"
-              onClick={() => _addToCart(data)}
+              onClick={() => addToCart()}
             >
               {isAlreadyInCart ? "Está na Sacola" : "Adicionar à Sacola"}
             </CustomButton>
@@ -144,7 +160,7 @@ function MobileProductItem({
               onClick={
                 isAlreadyInWishlist
                   ? () => wishlistContext.removeFromWishlist(data.id)
-                  : () => wishlistContext.addToWishlist(data)
+                  : () => addToWishlist()
               }
             ></IconButton>
           </Row>
