@@ -28,6 +28,7 @@ import {
 import ProductsPlaceholder from "../src/components/MainPagesComponents/Search/ProductsPlaceholder";
 import MobileProductItem from "../src/components/Molecules/MobileProductItem";
 import ProductItem from "../src/components/Molecules/ProductItem";
+import EmptyPage from "../src/components/Templates/EmptyPage";
 import Layout from "../src/components/Templates/Layout";
 import Colors from "../src/enums/Colors";
 import Menu from "../src/modules/menu/Menu";
@@ -543,6 +544,24 @@ function Search(props: PageProps): JSX.Element {
                   )}
                 </span>
               ))}
+              {products && products.length === 0 && (
+                <div
+                  style={{
+                    marginLeft: isSmartphone ? 40 : 0,
+                    width: "100%",
+                    marginBottom: 36,
+                  }}
+                >
+                  <SizedBox height={72}></SizedBox>
+                  <EmptyPage
+                    buttonAction={removeAllParams}
+                    buttonText="Limpar Filtros"
+                    icon="search"
+                    title="Nenhum produto encontrado"
+                    subtitle="Por favor, remova alguns filtros"
+                  ></EmptyPage>
+                </div>
+              )}
             </Products>
           </div>
         </Row>
