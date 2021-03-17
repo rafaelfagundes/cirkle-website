@@ -335,11 +335,11 @@ function DesktopTopMenu({
   }
 
   function submitSearch() {
+    closeSearchContainer();
     router.push({
       pathname: "/pesquisa",
       query: {
         q: searchQuery,
-        department: "mulher",
       },
     });
   }
