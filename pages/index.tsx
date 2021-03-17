@@ -1,5 +1,6 @@
 import { Container, Hidden, useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
+import _shuffle from "lodash/shuffle";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
@@ -9,6 +10,7 @@ import Padding from "../src/components/Atoms/Padding";
 import SizedBox from "../src/components/Atoms/SizedBox";
 import HighlightsSection from "../src/components/Organisms/HighlightsSection";
 import HomeCategories from "../src/components/Organisms/HomeCategories";
+import HotSection from "../src/components/Organisms/HotSection";
 import HotSectionTitle from "../src/components/Organisms/HotSection/HotSectionTitle";
 import PromoHeroComponent from "../src/components/Organisms/PromoHero";
 import RecentlyViewed from "../src/components/Organisms/RecentlyViewed";
@@ -25,13 +27,6 @@ import Product from "../src/modules/product/Product";
 import PromoHero from "../src/modules/promoHero/PromoHero";
 import Shipping from "../src/modules/shipping/Shipping";
 import theme from "../src/theme/theme";
-
-const HotSection = dynamic(
-  () => import("../src/components/Organisms/HotSection"),
-  {
-    ssr: false,
-  }
-);
 
 const NewsletterSignUp = dynamic(
   () => import("../src/components/Organisms/NewsletterSignUp"),
@@ -148,10 +143,10 @@ function Home(props: HomeProps): JSX.Element {
     ],
   };
 
-  const { data: brands, error: brandsError } = useSWR("/brands", {
-    initialData: props.brands,
-  });
-  if (brandsError) console.log("Brands loading error", brandsError);
+  // const { data: brands, error: brandsError } = useSWR("/brands", {
+  //   initialData: props.brands,
+  // });
+  // if (brandsError) console.log("Brands loading error", brandsError);
 
   const { data: hotProducts, error: productsError } = useSWR(
     "/products?qty_gt=0&_sort=views:DESC&_limit=8",
@@ -208,8 +203,11 @@ function Home(props: HomeProps): JSX.Element {
           </Padding>
           <SizedBox height={32}></SizedBox>
           {!hotProducts && <HotProductsLoader></HotProductsLoader>}
-          {hotProducts && brands && (
-            <HotSection products={hotProducts} brands={brands}></HotSection>
+          {hotProducts && props.brands && (
+            <HotSection
+              products={hotProducts}
+              brands={props.brands}
+            ></HotSection>
           )}
         </Container>
         <SizedBox height={32}></SizedBox>
@@ -255,9 +253,11 @@ export async function getStaticProps(): Promise<any> {
   const menu = results[4].data;
   const search = results[5].data;
 
+  const _brands = _shuffle(brands).slice(0, 6);
+
   return {
     props: {
-      brands,
+      brands: _brands,
       highlights,
       shipping,
       products,

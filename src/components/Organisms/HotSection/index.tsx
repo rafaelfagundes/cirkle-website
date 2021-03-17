@@ -1,6 +1,5 @@
 import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import _shuffle from "lodash/shuffle";
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
@@ -56,8 +55,8 @@ function HotSection({
   const router = useRouter();
   const theme = useTheme();
   const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
-  let randomBrands = _shuffle(brands);
-  randomBrands = randomBrands.slice(0, 6);
+  // let randomBrands = _shuffle(brands);
+  // randomBrands = randomBrands.slice(0, 6);
 
   return (
     <Section>
@@ -127,7 +126,7 @@ function HotSection({
       </Center>
       <SizedBox height={48}></SizedBox>
       <BrandsHolder isSmartphone={isSmartphone}>
-        {randomBrands.map((item) => (
+        {brands.map((item) => (
           <Brand key={item.image} data={item}></Brand>
         ))}
       </BrandsHolder>
