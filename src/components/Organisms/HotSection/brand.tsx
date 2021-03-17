@@ -1,7 +1,7 @@
 // import { useMediaQuery } from "@material-ui/core";
 // import { useTheme } from "@material-ui/core/styles";
 import { useMediaQuery, useTheme } from "@material-ui/core";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
@@ -62,15 +62,26 @@ function Brand({
 
   const widthHighlightItem = calcHighlightItemWidth();
 
+  const router = useRouter();
+
   return (
-    <Link href={"/pesquisa?brands=" + data.name}>
+    <span
+      onClick={() =>
+        router.push({
+          pathname: "/pesquisa",
+          query: {
+            brands: data.name,
+          },
+        })
+      }
+    >
       <StyledBrand width={widthHighlightItem} key={data.id} noMargin={noMargin}>
         <BrandImage
           width={widthHighlightItem}
           image={cloudinaryImage(data.image, 140)}
         ></BrandImage>
       </StyledBrand>
-    </Link>
+    </span>
   );
 }
 
