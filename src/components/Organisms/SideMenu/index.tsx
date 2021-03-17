@@ -213,6 +213,8 @@ function SideMenu({
     typeof window !== "undefined" && router.push(route);
   };
 
+  console.log(`menuData`, menuData);
+
   return (
     <StyledSideMenu>
       <div>
@@ -305,7 +307,7 @@ function SideMenu({
             <MenuContainer
               color={selectedTab === "mulher" ? Colors.PRIMARY : Colors.KIDS}
             >
-              <Link href="/categories/novidades">
+              <Link href="/pesquisa?sortOrder=recents">
                 <StyledMenuItem>
                   <MenuItemText color={Colors.WHITE}>Novidades</MenuItemText>
                 </StyledMenuItem>
@@ -332,12 +334,14 @@ function SideMenu({
                   {menuData[selectedTab].categories[item].active &&
                     menuData[selectedTab].categories[item].items.map(
                       (subcategory: { title: string; link: string }) => (
-                        <StyledMenuItem
+                        <Link
+                          href={"/pesquisa/?" + subcategory.link}
                           key={subcategory.link}
-                          subcategory={true}
                         >
-                          <MenuItemText>{subcategory.title}</MenuItemText>
-                        </StyledMenuItem>
+                          <StyledMenuItem subcategory={true}>
+                            <MenuItemText>{subcategory.title}</MenuItemText>
+                          </StyledMenuItem>
+                        </Link>
                       )
                     )}
                 </div>

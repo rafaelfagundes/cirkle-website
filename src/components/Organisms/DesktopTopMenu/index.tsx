@@ -605,7 +605,7 @@ function DesktopTopMenu({
                   Object.keys(menuData[selectedTab].categories).map((item) => (
                     <Link
                       href={
-                        "/categorias/" +
+                        `/pesquisa/?` +
                         menuData[selectedTab].categories[item].link
                       }
                       key={menuData[selectedTab].categories[item].link}
@@ -651,7 +651,7 @@ function DesktopTopMenu({
                     {menuData[selectedTab].categories[
                       selectedCategory
                     ].items.map((item: { title: string; link: string }) => (
-                      <Link href={"/categorias/" + item.link} key={item.link}>
+                      <Link href={"/pesquisa/?" + item.link} key={item.link}>
                         <SubMenuItem>
                           <SubMenuItemText>{item.title}</SubMenuItemText>
                         </SubMenuItem>

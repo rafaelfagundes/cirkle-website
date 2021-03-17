@@ -63,7 +63,7 @@ function Brand({
   const widthHighlightItem = calcHighlightItemWidth();
 
   return (
-    <Link href={"/" + data.id}>
+    <Link href={"/pesquisa?brands=" + data.name}>
       <StyledBrand width={widthHighlightItem} key={data.id} noMargin={noMargin}>
         <BrandImage
           width={widthHighlightItem}

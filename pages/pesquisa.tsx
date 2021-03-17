@@ -59,7 +59,7 @@ const Products = styled.div<{ isSmartphone: boolean }>`
   width: ${(props) =>
     props.isSmartphone
       ? process.browser
-        ? window.innerWidth - 40
+        ? window.innerWidth - 14
         : 375
       : 1000}px;
   height: 100%;
@@ -83,6 +83,7 @@ interface PageProps {
   colors: Array<any>;
   remoteBrands: Array<any>;
   subCategories: Array<any>;
+  categories: Array<any>;
   prices: Array<number>;
 }
 
@@ -127,6 +128,8 @@ function Search(props: PageProps): JSX.Element {
         return props.colors.find((c) => c.id === Number(value)).name;
       case "subCategories":
         return props.subCategories.find((c) => c.slug === value).title;
+      case "categories":
+        return props.categories.find((c) => c.slug === value).title;
 
       default:
         return value;
@@ -183,7 +186,7 @@ function Search(props: PageProps): JSX.Element {
       pathname: "/pesquisa",
       query: {
         ..._params,
-        department: router.query.department || "1",
+        department: router.query.department || "mulher",
         sortOrder: router.query.sortOrder || "default",
       },
     });
@@ -210,7 +213,7 @@ function Search(props: PageProps): JSX.Element {
     router.push({
       pathname: "/pesquisa",
       query: {
-        department: router.query.department || "1",
+        department: router.query.department || "mulher",
         sortOrder: router.query.sortOrder || "default",
       },
     });
@@ -584,6 +587,7 @@ export async function getStaticProps(): Promise<any> {
   const subCategoriesUrl = `${process.env.API_ENDPOINT}/sub-categories`;
   const pricesUrl = `${process.env.API_ENDPOINT}/prices-min-max`;
   const searchUrl = `${process.env.API_ENDPOINT}/isearch`;
+  const categoriesUrl = `${process.env.API_ENDPOINT}/categories`;
 
   const results = await Promise.all([
     getData(menuUrl),
@@ -593,6 +597,7 @@ export async function getStaticProps(): Promise<any> {
     getData(subCategoriesUrl),
     getData(pricesUrl),
     getData(searchUrl),
+    getData(categoriesUrl),
   ]);
 
   const menu = results[0].data;
@@ -601,6 +606,7 @@ export async function getStaticProps(): Promise<any> {
   const brands = results[3].data;
   const subCategories = results[4].data;
   const search = results[6].data;
+  const categories = results[7].data;
 
   const prices = [
     Number(results[5].data.min) - 1,
@@ -614,6 +620,7 @@ export async function getStaticProps(): Promise<any> {
       colors,
       remoteBrands: brands,
       subCategories,
+      categories,
       prices,
       search,
     },

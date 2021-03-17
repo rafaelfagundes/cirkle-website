@@ -117,9 +117,6 @@ function HotSection({
             onClick={() =>
               router.push({
                 pathname: "/pesquisa",
-                query: {
-                  department: "mulher",
-                },
               })
             }
           >
