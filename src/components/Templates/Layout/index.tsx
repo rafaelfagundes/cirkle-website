@@ -99,7 +99,7 @@ function Layout({
           <SideMenu data={data} closeMenu={() => setDrawer(false)}></SideMenu>
         </SwipeableDrawer>
       </Hidden>
-      <Footer></Footer>
+      <Footer menu={menu}></Footer>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { Container, Grid, Hidden, InputBase } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
+import Menu from "../../../modules/menu/Menu";
 import Icon from "../../Atoms/Icon";
 import PaymentType from "../../Atoms/PaymentType";
 import SizedBox from "../../Atoms/SizedBox";
@@ -143,7 +144,34 @@ const NLButtonText = styled.span`
   font-weight: 500;
 `;
 
-function DesktopFooter(): JSX.Element {
+function DesktopFooter({ menu }: { menu: Menu }): JSX.Element {
+  const links = [];
+
+  const getMenu = (menu: Menu) => {
+    Object.keys(menu).forEach((department) => {
+      links.push(<HeaderSection>{menu[department].title}</HeaderSection>);
+
+      let count = 0;
+      Object.keys(menu[department].categories).forEach((cat) => {
+        if (count > 3) return;
+        links.push(
+          <FooterLink>
+            <TextLink
+              href={`/pesquisa/?${menu[department].categories[cat].link}`}
+              color={Colors.WHITE}
+              size={14}
+            >
+              {menu[department].categories[cat].title}
+            </TextLink>
+          </FooterLink>
+        );
+        count++;
+      });
+    });
+
+    return links;
+  };
+
   return (
     <Footer>
       <Container maxWidth="md" disableGutters>
@@ -198,46 +226,7 @@ function DesktopFooter(): JSX.Element {
             </SocialFooter>
           </LinksSection>
           <Hidden only="xs">
-            <LinksSection>
-              <HeaderSection>Mulher</HeaderSection>
-              <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={14}>
-                  Roupas
-                </TextLink>
-              </FooterLink>
-              <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={14}>
-                  Bolsas
-                </TextLink>
-              </FooterLink>
-              <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={14}>
-                  Calçados
-                </TextLink>
-              </FooterLink>
-              <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={14}>
-                  Acessórios
-                </TextLink>
-              </FooterLink>
-              <SizedBox height={16}></SizedBox>
-              <HeaderSection>Kids</HeaderSection>
-              <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={14}>
-                  Roupas
-                </TextLink>
-              </FooterLink>
-              <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={14}>
-                  Calçados
-                </TextLink>
-              </FooterLink>
-              <FooterLink>
-                <TextLink href="" color={Colors.WHITE} size={14}>
-                  Brinquedos
-                </TextLink>
-              </FooterLink>
-            </LinksSection>
+            <LinksSection>{getMenu(menu)}</LinksSection>
           </Hidden>
           <LinksSection>
             <HeaderSection>Newsletter</HeaderSection>

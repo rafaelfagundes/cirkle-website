@@ -23,11 +23,11 @@ const LegalText = styled.span`
   font-size: 11px;
 `;
 
-function Footer(): JSX.Element {
+function Footer({ menu }: { menu: Menu }): JSX.Element {
   return (
     <div>
       <Hidden only={["xs", "sm"]}>
-        <DesktopFooter></DesktopFooter>
+        <DesktopFooter menu={menu}></DesktopFooter>
       </Hidden>
       <Hidden only={["md", "lg", "xl"]}>
         <MobileFooter></MobileFooter>
