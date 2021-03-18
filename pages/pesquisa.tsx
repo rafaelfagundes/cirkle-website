@@ -488,8 +488,10 @@ function Search(props: PageProps): JSX.Element {
                   props,
                   addOrRemoveBrands
                 )}
+                {!isSmartphone && <SizedBox height={72}></SizedBox>}
               </Filters>
             )}
+
             {isSmartphone && showMobileFilters && (
               <>
                 <SizedBox height={16}></SizedBox>

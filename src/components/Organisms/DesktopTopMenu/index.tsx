@@ -454,7 +454,6 @@ function DesktopTopMenu({
                       key={menuData[element].title}
                       active={menuData[element].active}
                       onClick={() => toggleTab(element)}
-                      // onMouseOver={() => toggleTab(element)}
                       color={
                         selectedTab === "mulher" ? Colors.PRIMARY : Colors.KIDS
                       }
@@ -522,16 +521,26 @@ function DesktopTopMenu({
               <Categories>
                 <SizedBox width={6}></SizedBox>
                 {menuData && (
-                  <MenuItem>
-                    <PromosDetail
-                      backgroundColor={
-                        selectedTab === "mulher"
-                          ? Colors.SECONDARY
-                          : Colors.KIDS_VIOLET
-                      }
-                    ></PromosDetail>
-                    <MenuItemText color={Colors.WHITE}>Promos</MenuItemText>
-                  </MenuItem>
+                  <Link
+                    href={
+                      selectedTab === "mulher"
+                        ? "/pesquisa?department=mulher&sortOrder=recents"
+                        : "/pesquisa?department=kids&sortOrder=recents"
+                    }
+                  >
+                    <MenuItem>
+                      <PromosDetail
+                        backgroundColor={
+                          selectedTab === "mulher"
+                            ? Colors.SECONDARY
+                            : Colors.KIDS_VIOLET
+                        }
+                      ></PromosDetail>
+                      <MenuItemText color={Colors.WHITE}>
+                        Novidades
+                      </MenuItemText>
+                    </MenuItem>
+                  </Link>
                 )}
                 <SizedBox width={16}></SizedBox>
 
@@ -590,7 +599,7 @@ function DesktopTopMenu({
                         ></TextPlaceholder>
                       </MenuItem>
                     </Link>
-                    <SizedBox width={16}></SizedBox>
+                    {/* <SizedBox width={16}></SizedBox>
                     <Link href="/">
                       <MenuItem>
                         <TextPlaceholder
@@ -598,7 +607,7 @@ function DesktopTopMenu({
                           color={Colors.MIDDLE_YELLOW}
                         ></TextPlaceholder>
                       </MenuItem>
-                    </Link>
+                    </Link> */}
                   </>
                 )}
                 {menuData &&
@@ -633,13 +642,13 @@ function DesktopTopMenu({
                       </MenuItem>
                     </Link>
                   ))}
-                {menuData && (
+                {/* {menuData && (
                   <MenuItem>
                     <MenuItemText color={Colors.MIDDLE_YELLOW}>
                       Novidades
                     </MenuItemText>
                   </MenuItem>
-                )}
+                )} */}
               </Categories>
             </Row>
           </Container>
