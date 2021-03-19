@@ -143,7 +143,7 @@ function UserProfileMenuItem({ isLogged }: { isLogged: boolean }): JSX.Element {
             <Icon type="package"></Icon>
             <MenuItemText>Meus Pedidos</MenuItemText>
           </StyledMenuItem>
-          <StyledMenuItem onClick={() => _goTo("/perfil?aba=minhas-vendas")}>
+          <StyledMenuItem onClick={() => _goTo("/perfil?aba=meus-produtos")}>
             <Icon type="layers"></Icon>
             <MenuItemText>Meus Produtos à Venda</MenuItemText>
           </StyledMenuItem>

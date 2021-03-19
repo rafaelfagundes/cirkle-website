@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
@@ -50,13 +51,23 @@ function VerticalSideMenu({
   activeTab: string;
   setActiveTab: Dispatch<SetStateAction<string>>;
 }): JSX.Element {
+  const router = useRouter();
+
   return (
     <Tabs>
       {tabs.map((tab) => (
         <Tab
           key={tab.id}
           active={activeTab === tab.id}
-          onClick={() => setActiveTab(tab.id)}
+          onClick={() => {
+            setActiveTab(tab.id);
+            router.push({
+              pathname: "/perfil",
+              query: {
+                aba: tab?.id?.replace("/", ""),
+              },
+            });
+          }}
         >
           {tab.title}
         </Tab>

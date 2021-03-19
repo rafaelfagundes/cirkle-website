@@ -9,6 +9,7 @@ import SizedBox from "../src/components/Atoms/SizedBox";
 import FormTabs from "../src/components/Molecules/FormTabs";
 import VerticalSideMenu from "../src/components/Molecules/VerticalSideMenu";
 import AddressTab from "../src/components/Pages/Profile/AddressTab";
+import MyProductsTab from "../src/components/Pages/Profile/MyProductsTab";
 import OrdersTab from "../src/components/Pages/Profile/OrdersTab";
 import ProfileTab from "../src/components/Pages/Profile/ProfileTab";
 import WishlistTab from "../src/components/Pages/Profile/WishlistTab";
@@ -129,7 +130,7 @@ function Profile(props: PageProps): JSX.Element {
                 { id: "/enderecos", title: "Endereços" },
                 { id: "/minha-lista", title: "Lista de Desejos" },
                 { id: "/meus-pedidos", title: "Meus Pedidos" },
-                { id: "/minhas-vendas", title: "Meus Produtos à Venda" },
+                { id: "/meus-produtos", title: "Meus Produtos à Venda" },
               ]}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
@@ -140,6 +141,7 @@ function Profile(props: PageProps): JSX.Element {
             {activeTab === "/enderecos" && <AddressTab></AddressTab>}
             {activeTab === "/minha-lista" && <WishlistTab></WishlistTab>}
             {activeTab === "/meus-pedidos" && <OrdersTab></OrdersTab>}
+            {activeTab === "/meus-produtos" && <MyProductsTab></MyProductsTab>}
           </Content>
         </Columns>
       )}

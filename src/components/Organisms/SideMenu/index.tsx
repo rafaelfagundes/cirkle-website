@@ -247,11 +247,11 @@ function SideMenu({
                   <Icon type="heart"></Icon>
                   <SecondaryText>Lista de Desejos</SecondaryText>
                 </SecondaryItem>
-                <SecondaryItem>
+                <SecondaryItem onClick={() => goTo("/meus-pedidos")}>
                   <Icon type="package"></Icon>
                   <SecondaryText>Meus Pedidos</SecondaryText>
                 </SecondaryItem>
-                <SecondaryItem>
+                <SecondaryItem onClick={() => goTo("/meus-produtos")}>
                   <Icon type="layers"></Icon>
                   <SecondaryText>Meus Produtos à Venda</SecondaryText>
                 </SecondaryItem>

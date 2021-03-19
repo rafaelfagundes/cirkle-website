@@ -29,6 +29,8 @@ export const ProductTitle = styled.h2`
   font-size: 16px;
   font-weight: 700;
   color: ${Colors.PRIMARY};
+  height: 20px;
+  overflow: hidden;
 `;
 
 export const ProductBrand = styled.h2`
