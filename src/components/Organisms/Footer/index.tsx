@@ -2,6 +2,7 @@ import { Hidden } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import Colors from "../../../enums/Colors";
+import Menu from "../../../modules/menu/Menu";
 import DesktopFooter from "./DesktopFooter";
 import MobileFooter from "./MobileFooter";
 
