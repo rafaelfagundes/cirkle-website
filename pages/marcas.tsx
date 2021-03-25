@@ -95,8 +95,8 @@ function Marcas({ menu, search, brands }: PageProps): JSX.Element {
   const { data, error } = useSWR("/brands?_sort=views:DESC", {
     initialData: brands,
   });
-  // console.log("data", data);
-  console.error("error", error);
+
+  if (error) console.error("error", error);
 
   const [filteredItems, setFilteredItems] = useState(data || null);
 
