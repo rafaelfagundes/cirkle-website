@@ -7,6 +7,7 @@ import styled from "styled-components";
 import useSWR from "swr";
 import Center from "../src/components/Atoms/Center";
 import CustomButton from "../src/components/Atoms/CustomButton";
+import HorizontalLine from "../src/components/Atoms/HorizontalLine";
 import ListOrderSwitch, {
   OPTIONS,
 } from "../src/components/Atoms/ListOrderSwitch";
@@ -28,9 +29,11 @@ import {
 import ProductsPlaceholder from "../src/components/MainPagesComponents/Search/ProductsPlaceholder";
 import MobileProductItem from "../src/components/Molecules/MobileProductItem";
 import ProductItem from "../src/components/Molecules/ProductItem";
+import RecentlyViewed from "../src/components/Organisms/RecentlyViewed";
 import EmptyPage from "../src/components/Templates/EmptyPage";
 import Layout from "../src/components/Templates/Layout";
 import Colors from "../src/enums/Colors";
+import { useRecentlyViewed } from "../src/hooks/recentlyViewed/useRecentlyViewed";
 import Menu from "../src/modules/menu/Menu";
 import theme from "../src/theme/theme";
 
@@ -89,6 +92,9 @@ interface PageProps {
 
 function Search(props: PageProps): JSX.Element {
   //
+  // Context
+  const recentlyViewedContext = useRecentlyViewed();
+
   // Constants
   const router = useRouter();
   const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
@@ -571,7 +577,15 @@ function Search(props: PageProps): JSX.Element {
             </Products>
           </div>
         </Row>
-        <SizedBox height={16}></SizedBox>
+        <SizedBox height={64}></SizedBox>
+        <HorizontalLine color="#DDD"></HorizontalLine>
+        {recentlyViewedContext?.recentlyViewed?.items?.length > 0 && (
+          <RecentlyViewed
+            items={recentlyViewedContext.recentlyViewed.items}
+            backgroundColor="rgba(0, 0, 0, 0.0)"
+            width="lg"
+          ></RecentlyViewed>
+        )}
       </Container>
     </Layout>
   );

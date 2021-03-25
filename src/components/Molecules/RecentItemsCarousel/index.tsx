@@ -32,9 +32,11 @@ const Spacer = styled.div`
 function RecentItemsCarousel({
   title,
   products,
+  large = false,
 }: {
   title?: string;
   products: Array<Product>;
+  large?: boolean;
 }): JSX.Element {
   const isSmartphone = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -53,7 +55,9 @@ function RecentItemsCarousel({
           {products.map((item, index) => (
             <React.Fragment key={item.uid}>
               <MiniProductItem data={item}></MiniProductItem>
-              {index + 1 < products.length && <SizedBox width={16}></SizedBox>}
+              {index + 1 < products.length && (
+                <SizedBox width={large ? 24 : 16}></SizedBox>
+              )}
             </React.Fragment>
           ))}
           {isSmartphone ? <Spacer>-</Spacer> : null}

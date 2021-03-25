@@ -19,6 +19,7 @@ const StyledRecentlyViewed = styled.div<{ backgroundColor: string }>`
 interface RecentlyViewedProps {
   items: Array<Product>;
   backgroundColor: string;
+  width?: false | "xs" | "sm" | "md" | "lg" | "xl";
 }
 
 function RecentlyViewed(props: RecentlyViewedProps): JSX.Element {
@@ -29,9 +30,14 @@ function RecentlyViewed(props: RecentlyViewedProps): JSX.Element {
     recentlyViewedContext.removeAll();
   }
 
+  let maxItems = 8;
+  if (props.width && props.width === "lg") {
+    maxItems = 10;
+  }
+
   return (
     <StyledRecentlyViewed backgroundColor={props.backgroundColor}>
-      <Container maxWidth="md" disableGutters>
+      <Container maxWidth={props.width ? props.width : "md"} disableGutters>
         <Row spaceBetween>
           <Padding horizontal={isSmartPhone ? 16 : 0}>
             <Title>Vistos recentemente</Title>
@@ -48,7 +54,10 @@ function RecentlyViewed(props: RecentlyViewedProps): JSX.Element {
           </CustomButton>
         </Row>
         <SizedBox height={12}></SizedBox>
-        <RecentItemsCarousel products={props.items}></RecentItemsCarousel>
+        <RecentItemsCarousel
+          products={props.items.slice(0, maxItems)}
+          large={props.width && props.width === "lg"}
+        ></RecentItemsCarousel>
       </Container>
     </StyledRecentlyViewed>
   );
