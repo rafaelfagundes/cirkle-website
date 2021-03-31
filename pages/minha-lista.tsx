@@ -36,14 +36,13 @@ function Wishlist({ menu, search }: PageProps): JSX.Element {
   const wishlistContext = useWishlist();
   const authContext = useAuth();
 
-  const { data: dataWishlist } = useSWR(
-    authContext.user ? "/wishlists" : null,
-    {
-      shouldRetryOnError: true,
-      errorRetryInterval: 500,
-      errorRetryCount: 10,
-    }
-  );
+  const { data: dataWishlist, error } = useSWR("/wishlists", {
+    shouldRetryOnError: true,
+    errorRetryInterval: 500,
+    errorRetryCount: 3,
+  });
+
+  if (error) console.log(error);
 
   if (dataWishlist) {
     if (!wishlistContext.wishlist) {

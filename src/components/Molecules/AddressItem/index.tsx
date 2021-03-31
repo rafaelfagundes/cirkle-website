@@ -119,7 +119,7 @@ function AddressItem(props: IAddressItemsProps): JSX.Element {
                   onClick={() => props.setMainAddress(props.id)}
                   width={175}
                 >
-                  Definir Padrão
+                  Definir Como Padrão
                 </CustomButton>
               </>
             )}

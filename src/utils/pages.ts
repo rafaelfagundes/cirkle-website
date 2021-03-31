@@ -1,5 +1,9 @@
 const pages = [
   {
+    title: "Minha Conta",
+    href: "/perfil",
+  },
+  {
     title: "Meus Pedidos",
     href: "/perfil?aba=meus-pedidos",
   },

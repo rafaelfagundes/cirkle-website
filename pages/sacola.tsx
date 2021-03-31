@@ -265,7 +265,7 @@ function Cart(props: PageProps): JSX.Element {
                             <SelectMenu
                               items={cartContext.cart.shippingList}
                               setSelected={setShippingList}
-                              title="Selecione o frete"
+                              title="Confira os fretes disponíveis"
                               errorText=""
                               radioButtonList
                             ></SelectMenu>

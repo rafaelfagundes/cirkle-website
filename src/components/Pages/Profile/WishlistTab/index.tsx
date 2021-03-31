@@ -21,14 +21,13 @@ function WishlistTab(): JSX.Element {
   const wishlistContext = useWishlist();
   const authContext = useAuth();
 
-  const { data: dataWishlist } = useSWR(
-    authContext.user ? "/wishlists" : null,
-    {
-      shouldRetryOnError: true,
-      errorRetryInterval: 500,
-      errorRetryCount: 10,
-    }
-  );
+  const { data: dataWishlist, error } = useSWR("/wishlists", {
+    shouldRetryOnError: true,
+    errorRetryInterval: 500,
+    errorRetryCount: 3,
+  });
+
+  if (error) console.log(error);
 
   if (dataWishlist) {
     if (!wishlistContext.wishlist) {
@@ -44,7 +43,8 @@ function WishlistTab(): JSX.Element {
 
   return (
     <StyledWishlist>
-      {wishlistContext?.wishlist?.products &&
+      {!error &&
+        wishlistContext?.wishlist?.products &&
         wishlistContext.wishlist.products.length > 0 && (
           <CartItems>
             {wishlistContext?.wishlist?.products &&
@@ -60,7 +60,7 @@ function WishlistTab(): JSX.Element {
               )}
           </CartItems>
         )}
-      {wishlistContext?.wishlist?.products?.length === 0 && (
+      {(wishlistContext?.wishlist?.products?.length === 0 || error) && (
         <Column>
           <SizedBox height={72}></SizedBox>
           {!authContext.user && (
@@ -84,7 +84,7 @@ function WishlistTab(): JSX.Element {
           <SizedBox height={72}></SizedBox>
         </Column>
       )}
-      {!wishlistContext?.wishlist?.products && (
+      {!wishlistContext?.wishlist?.products && !error && (
         <Column>
           <SizedBox height={72}></SizedBox>
           <Center>

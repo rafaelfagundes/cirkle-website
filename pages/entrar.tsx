@@ -1,6 +1,7 @@
 import { Container, Hidden } from "@material-ui/core";
 import Axios from "axios";
 import _cloneDeep from "lodash/cloneDeep";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
@@ -13,7 +14,6 @@ import CustomTextField, {
   setCustomTextFieldValue,
 } from "../src/components/Atoms/CustomTextField";
 import Row from "../src/components/Atoms/Row";
-import SimpleText from "../src/components/Atoms/SimpleText";
 import SizedBox from "../src/components/Atoms/SizedBox";
 import SocialLoginButton from "../src/components/Atoms/SocialLoginButton";
 import Subtitle from "../src/components/Atoms/Subtitle";
@@ -31,17 +31,23 @@ const LoginContainer = styled.div`
   padding: 32px 16px;
 `;
 
-const Text = styled.span`
-  display: flex;
-  flex-direction: row-reverse;
+const StyledText = styled.p<{
+  centered?: boolean;
+  color?: string;
+  size?: number;
+  bold?: boolean;
+}>`
   font-family: Commissioner, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18px;
-  color: ${Colors.PRIMARY};
-  text-align: center;
+  color: ${(props) => props.color || Colors.PRIMARY};
+  font-size: ${(props) => props.size || 1}rem;
+  line-height: ${(props) => props.size * 1.3 || 1.3}rem;
+  ${(props) => (props.centered ? "text-align: center;" : null)};
+  margin: 0;
+  font-weight: ${(props) => (props.bold ? "700" : "500")};
+  user-select: none;
+  letter-spacing: -0.01px;
 `;
 
 function SocialLogin({ auth }: { auth: IAuthContextProps }): JSX.Element {
@@ -400,10 +406,10 @@ function Login({ menu, search }: PageProps): JSX.Element {
                 </Center>
                 <SizedBox height={16}></SizedBox>
                 <Container maxWidth="xs">
-                  <SimpleText color={Colors.SECONDARY} centered size={0.9}>
-                    Ao criar um conta, você concorda com os termos de uso e a
-                    política de privacidade
-                  </SimpleText>
+                  <StyledText centered color={Colors.SECONDARY} size={0.9}>
+                    Ao criar uma conta, você concorda com os{" "}
+                    <Link href="/termos-de-uso">termos de uso</Link>
+                  </StyledText>
                 </Container>
               </>
             )}

@@ -22,7 +22,7 @@ function AddressList(props: IAddressList): JSX.Element {
         <>
           <Center>
             <SimpleText>
-              Nenhum endereço cadastrado. Salve um endereço para facilitar as
+              Nenhum endereço cadastrado. Salve um endereço para facilitar
               futuras compras.
             </SimpleText>
           </Center>
