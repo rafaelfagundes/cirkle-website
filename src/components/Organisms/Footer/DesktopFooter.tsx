@@ -148,6 +148,7 @@ function DesktopFooter({ menu }: { menu: Menu }): JSX.Element {
   const links = [];
 
   const getMenu = (menu: Menu) => {
+    if (!menu) return;
     Object.keys(menu).forEach((department) => {
       links.push(<HeaderSection>{menu[department].title}</HeaderSection>);
 

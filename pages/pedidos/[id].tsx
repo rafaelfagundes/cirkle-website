@@ -1,5 +1,7 @@
 import { useMediaQuery } from "@material-ui/core";
+import Axios from "axios";
 import moment from "moment";
+import { GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import React from "react";
 import useSWR from "swr";
@@ -23,23 +25,27 @@ import CartItem from "../../src/components/Molecules/CartItem";
 import { getStatus } from "../../src/components/Molecules/OrderItem/functions";
 import Page from "../../src/components/Templates/Page";
 import Colors from "../../src/enums/Colors";
+import Menu from "../../src/modules/menu/Menu";
 import theme from "../../src/theme/theme";
 import { capitalizeFirstLetter } from "../../src/utils/string";
 
-function OrderPage(): JSX.Element {
+function OrderPage({ menu }: { menu: Menu }): JSX.Element {
   const router = useRouter();
   const isSmartPhone = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { data } = useSWR(
+  const { data, error } = useSWR(
     router.query.id ? `/orders/${router.query.id}` : null,
     {
       revalidateOnFocus: true,
       refreshInterval: 30000,
       shouldRetryOnError: true,
-      errorRetryInterval: 500,
-      errorRetryCount: 10,
+      errorRetryInterval: 100,
+      errorRetryCount: 300,
     }
   );
+
+  if (error) console.error(error);
+  if (data) console.log(data);
 
   const getPaymentIcon = (paymentType: string) => {
     switch (paymentType) {
@@ -104,6 +110,7 @@ function OrderPage(): JSX.Element {
     <Page
       title={data ? `Pedido #${data.orderId}` : "Pedido"}
       image="/images/orders.jpg"
+      menu={menu}
     >
       <Padding
         horizontal={isSmartPhone ? 0 : 20}
@@ -393,6 +400,30 @@ function OrderPage(): JSX.Element {
       </Padding>
     </Page>
   );
+}
+
+export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
+  return {
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  };
+};
+
+export async function getStaticProps(): Promise<any> {
+  function getContent(url: string) {
+    return Axios.get(url);
+  }
+
+  const menuUrl = `${process.env.API_ENDPOINT}/menu`;
+  const results = await Promise.all([getContent(menuUrl)]);
+  const menu = results[0].data;
+
+  return {
+    props: {
+      menu,
+    },
+    revalidate: 1440,
+  };
 }
 
 export default OrderPage;

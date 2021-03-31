@@ -45,8 +45,7 @@ function Layout({
         }
       : undefined
   );
-  // console.log("menu", menu);
-  // console.log("data", data);
+
   if (error) console.log("Menu loading error", error);
 
   return (

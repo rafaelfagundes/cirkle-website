@@ -43,8 +43,24 @@ Router.onRouteChangeError = () => {
   NProgress.done();
 };
 
-const fetcher = (url, params = null) =>
-  axios.get(url, { params: params }).then((res) => res.data);
+const needsAuth = (url) => {
+  const strippedUrl = url.split("?")[0].split("/")[1];
+  const privateRoutes = ["orders", "wishlists", "addresses", "client-products"];
+  return privateRoutes.includes(strippedUrl);
+};
+
+const fetcher = (url, params = null) => {
+  if (needsAuth(url)) {
+    // console.log("Needs auth", url);
+    const hasToken = axios.defaults.headers.common["Authorization"];
+    if (hasToken)
+      return axios.get(url, { params: params }).then((res) => res.data);
+    else throw Error("Needs user token to get data");
+  } else {
+    // console.log("Doesn't need auth", url);
+    return axios.get(url, { params: params }).then((res) => res.data);
+  }
+};
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -181,7 +197,7 @@ export default function MyApp(props) {
                         revalidateOnReconnect: true,
                         dedupingInterval: 5000,
                         focusThrottleInterval: 15000,
-                        errorRetryCount: 5,
+                        errorRetryCount: 500,
                         fetcher,
                       }}
                     >
