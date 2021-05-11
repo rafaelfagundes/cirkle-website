@@ -167,19 +167,11 @@ function useProviderAuth() {
         user.loginType = LoginType.EMAIL_PASSWORD;
         saveUserInContextAndLocalStorage(user);
       } else {
-        const savedUser = await saveUserDB(
-          response.user,
-          LoginType.EMAIL_PASSWORD
+        dialogContext.newDialog(
+          true,
+          "Erro ao Tentar Entrar",
+          "Não foi possível entrar com o usuário e senha informados"
         );
-        if (savedUser) {
-          saveUserInContextAndLocalStorage(savedUser);
-        } else {
-          dialogContext.newDialog(
-            true,
-            "Erro ao Tentar Entrar",
-            "Não foi possível entrar com o usuário escolhido"
-          );
-        }
       }
       logEventWithParams("login", { method: "Email/Password" });
       return user;
@@ -298,7 +290,7 @@ function useProviderAuth() {
         dialogContext.newDialog(
           true,
           "Erro ao Tentar Entrar",
-          "Não foi possível encontrar o usuário no sistema."
+          "Não foi possível cadastrar o usuário no sistema."
         );
       }
 
