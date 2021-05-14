@@ -51,7 +51,7 @@ function NewAddress({
   };
 
   useEffect(() => {
-    let editFillInterval: number;
+    let editFillInterval: any;
     if (editAddressObj) {
       editFillInterval = setInterval(() => {
         if (
