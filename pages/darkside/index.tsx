@@ -22,6 +22,7 @@ import SizedBox from "../../src/components/Atoms/SizedBox";
 import Colors from "../../src/enums/Colors";
 import { useAuth } from "../../src/hooks/auth/useAuth";
 import Orders from "./pages/orders";
+import Products from "./pages/products";
 
 const menuItems = [
   {
@@ -113,6 +114,7 @@ const Content = styled.div`
   flex: 1;
   width: 100%;
   padding: 20px;
+  overflow-y: scroll;
   height: calc(100vh - 64px);
 `;
 
@@ -181,6 +183,8 @@ function Admin(): JSX.Element {
     switch (currentPage) {
       case "Pedidos":
         return <Orders></Orders>;
+      case "Produtos":
+        return <Products></Products>;
       default:
         return null;
     }

@@ -34,10 +34,12 @@ function ProductItem({
   data,
   removeButton = false,
   numberPosition = 0,
+  disabled = false,
 }: {
   data: Product;
   removeButton?: boolean;
   numberPosition?: number;
+  disabled?: boolean;
 }): JSX.Element {
   const controls = useAnimation();
   const theme = useTheme();
@@ -160,7 +162,7 @@ function ProductItem({
               width={143}
               type={isAlreadyInCart ? "disabled" : "default"}
               variant="contained"
-              onClick={() => addToCart()}
+              onClick={disabled ? null : () => addToCart()}
             >
               {isAlreadyInCart ? "Está na Sacola" : "Adicionar à Sacola"}
             </CustomButton>
@@ -170,7 +172,9 @@ function ProductItem({
               filled={isAlreadyInWishlist}
               color={isAlreadyInWishlist ? Colors.SECONDARY : Colors.PRIMARY}
               onClick={
-                isAlreadyInWishlist
+                disabled
+                  ? null
+                  : isAlreadyInWishlist
                   ? () => wishlistContext.removeFromWishlist(data.id)
                   : () => addToWishlist()
               }
@@ -180,7 +184,6 @@ function ProductItem({
       </Item>
       {numberPosition !== 0 && (
         <NumberPosition>
-          {/* <NumberPositionDetail></NumberPositionDetail> */}
           <NumberPositionText>{numberPosition}º</NumberPositionText>
         </NumberPosition>
       )}

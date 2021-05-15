@@ -422,7 +422,7 @@ function ProductPage({
                       <Description isSmartphone={isSmartPhone}>
                         <SimpleText>{product.description}</SimpleText>
                       </Description>
-                      <SizedBox height={8}></SizedBox>
+                      <SizedBox height={20}></SizedBox>
                       <Price
                         spaceBetween={false}
                         price={product.price}

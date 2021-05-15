@@ -12,7 +12,7 @@ const Text = styled.p<{
     "Helvetica Neue", sans-serif;
   color: ${(props) => props.color};
   font-size: ${(props) => props.size}rem;
-  line-height: ${(props) => props.size * 1.3}rem;
+  line-height: ${(props) => props.size * 1.5}rem;
   ${(props) => (props.centered ? "text-align: center;" : null)};
   margin: 0;
   font-weight: ${(props) => (props.bold ? "700" : "500")};

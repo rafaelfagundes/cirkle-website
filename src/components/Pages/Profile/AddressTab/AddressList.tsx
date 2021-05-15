@@ -21,9 +21,11 @@ function AddressList(props: IAddressList): JSX.Element {
       {props.addressList.length === 0 && (
         <>
           <Center>
+            <SimpleText>Nenhum endereço cadastrado.</SimpleText>
+          </Center>
+          <Center>
             <SimpleText>
-              Nenhum endereço cadastrado. Salve um endereço para facilitar
-              futuras compras.
+              Salve um endereço para facilitar futuras compras.
             </SimpleText>
           </Center>
           <SizedBox height={16}></SizedBox>
