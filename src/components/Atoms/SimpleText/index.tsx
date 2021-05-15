@@ -18,6 +18,7 @@ const Text = styled.p<{
   font-weight: ${(props) => (props.bold ? "700" : "500")};
   user-select: none;
   letter-spacing: -0.01px;
+  text-transform: none;
 `;
 
 function SimpleText({

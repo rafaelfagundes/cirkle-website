@@ -1,6 +1,7 @@
 import {
   Button,
   FormControl,
+  IconButton,
   InputAdornment,
   InputLabel,
   MenuItem,
@@ -9,8 +10,10 @@ import {
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Add from "@material-ui/icons/AddRounded";
+import RemoveIcon from "@material-ui/icons/DeleteForeverRounded";
 import RefreshIcon from "@material-ui/icons/RefreshRounded";
 import _ from "lodash";
+import _cloneDeep from "lodash/cloneDeep";
 import React, { useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
@@ -61,15 +64,20 @@ const ProductColor = styled.div<{ color?: string }>`
   border: 2px solid #ccc;
 `;
 
-const Status = styled.div<{ enabled: boolean }>`
+const Status = styled.div`
   color: ${Colors.WHITE};
   font-weight: 500;
   font-family: "Commissioner";
-  padding: 10px;
+  padding: 2px 10px;
   width: 228px;
-  background-color: ${(props) => (props.enabled ? Colors.MONEY : Colors.ERROR)};
-  border-radius: 4px;
+  background-color: ${Colors.ERROR};
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
   text-align: center;
+  position: relative;
+  z-index: 100000;
+  opacity: 0.8;
+  margin-bottom: -24px;
 `;
 
 const ButtonText = styled.span`
@@ -82,6 +90,7 @@ function NewProduct(): JSX.Element {
   const [uuid, setUuid] = useState(uuidv4());
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
+  const [images, setImages] = useState([]);
   const [category, setCategory] = useState(null);
   const [brand, setBrand] = useState(null);
   const [color, setColor] = useState(null);
@@ -122,7 +131,7 @@ function NewProduct(): JSX.Element {
     }
 
     let productSize = "";
-    if (sizes && sizes) {
+    if (sizes && size) {
       productSize = sizes.find((s: any) => s.id === size).value;
     }
 
@@ -222,6 +231,30 @@ function NewProduct(): JSX.Element {
     return null;
   }
 
+  function addImage() {
+    const _images = _cloneDeep(images);
+    _images.push("");
+    setImages(_images);
+  }
+
+  function removeImage(index: number) {
+    const _images = _cloneDeep(images);
+
+    if (images.length === 1) {
+      setImages([]);
+    } else {
+      _images.splice(index, 1);
+      setImages(_images);
+    }
+  }
+
+  function handleImageUrl(text: string, index: number) {
+    const _images = _cloneDeep(images);
+
+    _images[index] = text;
+    setImages(_images);
+  }
+
   return (
     <Page>
       <Data>
@@ -259,6 +292,40 @@ function NewProduct(): JSX.Element {
           value={image}
           onChange={(e) => setImage(e.currentTarget.value)}
         />
+        {images.length > 0 && (
+          <>
+            {images.map((i, index) => (
+              <>
+                <SizedBox height={20}></SizedBox>
+                <TextField
+                  key={index}
+                  label={`Imagem adicional ${index + 1}`}
+                  variant="outlined"
+                  fullWidth
+                  value={i}
+                  onChange={(e) => handleImageUrl(e.currentTarget.value, index)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="Remover Imagem"
+                          onClick={() => removeImage(index)}
+                          edge="end"
+                        >
+                          <RemoveIcon style={{ color: Colors.ERROR }} />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </>
+            ))}
+          </>
+        )}
+        <SizedBox height={10}></SizedBox>
+        <Button disableElevation startIcon={<Add />} onClick={addImage}>
+          <ButtonText>Adicionar Imagem</ButtonText>
+        </Button>
         <SizedBox height={40}></SizedBox>
         <Row>
           <TextField
@@ -515,6 +582,19 @@ function NewProduct(): JSX.Element {
           />
         </Row>
         <SizedBox height={40}></SizedBox>
+        <Subtitle>Produtos Relacionados</Subtitle>
+        <SizedBox height={20}></SizedBox>
+        <Button
+          disableElevation
+          startIcon={<Add style={{ color: Colors.MONEY }} />}
+          onClick={() => setUuid(uuidv4())}
+          size="large"
+          variant="outlined"
+          style={{ borderColor: Colors.MONEY }}
+        >
+          <SimpleText color={Colors.MONEY}>Produto Relacionado</SimpleText>
+        </Button>
+        <SizedBox height={40}></SizedBox>
         <Row>
           <TextField
             label="UUID"
@@ -546,24 +626,19 @@ function NewProduct(): JSX.Element {
       <Preview>
         <Subtitle>Pré-visualização</Subtitle>
         <SizedBox height={20}></SizedBox>
-        <Status enabled={enabled}>
-          {enabled ? "Habilitado" : "Desabilitado"}
-        </Status>
-        <SizedBox height={20}></SizedBox>
+        {!enabled && <Status>Desabilitado</Status>}
         <ProductItem data={getItem()} disabled></ProductItem>
         <SizedBox height={40}></SizedBox>
         <Title>Informações do Produto</Title>
         <SizedBox height={40}></SizedBox>
 
         <MarkdownText>{infoColumn1}</MarkdownText>
-        <SizedBox height={20}></SizedBox>
         <HorizontalLine color="#CCC"></HorizontalLine>
-        <SizedBox height={40}></SizedBox>
+        <SizedBox height={20}></SizedBox>
 
         <MarkdownText>{infoColumn2}</MarkdownText>
-        <SizedBox height={20}></SizedBox>
         <HorizontalLine color="#CCC"></HorizontalLine>
-        <SizedBox height={40}></SizedBox>
+        <SizedBox height={20}></SizedBox>
 
         <MarkdownText>{infoColumn3}</MarkdownText>
         <SizedBox height={20}></SizedBox>
