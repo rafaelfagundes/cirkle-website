@@ -15,10 +15,13 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import useSWR from "swr";
 import { v4 as uuidv4 } from "uuid";
+import HorizontalLine from "../../../../src/components/Atoms/HorizontalLine";
+import MarkdownText from "../../../../src/components/Atoms/MarkdownText";
 import Row from "../../../../src/components/Atoms/Row";
 import SimpleText from "../../../../src/components/Atoms/SimpleText";
 import SizedBox from "../../../../src/components/Atoms/SizedBox";
 import Subtitle from "../../../../src/components/Atoms/Subtitle";
+import Title from "../../../../src/components/Atoms/Title";
 import ProductItem from "../../../../src/components/Molecules/ProductItem";
 import Colors from "../../../../src/enums/Colors";
 import Product from "../../../../src/modules/product/Product";
@@ -548,6 +551,22 @@ function NewProduct(): JSX.Element {
         </Status>
         <SizedBox height={20}></SizedBox>
         <ProductItem data={getItem()} disabled></ProductItem>
+        <SizedBox height={40}></SizedBox>
+        <Title>Informações do Produto</Title>
+        <SizedBox height={40}></SizedBox>
+
+        <MarkdownText>{infoColumn1}</MarkdownText>
+        <SizedBox height={20}></SizedBox>
+        <HorizontalLine color="#CCC"></HorizontalLine>
+        <SizedBox height={40}></SizedBox>
+
+        <MarkdownText>{infoColumn2}</MarkdownText>
+        <SizedBox height={20}></SizedBox>
+        <HorizontalLine color="#CCC"></HorizontalLine>
+        <SizedBox height={40}></SizedBox>
+
+        <MarkdownText>{infoColumn3}</MarkdownText>
+        <SizedBox height={20}></SizedBox>
       </Preview>
     </Page>
   );
