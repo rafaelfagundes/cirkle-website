@@ -17,7 +17,7 @@ export const Image = styled.div<{ image: string }>`
   background-color: #cccccc;
   height: 220px;
   width: 228px;
-  background-position: center;
+  background-position: top center;
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 900000000;

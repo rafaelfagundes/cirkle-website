@@ -124,7 +124,7 @@ function ProductItem({
           </motion.div>
         </AnimatedHeart>
         <span
-          onClick={() => _goToProduct(data.uid)}
+          onClick={disabled ? null : () => _goToProduct(data.uid)}
           style={{ position: "relative" }}
         >
           <SizeContainer>
@@ -137,7 +137,7 @@ function ProductItem({
           <Image image={cloudinaryImage(data.image, 230)}></Image>
         </span>
         <Content>
-          <span onClick={() => _goToProduct(data.uid)}>
+          <span onClick={disabled ? null : () => _goToProduct(data.uid)}>
             <Description>
               <BrandNameText>{data.brand.name}</BrandNameText>
               <Title>{data.title}</Title>

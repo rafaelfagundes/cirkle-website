@@ -5,16 +5,19 @@ import {
   InputAdornment,
   InputLabel,
   MenuItem,
+  Modal,
   Select,
   Switch,
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Add from "@material-ui/icons/AddRounded";
 import RemoveIcon from "@material-ui/icons/DeleteForeverRounded";
+import InfoIcon from "@material-ui/icons/InfoRounded";
 import RefreshIcon from "@material-ui/icons/RefreshRounded";
 import _ from "lodash";
 import _cloneDeep from "lodash/cloneDeep";
 import React, { useState } from "react";
+import slugify from "slugify";
 import styled from "styled-components";
 import useSWR from "swr";
 import { v4 as uuidv4 } from "uuid";
@@ -26,6 +29,7 @@ import SizedBox from "../../../../src/components/Atoms/SizedBox";
 import Subtitle from "../../../../src/components/Atoms/Subtitle";
 import Title from "../../../../src/components/Atoms/Title";
 import ProductItem from "../../../../src/components/Molecules/ProductItem";
+import Brand from "../../../../src/components/Organisms/HotSection/brand";
 import Colors from "../../../../src/enums/Colors";
 import Product from "../../../../src/modules/product/Product";
 
@@ -85,6 +89,29 @@ const ButtonText = styled.span`
   text-transform: none;
 `;
 
+const ModalHolder = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
+const ModalBackground = styled.div`
+  /* background-color: ${Colors.WHITE}; */
+  background-color: #fbeff7;
+  padding: 20px;
+  width: 500px;
+  border-radius: 8px;
+`;
+
+const Color = styled.div<{ hexValue: string }>`
+  width: 100px;
+  height: 100px;
+  background-color: ${(props) =>
+    props.hexValue ? `#${props.hexValue.replace("#", "")}` : "#FFF"};
+  border-radius: 4px;
+`;
+
 function NewProduct(): JSX.Element {
   const [enabled, setEnabled] = useState(false);
   const [uuid, setUuid] = useState(uuidv4());
@@ -109,6 +136,23 @@ function NewProduct(): JSX.Element {
 
   const [pWeight, setPWeight] = useState("0.5");
 
+  // --
+  const [showJson, setShowJson] = useState(false);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [showBrandModal, setShowBrandModal] = useState(false);
+  const [showColorModal, setShowColorModal] = useState(false);
+  const [showSizeModal, setShowSizeModal] = useState(false);
+  const [showRelatedItems, setShowRelatedItems] = useState(false);
+
+  // --
+  const [newBrandName, setNewBrandName] = useState("");
+  const [newBrandImage, setNewBrandImage] = useState("");
+
+  const [newColorName, setNewColorName] = useState("");
+  const [newColorHex, setNewColorHex] = useState("");
+
+  const [newSize, setNewSize] = useState("");
+
   const { data: brands, error: brandsError } = useSWR("/brands", {});
   if (brandsError) console.error(brandsError);
 
@@ -124,22 +168,34 @@ function NewProduct(): JSX.Element {
   );
   if (categoriesError) console.error(categoriesError);
 
-  function getItem() {
-    let brandName = "";
+  function getBrandName() {
     if (brands && brand) {
-      brandName = brands.find((b: any) => b.id === brand).name;
+      const brandName = brands.find((b: any) => b.id === brand).name;
+      return brandName;
+    } else {
+      return "";
     }
+  }
 
-    let productSize = "";
+  function getProductSizeText() {
     if (sizes && size) {
-      productSize = sizes.find((s: any) => s.id === size).value;
+      const productSize = sizes.find((s: any) => s.id === size).value;
+      return productSize;
+    } else {
+      return "";
     }
+  }
+
+  function getItem() {
+    const brandName = getBrandName();
+
+    const productSize = getProductSizeText();
 
     const product: Product = {
       enabled: true,
       id: "",
       description: "",
-      uid: uuid,
+      uid: "",
       image,
       title,
       brand: {
@@ -255,8 +311,215 @@ function NewProduct(): JSX.Element {
     setImages(_images);
   }
 
+  function getFinalImages() {
+    const _images = [];
+
+    images.forEach((image, index) => {
+      _images.push({
+        title: slugify(
+          `${getBrandName()} ${title} ${getProductSizeText()} ${index}`,
+          {
+            lower: true,
+            locale: "pt",
+          }
+        ),
+        href: image,
+      });
+    });
+
+    return _images;
+  }
+
+  function getFinalObject() {
+    return {
+      uuid,
+      title,
+      enabled,
+      image,
+      images: getFinalImages(),
+      category,
+      brand,
+      color,
+      size,
+      price,
+      priceWhenNew,
+      description,
+      infoColumn1,
+      infoColumn2,
+      infoColumn3,
+      qty,
+      pWidth,
+      pHeight,
+      pLength,
+      pWeight,
+      slug: slugify(`${getBrandName()} ${title} ${getProductSizeText()}`, {
+        lower: true,
+        locale: "pt",
+      }),
+      newBrandName,
+      newBrandImage,
+      newColorName,
+      newColorHex,
+      newSize,
+    };
+  }
+
+  const CategoryModal = (
+    <ModalHolder>
+      <ModalBackground>
+        <Title>Adicionar Categoria</Title>
+        <SizedBox height={10}></SizedBox>
+        <HorizontalLine color={Colors.LIGHT_GRAY}></HorizontalLine>
+        <SizedBox height={20}></SizedBox>
+        <Row spaceBetween>
+          <Button disableElevation variant="contained" color="primary">
+            <ButtonText>Adicionar</ButtonText>
+          </Button>
+          <Button
+            disableElevation
+            variant="contained"
+            onClick={() => setShowCategoryModal(false)}
+          >
+            <ButtonText>Cancelar</ButtonText>
+          </Button>
+        </Row>
+      </ModalBackground>
+    </ModalHolder>
+  );
+
+  const BrandModal = (
+    <ModalHolder>
+      <ModalBackground>
+        <Title>Adicionar Marca</Title>
+        <SizedBox height={10}></SizedBox>
+        <HorizontalLine color={Colors.LIGHT_GRAY}></HorizontalLine>
+        <SizedBox height={40}></SizedBox>
+        <TextField
+          label="Nome da Marca"
+          variant="outlined"
+          fullWidth
+          value={newBrandName}
+          onChange={(e) => setNewBrandName(e.currentTarget.value)}
+        />
+        <SizedBox height={20}></SizedBox>
+        <TextField
+          label="URL da Imagem da Marca"
+          variant="outlined"
+          fullWidth
+          value={newBrandImage}
+          onChange={(e) => setNewBrandImage(e.currentTarget.value)}
+        />
+        <SizedBox height={20}></SizedBox>
+        <Brand
+          data={{ id: "", name: newBrandName, image: newBrandImage }}
+          disabled
+        ></Brand>
+        <SizedBox height={20}></SizedBox>
+        <Row spaceBetween>
+          <Button disableElevation variant="contained" color="primary">
+            <ButtonText>Adicionar</ButtonText>
+          </Button>
+          <Button
+            disableElevation
+            variant="contained"
+            onClick={() => setShowBrandModal(false)}
+          >
+            <ButtonText>Cancelar</ButtonText>
+          </Button>
+        </Row>
+      </ModalBackground>
+    </ModalHolder>
+  );
+
+  const ColorModal = (
+    <ModalHolder>
+      <ModalBackground>
+        <Title>Adicionar Cor</Title>
+        <SizedBox height={10}></SizedBox>
+        <HorizontalLine color={Colors.LIGHT_GRAY}></HorizontalLine>
+        <SizedBox height={40}></SizedBox>
+        <TextField
+          label="Nome da Cor"
+          variant="outlined"
+          fullWidth
+          value={newColorName}
+          onChange={(e) => setNewColorName(e.currentTarget.value)}
+        />
+        <SizedBox height={20}></SizedBox>
+        <TextField
+          label="Código Hexadecimal da Cor"
+          variant="outlined"
+          fullWidth
+          value={newColorHex}
+          onChange={(e) => setNewColorHex(e.currentTarget.value)}
+        />
+        <SizedBox height={20}></SizedBox>
+        <Color hexValue={newColorHex}></Color>
+        <SizedBox height={20}></SizedBox>
+        <Row spaceBetween>
+          <Button disableElevation variant="contained" color="primary">
+            <ButtonText>Adicionar</ButtonText>
+          </Button>
+          <Button
+            disableElevation
+            variant="contained"
+            onClick={() => setShowColorModal(false)}
+          >
+            <ButtonText>Cancelar</ButtonText>
+          </Button>
+        </Row>
+      </ModalBackground>
+    </ModalHolder>
+  );
+
+  const SizeModal = (
+    <ModalHolder>
+      <ModalBackground>
+        <Title>Adicionar Tamanho</Title>
+        <SizedBox height={10}></SizedBox>
+        <HorizontalLine color={Colors.LIGHT_GRAY}></HorizontalLine>
+        <SizedBox height={40}></SizedBox>
+        <TextField
+          label="Tamanho"
+          variant="outlined"
+          fullWidth
+          value={newSize}
+          onChange={(e) => setNewSize(e.currentTarget.value)}
+        />
+        <SizedBox height={20}></SizedBox>
+        <Row spaceBetween>
+          <Button disableElevation variant="contained" color="primary">
+            <ButtonText>Adicionar</ButtonText>
+          </Button>
+          <Button
+            disableElevation
+            variant="contained"
+            onClick={() => setShowSizeModal(false)}
+          >
+            <ButtonText>Cancelar</ButtonText>
+          </Button>
+        </Row>
+      </ModalBackground>
+    </ModalHolder>
+  );
+
   return (
     <Page>
+      <Modal
+        open={showCategoryModal}
+        onClose={() => setShowCategoryModal(false)}
+      >
+        {CategoryModal}
+      </Modal>
+      <Modal open={showBrandModal} onClose={() => setShowBrandModal(false)}>
+        {BrandModal}
+      </Modal>
+      <Modal open={showColorModal} onClose={() => setShowColorModal(false)}>
+        {ColorModal}
+      </Modal>
+      <Modal open={showSizeModal} onClose={() => setShowSizeModal(false)}>
+        {SizeModal}
+      </Modal>
       <Data>
         <SizedBox height={10}></SizedBox>
         <Row spaceBetween>
@@ -354,7 +617,11 @@ function NewProduct(): JSX.Element {
             }}
           />
           <SizedBox width={20}></SizedBox>
-          <SimpleText>* Valor do produto novo</SimpleText>
+          <Row>
+            <InfoIcon style={{ color: Colors.BLUE_JEANS }}></InfoIcon>
+            <SizedBox width={5}></SizedBox>
+            <SimpleText>Valor do produto novo</SimpleText>
+          </Row>
         </Row>
         <SizedBox height={40}></SizedBox>
         {categories && (
@@ -375,7 +642,7 @@ function NewProduct(): JSX.Element {
             <Button
               disableElevation
               startIcon={<Add />}
-              onClick={() => setUuid(uuidv4())}
+              onClick={() => setShowCategoryModal(true)}
             >
               <ButtonText>Adicionar Categoria</ButtonText>
             </Button>
@@ -407,7 +674,7 @@ function NewProduct(): JSX.Element {
             <Button
               disableElevation
               startIcon={<Add />}
-              onClick={() => setUuid(uuidv4())}
+              onClick={() => setShowBrandModal(true)}
             >
               <ButtonText>Adicionar Marca</ButtonText>
             </Button>
@@ -439,7 +706,7 @@ function NewProduct(): JSX.Element {
             <Button
               disableElevation
               startIcon={<Add />}
-              onClick={() => setUuid(uuidv4())}
+              onClick={() => setShowColorModal(true)}
             >
               <ButtonText>Adicionar Cor</ButtonText>
             </Button>
@@ -464,7 +731,7 @@ function NewProduct(): JSX.Element {
             <Button
               disableElevation
               startIcon={<Add />}
-              onClick={() => setUuid(uuidv4())}
+              onClick={() => setShowSizeModal(true)}
             >
               <ButtonText>Adicionar Tamanho</ButtonText>
             </Button>
@@ -621,6 +888,33 @@ function NewProduct(): JSX.Element {
         >
           <ButtonText>Salvar</ButtonText>
         </Button>
+        <SizedBox height={40}></SizedBox>
+        <HorizontalLine color="#CCC"></HorizontalLine>
+        <SizedBox height={20}></SizedBox>
+        <Button
+          disableElevation
+          variant="contained"
+          onClick={() => setShowJson(!showJson)}
+        >
+          <ButtonText>
+            {showJson ? "Esconder dados em JSON" : "Mostrar dados em JSON"}
+          </ButtonText>
+        </Button>
+
+        {showJson && (
+          <div style={{ width: 700 }}>
+            <pre
+              style={{
+                maxWidth: 700,
+                wordWrap: "break-word",
+                whiteSpace: "pre-wrap",
+              }}
+            >
+              {JSON.stringify(getFinalObject(), null, 2)}
+            </pre>
+          </div>
+        )}
+
         <SizedBox height={60}></SizedBox>
       </Data>
       <Preview>

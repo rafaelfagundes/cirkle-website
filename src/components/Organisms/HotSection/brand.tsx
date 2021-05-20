@@ -33,6 +33,7 @@ const BrandImage = styled.div<{ image: string; width: number }>`
 function Brand({
   data,
   noMargin = false,
+  disabled = false,
 }: {
   data: {
     id: string;
@@ -40,6 +41,7 @@ function Brand({
     image: string;
   };
   noMargin?: boolean;
+  disabled?: boolean;
 }): JSX.Element {
   function calcHighlightItemWidth(): number {
     const width = window.innerWidth;
@@ -66,13 +68,16 @@ function Brand({
 
   return (
     <span
-      onClick={() =>
-        router.push({
-          pathname: "/pesquisa",
-          query: {
-            brands: data.name,
-          },
-        })
+      onClick={
+        disabled
+          ? null
+          : () =>
+              router.push({
+                pathname: "/pesquisa",
+                query: {
+                  brands: data.name,
+                },
+              })
       }
     >
       <StyledBrand width={widthHighlightItem} key={data.id} noMargin={noMargin}>
