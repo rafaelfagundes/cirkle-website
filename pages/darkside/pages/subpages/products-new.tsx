@@ -10,12 +10,15 @@ import {
   Switch,
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
+import { DataGrid } from "@material-ui/data-grid";
 import Add from "@material-ui/icons/AddRounded";
 import RemoveIcon from "@material-ui/icons/DeleteForeverRounded";
+import Edit from "@material-ui/icons/EditRounded";
 import InfoIcon from "@material-ui/icons/InfoRounded";
 import RefreshIcon from "@material-ui/icons/RefreshRounded";
 import _ from "lodash";
 import _cloneDeep from "lodash/cloneDeep";
+import _orderBy from "lodash/orderBy";
 import React, { useState } from "react";
 import slugify from "slugify";
 import styled from "styled-components";
@@ -60,6 +63,16 @@ const BrandImage = styled.div<{ image?: string }>`
   background-size: contain;
 `;
 
+const ProductImage = styled.div<{ image?: string }>`
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  background-image: ${(props) => `url("${props.image}");`};
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+`;
+
 const ProductColor = styled.div<{ color?: string }>`
   width: 56px;
   height: 56px;
@@ -96,11 +109,11 @@ const ModalHolder = styled.div`
   height: 100vh;
 `;
 
-const ModalBackground = styled.div`
+const ModalBackground = styled.div<{ size?: number }>`
   /* background-color: ${Colors.WHITE}; */
   background-color: #fbeff7;
   padding: 20px;
-  width: 500px;
+  width: ${(props) => (props.size ? props.size : 500)}px;
   border-radius: 8px;
 `;
 
@@ -136,6 +149,8 @@ function NewProduct(): JSX.Element {
 
   const [pWeight, setPWeight] = useState("0.5");
 
+  const [relatedItems, setRelatedItems] = useState([]);
+
   // --
   const [showJson, setShowJson] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
@@ -167,6 +182,12 @@ function NewProduct(): JSX.Element {
     {}
   );
   if (categoriesError) console.error(categoriesError);
+
+  const { data: products, error: productsError } = useSWR(
+    "/all-products-simplified",
+    {}
+  );
+  if (productsError) console.error(productsError);
 
   function getBrandName() {
     if (brands && brand) {
@@ -361,6 +382,7 @@ function NewProduct(): JSX.Element {
       newColorName,
       newColorHex,
       newSize,
+      relatedItems,
     };
   }
 
@@ -503,6 +525,85 @@ function NewProduct(): JSX.Element {
     </ModalHolder>
   );
 
+  const relatedItemsColumns = [
+    { field: "id", headerName: "ID", width: 70 },
+    {
+      field: "image",
+      headerName: "Foto",
+      width: 90,
+      renderCell: function getImage(params: any) {
+        return <ProductImage image={params.value}></ProductImage>;
+      },
+    },
+    { field: "brand", headerName: "Marca", width: 150 },
+    { field: "title", headerName: "Título", width: 250 },
+    { field: "qty", headerName: "Qtd", width: 80, type: "number" },
+    { field: "enabled", headerName: "Ativo", width: 90, type: "boolean" },
+  ];
+
+  function getRelatedItems() {
+    if (products) {
+      const items = products.map((p: any) => ({
+        id: p.id,
+        enabled: p.enabled,
+        qty: p.qty,
+        image: p.image,
+        brand: p.brand,
+        title: p.title,
+      }));
+
+      return _orderBy(items, ["brand", "title"], ["asc"]);
+    } else {
+      return [];
+    }
+  }
+
+  const RelatedItemsModal = (
+    <ModalHolder>
+      <ModalBackground size={850}>
+        <Title>Adicionar Produtos Relacionados</Title>
+        <SizedBox height={10}></SizedBox>
+        <HorizontalLine color={Colors.LIGHT_GRAY}></HorizontalLine>
+        <SizedBox height={20}></SizedBox>
+        {/* <pre>{JSON.stringify(products, null, 2)}</pre> */}
+        <div style={{ height: 530 }}>
+          <DataGrid
+            rows={getRelatedItems()}
+            columns={relatedItemsColumns}
+            pageSize={8}
+            checkboxSelection
+            selectionModel={relatedItems}
+            onSelectionModelChange={(newSelection) => {
+              setRelatedItems(newSelection.selectionModel);
+            }}
+          />
+        </div>
+        <SizedBox height={40}></SizedBox>
+
+        <Row spaceBetween>
+          <Button
+            disableElevation
+            variant="contained"
+            color="primary"
+            onClick={() => setShowRelatedItems(false)}
+          >
+            <ButtonText>Adicionar</ButtonText>
+          </Button>
+          <Button
+            disableElevation
+            variant="contained"
+            onClick={() => {
+              setRelatedItems([]);
+              setShowRelatedItems(false);
+            }}
+          >
+            <ButtonText>Cancelar</ButtonText>
+          </Button>
+        </Row>
+      </ModalBackground>
+    </ModalHolder>
+  );
+
   return (
     <Page>
       <Modal
@@ -519,6 +620,9 @@ function NewProduct(): JSX.Element {
       </Modal>
       <Modal open={showSizeModal} onClose={() => setShowSizeModal(false)}>
         {SizeModal}
+      </Modal>
+      <Modal open={showRelatedItems} onClose={() => setShowRelatedItems(false)}>
+        {RelatedItemsModal}
       </Modal>
       <Data>
         <SizedBox height={10}></SizedBox>
@@ -851,16 +955,23 @@ function NewProduct(): JSX.Element {
         <SizedBox height={40}></SizedBox>
         <Subtitle>Produtos Relacionados</Subtitle>
         <SizedBox height={20}></SizedBox>
-        <Button
-          disableElevation
-          startIcon={<Add style={{ color: Colors.MONEY }} />}
-          onClick={() => setUuid(uuidv4())}
-          size="large"
-          variant="outlined"
-          style={{ borderColor: Colors.MONEY }}
-        >
-          <SimpleText color={Colors.MONEY}>Produto Relacionado</SimpleText>
-        </Button>
+        <Row>
+          {relatedItems.length > 0 ? (
+            <>
+              <SimpleText
+                color={Colors.BLUE_JEANS}
+              >{`${relatedItems.length} selecionado(s)`}</SimpleText>
+              <SizedBox width={20}></SizedBox>
+            </>
+          ) : null}
+          <Button
+            disableElevation
+            startIcon={<Edit />}
+            onClick={() => setShowRelatedItems(true)}
+          >
+            <ButtonText>Selecionar Produtos...</ButtonText>
+          </Button>
+        </Row>
         <SizedBox height={40}></SizedBox>
         <Row>
           <TextField
