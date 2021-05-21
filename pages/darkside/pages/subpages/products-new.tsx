@@ -1,11 +1,13 @@
 import {
   Button,
+  CircularProgress,
   FormControl,
   IconButton,
   InputAdornment,
   InputLabel,
   MenuItem,
   Modal,
+  Radio,
   Select,
   Switch,
 } from "@material-ui/core";
@@ -16,7 +18,8 @@ import RemoveIcon from "@material-ui/icons/DeleteForeverRounded";
 import Edit from "@material-ui/icons/EditRounded";
 import InfoIcon from "@material-ui/icons/InfoRounded";
 import RefreshIcon from "@material-ui/icons/RefreshRounded";
-import _ from "lodash";
+import Minus from "@material-ui/icons/RemoveRounded";
+import Axios from "axios";
 import _cloneDeep from "lodash/cloneDeep";
 import _orderBy from "lodash/orderBy";
 import React, { useState } from "react";
@@ -131,7 +134,11 @@ function NewProduct(): JSX.Element {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [images, setImages] = useState([]);
+
+  const [rootCategory, setRootCategory] = useState(1);
+  const [subCategory, setSubCategory] = useState(null);
   const [category, setCategory] = useState(null);
+
   const [brand, setBrand] = useState(null);
   const [color, setColor] = useState(null);
   const [size, setSize] = useState(null);
@@ -151,13 +158,14 @@ function NewProduct(): JSX.Element {
 
   const [relatedItems, setRelatedItems] = useState([]);
 
-  // --
+  // -- Toggles
   const [showJson, setShowJson] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showBrandModal, setShowBrandModal] = useState(false);
   const [showColorModal, setShowColorModal] = useState(false);
   const [showSizeModal, setShowSizeModal] = useState(false);
   const [showRelatedItems, setShowRelatedItems] = useState(false);
+  const [toggleNewCategory, setToggleNewCategory] = useState(false);
 
   // --
   const [newBrandName, setNewBrandName] = useState("");
@@ -168,20 +176,41 @@ function NewProduct(): JSX.Element {
 
   const [newSize, setNewSize] = useState("");
 
-  const { data: brands, error: brandsError } = useSWR("/brands", {});
+  const [newCategory, setNewCategory] = useState("");
+  const [newSubCategory, setNewSubCategory] = useState("");
+
+  // -- Loadings
+  const [loadingBrand, setLoadingBrand] = useState(false);
+  const [loadingColor, setLoadingColor] = useState(false);
+  const [loadingSize, setLoadingSize] = useState(false);
+
+  const { data: brands, error: brandsError } = useSWR("/brands", {
+    refreshInterval: 500,
+  });
   if (brandsError) console.error(brandsError);
 
-  const { data: colors, error: colorsError } = useSWR("/colors", {});
+  const { data: colors, error: colorsError } = useSWR("/colors", {
+    refreshInterval: 500,
+  });
   if (colorsError) console.error(colorsError);
 
-  const { data: sizes, error: sizesError } = useSWR("/sizes", {});
+  const { data: sizes, error: sizesError } = useSWR("/sizes", {
+    refreshInterval: 500,
+  });
   if (sizesError) console.error(sizesError);
 
-  const { data: categories, error: categoriesError } = useSWR(
-    "/sub-categories",
-    {}
-  );
+  const { data: categories, error: categoriesError } = useSWR("/categories", {
+    refreshInterval: 500,
+  });
   if (categoriesError) console.error(categoriesError);
+
+  const { data: subCategories, error: subCategoriesError } = useSWR(
+    "/sub-categories",
+    {
+      refreshInterval: 500,
+    }
+  );
+  if (subCategoriesError) console.error(subCategoriesError);
 
   const { data: products, error: productsError } = useSWR(
     "/all-products-simplified",
@@ -191,8 +220,11 @@ function NewProduct(): JSX.Element {
 
   function getBrandName() {
     if (brands && brand) {
-      const brandName = brands.find((b: any) => b.id === brand).name;
-      return brandName;
+      const brandName = brands.find((b: any) => b.id === brand);
+
+      if (brandName) {
+        return brandName.name;
+      } else return "";
     } else {
       return "";
     }
@@ -200,8 +232,13 @@ function NewProduct(): JSX.Element {
 
   function getProductSizeText() {
     if (sizes && size) {
-      const productSize = sizes.find((s: any) => s.id === size).value;
-      return productSize;
+      const productSize = sizes.find((s: any) => s.id === size);
+
+      if (productSize) {
+        return productSize.value;
+      } else {
+        return "";
+      }
     } else {
       return "";
     }
@@ -245,7 +282,8 @@ function NewProduct(): JSX.Element {
   }
 
   function getBrands() {
-    return brands.map((b: any) => (
+    const _brands = _orderBy(brands, ["name"]);
+    return _brands.map((b: any) => (
       <MenuItem key={b.name} value={b.id}>
         {b.name}
       </MenuItem>
@@ -254,14 +292,19 @@ function NewProduct(): JSX.Element {
 
   function getBrandImage() {
     if (brands && brand) {
-      const brandImage = brands.find((b: any) => b.id === brand).image;
-      return brandImage;
+      const brandImage = brands.find((b: any) => b.id === brand);
+
+      if (brandImage) {
+        return brandImage.image;
+      } else return "";
     }
     return "";
   }
 
   function getColors() {
-    return colors.map((c: any) => (
+    const _colors = _orderBy(colors, ["name"]);
+
+    return _colors.map((c: any) => (
       <MenuItem key={c.name} value={c.id}>
         {c.name}
       </MenuItem>
@@ -270,26 +313,55 @@ function NewProduct(): JSX.Element {
 
   function getSelectedColor() {
     if (colors && color) {
-      const colorImage = colors.find((c: any) => c.id === color).hexColor;
-      return colorImage;
+      const colorImage = colors.find((c: any) => c.id === color);
+
+      if (colorImage) {
+        return colorImage.hexColor;
+      } else {
+        return "";
+      }
     }
     return "";
   }
 
   function getSizes() {
-    return sizes.map((s: any) => (
+    const _sizes = _orderBy(sizes, ["value"]);
+
+    return _sizes.map((s: any) => (
       <MenuItem key={s.value} value={s.id}>
         {s.value}
       </MenuItem>
     ));
   }
 
-  function getCategories() {
+  function getCategories(rCategory: number) {
     if (categories) {
       const _categories = [];
-
       categories.forEach((c: any) => {
-        _categories.push({
+        if (Number(c.rootCategory.id) === Number(rCategory)) {
+          _categories.push({
+            value: c.id,
+            text: c.title,
+          });
+        }
+      });
+
+      const _sortedCategories = _orderBy(_categories, ["text"]);
+      return _sortedCategories.map((c) => (
+        <MenuItem key={c.text} value={c.value}>
+          {c.text}
+        </MenuItem>
+      ));
+    }
+    return null;
+  }
+
+  function getSubCategories() {
+    if (subCategories) {
+      const _subCategories = [];
+
+      subCategories.forEach((c: any) => {
+        _subCategories.push({
           value: c.id,
           text: `${c.category?.rootCategory === 1 ? "Mulher" : "Kids"} > ${
             c.category?.title
@@ -297,7 +369,7 @@ function NewProduct(): JSX.Element {
         });
       });
 
-      const _sortedCategories = _.orderBy(_categories, ["text"]);
+      const _sortedCategories = _orderBy(_subCategories, ["text"]);
 
       return _sortedCategories.map((c) => (
         <MenuItem key={c.text} value={c.value}>
@@ -358,7 +430,9 @@ function NewProduct(): JSX.Element {
       enabled,
       image,
       images: getFinalImages(),
+      rootCategory,
       category,
+      subCategory,
       brand,
       color,
       size,
@@ -393,6 +467,74 @@ function NewProduct(): JSX.Element {
         <SizedBox height={10}></SizedBox>
         <HorizontalLine color={Colors.LIGHT_GRAY}></HorizontalLine>
         <SizedBox height={20}></SizedBox>
+        <Row>
+          <Row>
+            <Radio
+              checked={rootCategory === 1}
+              onChange={() => {
+                setRootCategory(1);
+              }}
+              value={1}
+            ></Radio>
+            <SimpleText>Mulher</SimpleText>
+          </Row>
+          <Row>
+            <Radio
+              checked={rootCategory === 2}
+              onChange={() => {
+                setRootCategory(2);
+              }}
+              value={2}
+            ></Radio>
+            <SimpleText>Kids</SimpleText>
+          </Row>
+        </Row>
+        <SizedBox height={20}></SizedBox>
+
+        {!toggleNewCategory && (
+          <FormControl variant="outlined" style={{ width: 460 }}>
+            <InputLabel id="select-outlined-label">Categoria</InputLabel>
+            <Select
+              labelId="select-outlined-label"
+              id="select-outlined"
+              value={category}
+              onChange={(e) => setCategory(e.target?.value)}
+              label="Categoria"
+            >
+              {getCategories(rootCategory)}
+            </Select>
+          </FormControl>
+        )}
+        <Button
+          disableElevation
+          startIcon={toggleNewCategory ? <Minus /> : <Add />}
+          onClick={() => setToggleNewCategory(!toggleNewCategory)}
+        >
+          <ButtonText>
+            {toggleNewCategory ? "Selecionar Categoria" : "Nova Categoria"}
+          </ButtonText>
+        </Button>
+        <SizedBox height={20}></SizedBox>
+        {toggleNewCategory && (
+          <>
+            <TextField
+              label="Nova Categoria"
+              variant="outlined"
+              fullWidth
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.currentTarget.value)}
+            />
+            <SizedBox height={20}></SizedBox>
+          </>
+        )}
+        <TextField
+          label="Nova SubCategoria"
+          variant="outlined"
+          fullWidth
+          value={newSubCategory}
+          onChange={(e) => setNewSubCategory(e.currentTarget.value)}
+        />
+        <SizedBox height={40}></SizedBox>
         <Row spaceBetween>
           <Button disableElevation variant="contained" color="primary">
             <ButtonText>Adicionar</ButtonText>
@@ -408,6 +550,24 @@ function NewProduct(): JSX.Element {
       </ModalBackground>
     </ModalHolder>
   );
+
+  async function addBrand() {
+    setLoadingBrand(true);
+    try {
+      const response = await Axios.post("/brands", {
+        name: newBrandName,
+        image: newBrandImage,
+      });
+      setBrand(response.data.id);
+      setLoadingBrand(false);
+      setNewBrandImage("");
+      setNewBrandName("");
+      setShowBrandModal(false);
+    } catch (error) {
+      setLoadingBrand(false);
+      console.error(error);
+    }
+  }
 
   const BrandModal = (
     <ModalHolder>
@@ -436,11 +596,24 @@ function NewProduct(): JSX.Element {
           data={{ id: "", name: newBrandName, image: newBrandImage }}
           disabled
         ></Brand>
-        <SizedBox height={20}></SizedBox>
+        <SizedBox height={40}></SizedBox>
         <Row spaceBetween>
-          <Button disableElevation variant="contained" color="primary">
-            <ButtonText>Adicionar</ButtonText>
-          </Button>
+          <Row>
+            <Button
+              disableElevation
+              variant="contained"
+              color="primary"
+              onClick={addBrand}
+            >
+              <ButtonText>Adicionar</ButtonText>
+            </Button>
+            {loadingBrand && (
+              <>
+                <SizedBox width={10}></SizedBox>
+                <CircularProgress size={24}></CircularProgress>
+              </>
+            )}
+          </Row>
           <Button
             disableElevation
             variant="contained"
@@ -452,6 +625,24 @@ function NewProduct(): JSX.Element {
       </ModalBackground>
     </ModalHolder>
   );
+
+  async function addColor() {
+    setLoadingColor(true);
+    try {
+      const response = await Axios.post("/colors", {
+        name: newColorName,
+        hexColor: "#" + newColorHex.replace("#", ""),
+      });
+      setColor(response.data.id);
+      setLoadingColor(false);
+      setNewColorHex("");
+      setNewColorName("");
+      setShowColorModal(false);
+    } catch (error) {
+      setLoadingColor(false);
+      console.error(error);
+    }
+  }
 
   const ColorModal = (
     <ModalHolder>
@@ -477,11 +668,24 @@ function NewProduct(): JSX.Element {
         />
         <SizedBox height={20}></SizedBox>
         <Color hexValue={newColorHex}></Color>
-        <SizedBox height={20}></SizedBox>
+        <SizedBox height={40}></SizedBox>
         <Row spaceBetween>
-          <Button disableElevation variant="contained" color="primary">
-            <ButtonText>Adicionar</ButtonText>
-          </Button>
+          <Row>
+            <Button
+              disableElevation
+              variant="contained"
+              color="primary"
+              onClick={addColor}
+            >
+              <ButtonText>Adicionar</ButtonText>
+            </Button>
+            {loadingColor && (
+              <>
+                <SizedBox width={10}></SizedBox>
+                <CircularProgress size={24}></CircularProgress>
+              </>
+            )}
+          </Row>
           <Button
             disableElevation
             variant="contained"
@@ -493,6 +697,22 @@ function NewProduct(): JSX.Element {
       </ModalBackground>
     </ModalHolder>
   );
+
+  async function addSize() {
+    setLoadingSize(true);
+    try {
+      const response = await Axios.post("/sizes", {
+        value: newSize,
+      });
+      setSize(response.data.id);
+      setLoadingSize(false);
+      setNewSize("");
+      setShowSizeModal(false);
+    } catch (error) {
+      setLoadingSize(false);
+      console.error(error);
+    }
+  }
 
   const SizeModal = (
     <ModalHolder>
@@ -508,11 +728,24 @@ function NewProduct(): JSX.Element {
           value={newSize}
           onChange={(e) => setNewSize(e.currentTarget.value)}
         />
-        <SizedBox height={20}></SizedBox>
+        <SizedBox height={40}></SizedBox>
         <Row spaceBetween>
-          <Button disableElevation variant="contained" color="primary">
-            <ButtonText>Adicionar</ButtonText>
-          </Button>
+          <Row>
+            <Button
+              disableElevation
+              variant="contained"
+              color="primary"
+              onClick={addSize}
+            >
+              <ButtonText>Adicionar</ButtonText>
+            </Button>
+            {loadingSize && (
+              <>
+                <SizedBox width={10}></SizedBox>
+                <CircularProgress size={24}></CircularProgress>
+              </>
+            )}
+          </Row>
           <Button
             disableElevation
             variant="contained"
@@ -735,11 +968,11 @@ function NewProduct(): JSX.Element {
               <Select
                 labelId="select-outlined-label"
                 id="select-outlined"
-                value={category}
-                onChange={(e) => setCategory(e.target?.value)}
+                value={subCategory}
+                onChange={(e) => setSubCategory(e.target?.value)}
                 label="Categoria"
               >
-                {getCategories()}
+                {getSubCategories()}
               </Select>
             </FormControl>
             <SizedBox width={20}></SizedBox>
