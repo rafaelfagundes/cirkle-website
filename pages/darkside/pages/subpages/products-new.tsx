@@ -136,12 +136,12 @@ function NewProduct(): JSX.Element {
   const [images, setImages] = useState([]);
 
   const [rootCategory, setRootCategory] = useState(1);
-  const [subCategory, setSubCategory] = useState(null);
-  const [category, setCategory] = useState(null);
+  const [subCategory, setSubCategory] = useState("");
+  const [category, setCategory] = useState("");
 
-  const [brand, setBrand] = useState(null);
-  const [color, setColor] = useState(null);
-  const [size, setSize] = useState(null);
+  const [brand, setBrand] = useState("");
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
   const [price, setPrice] = useState("100");
   const [priceWhenNew, setPriceWhenNew] = useState("500");
   const [description, setDescription] = useState("");
@@ -183,6 +183,8 @@ function NewProduct(): JSX.Element {
   const [loadingBrand, setLoadingBrand] = useState(false);
   const [loadingColor, setLoadingColor] = useState(false);
   const [loadingSize, setLoadingSize] = useState(false);
+  const [loadingCategory, setLoadingCategory] = useState(false);
+  const [loadingSave, setLoadingSave] = useState(false);
 
   const { data: brands, error: brandsError } = useSWR("/brands", {
     refreshInterval: 500,
@@ -416,7 +418,7 @@ function NewProduct(): JSX.Element {
             locale: "pt",
           }
         ),
-        href: image,
+        url: image,
       });
     });
 
@@ -429,7 +431,7 @@ function NewProduct(): JSX.Element {
       title,
       enabled,
       image,
-      images: getFinalImages(),
+      moreImages: getFinalImages(),
       rootCategory,
       category,
       subCategory,
@@ -460,10 +462,53 @@ function NewProduct(): JSX.Element {
     };
   }
 
+  async function saveProduct() {
+    setLoadingSave(true);
+    const _product = getFinalObject();
+
+    try {
+      const response = await Axios.post("/products", _product);
+      console.log(`response`, response);
+      setLoadingSave(false);
+    } catch (error) {
+      console.error(error);
+      setLoadingSave(false);
+    }
+  }
+
+  async function addCategory() {
+    const _newCategory = {
+      category: toggleNewCategory ? null : category,
+      newCategory: toggleNewCategory ? newCategory : null,
+      subCategory: newSubCategory,
+      rootCategory,
+    };
+
+    console.log(`_newCategory`, _newCategory);
+
+    setLoadingCategory(true);
+    try {
+      const response = await Axios.post("/sub-categories", _newCategory);
+      console.log(`response.data`, response.data);
+      setSubCategory(response.data.id);
+      setToggleNewCategory(false);
+      setLoadingCategory(false);
+
+      setNewSubCategory("");
+      setNewCategory("");
+      setCategory(null);
+      setRootCategory(1);
+      setShowCategoryModal(false);
+    } catch (error) {
+      setLoadingCategory(false);
+      console.error(error);
+    }
+  }
+
   const CategoryModal = (
     <ModalHolder>
       <ModalBackground>
-        <Title>Adicionar Categoria</Title>
+        <Title>Adicionar Categoria/Subcategoria</Title>
         <SizedBox height={10}></SizedBox>
         <HorizontalLine color={Colors.LIGHT_GRAY}></HorizontalLine>
         <SizedBox height={20}></SizedBox>
@@ -536,9 +581,22 @@ function NewProduct(): JSX.Element {
         />
         <SizedBox height={40}></SizedBox>
         <Row spaceBetween>
-          <Button disableElevation variant="contained" color="primary">
-            <ButtonText>Adicionar</ButtonText>
-          </Button>
+          <Row>
+            <Button
+              disableElevation
+              variant="contained"
+              color="primary"
+              onClick={addCategory}
+            >
+              <ButtonText>Adicionar</ButtonText>
+            </Button>
+            {loadingCategory && (
+              <>
+                <SizedBox width={10}></SizedBox>
+                <CircularProgress size={24}></CircularProgress>
+              </>
+            )}
+          </Row>
           <Button
             disableElevation
             variant="contained"
@@ -1224,14 +1282,19 @@ function NewProduct(): JSX.Element {
           </Button>
         </Row>
         <SizedBox height={40}></SizedBox>
-        <Button
-          disableElevation
-          variant="contained"
-          size="large"
-          color="primary"
-        >
-          <ButtonText>Salvar</ButtonText>
-        </Button>
+        <Row>
+          <Button
+            disableElevation
+            variant="contained"
+            size="large"
+            color="primary"
+            onClick={saveProduct}
+          >
+            <ButtonText>Salvar</ButtonText>
+          </Button>
+          <SizedBox width={20}></SizedBox>
+          {loadingSave && <CircularProgress size={36}></CircularProgress>}
+        </Row>
         <SizedBox height={40}></SizedBox>
         <HorizontalLine color="#CCC"></HorizontalLine>
         <SizedBox height={20}></SizedBox>
