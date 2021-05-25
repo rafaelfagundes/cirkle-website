@@ -53,7 +53,9 @@ function Products(): JSX.Element {
       <HorizontalLine color={Colors.LIGHT_GRAY}></HorizontalLine>
       <SizedBox height={20}></SizedBox>
       <Content>
-        {currentPage === "NewProduct" && <NewProduct></NewProduct>}
+        {currentPage === "NewProduct" && (
+          <NewProduct setCurrentPage={setCurrentPage}></NewProduct>
+        )}
         {currentPage === "List" && <ProductsList></ProductsList>}
       </Content>
     </Page>
