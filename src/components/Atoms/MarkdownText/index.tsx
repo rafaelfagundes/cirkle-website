@@ -8,6 +8,7 @@ const StyledMarkdownText = styled.div`
     Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 
   color: ${Colors.PRIMARY};
+  width: 100%;
 
   & > p {
     font-size: 14px;

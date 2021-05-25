@@ -128,7 +128,11 @@ const Color = styled.div<{ hexValue: string }>`
   border-radius: 4px;
 `;
 
-function NewProduct(): JSX.Element {
+interface Props {
+  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function NewProduct(props: Props): JSX.Element {
   const [enabled, setEnabled] = useState(false);
   const [uuid, setUuid] = useState(uuidv4());
   const [title, setTitle] = useState("");
@@ -185,6 +189,9 @@ function NewProduct(): JSX.Element {
   const [loadingSize, setLoadingSize] = useState(false);
   const [loadingCategory, setLoadingCategory] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
+
+  // -- Error
+  const [error, setError] = useState("");
 
   const { data: brands, error: brandsError } = useSWR("/brands", {
     refreshInterval: 500,
@@ -470,9 +477,11 @@ function NewProduct(): JSX.Element {
       const response = await Axios.post("/products", _product);
       console.log(`response`, response);
       setLoadingSave(false);
+      props.setCurrentPage("List");
     } catch (error) {
       console.error(error);
       setLoadingSave(false);
+      setError(error);
     }
   }
 
@@ -1296,6 +1305,23 @@ function NewProduct(): JSX.Element {
           {loadingSave && <CircularProgress size={36}></CircularProgress>}
         </Row>
         <SizedBox height={40}></SizedBox>
+        {error && (
+          <>
+            <div style={{ width: 700 }}>
+              <pre
+                style={{
+                  maxWidth: 700,
+                  wordWrap: "break-word",
+                  whiteSpace: "pre-wrap",
+                  color: Colors.ERROR,
+                }}
+              >
+                {JSON.stringify(error, null, 2)}
+              </pre>
+            </div>
+            <SizedBox height={40}></SizedBox>
+          </>
+        )}
         <HorizontalLine color="#CCC"></HorizontalLine>
         <SizedBox height={20}></SizedBox>
         <Button

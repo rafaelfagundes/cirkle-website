@@ -519,47 +519,78 @@ function ProductPage({
                       <Title>Informações do Produto</Title>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <div style={{ opacity: 0.8 }}>
-                        <Grid container spacing={isSmartPhone ? 0 : 4}>
+                      <div
+                        style={{
+                          opacity: 0.8,
+                          display: "flex",
+                          flexDirection: "row",
+                          flexWrap: "wrap",
+                          width: "100%",
+                        }}
+                      >
+                        <div
+                          style={{ flex: 1, paddingRight: 30, minWidth: "33%" }}
+                        >
+                          {product?.infoColumn1 && (
+                            <MarkdownText>{product.infoColumn1}</MarkdownText>
+                          )}
+                        </div>
+                        <div
+                          style={{ flex: 1, paddingRight: 30, minWidth: "33%" }}
+                        >
+                          {product?.infoColumn2 && (
+                            <MarkdownText>{product.infoColumn2}</MarkdownText>
+                          )}
+                        </div>
+                        <div
+                          style={{ flex: 1, paddingRight: 30, minWidth: "33%" }}
+                        >
+                          {product?.infoColumn3 && (
+                            <MarkdownText>{product.infoColumn3}</MarkdownText>
+                          )}
+                        </div>
+                        {/* <Grid container spacing={isSmartPhone ? 0 : 4}>
                           <>
-                            {product.infoColumn1 && (
-                              <Grid item xs={12} md={4} sm={4}>
-                                <Padding
-                                  horizontal={isSmartPhone ? 16 : 0}
-                                  vertical={0}
-                                >
+                            <Grid item xs={12} md={4} sm={4}>
+                              <Padding
+                                horizontal={isSmartPhone ? 16 : 0}
+                                vertical={0}
+                              >
+                                {product?.infoColumn1 && (
                                   <MarkdownText>
                                     {product.infoColumn1}
                                   </MarkdownText>
-                                </Padding>
-                              </Grid>
-                            )}
-                            {product.infoColumn2 && (
-                              <Grid item xs={12} md={4} sm={4}>
-                                <Padding
-                                  horizontal={isSmartPhone ? 16 : 0}
-                                  vertical={0}
-                                >
+                                )}
+                              </Padding>
+                            </Grid>
+
+                            <Grid item xs={12} md={4} sm={4}>
+                              <Padding
+                                horizontal={isSmartPhone ? 16 : 0}
+                                vertical={0}
+                              >
+                                {product?.infoColumn2 && (
                                   <MarkdownText>
                                     {product.infoColumn2}
                                   </MarkdownText>
-                                </Padding>
-                              </Grid>
-                            )}
-                            {product.infoColumn3 && (
-                              <Grid item xs={12} md={4} sm={4}>
-                                <Padding
-                                  horizontal={isSmartPhone ? 16 : 0}
-                                  vertical={0}
-                                >
+                                )}
+                              </Padding>
+                            </Grid>
+
+                            <Grid item xs={12} md={4} sm={4}>
+                              <Padding
+                                horizontal={isSmartPhone ? 16 : 0}
+                                vertical={0}
+                              >
+                                {product?.infoColumn3 && (
                                   <MarkdownText>
                                     {product.infoColumn3}
                                   </MarkdownText>
-                                </Padding>
-                              </Grid>
-                            )}
+                                )}
+                              </Padding>
+                            </Grid>
                           </>
-                        </Grid>
+                        </Grid> */}
                       </div>
                     </AccordionDetails>
                   </Accordion>
