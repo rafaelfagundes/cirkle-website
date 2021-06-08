@@ -22,7 +22,7 @@ import Minus from "@material-ui/icons/RemoveRounded";
 import Axios from "axios";
 import _cloneDeep from "lodash/cloneDeep";
 import _orderBy from "lodash/orderBy";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import slugify from "slugify";
 import styled from "styled-components";
 import useSWR from "swr";
@@ -130,6 +130,7 @@ const Color = styled.div<{ hexValue: string }>`
 
 interface Props {
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
+  productId: number;
 }
 
 function NewProduct(props: Props): JSX.Element {
@@ -227,6 +228,43 @@ function NewProduct(props: Props): JSX.Element {
   );
   if (productsError) console.error(productsError);
 
+  const { data: product, error: productError } = useSWR(
+    props.productId ? `/products/complete/${props.productId}` : null,
+    {}
+  );
+  if (productError) console.error(productError);
+
+  useEffect(() => {
+    if (product && title === "") {
+      setUuid(product.uid);
+      setTitle(product.title);
+      setImage(product.image);
+      setEnabled(product.enabled);
+      setDescription(product.description);
+      setInfoColumn1(product.infoColumn1);
+      setInfoColumn2(product.infoColumn2);
+      setInfoColumn3(product.infoColumn3);
+      setCategory(product.subCategory.category);
+      setSubCategory(product.subCategory.id);
+      setBrand(product.brand.id);
+      setColor(product?.colors[0]?.id);
+      setSize(product?.sizes[0]?.id);
+      setPrice(product.price);
+      setPriceWhenNew(product.priceWhenNew);
+      setQty(product.qty);
+      setPWidth(product.pWidth);
+      setPHeight(product.pHeight);
+      setPLength(product.pLength);
+      setPWeight(product.pWeight);
+
+      const relatedIds = product.relatedItems.map((ri: any) => ri.id);
+      setRelatedItems(relatedIds);
+
+      const otherImages = product.moreImages.map((i: any) => i.url);
+      setImages(otherImages);
+    }
+  }, [product]);
+
   function getBrandName() {
     if (brands && brand) {
       const brandName = brands.find((b: any) => b.id === brand);
@@ -277,8 +315,8 @@ function NewProduct(props: Props): JSX.Element {
         },
       ],
       colors: null,
-      price: Number(price.replace(",", ".")),
-      priceWhenNew: Number(priceWhenNew.replace(",", ".")),
+      price: Number(String(price).replace(",", ".")),
+      priceWhenNew: Number(String(priceWhenNew).replace(",", ".")),
       viewCount: 1,
       qty: Number(qty),
       pWidth: Number(pWidth),
@@ -475,6 +513,25 @@ function NewProduct(props: Props): JSX.Element {
 
     try {
       const response = await Axios.post("/products", _product);
+      console.log(`response`, response);
+      setLoadingSave(false);
+      props.setCurrentPage("List");
+    } catch (error) {
+      console.error(error);
+      setLoadingSave(false);
+      setError(error);
+    }
+  }
+
+  async function updateProduct() {
+    setLoadingSave(true);
+    const _product = getFinalObject();
+
+    try {
+      const response = await Axios.put(
+        `/products/${props.productId}`,
+        _product
+      );
       console.log(`response`, response);
       setLoadingSave(false);
       props.setCurrentPage("List");
@@ -865,7 +922,6 @@ function NewProduct(props: Props): JSX.Element {
         <SizedBox height={10}></SizedBox>
         <HorizontalLine color={Colors.LIGHT_GRAY}></HorizontalLine>
         <SizedBox height={20}></SizedBox>
-        {/* <pre>{JSON.stringify(products, null, 2)}</pre> */}
         <div style={{ height: 530 }}>
           <DataGrid
             rows={getRelatedItems()}
@@ -928,7 +984,11 @@ function NewProduct(props: Props): JSX.Element {
         <SizedBox height={10}></SizedBox>
         <Row spaceBetween>
           <div>
-            <Subtitle>Novo Produto</Subtitle>
+            <Subtitle>
+              {props.productId
+                ? `Editar Produto ${props.productId}`
+                : "Novo Produto"}
+            </Subtitle>
           </div>
           <div>
             <Row>
@@ -1281,14 +1341,18 @@ function NewProduct(props: Props): JSX.Element {
             style={{ width: 341 }}
             contentEditable={false}
           />
-          <SizedBox width={20}></SizedBox>
-          <Button
-            disableElevation
-            startIcon={<RefreshIcon />}
-            onClick={() => setUuid(uuidv4())}
-          >
-            <ButtonText>Alterar UUID</ButtonText>
-          </Button>
+          {!props.productId && (
+            <>
+              <SizedBox width={20}></SizedBox>
+              <Button
+                disableElevation
+                startIcon={<RefreshIcon />}
+                onClick={() => setUuid(uuidv4())}
+              >
+                <ButtonText>Alterar UUID</ButtonText>
+              </Button>
+            </>
+          )}
         </Row>
         <SizedBox height={40}></SizedBox>
         <Row>
@@ -1297,7 +1361,7 @@ function NewProduct(props: Props): JSX.Element {
             variant="contained"
             size="large"
             color="primary"
-            onClick={saveProduct}
+            onClick={props.productId ? updateProduct : saveProduct}
           >
             <ButtonText>Salvar</ButtonText>
           </Button>

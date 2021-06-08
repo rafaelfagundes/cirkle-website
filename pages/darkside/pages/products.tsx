@@ -22,6 +22,7 @@ const Content = styled.div``;
 
 function Products(): JSX.Element {
   const [currentPage, setCurrentPage] = useState("List");
+  const [productId, setProductId] = useState(null);
 
   return (
     <Page>
@@ -54,9 +55,17 @@ function Products(): JSX.Element {
       <SizedBox height={20}></SizedBox>
       <Content>
         {currentPage === "NewProduct" && (
-          <NewProduct setCurrentPage={setCurrentPage}></NewProduct>
+          <NewProduct
+            setCurrentPage={setCurrentPage}
+            productId={productId}
+          ></NewProduct>
         )}
-        {currentPage === "List" && <ProductsList></ProductsList>}
+        {currentPage === "List" && (
+          <ProductsList
+            setCurrentPage={setCurrentPage}
+            setProductId={setProductId}
+          ></ProductsList>
+        )}
       </Content>
     </Page>
   );
