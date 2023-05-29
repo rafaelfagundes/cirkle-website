@@ -10,5 +10,10 @@ For production, deploy the code on the `main` branch.
 This project was built using the following technologies:
 - React
 - Next.js
+- Storybook
+- Styled Components
+- TypeScript
+- Firebase
+- And more...
 
 Feel free to explore the code and contribute to the project!
