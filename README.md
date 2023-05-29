@@ -1,7 +1,14 @@
 # Cirkle Ecommerce Website
 
-Olá,\
-Este repositório contém os arquivos do ecommerce da Cirkle\
-\
-Para testes faça `deploy` na branch `master`\
-Para produção faça `deploy` na branch `main`
+Hello,  
+This repository contains the files for the Cirkle ecommerce website.
+
+To test, deploy the code on the `master` branch.  
+For production, deploy the code on the `main` branch.
+
+## Technologies Used
+This project was built using the following technologies:
+- React
+- Next.js
+
+Feel free to explore the code and contribute to the project!
